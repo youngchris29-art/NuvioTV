@@ -1,0 +1,4 @@
+[submodule "NuvioMobile"]
+	path = NuvioMobile
+	url = https://github.com/youngchris29-art/NuvioMobile.git
+	branch = tvos-shared-extraction

@@ -69,7 +69,7 @@ Effort key: **S** = a session, **M** = a few sessions, **L** = multi-day.
 
 ### Tier 2 — Config-free, high value
 
-- **8b. Next-Episode autoplay — ✅ SHIPPED (2026-07-01).** `NextEpisodeEngine` + `UpNextCard`: settings-threshold trigger, aired-episode resolution, stream auto-select via shared `PlayerStreamsRepository` + `StreamAutoPlaySelector` (binge-group preference, bounded timeout), 3-2-1 countdown, press-down to play now / backward-seek to cancel. Works from the episodes flow (the Home continue-watching launch path lacks the episode list — later polish). Verified on device.
+- **8b. Next-Episode autoplay — ✅ SHIPPED (2026-07-01).** `NextEpisodeEngine` + `UpNextCard`: settings-threshold trigger, aired-episode resolution, stream auto-select via shared `PlayerStreamsRepository` + `StreamAutoPlaySelector` (binge-group preference, bounded timeout), 3-2-1 countdown, press-down to play now / backward-seek to cancel. Works from the episodes flow. Verified on device. **Home/Detail launch paths fixed 2026-07-02 (✅ verified on device):** `StreamPickerView` now fetches the episode list itself via `MetaDetailsRepository.fetch` (cache-first, side-effect free) whenever a series path didn't supply one — autoplay now works from Home continue-watching AND Detail's primary Play.
 - **Catalog "see all" full-grid screen — ✅ SHIPPED (2026-07-01).** `CatalogGridView` + `CatalogGridViewModel` over the shared paginated `CatalogRepository`; a "See All" link in each `CatalogRowView` header (shown when `hasMore`) navigates via a `CatalogRoute` wrapper. Adaptive `LazyVGrid`, infinite-scroll `loadMore()`, poster → Detail. Works on Home + Search. Pure Swift, no relink. Verified on device.
 
 ### Tier 3 — Still config-gated (keys NOT in the API doc)

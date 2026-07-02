@@ -1,0 +1,9 @@
+// Add to settings.gradle.kts (alongside the existing include(...) lines):
+
+include(":composeApp")
+include(":androidApp")
+include(":shared")          // ← NEW
+
+// Then in composeApp/build.gradle.kts, inside commonMain.dependencies { }:
+//     implementation(projects.shared)
+// (TYPESAFE_PROJECT_ACCESSORS is already enabled in this repo, so `projects.shared` works.)

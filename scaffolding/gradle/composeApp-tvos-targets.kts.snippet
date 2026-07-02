@@ -1,0 +1,48 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// SPIKE ROUTE: add tvOS Kotlin/Native targets to composeApp's `kotlin { }` block.
+//
+// Place these alongside the existing `iosTargets` list in
+//   composeApp/build.gradle.kts
+//
+// Goal: emit a UI-FREE `SharedCore` framework for tvOS. We deliberately do NOT
+// add Compose to the tvOS source set — Compose Multiplatform has no tvOS support.
+// Only the Compose-free domain/data layer compiles here.
+// ─────────────────────────────────────────────────────────────────────────────
+
+val tvosTargets = listOf(
+    tvosArm64(),
+    tvosSimulatorArm64(),
+)
+
+tvosTargets.forEach { tvosTarget ->
+    tvosTarget.compilations.getByName("main") {
+        cinterops {
+            // Reuse the same CommonCrypto interop the iOS targets use.
+            create("commoncrypto") {
+                defFile(project.file("src/nativeInterop/cinterop/commoncrypto.def"))
+                compilerOpts("-I${project.projectDir}/src/nativeInterop/cinterop")
+            }
+        }
+        defaultSourceSet.dependencies {
+            implementation(libs.ktor.client.darwin) // Ktor Darwin engine supports tvOS
+        }
+    }
+
+    tvosTarget.binaries.framework {
+        baseName = "SharedCore"   // distinct from the iOS "ComposeApp" framework
+        isStatic = true
+        freeCompilerArgs += listOf("-Xbinary=bundleId=com.nuvio.media.tv")
+    }
+}
+
+// In the sourceSets { } block, create a tvOS source set that shares Darwin code with
+// iOS but EXCLUDES Compose. The cleanest way is an intermediate `darwinCore` source set:
+//
+//   val darwinCore by creating { dependsOn(commonMain.get()) }   // logic only
+//   val iosMain    by getting  { dependsOn(darwinCore) }
+//   val tvosMain   by creating { dependsOn(darwinCore) }
+//   listOf(tvosArm64Main, tvosSimulatorArm64Main).forEach { it.dependsOn(tvosMain) }
+//
+// NOTE: because commonMain currently pulls Compose deps, the spike works best once the
+// Compose-free packages are isolated. If the tvOS compile complains about Compose
+// symbols, that's your signal to move to the clean `shared` module route below.

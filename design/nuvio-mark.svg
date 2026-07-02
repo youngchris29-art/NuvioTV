@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Nuvio mark — vector recreation of the brand logo.
+       Outer rounded play triangle (cyan→blue→purple gradient), a black rounded
+       triangle inset, and a small gradient play triangle at the center. -->
+  <defs>
+    <linearGradient id="nuvioGrad" x1="0.55" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="#2BD9E5"/>
+      <stop offset="0.55" stop-color="#4F6BF0"/>
+      <stop offset="1" stop-color="#A238F0"/>
+    </linearGradient>
+  </defs>
+  <!-- Outer rounded triangle: heavy round-joined stroke rounds the corners -->
+  <path d="M 158 130 L 158 382 L 396 256 Z"
+        fill="url(#nuvioGrad)" stroke="url(#nuvioGrad)"
+        stroke-width="84" stroke-linejoin="round"/>
+  <!-- Black rounded triangle inset -->
+  <path d="M 212 204 L 212 308 L 314 256 Z"
+        fill="#0A0A12" stroke="#0A0A12"
+        stroke-width="38" stroke-linejoin="round"/>
+  <!-- Small white play triangle -->
+  <path d="M 234 234 L 234 278 L 278 256 Z"
+        fill="#FFFFFF" stroke="#FFFFFF"
+        stroke-width="16" stroke-linejoin="round"/>
+</svg>

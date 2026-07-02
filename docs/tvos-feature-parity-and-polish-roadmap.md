@@ -80,7 +80,7 @@ Effort key: **S** = a session, **M** = a few sessions, **L** = multi-day.
 
 ### Tier 4 — Polish / lower ROI
 
-- **Deferred Settings pages (S–M each):** subtitle appearance (shared `SubtitleColor`/`SubtitleStyleState`), audio/subtitle language auto-select, theme picker (tvOS `Theme.swift` is hardcoded Crimson; `ThemeSettingsRepository` is shared but its store seam is a no-op on tvOS — needs a tvOS `ThemeSettingsStore` adapter for persistence), poster shape.
+- **Deferred Settings pages (S–M each):** subtitle appearance (shared `SubtitleColor`/`SubtitleStyleState`), audio/subtitle language auto-select, **theme picker — ✅ SHIPPED 2026-07-02 (verified on device, zero fix rounds):** shared `TvOsThemeSettingsStore` (appleMain, NSUserDefaults profile-scoped, default CRIMSON, sync payload compatible) installed in `installTvOsSharedProviders` + `ThemeSettingsRepository.onProfileChanged()` in the lifecycle coordinator; Swift: `Theme.Palette.accent/accentFocus` are now `nonisolated(unsafe) static var` + `applyTheme(named:)`, `AppThemeModel` watches `selectedTheme` and ContentView re-identifies the tree via `.id(themeName)` (tab selection hoisted to ContentView so Settings survives the rebuild); Settings has a Theme section with 7 swatches. Poster shape ✅ shipped earlier (Poster Style).
 - **Detail richness (S–M):** production/additional-info section, person detail, poster rail, trailers row; Trakt comments once Phase 7 lands.
 - **tvOS seam adapters for current no-ops (S each, optional):** theme-settings persistence (above); the rest (downloads, episode-release notifications, native tab bar) are deliberately no-op on tvOS.
 

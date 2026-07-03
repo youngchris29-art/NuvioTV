@@ -71,14 +71,26 @@ Home (hero pager, continue watching w/ remove + direct resume, catalog rows, col
 
 **Blocked:** playback issue reporting (`PLAYBACK_REPORTS_BASE_URL` is a private build config, unpublished — same class of blocker as the old `INTRODB_API_URL`).
 
-## 6. Suggested order
+## 6. Suggested order — STATUS 2026-07-02 (evening re-evaluation)
 
-1. **Player quick-win batch** (speed, sub/audio delay, stream info, pause overlay, still-watching) — one pass over MPVPlayerView + panel, all S.
-2. **Detail richness batch** (Trakt comments, episode ratings, parental guide, company logos, trailers row) — all shared-backed, pure Swift.
-3. **Native debrid settings** → then **cloud library**.
-4. **Discover tab + search history**.
-5. **QR sign-in + sync codes** (account UX).
-6. **In-player episodes/source panels + post-play**.
-7. **Dynamic Top Shelf**.
-8. **LAN config server**, **JS plugins** (biggest builds, save for last).
-9. Sprinkle-in: onboarding, experience mode, MDBList, match-frame-rate, buffer settings.
+**Shipped today (all verified on device):** ✅ player quick-wins (speed, sub/audio delay, stream info, pause overlay, still-watching) · ✅ Detail richness (Trakt comments, episode ratings, parental guide, company logos) · ✅ native debrid (device-code auth) · ✅ cloud library.
+
+**Re-scout findings — more is shared-backed than assumed:**
+
+- Discover is fully in SharedCore: `SearchRepository.discoverUiState` + `refreshDiscover(addons:)` → Discover tab is pure Swift UI.
+- `SearchHistoryRepository` is in SharedCore (uiState/record/remove, already in the profile coordinator) → history chips are trivial.
+- `TmdbMetadataService` carries the entity-browse APIs (`TmdbEntityBrowseData`/rails) → studio/network pages are pure Swift, not a shared addition.
+- `MdbListMetadataService` + `MdbListSettingsRepository` are in SharedCore and enrich `MetaDetails.externalRatings` → MDBList is likely just a Settings key row feeding the existing Ratings info row.
+
+**Remaining, reranked:**
+
+1. ✅ **Discovery batch** (Discover tab + search history) — shipped 2026-07-02.
+2. ✅ **Player depth batch** — shipped 2026-07-02.
+3. ✅ **MDBList key row** + **trailers row** — shipped 2026-07-03.
+4. ✅ **QR sign-in** — shipped 2026-07-03 (sync codes deferred; QR covers the UX).
+5. ✅ **TMDB entity browse pages** — shipped 2026-07-03 (`EntityBrowseView.swift`; Detail's company-logo chips push studio/network pages when they carry a TMDB id — pure Swift, `fetchEntityBrowse`/`fetchEntityRailPage` already exported).
+6. **Dynamic Top Shelf** — needs a new Xcode extension target (manual project step) + App Group snapshot.
+7. **LAN config server** — Network.framework; big text-entry win.
+8. **JS plugins** — JavaScriptCore host behind the ready `PluginScraperHost` seam; biggest content unlock (plugin repos then sync from mobile automatically); save for a dedicated session.
+
+**Parked:** onboarding/experience mode (product call), layout variants (only if asked), playback issue reporting (private config), downloads (no tvOS storage story), episode release notifications (tvOS has no user-facing notifications), torrent engine + DEX plugins (impossible on tvOS).

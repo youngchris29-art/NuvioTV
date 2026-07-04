@@ -1,0 +1,304 @@
+diff --git a/buildSrc/src/main/kotlin/com/dokar/quickjs/Platform.kt b/buildSrc/src/main/kotlin/com/dokar/quickjs/Platform.kt
+index 15464fb..081fcd4 100644
+--- a/buildSrc/src/main/kotlin/com/dokar/quickjs/Platform.kt
++++ b/buildSrc/src/main/kotlin/com/dokar/quickjs/Platform.kt
+@@ -11,6 +11,8 @@ enum class Platform(
+     ios_x64("ios", "x64"),
+     ios_aarch64("ios", "aarch64"),
+     ios_simulator_aarch64("ios_simulator", "aarch64"),
++    tvos_aarch64("tvos", "aarch64"),
++    tvos_simulator_aarch64("tvos_simulator", "aarch64"),
+     windows_x64("windows", "x64");
+ }
+ 
+diff --git a/buildSrc/src/main/kotlin/com/dokar/quickjs/applyQuickJsNativeBuildTasks.kt b/buildSrc/src/main/kotlin/com/dokar/quickjs/applyQuickJsNativeBuildTasks.kt
+index 00d7df6..d84cfe1 100644
+--- a/buildSrc/src/main/kotlin/com/dokar/quickjs/applyQuickJsNativeBuildTasks.kt
++++ b/buildSrc/src/main/kotlin/com/dokar/quickjs/applyQuickJsNativeBuildTasks.kt
+@@ -29,6 +29,10 @@ fun Project.applyQuickJsNativeBuildTasks(cmakeFile: File) {
+         outputs.dir(jniLibOutDir)
+ 
+         doLast {
++            if (findProperty("quickjs.skipJni") == "true") {
++                println("Skipping JNI library build (quickjs.skipJni=true)")
++                return@doLast
++            }
+             val taskNames = gradle.startParameter.taskNames
+             val isPublishing = taskNames.any { it.contains("publish", ignoreCase = true) }
+             if (isPublishing) {
+@@ -133,14 +137,11 @@ fun Project.applyQuickJsNativeBuildTasks(cmakeFile: File) {
+     }
+ 
+     val cinteropTaskSuffixes = listOf(
+-        "MingwX64",
+-        "LinuxX64",
+-        "LinuxArm64",
+-        "MacosX64",
+-        "MacosArm64",
+         "IosX64",
+         "IosArm64",
+         "IosSimulatorArm64",
++        "TvosArm64",
++        "TvosSimulatorArm64",
+     )
+     for (suffix in cinteropTaskSuffixes) {
+         tasks.named("cinteropQuickjs$suffix") {
+@@ -180,7 +181,13 @@ private fun Project.findBuildPlatformsFromStartTaskNames(): List<Platform> {
+             }
+             Platform.windows_x64 -> allPlatforms.filter { it == Platform.windows_x64 }
+             Platform.macos_x64,
+-            Platform.macos_aarch64 -> allPlatforms
++            Platform.macos_aarch64 -> listOf(
++                Platform.ios_x64,
++                Platform.ios_aarch64,
++                Platform.ios_simulator_aarch64,
++                Platform.tvos_aarch64,
++                Platform.tvos_simulator_aarch64,
++            )
+             else -> allPlatforms
+         }
+     }
+@@ -198,11 +205,11 @@ private fun Project.findBuildPlatformsFromStartTaskNames(): List<Platform> {
+             Platform.macos_x64,
+             Platform.macos_aarch64 -> {
+                 return listOf(
+-                    Platform.macos_x64,
+-                    Platform.macos_aarch64,
+                     Platform.ios_x64,
+                     Platform.ios_aarch64,
+                     Platform.ios_simulator_aarch64,
++                    Platform.tvos_aarch64,
++                    Platform.tvos_simulator_aarch64,
+                 )
+             }
+ 
+@@ -241,6 +248,12 @@ private fun Project.findBuildPlatformsFromStartTaskNames(): List<Platform> {
+         } else if (name.contains("iossimulatorarm64")) {
+             platform = Platform.ios_simulator_aarch64
+             break
++        } else if (name.contains("tvossimulatorarm64")) {
++            platform = Platform.tvos_simulator_aarch64
++            break
++        } else if (name.contains("tvosarm64")) {
++            platform = Platform.tvos_aarch64
++            break
+         }
+     }
+ 
+diff --git a/buildSrc/src/main/kotlin/com/dokar/quickjs/buildQuickJsNativeLibrary.kt b/buildSrc/src/main/kotlin/com/dokar/quickjs/buildQuickJsNativeLibrary.kt
+index 8232468..b827c2f 100644
+--- a/buildSrc/src/main/kotlin/com/dokar/quickjs/buildQuickJsNativeLibrary.kt
++++ b/buildSrc/src/main/kotlin/com/dokar/quickjs/buildQuickJsNativeLibrary.kt
+@@ -81,7 +81,9 @@ internal fun Project.buildQuickJsNativeLibrary(
+ 
+             Platform.ios_aarch64,
+             Platform.ios_x64,
+-            Platform.ios_simulator_aarch64 -> commonArgs + xcode
++            Platform.ios_simulator_aarch64,
++            Platform.tvos_aarch64,
++            Platform.tvos_simulator_aarch64 -> commonArgs + xcode
+         }
+     }
+ 
+@@ -101,6 +103,20 @@ internal fun Project.buildQuickJsNativeLibrary(
+             "iphonesimulator"
+         )
+ 
++        Platform.tvos_aarch64 -> arrayOf(
++            commonArgs[1],
++            "--",
++            "-sdk",
++            "appletvos"
++        )
++
++        Platform.tvos_simulator_aarch64 -> arrayOf(
++            commonArgs[1],
++            "--",
++            "-sdk",
++            "appletvsimulator"
++        )
++
+         else -> arrayOf(commonArgs[1])
+     }
+ 
+@@ -196,6 +212,10 @@ internal fun Project.buildQuickJsNativeLibrary(
+ 
+                 Platform.ios_simulator_aarch64 -> "$buildType-iphonesimulator/" to "a"
+ 
++                Platform.tvos_aarch64 -> "$buildType-appletvos/" to "a"
++
++                Platform.tvos_simulator_aarch64 -> "$buildType-appletvsimulator/" to "a"
++
+                 else -> "" to "a"
+             }
+         }
+diff --git a/buildSrc/src/main/kotlin/com/dokar/quickjs/disableUnsupportedPlatformTasks.kt b/buildSrc/src/main/kotlin/com/dokar/quickjs/disableUnsupportedPlatformTasks.kt
+index 0929244..e555194 100644
+--- a/buildSrc/src/main/kotlin/com/dokar/quickjs/disableUnsupportedPlatformTasks.kt
++++ b/buildSrc/src/main/kotlin/com/dokar/quickjs/disableUnsupportedPlatformTasks.kt
+@@ -25,6 +25,10 @@ fun Project.disableUnsupportedPlatformTasks() {
+             enabled = currentPlatform == Platform.macos_aarch64
+         } else if (taskName.contains("iossimulatorarm64")) {
+             enabled = currentPlatform == Platform.macos_aarch64
++        } else if (taskName.contains("tvossimulatorarm64")) {
++            enabled = currentPlatform == Platform.macos_aarch64
++        } else if (taskName.contains("tvosarm64")) {
++            enabled = currentPlatform == Platform.macos_aarch64
+         }
+     }
+ }
+\ No newline at end of file
+diff --git a/gradle.properties b/gradle.properties
+index 311116c..7ec5e6d 100644
+--- a/gradle.properties
++++ b/gradle.properties
+@@ -29,7 +29,7 @@ SONATYPE_HOST=CENTRAL_PORTAL
+ RELEASE_SIGNING_ENABLED=true
+ 
+ GROUP=io.github.dokar3
+-VERSION_NAME=1.0.5
++VERSION_NAME=1.0.5-tvos
+ 
+ POM_NAME=quickjs-kt
+ POM_DESCRIPTION=A QuickJS binding for idiomatic Kotlin, with Async/DSL/ES Modules support.
+diff --git a/quickjs/build.gradle.kts b/quickjs/build.gradle.kts
+index 35b10da..388ab5a 100644
+--- a/quickjs/build.gradle.kts
++++ b/quickjs/build.gradle.kts
+@@ -5,24 +5,17 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+ 
+ plugins {
+     alias(libs.plugins.kotlinMultiplatform)
+-    alias(libs.plugins.androidLibrary)
+     alias(libs.plugins.mavenPublish)
+ }
+ 
+ kotlin {
+-    androidTarget {
+-        publishLibraryVariants("release")
+-    }
+     jvm()
+ 
+-    mingwX64()
+-    linuxX64()
+-    linuxArm64()
+-    macosX64()
+-    macosArm64()
+     iosX64()
+     iosArm64()
+     iosSimulatorArm64()
++    tvosArm64()
++    tvosSimulatorArm64()
+ 
+     applyDefaultHierarchyTemplate()
+ 
+@@ -54,10 +47,6 @@ kotlin {
+             kotlin.srcDir("src/jniTest/kotlin/")
+         }
+ 
+-        val androidMain by getting {
+-            dependsOn(jniMain)
+-        }
+-
+         targets.withType<KotlinNativeTarget> {
+             val main by compilations.getting
+ 
+@@ -76,68 +65,6 @@ kotlin {
+ 
+ val cmakeFile = file("native/CMakeLists.txt")
+ 
+-android {
+-    namespace = "com.dokar.quickjs"
+-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+-
+-    defaultConfig {
+-        minSdk = libs.versions.android.minSdk.get().toInt()
+-        multiDexEnabled = true
+-
+-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+-        consumerProguardFiles("consumer-rules.pro")
+-
+-        ndk {
+-            abiFilters += listOf("x86", "x86_64", "armeabi-v7a", "arm64-v8a")
+-        }
+-
+-        externalNativeBuild {
+-            cmake {
+-                arguments(
+-                    "-DANDROID_TOOLCHAIN=clang",
+-                    "-DTARGET_PLATFORM=android",
+-                    "-DLIBRARY_TYPE=shared",
+-                )
+-                cFlags("-fstrict-aliasing")
+-            }
+-        }
+-
+-        packaging {
+-            jniLibs.keepDebugSymbols += "**/libquickjs.so"
+-        }
+-    }
+-
+-    buildTypes {
+-        val release by getting {
+-            externalNativeBuild {
+-                cmake {
+-                    arguments("-DCMAKE_BUILD_TYPE=MinSizeRel")
+-                    cFlags(
+-                        "-g0",
+-                        "-Os",
+-                        "-fomit-frame-pointer",
+-                        "-DNDEBUG",
+-                        "-fvisibility=hidden"
+-                    )
+-                }
+-            }
+-        }
+-
+-        val debug by getting {
+-            externalNativeBuild {
+-                cmake {
+-                    cFlags("-g", "-DDEBUG", "-DDUMP_LEAKS")
+-                }
+-            }
+-        }
+-    }
+-
+-    externalNativeBuild {
+-        cmake {
+-            path = cmakeFile
+-        }
+-    }
+-}
+ 
+ applyQuickJsNativeBuildTasks(cmakeFile)
+ 
+diff --git a/quickjs/native/CMakeLists.txt b/quickjs/native/CMakeLists.txt
+index edd28b6..152c36d 100644
+--- a/quickjs/native/CMakeLists.txt
++++ b/quickjs/native/CMakeLists.txt
+@@ -62,6 +62,12 @@ elseif (TARGET_PLATFORM STREQUAL "ios_aarch64")
+ elseif (TARGET_PLATFORM STREQUAL "ios_simulator_aarch64")
+     set(CMAKE_SYSTEM_NAME "iOS")
+     set(CMAKE_OSX_ARCHITECTURES "arm64")
++elseif (TARGET_PLATFORM STREQUAL "tvos_aarch64")
++    set(CMAKE_SYSTEM_NAME "tvOS")
++    set(CMAKE_OSX_ARCHITECTURES "arm64")
++elseif (TARGET_PLATFORM STREQUAL "tvos_simulator_aarch64")
++    set(CMAKE_SYSTEM_NAME "tvOS")
++    set(CMAKE_OSX_ARCHITECTURES "arm64")
+ elseif (TARGET_PLATFORM STREQUAL "windows_x64")
+     if (BUILD_WITH_JNI)
+         configure_jni("win32")
+diff --git a/quickjs/src/nativeInterop/cinterop/quickjs.def b/quickjs/src/nativeInterop/cinterop/quickjs.def
+index 6362fd7..7be8a5e 100644
+--- a/quickjs/src/nativeInterop/cinterop/quickjs.def
++++ b/quickjs/src/nativeInterop/cinterop/quickjs.def
+@@ -8,6 +8,8 @@ staticLibraries.macos_arm64 = libquickjs_macos_aarch64.a
+ staticLibraries.ios_x64 = libquickjs_ios_x64.a
+ staticLibraries.ios_arm64 = libquickjs_ios_aarch64.a
+ staticLibraries.ios_simulator_arm64 = libquickjs_ios_simulator_aarch64.a
++staticLibraries.tvos_arm64 = libquickjs_tvos_aarch64.a
++staticLibraries.tvos_simulator_arm64 = libquickjs_tvos_simulator_aarch64.a
+ 
+ libraryPaths = native/build/static_libs/
+ 

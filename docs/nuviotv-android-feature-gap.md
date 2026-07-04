@@ -89,8 +89,8 @@ Home (hero pager, continue watching w/ remove + direct resume, catalog rows, col
 3. ✅ **MDBList key row** + **trailers row** — shipped 2026-07-03.
 4. ✅ **QR sign-in** — shipped 2026-07-03 (sync codes deferred; QR covers the UX).
 5. ✅ **TMDB entity browse pages** — shipped 2026-07-03 (`EntityBrowseView.swift`; Detail's company-logo chips push studio/network pages when they carry a TMDB id — pure Swift, `fetchEntityBrowse`/`fetchEntityRailPage` already exported).
-6. **Dynamic Top Shelf** — needs a new Xcode extension target (manual project step) + App Group snapshot.
-7. **LAN config server** — Network.framework; big text-entry win.
+6. ✅ **Dynamic Top Shelf** — shipped 2026-07-03 (NuvioTopShelf extension + App Group snapshot + `nuviotv://` deep links).
+7. ✅ **LAN config server** — shipped 2026-07-03 ("Remote Setup" in Settings: NWListener HTTP server + embedded web page; add-ons/Home rows/TMDB+MDBList keys editable from a phone browser, confirm-on-TV before anything applies).
 8. **JS plugins** — JavaScriptCore host behind the ready `PluginScraperHost` seam; biggest content unlock (plugin repos then sync from mobile automatically); save for a dedicated session.
 
 **Parked:** onboarding/experience mode (product call), layout variants (only if asked), playback issue reporting (private config), downloads (no tvOS storage story), episode release notifications (tvOS has no user-facing notifications), torrent engine + DEX plugins (impossible on tvOS).

@@ -237,8 +237,17 @@ served-playlist dumps, pulled remux artifacts, remote AVPlayer probe rig):
    (regenerate wholesale on a uniform grid, −6 frames reorder slack), High-tier hvcC declarations
    (patch record to Main tier), empty extradata (recover via extract_extradata BSF), TARGETDURATION
    violations from long GOPs (serve-time repair), empty-at-open playlists (gate on non-empty).
-2. **tvOS 27 rejects a master carrying `VIDEO-RANGE=PQ` at parse time** ("unsupported URL").
-   Dropped from signaling; DV engages via the dvvC box + SUPPLEMENTAL-CODECS.
+2. ~~tvOS 27 rejects a master carrying `VIDEO-RANGE=PQ` at parse time~~ **CORRECTED (2026-07-16
+   evening, remote device A/B): `VIDEO-RANGE` is REQUIRED on tvOS 27 for PQ/HDR content.** PQ media
+   behind a master that does NOT declare it is rejected at media admission (-12927 right after the
+   first segment fetch — the failure long misattributed to EVENT-join/mux structure); the same media
+   plays when the master declares `VIDEO-RANGE=PQ` alongside full RFC 6381 CODECS +
+   SUPPLEMENTAL-CODECS + RESOLUTION + FRAME-RATE (device-validated, incl. against Apple's
+   `adv_dv_atmos` reference stream). Note a bare-`hvc1` master WITH `VIDEO-RANGE=PQ` fails at master
+   parse (-1002) — the declaration needs the full codec context. The original "rejects at parse"
+   observation came from the confounded EVENT-era test matrix. Also device-validated the same
+   evening: the owned-segmenter VOD+JIT output (muxed A/V, no styp, synthesized playlists) plays
+   as-is with SDR content — the -12927 was never about the container/mux structure.
 3. **The remaining blocker: EVENT-playlist join.** The device plays the remuxed media behind a
    master when playlists are VOD (ENDLIST present) and fails (-12927, right after the first segment
    fetch) when they are EVENT/growing — in every combination of codecs/audio/segment-count (≥3

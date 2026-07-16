@@ -227,3 +227,22 @@ Probe, router, remux, and server are all simulator/unit testable (router unit te
 - dovi_tool / libdovi (shipped as `Libdovi.xcframework` in the MPVKit package): https://github.com/quietvoid/dovi_tool
 - FFmpeg DV tagging reference: `ffmpeg -c:v copy -tag:v dvh1 -strict unofficial`
 - MPVKit build pipeline (for the Phase 4 v3 rebuild option): `NuvioMobile/MPVKit/Makefile`
+
+## Field findings — device debugging, 2026-07-16 (tvOS 27 beta, Apple TV 4K 3rd gen)
+
+Established by elimination on the physical device, each step evidence-backed (console request log,
+served-playlist dumps, pulled remux artifacts, remote AVPlayer probe rig):
+
+1. **Source defects the remux must repair** (all implemented): missing/non-monotonic video DTS
+   (regenerate wholesale on a uniform grid, −6 frames reorder slack), High-tier hvcC declarations
+   (patch record to Main tier), empty extradata (recover via extract_extradata BSF), TARGETDURATION
+   violations from long GOPs (serve-time repair), empty-at-open playlists (gate on non-empty).
+2. **tvOS 27 rejects a master carrying `VIDEO-RANGE=PQ` at parse time** ("unsupported URL").
+   Dropped from signaling; DV engages via the dvvC box + SUPPLEMENTAL-CODECS.
+3. **The remaining blocker: EVENT-playlist join.** The device plays the remuxed media behind a
+   master when playlists are VOD (ENDLIST present) and fails (-12927, right after the first segment
+   fetch) when they are EVENT/growing — in every combination of codecs/audio/segment-count (≥3
+   completed segments enforced). Decision D2's original design (complete VOD playlist up front,
+   segments produced/served just-in-time) is therefore REQUIRED on tvOS 27, not an optimization.
+   Remux speed for debrid sources ≈ download speed (can be ≈ realtime), so waiting for remux
+   completion is not a substitute for long content.

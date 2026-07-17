@@ -164,6 +164,34 @@ Each phase is independently shippable and leaves MPV playback untouched until Ph
 
 ---
 
+### Post-Phase-5 polish batch 1 — native-player UX (DONE, device-validated 2026-07-17)
+
+Deferred-refinement batch on `NativePlayerScreen`, integrating with the system player UI instead of
+fighting it for focus (the mpv screen's pill/panel approach doesn't apply — AVPlayerViewController
+owns the remote):
+- **Skip Intro/Outro/Recap** via `contextualActions` (the TV+/Netflix-style system button). Segments
+  from the shared `SkipIntroRepository`, evaluated on playback ticks; skip = player seek to segment
+  end. Fetch logs the segment count (`skip segments: N`) — absence of the button on a title means
+  the intro DB has no data for it (HOTD verified: 0 segments), identical to the mpv player.
+- **Interactive up-next**: "Play Next Episode" contextual action while the countdown card shows —
+  fires `NextEpisodeEngine.playNow()`. Device-validated: countdown, button focus, and the jump all work.
+- **Stream Info tab** via `customInfoViewControllers` (swipe-down panel): router decision (routing
+  note now passed from `PlayerScreen` into the native screen), CODECS/supplemental/range, resolution
+  + fps, audio token, segment-map shape, declared bandwidth, live access-log stats. Refreshed on ticks.
+- **Up-next debrid fix** (cross-engine — the real cause of "Finding source" hanging forever): the
+  engine pre-filtered candidates to non-empty `playableDirectUrl`, so all-debrid accounts (torrent /
+  clientResolve results carry no direct URL) always ended in "no stream" — and a hung addon left the
+  card stuck in "Finding source…" with no terminal state. Now: resolvable streams count as candidates
+  (`DirectDebridPlaybackResolver.shouldResolveToPlayableStream`), the selected stream resolves to a
+  direct link at fire time (picker-click parity, ~1s for cached), a 12s hard deadline past the soft
+  timeout always resolves the card, and `playSource` (in-player source panel) resolves the same way.
+  Search diagnostics (`[UpNext] …`) log every flow emission and the selection outcome.
+
+**Device-console rig caveat (2026-07-17):** apps launched with `devicectl … launch --console` on this
+tunnel get SIGKILLed when the console session drops (twice reproduced; no jetsam/watchdog/crash
+report, footprint healthy — devicectl prints "App terminated due to signal 9"). Detached launches
+survive identical stress. Attach the console only for log-gathering runs; expect them to be mortal.
+
 ## 4. Fallback & error strategy
 
 - **Pre-playback** (probe failure/timeout, router says no): silent MPV — user sees exactly today's behavior.

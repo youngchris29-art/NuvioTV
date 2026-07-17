@@ -187,6 +187,17 @@ owns the remote):
   timeout always resolves the card, and `playSource` (in-player source panel) resolves the same way.
   Search diagnostics (`[UpNext] …`) log every flow emission and the selection outcome.
 
+### Post-Phase-5 polish batch 2 — external subtitles (D5, DONE; sim-validated 2026-07-17)
+
+Addon SRTs (`PlaybackContext.externalSubtitles`) become WebVTT SUBTITLES renditions in the
+synthesized master — AVPlayer's native subtitle menu/styling handles the rest. `SubtitleVTT` (new)
+builds the rendition list (dedupe, unique names, 16 cap, language-tag parsing) and converts with an
+encoding-tolerant ladder (UTF-16 BOM / UTF-8 / CP1252 / Latin-1); `LocalHLSServer` serves
+`sub-N.m3u8` (single-segment VOD over the whole timeline — cue times are playlist times at origin
+zero) and `sub-N.vtt` (JIT download + convert on first selection, session-cached, 404 on failure
+without disturbing playback). Sim-validated: legible group exposed, selection fetches + converts
+(CP1252 accents, ASS/{font} stripping, comma→dot). Device to-verify: cues render on a real title.
+
 **Device-console rig caveat (2026-07-17):** apps launched with `devicectl … launch --console` on this
 tunnel get SIGKILLed when the console session drops (twice reproduced; no jetsam/watchdog/crash
 report, footprint healthy — devicectl prints "App terminated due to signal 9"). Detached launches

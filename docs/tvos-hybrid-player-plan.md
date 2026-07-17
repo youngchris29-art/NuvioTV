@@ -92,7 +92,7 @@ Play request (PlaybackContext)
 **D3 — fMP4 via the mov/mp4 muxer + hand-written playlists.** (Forced by the missing hls muxer, but the right call regardless.)
 Init segment (`moov`) + independent fragments (`movflags`-style `frag_custom`/`dash`/`delay_moov` split) captured through a custom AVIO write callback into the segment cache. `hvc1` codec tag; attach `AVDOVIDecoderConfigurationRecord` stream side data so movenc writes the `dvvC` box (verify whether n8.1.2 still needs `strict=unofficial` — carry the `ffmpeg -tag:v dvh1 -strict unofficial` reference). Playlist `CODECS` per the Apple HLS Authoring Spec: P5 `dvh1.05.xx`; P8.1 `hvc1...` plus `SUPPLEMENTAL-CODECS` DV cross-compatibility signaling.
 
-**D4 — One audio track per remux session; track switch = session rebuild.**
+**D4 — One audio track per remux session; track switch = session rebuild.** *(DONE — polish batch 3 below.)*
 Probe lists every track; the existing track-picker UI shows them all; picking a different audio track tears down the RemuxSession and rebuilds it with the new stream index, resuming at the current position (sub-second on a warm loopback connection — this is Infuse's behavior).
 *Rejected:* muxing all audio tracks as HLS alternate renditions — N parallel segment pipelines for no user-visible gain.
 
@@ -202,6 +202,32 @@ without disturbing playback). Sim-validated: legible group exposed, selection fe
 tunnel get SIGKILLed when the console session drops (twice reproduced; no jetsam/watchdog/crash
 report, footprint healthy — devicectl prints "App terminated due to signal 9"). Detached launches
 survive identical stress. Attach the console only for log-gathering runs; expect them to be mortal.
+
+### Post-Phase-5 polish batch 3 — audio track switching (D4, DONE; sim-validated 2026-07-17)
+
+The remux worker publishes every source audio stream as `RemuxAudioTrack` (avformat stream index,
+codec, channels, language/title metadata, copy-or-transcode playability, selection), and
+`Config.audioStreamIndex` overrides the automatic first-copyable-else-first-transcodable pick — an
+explicitly requested transcodable track transcodes even when a copyable one exists; a stale or
+unplayable request logs and falls back to automatic rather than failing the session.
+`NativePlaybackCoordinator.selectAudioTrack(streamIndex:)` implements the D4 rebuild: capture
+position + current legible selection, tear down player/server/remux (old output cleaned up), relaunch
+on the new index, resume via `pendingResumeSec` (beats saved watch progress at the next
+readyToPlay), re-select the carried-over subtitle by display name once the new item's legible group
+loads. The Trakt session spans the rebuild (start once, stop once), the addon-subtitle list is
+reused (no refetch), and a proven reduced-signaling verdict (`signalingAttempt`) survives so a
+device that needed the no-SUPPLEMENTAL master form doesn't re-fail it; the pre-ready item-failure
+discriminator is now per-item (`readied`), not lifetime duration, so a rebuild failure still gets
+the signaling retry ladder before falling to mpv (at the carried position). UI: since the stream
+carries exactly ONE audio rendition, the system audio panel can't offer alternates — an "Audio"
+`transportBarCustomMenuItems` UIMenu lists all tracks (localized language · codec · layout · title;
+unplayable ones disabled), checkmarks the active one, and a pick triggers the rebuild behind a
+"Switching Audio…" spinner (`preparingLabel`). Sim-validated headlessly (two-audio fixtures,
+`debug.remuxSmokeAudioSwitchSec` hook re-arms until playback is up): aac→ac3 copy switch and
+aac→dts transcode switch both rebuild correctly (`AUDIO=ac-3` / `mp4a.40.2 (transcode)`), resume at
+the exact pre-switch position, restore the subtitle selection, and play to EOF; ffprobe + a
+440/880 Hz tone A/B on the kept output proves the new session muxes the OTHER track's actual
+content. Device to-verify: menu ergonomics on the real transport bar and a real multi-audio remux.
 
 ## 4. Fallback & error strategy
 

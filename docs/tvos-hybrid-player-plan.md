@@ -148,8 +148,8 @@ Each phase is independently shippable and leaves MPV playback untouched until Ph
 
 ### Phase 4 — Audio strategy
 
-- **v1 (ships with Phase 3):** TrueHD / DTS / DTS-HD → router sends to MPV. Reason: no E/AC3 encoder in the shipped binaries; decode-to-PCM via MPV is today's behavior anyway.
-- **v2:** decode (`truehd`/`dca`) → `aresample` → native `aac` encoder 5.1, muxed alongside the copied video. Audio-only transcode is cheap on A15-class hardware. Note: loses lossless/Atmos; document dialnorm/loudness handling.
+- **v1 (shipped with Phase 3):** TrueHD / DTS / DTS-HD → router sends to MPV. Reason: no E/AC3 encoder in the shipped binaries; decode-to-PCM via MPV is today's behavior anyway.
+- **v2 (DONE, 2026-07-16):** `AudioTranscoder.swift` — decode (`truehd`/`dca`) → swresample downmix/resample → native `aac` encoder (AAC-LC 5.1-back for 6+ ch, stereo/mono below; >48 kHz halves to 48/44.1k; 384/192/96 kbps), muxed alongside the copied video, chosen only when the file has NO stream-copyable audio track. One transcoder per seek-anywhere run (fresh decoder/swr/fifo/encoder after every reposition; the run's muxer takes codecpar from the encoder — GLOBAL_HEADER gives movenc the AudioSpecificConfig for esds). Audio pts = run anchor (first decoded frame mapped onto the playlist origin) + output-sample counting; defensive nonneg/monotonic dts clamp absorbs encoder priming. Sim-validated end to end (TrueHD 5.1 + DTS 5.1 MKVs: readyToPlay, full play-through, exact 40.0s audio duration, seek-into-hole repositions transcode cleanly). Loses lossless/Atmos — by design; picture (true DV) wins.
 - **v3 (optional, big):** rebuild MPVKit binaries with `--enable-encoder=ac3,eac3 --enable-muxer=hls` — EAC3 keeps a bitstream AV receivers treat as Dolby (and simplifies D3). Means owning the MPVKit build pipeline (`NuvioMobile/MPVKit/Makefile`) instead of consuming upstream release artifacts. Decide only if v2's AAC 5.1 proves unsatisfying.
 
 ### Phase 5 — DV Profile 7 → 8.1 + hardening
@@ -182,8 +182,8 @@ Each phase is independently shippable and leaves MPV playback untouched until Ph
 | HDR10 HEVC MKV | Native | HDR10 |
 | H.264 + AC3 MKV | Native | SDR, AC3 passthrough |
 | EAC3-JOC (Atmos) MKV | Native | Atmos lit on receiver |
-| TrueHD Atmos MKV | MPV (v1) / Native+AAC (v2) | multichannel PCM / AAC 5.1 |
-| DTS-HD MA MKV | MPV (v1) | decoded PCM |
+| TrueHD Atmos MKV | Native + AAC 5.1 (v2) | AAC 5.1 (Atmos lost) |
+| DTS-HD MA MKV | Native + AAC 5.1 (v2) | AAC 5.1 |
 | FLAC audio MKV | Native (FLAC→ALAC/passthrough per probe) | lossless |
 | PGS subs needed | MPV | bitmap subs render |
 | External SRT | Native | overlay subs |

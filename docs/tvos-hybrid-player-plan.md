@@ -154,9 +154,11 @@ Each phase is independently shippable and leaves MPV playback untouched until Ph
 
 ### Phase 5 — DV Profile 7 → 8.1 + hardening
 
-1. P7 detection in probe (`el_present_flag` / dual-layer). In RemuxSession: drop EL NALs (`nuh_layer_id > 0` / unspec63), extract RPU NALs (unspec62), convert P7 RPU → 8.1 — **first choice** FFmpeg's `dovi_rpu` bsf if n8.1.2 supports conversion (verify; it may only strip), **else** the shipped libdovi C API (`dovi_parse_unspec62_nalu` → `dovi_convert_rpu_with_mode(2)` → `dovi_write_rpu`) — reinsert, retag `dvvC` as profile 8.1.
-2. MEL vs FEL: MEL conversion is visually lossless; FEL discards real enhancement data (same tradeoff Infuse takes). Default: FEL routes native (DV badge over last-percent fidelity) with a sub-setting to prefer MPV.
-3. Hardening: classify native-path errors (server 5xx, `AVPlayerItem.status == .failed`, stall watchdog: N stalls in M seconds) → single `fallbackToMPV(at:)`; cache eviction; routing telemetry polish.
+1. **(DONE, 2026-07-17 — sim-validated)** P7 → 8.1 conversion during the remux. FFmpeg's `dovi_rpu` bsf turned out strip/recompress-only (and can't touch EL NALs), so libdovi (3.3.2, shipped in MPVKit) is the mechanism, exactly as the plan's backstop predicted. New `Screens/DoviRpuConverter.swift`: length-prefixed NAL walker over every video packet — drops UNSPEC63-wrapped and `nuh_layer_id > 0` EL NALs, rewrites each UNSPEC62 RPU via `dovi_parse_unspec62_nalu` → `dovi_convert_rpu_with_mode(2)` (same conversion as dovi_tool `--mode 2`) → `dovi_write_unspec62_nalu`, swaps the packet buffer in place (timestamps/flags untouched so cuts + DTS grid are oblivious). RemuxSession retags the input stream's DOVI conf in place (profile 8, `el_present` 0, compat id 1) BEFORE signaling/tagging derive from it, so movenc's dvvC, the `hvc1` tag and `SUPPLEMENTAL-CODECS="dvh1.08.LL/db1p"` all describe the converted stream. Probe scans initial packets of P7 files for the first RPU and classifies MEL/FEL via libdovi's `el_type` (authoritative — header-flag heuristics misclassify; `elKind` on `DolbyVisionInfo`); router sends single-track P7 native, keeps two-track (second video stream carries EL+RPU we never read), RPU-less and unparseable-RPU files on mpv. Converter aborts → mpv on: no RPUs by 120 packets, sustained conversion failure, malformed NAL structure; isolated failures strip that frame's RPU.
+2. **(DONE)** MEL vs FEL: FEL routes native by default (DV badge over last-percent fidelity); new sub-setting "Keep Profile 7 FEL on mpv" (`PlayerTuning.dvP7FelMpvKey`, shown when the beta flag is on) opts FEL files back to mpv. MEL always native.
+3. Hardening largely landed earlier: mid-play `fallbackMidPlay` watchdog (Phase 4 seek-anywhere), launch orphan sweep (`RemuxCacheJanitor`). Phase 5 added: **pre-origin packet drop** — when the first INDEXED keyframe sits after earlier frames (matroskadec can fail to index the first Cue; open-GOP RASL frames follow the origin CRA with earlier pts), pre-origin video packets mapped to negative pts made movenc fail the whole session with EINVAL; they are now dropped (they precede playlist time zero and can't be presented anyway). Also: write-error diagnostics (error code + stream/dts/pts) on the mux path.
+
+**Phase 5 validation (sim + macOS, 2026-07-17):** synthetic P7 MEL MKV built with dovi_tool 2.3.3 + mkvmerge (x265 PQ BL + quarter-res EL + `generate`d 8.1 RPUs converted `--mode 1` to genuine P7 MEL flavor, `mux`ed single-track, mkvmerge writes a real dvcC profile-7 record; compat id 6 like real BluRay). Results: probe classifies `elKind=mel`, router → native; remux converts 939 RPUs / drops 2030 EL NALs; output init.mp4 carries dvvC profile 8/el 0/compat 1 + hvc1; NAL scan of output segments: zero EL NALs, one RPU per frame; dovi_tool round-trip verifies output RPUs as profile 8. macOS AVFoundation plays the converted stream (media-playlist-direct probe: READY, position advances). Full in-app sim run (PQ-untagged variant): readyToPlay, play-through, forward + backward-into-hole seeks reposition cleanly through the converter. Plain non-DV regression clean (converter dormant). **Sim caveat discovered: the tvOS 26.5 simulator rejects masters carrying `VIDEO-RANGE=PQ` at parse ("Cannot open") — sim-only; PQ masters are the device-proven-required shape. DV engagement + real FEL classification remain device-to-verify.**
 
 ---
 
@@ -177,8 +179,9 @@ Each phase is independently shippable and leaves MPV playback untouched until Ph
 |---|---|---|
 | DV P5 MKV (HEVC, EAC3) | Native | DV badge on TV |
 | DV P8.1 MKV (dovi_tool-made) | Native | DV badge |
-| DV P7 MEL MKV | MPV until Phase 5, then Native | HDR10 → DV after Ph5 |
-| DV P7 FEL MKV | MPV until Phase 5, then Native (setting-dependent) | HDR10 → DV after Ph5 |
+| DV P7 MEL MKV | Native (8.1 conversion) — sim-validated | DV badge (device to-verify) |
+| DV P7 FEL MKV | Native (8.1 conversion) unless FEL-to-mpv setting | DV badge; EL fidelity discarded |
+| DV P7 two-track MKV (separate EL track) | MPV | HDR10 via mpv |
 | HDR10 HEVC MKV | Native | HDR10 |
 | H.264 + AC3 MKV | Native | SDR, AC3 passthrough |
 | EAC3-JOC (Atmos) MKV | Native | Atmos lit on receiver |
@@ -206,7 +209,7 @@ Probe, router, remux, and server are all simulator/unit testable (router unit te
 ## 6. Risks & open questions
 
 - **movenc DV boxes on n8.1.2:** does writing `dvvC` still require `strict=unofficial`? Verify in the first Phase 2 spike.
-- **`dovi_rpu` bsf capability:** conversion P7→8.1 or strip-only on FFmpeg 8.1? Determines Phase 5 effort; libdovi backstop is confirmed shipping in the package either way.
+- **`dovi_rpu` bsf capability:** RESOLVED (Phase 5) — strip/recompress only, no profile conversion and no EL-NAL handling; libdovi (3.3.2 in MPVKit) is the conversion mechanism.
 - **JIT segment latency** on high-bitrate remuxes over slow sources → AVPlayer stall behavior; tune read-ahead and segment duration with real devices.
 - **Audio-session handoff** between engines during mid-stream fallback.
 - **Licensing:** the app links the LGPL `MPVKit` product (verified in project.pbxproj; the GPL product in the manifest is unused), but the shipped binaries self-report `--enable-nonfree` in their FFmpeg config (openssl-linked MPVKit default). Pre-existing, unrelated to this feature — recorded here for App Store diligence. Going through AVPlayer means Apple covers DV/Atmos licensing (no Dolby fees).

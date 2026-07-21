@@ -26,14 +26,36 @@ Rather than port the touch UI, this fork keeps only what travels well: the prove
 
 > **Lineage:** the original *NuvioTV* was a React Native app; it was rewritten as [**NuvioMobile**](https://github.com/NuvioMedia/NuvioMobile) (Kotlin / Compose Multiplatform) for Android and iOS. This project reclaims the *NuvioTV* name for a true Apple TV app — sharing NuvioMobile's core while replacing the UI and player for tvOS.
 
-## Highlights
+## Features
 
-- **Native tvOS UI** — SwiftUI built around the focus engine, with focusable poster cards, parallax card-depth lift, and D-pad / Siri Remote navigation.
-- **Stremio addons** — install and browse Stremio-compatible addons for catalogs, metadata, and streams. An on-device QuickJS runtime executes addon logic.
-- **Playback** — libmpv (via MPVKit / Libmpv) alongside AVFoundation / AVKit, with subtitle rendering, HDR tone-mapping (`gpu-next`), and device-local player tuning.
-- **Library & progress** — collections, cloud library sync, continue-watching / up-next, and next-episode autoplay.
-- **Accounts & sources** — Trakt, debrid, TMDB / MDBList metadata, profiles with PIN entry, and QR / remote-setup sign-in flows.
-- **Top Shelf** — a tvOS Top Shelf extension surfaces content on the Apple TV home screen.
+### True 10-foot UI
+
+- **Native SwiftUI** built around the tvOS focus engine — focusable poster cards with parallax depth lift, D-pad-first navigation throughout.
+- **Home hero carousel** with auto-advance and manual D-pad paging.
+- **Floating pill navigation bar**, horizontal episode shelves, and watched-episode badges.
+- **Continue Watching** with a separate Upcoming row for not-yet-released next episodes.
+- **Top Shelf extension** — your content surfaces directly on the Apple TV home screen.
+
+### Stremio addon ecosystem
+
+- Install **Stremio-compatible addons** for catalogs, metadata, streams, and subtitles.
+- An **on-device QuickJS runtime** executes addon logic natively — no external server.
+- Install addons in-app or from the web (`stremio://` links are picked up on account sync).
+
+### Playback
+
+- **Hybrid player** — a native AVPlayer path with on-device MKV remuxing: **Dolby Vision** (including Profile 7 → 8.1 conversion via libdovi), **TrueHD / DTS audio transcoding**, and full seek-anywhere support.
+- **libmpv player** (via MPVKit) for everything else, with HDR tone-mapping (`gpu-next`).
+- **Addon subtitles in both players** (SRT → WebVTT renditions on the native path), with forced/audio-aware subtitle auto-selection.
+- **Skip intro**, Play Next, next-episode autoplay, and a Stream Info panel (video/audio/subtitle state at a glance).
+
+### Sources & accounts
+
+- **Debrid support** — connect with a device code or API key; cached results resolve to direct streams, with quality / codec / service badges in the stream picker.
+- **Trakt scrobbling** — movies and episodes marked watched automatically.
+- **TMDB / MDBList** metadata, catalog-type and release-date display options.
+- **Profiles with PIN entry** and QR / remote-setup sign-in flows.
+- **Cloud library sync**, collections, and a sortable library with shelf and grid layouts.
 
 ## Requirements
 
@@ -41,9 +63,19 @@ Rather than port the touch UI, this fork keeps only what travels well: the prove
 - **macOS** with **Xcode 26** or later.
 - A recent **JDK**, used by Gradle to build the `SharedCore` Kotlin framework.
 
-## Installation
+## Installation (Beta)
 
-There is no public TestFlight or Release channel yet — NuvioTV is currently built from source. See [Development](#development) below.
+Beta builds ship as an **unsigned tvOS IPA** on the [**Releases page**](https://github.com/youngchris29-art/NuvioTV/releases/latest) — no paid Apple Developer account needed. You sideload it with a **free Apple ID**; the signature is created on your machine at install time.
+
+1. Download `NuvioTV.ipa` from the [latest release](https://github.com/youngchris29-art/NuvioTV/releases/latest).
+2. Sideload it to your Apple TV with one of:
+   - [**Sideloadly**](https://sideloadly.io/) (Mac / Windows) — detects Apple TVs over the local network; pair the Apple TV if prompted (Settings → Remotes and Devices → Remote App and Devices shows the pairing code). If you hit an "App ID limit" error, enable **Remove app extensions** under Advanced (you only lose the Top Shelf row).
+   - [**atvloadly**](https://github.com/bitxeno/atvloadly) — a self-hosted (Docker) web UI that sideloads over the network and can re-sign automatically.
+3. On first launch, trust the developer certificate on the Apple TV (Settings → General → Privacy & Security).
+
+> **Free Apple ID limits** (normal, not bugs): the app's signature expires after **7 days** — just re-sideload (both tools can automate the refresh) — and a free account allows at most **3 sideloaded apps** at a time.
+
+Every beta is a fresh build with no account or addons baked in — sign in and set up your own sources on first launch. Prefer building from source? See [Development](#development) below.
 
 ## Development
 

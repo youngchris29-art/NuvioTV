@@ -26,6 +26,15 @@ Rather than port the touch UI, this fork keeps only what travels well: the prove
 
 > **Lineage:** the original *NuvioTV* was a React Native app; it was rewritten as [**NuvioMobile**](https://github.com/NuvioMedia/NuvioMobile) (Kotlin / Compose Multiplatform) for Android and iOS. This project reclaims the *NuvioTV* name for a true Apple TV app — sharing NuvioMobile's core while replacing the UI and player for tvOS.
 
+## Screenshots
+
+| | |
+|:---:|:---:|
+| ![Home — hero carousel](design/screenshots/home.png) <br/> **Home** — hero carousel & Continue Watching | ![Search & Discover](design/screenshots/search.png) <br/> **Search** — Discover rows from your addons |
+| ![Catalog browsing](design/screenshots/catalog.png) <br/> **Catalogs** — addon catalogs with filter chips | ![Title detail](design/screenshots/detail.png) <br/> **Detail** — metadata, ratings & quick actions |
+| ![Series episodes](design/screenshots/episodes.png) <br/> **Series** — season chips & episode shelf | ![Native player](design/screenshots/player.png) <br/> **Player** — native AVPlayer path, platter-free controls |
+| ![Debrid settings](design/screenshots/debrid.png) <br/> **Debrid** — device-code or API-key sign-in | |
+
 ## Features
 
 ### True 10-foot UI

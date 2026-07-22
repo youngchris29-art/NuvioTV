@@ -74,7 +74,7 @@ Rather than port the touch UI, this fork keeps only what travels well: the prove
 
 ## Installation (Beta)
 
-Beta builds ship as an **unsigned tvOS IPA** on the [**Releases page**](https://github.com/youngchris29-art/NuvioTV/releases/latest) — no paid Apple Developer account needed. You sideload it with a **free Apple ID**; the signature is created on your machine at install time.
+Beta builds ship as an **unsigned tvOS IPA** on the [**Releases page**](https://github.com/youngchris29-art/NuvioTV/releases/latest) — no paid Apple Developer account needed. You sideload it with a **free Apple ID**; the signature is created on your machine at install time. For detailed step-by-step instructions (including wireless setup and the 7-day refresh), see [**INSTALL.md**](INSTALL.md).
 
 1. Download `NuvioTV.ipa` from the [latest release](https://github.com/youngchris29-art/NuvioTV/releases/latest).
 2. Sideload it to your Apple TV with one of:

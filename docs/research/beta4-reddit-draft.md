@@ -1,30 +1,26 @@
-# beta.4 announcement draft (r/Nuvio beta thread) — conversational v2
+# beta.4 announcement draft (r/Nuvio beta thread)
 
-Matches Christian's actual commenting voice in the thread (casual, appreciative, direct).
-v1 (formal bullet list) is in git history if needed.
+Written to match the beta.3 announcement's voice (`oz19z7h`): bold intro, bullets crediting
+reporters by username, plain technical explanations, ends with a call for reports.
 
 ---
 
-**beta.4 is up!**
+**beta.4 is up!** This one's a big one:
 
-First — u/frpgareth, the crash you hit at the profile screen was real and it was bad. Turned out if any one of the profile's data stores hit an error while loading, the whole app went down with it, every single time. That's fixed — a bad store just gets skipped now and you get into the app. Would love if you gave it another shot. If it still crashes for you I'd genuinely be surprised, but the logs will now tell me exactly what broke, so say the word and we'll get it sorted.
+* **Crash at the profile screen fixed** — u/frpgareth reported the app force-closing every time they picked a profile. Root cause: profile selection loads a dozen data stores in one pass on the main thread, and if *any one* of them hit an error, the whole app died — every time, same spot. Now a failing store just logs and gets skipped, so you always get into the app. If you hit this before, please update and let me know — and if it somehow still crashes, the log now names the exact component, so a quick log grab would point me straight at it.
+* **External player support: Infuse, VLC, and Outplayer** — the most requested feature (u/mrStevenx3, and u/Physical-Lab-9203's Infuse comments didn't go unnoticed). Hold-press any stream in the picker → "Open in Infuse" (or VLC / Outplayer), including debrid-resolved links. Or set one as your **default in Settings → Playback → Default Player** and every stream you select opens there — hold-press then gives you "Play in NuvioTV Player" for one-offs, and if the handoff ever fails you fall back to the built-in player instead of a dead remote. Players only show up if they're actually installed. I've verified Infuse on my own Apple TV; VLC and Outplayer use their documented handoff APIs but I couldn't test them on hardware — if you have either installed, reports welcome.
+* **Watch trailers full screen** — new "Watch Trailer" button on the detail page, plays with sound and the standard tvOS controls, like the mobile app (u/mrStevenx3).
+* **Hero artwork always visible** — several of you read the fade-in-on-focus as a bug (u/time_continuum), so the poster now just shows. If you liked the old look there's a toggle in Settings → Appearance → Poster Style.
+* **Poster cards actually rise and tilt now** — u/mrStevenx3 pointed out the effect I advertised wasn't there. It is now, and the focused poster is bigger too. (Respects Reduce Motion.)
+* **Custom profile pictures fixed** — pictures imported from other Nuvio apps (like Xperence) load instead of showing a placeholder (u/What_Happened_To_It).
+* **Stream list tells you why it's empty** — if sources were found but none are playable (usually torrent-only results with no debrid connected), it now says exactly that and points at the setting, instead of a blank screen (u/mrStevenx3's missing-tracks report).
+* **New install guide** — step-by-step sideloading instructions including the wireless path for USB-less Apple TVs and setting up the 7-day auto re-sign: [INSTALL.md](https://github.com/youngchris29-art/NuvioTV/blob/main/INSTALL.md). Covers the questions from u/Sapir28 and u/DotAffectionate3955, plus u/neuroguru23's Signulous tip.
 
-The big new thing: **external player support**. A bunch of you have been asking for this, and honestly u/Physical-Lab-9203 comparing me to the fork with Infuse support lit the fire 😄. So: hold-press any stream and you'll see "Open in Infuse" (or VLC, or Outplayer — whatever you've got installed). Debrid links hand off too. And if you basically live in Infuse, go to Settings → Playback → Default Player and just make it the default — then every stream you click opens there, hold-press gets you back to the built-in player for one-offs, and if a handoff ever fails it falls back to the built-in player instead of leaving you staring at nothing. I tested Infuse on my own Apple TV and it works great. VLC and Outplayer *should* work the same way but I don't have them on hardware to confirm — if you do, tell me how it goes.
-
-Rest of the batch, mostly straight from your feedback:
-
-* u/mrStevenx3 — the trailer now plays full screen with sound from a proper "Watch Trailer" button, the poster rise-and-tilt effect I claimed existed actually exists now (and the focused poster got bigger), and the empty stream list finally explains itself — "found 44 torrent sources but no debrid connected" instead of a blank screen. That was your missing-tracks mystery.
-* u/time_continuum — you were right that the hero looking empty was confusing. The artwork just shows now. (If anyone liked the old fade-on-focus, there's a toggle in Settings → Appearance.)
-* u/What_Happened_To_It — your Xperence profile pictures load now instead of the placeholder.
-* And for everyone who got stuck sideloading (u/Sapir28, u/DotAffectionate3955): there's a proper step-by-step guide now at [INSTALL.md](https://github.com/youngchris29-art/NuvioTV/blob/main/INSTALL.md) — wireless install for the USB-less Apple TVs, the 7-day auto re-sign setup, and u/neuroguru23's Signulous tip made it in too.
-
-Same download spot as always: [releases page](https://github.com/youngchris29-art/NuvioTV/releases/latest). Update installs right over the top, your accounts and settings stay.
-
-This thread has basically been writing the roadmap — keep it coming.
+Grab it from the [releases page](https://github.com/youngchris29-art/NuvioTV/releases/latest) — same sideload process, and your accounts/settings survive the update. Keep the reports coming, this thread keeps making the app better.
 
 ---
 
 **Posting notes (not part of the comment):**
-- Top-level comment on the beta thread, like beta.3's announcement.
-- The daily tracker sweep picks up replies automatically.
-- Safest cut if too long: the INSTALL.md bullet (link is also in the release notes).
+- Post as a top-level comment on the beta thread, same as the beta.3 announcement.
+- The daily tracker sweep will pick up replies automatically (maintainer comments are ignored except fix-shipped statements).
+- If character count is a concern on old Reddit, the install-guide bullet is the safest cut — the link is also in the release notes.

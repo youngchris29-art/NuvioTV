@@ -33,37 +33,43 @@ Rather than port the touch UI, this fork keeps only what travels well: the prove
 | ![Home — hero carousel](design/screenshots/home.png) <br/> **Home** — hero carousel & Continue Watching | ![Search & Discover](design/screenshots/search.png) <br/> **Search** — Discover rows from your addons |
 | ![Catalog browsing](design/screenshots/catalog.png) <br/> **Catalogs** — addon catalogs with filter chips | ![Title detail](design/screenshots/detail.png) <br/> **Detail** — metadata, ratings & quick actions |
 | ![Series episodes](design/screenshots/episodes.png) <br/> **Series** — season chips & episode shelf | ![Native player](design/screenshots/player.png) <br/> **Player** — native AVPlayer path, platter-free controls |
-| ![Debrid settings](design/screenshots/debrid.png) <br/> **Debrid** — device-code or API-key sign-in | |
+| ![Grouped stream picker](design/screenshots/streams.png) <br/> **Streams** — per-addon groups, debrid-cached & quality badges | ![Debrid settings](design/screenshots/debrid.png) <br/> **Debrid** — TorBox, Premiumize, Real-Debrid & AllDebrid |
+| ![Appearance settings](design/screenshots/appearance.png) <br/> **Appearance** — accent themes & poster styles, synced per profile | ![Localized UI](design/screenshots/localization.png) <br/> **Localized** — English, French, Spanish, German & Italian |
 
 ## Features
 
 ### True 10-foot UI
 
 - **Native SwiftUI** built around the tvOS focus engine — focusable poster cards with parallax depth lift, D-pad-first navigation throughout.
-- **Home hero carousel** with auto-advance and manual D-pad paging.
+- **Home hero carousel** with auto-advance, manual D-pad paging, and an always-visible backdrop (or poster-only-on-focus, your choice).
 - **Floating pill navigation bar**, horizontal episode shelves, and watched-episode badges.
 - **Continue Watching** with a separate Upcoming row for not-yet-released next episodes.
+- **Appearance themes** — seven accent colors, poster size/corner styles, landscape rows, and title-label options, applied instantly and synced per profile.
+- **Full-screen trailers with sound** from the detail page.
 - **Top Shelf extension** — your content surfaces directly on the Apple TV home screen.
+- **Localized UI** — English, French, Spanish, German, and Italian.
 
 ### Stremio addon ecosystem
 
 - Install **Stremio-compatible addons** for catalogs, metadata, streams, and subtitles.
 - An **on-device QuickJS runtime** executes addon logic natively — no external server.
 - Install addons in-app or from the web (`stremio://` links are picked up on account sync).
+- **Grouped stream picker** — sources collapse into per-addon groups with stream counts and per-group loading, so one slow addon never blocks the list.
 
 ### Playback
 
 - **Hybrid player** — a native AVPlayer path with on-device MKV remuxing: **Dolby Vision** (including Profile 7 → 8.1 conversion via libdovi), **TrueHD / DTS audio transcoding**, and full seek-anywhere support.
 - **libmpv player** (via MPVKit) for everything else, with HDR tone-mapping (`gpu-next`).
-- **Addon subtitles in both players** (SRT → WebVTT renditions on the native path), with forced/audio-aware subtitle auto-selection.
+- **External player handoff** — send any stream to **Infuse**, **VLC**, or **Outplayer**, per stream or via a Default Player setting.
+- **Addon subtitles in both players** (SRT → WebVTT renditions on the native path), with forced/audio-aware subtitle auto-selection and full subtitle styling (color, size, background, outline).
 - **Skip intro**, Play Next, next-episode autoplay, and a Stream Info panel (video/audio/subtitle state at a glance).
 
 ### Sources & accounts
 
-- **Debrid support** — connect with a device code or API key; cached results resolve to direct streams, with quality / codec / service badges in the stream picker.
-- **Trakt scrobbling** — movies and episodes marked watched automatically.
-- **TMDB / MDBList** metadata, catalog-type and release-date display options.
-- **Profiles with PIN entry** and QR / remote-setup sign-in flows.
+- **Debrid support** — **TorBox**, **Premiumize**, **Real-Debrid**, and **AllDebrid**; connect with a device code or API key, and cached results resolve to direct streams with quality / codec / service badges in the stream picker.
+- **Trakt scrobbling** — movies and episodes marked watched automatically, with Trakt connections isolated per profile.
+- **TMDB / MDBList / MyAnimeList** ratings and metadata, catalog-type and release-date display options.
+- **Profiles with PIN entry** and a QR-code sign-in flow — pair with your phone instead of typing credentials with the Siri Remote.
 - **Cloud library sync**, collections, and a sortable library with shelf and grid layouts.
 
 ## Requirements

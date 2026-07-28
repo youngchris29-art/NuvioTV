@@ -35,13 +35,14 @@ Rather than port the touch UI, this fork keeps only what travels well: the prove
 | ![Series episodes](design/screenshots/episodes.png) <br/> **Series** — season chips & episode shelf | ![Native player](design/screenshots/player.png) <br/> **Player** — native AVPlayer path, platter-free controls |
 | ![Grouped stream picker](design/screenshots/streams.png) <br/> **Streams** — per-addon groups, debrid-cached & quality badges | ![Debrid settings](design/screenshots/debrid.png) <br/> **Debrid** — TorBox, Premiumize, Real-Debrid & AllDebrid |
 | ![Appearance settings](design/screenshots/appearance.png) <br/> **Appearance** — accent themes & poster styles, synced per profile | ![Localized UI](design/screenshots/localization.png) <br/> **Localized** — English, French, Spanish, German & Italian |
+| ![Localized hero](design/screenshots/hero-localized.png) <br/> **Localized hero** — title logos, synopsis & genres in your language via TMDB | ![Wide catalog rows](design/screenshots/landscape-rows.png) <br/> **Wide rows** — 16:9 cards with titles; the focused card lifts clear |
 
 ## Features
 
 ### True 10-foot UI
 
-- **Native SwiftUI** built around the tvOS focus engine — focusable poster cards with parallax depth lift, D-pad-first navigation throughout.
-- **Home hero carousel** with auto-advance, manual D-pad paging, and an always-visible backdrop (or poster-only-on-focus, your choice).
+- **Native SwiftUI** built around the tvOS focus engine — poster cards scale, lift and tilt toward you on focus (portrait or wide 16:9 layouts, titles always clear), D-pad-first navigation throughout.
+- **Home hero carousel** with auto-advance, manual D-pad paging, title logo artwork, and an always-visible backdrop (or poster-only-on-focus, your choice) — with a TMDB key, hero titles, synopses and logos arrive in your language.
 - **Floating pill navigation bar**, horizontal episode shelves, and watched-episode badges.
 - **Continue Watching** with a separate Upcoming row for not-yet-released next episodes.
 - **Appearance themes** — seven accent colors, poster size/corner styles, landscape rows, and title-label options, applied instantly and synced per profile.
@@ -68,7 +69,7 @@ Rather than port the touch UI, this fork keeps only what travels well: the prove
 
 - **Debrid support** — **TorBox**, **Premiumize**, **Real-Debrid**, and **AllDebrid**; connect with a device code or API key, and cached results resolve to direct streams with quality / codec / service badges in the stream picker.
 - **Trakt scrobbling** — movies and episodes marked watched automatically, with Trakt connections isolated per profile.
-- **TMDB / MDBList / MyAnimeList** ratings and metadata, catalog-type and release-date display options.
+- **TMDB / MDBList / MyAnimeList** ratings and metadata, catalog-type and release-date display options — plus a **Metadata Language** picker (follow the Apple TV's language, or choose from 12).
 - **Profiles with PIN entry** and a QR-code sign-in flow — pair with your phone instead of typing credentials with the Siri Remote.
 - **Cloud library sync**, collections, and a sortable library with shelf and grid layouts.
 

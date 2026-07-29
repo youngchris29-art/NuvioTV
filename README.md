@@ -47,7 +47,7 @@ Rather than port the touch UI, this fork keeps only what travels well: the prove
 - **Continue Watching** with a separate Upcoming row for not-yet-released next episodes.
 - **Appearance themes** — seven accent colors, poster size/corner styles, landscape rows, and title-label options, applied instantly and synced per profile.
 - **Full-screen trailers with sound** from the detail page.
-- **Top Shelf extension** — your content surfaces directly on the Apple TV home screen.
+- **Top Shelf extension** — your content surfaces directly on the Apple TV home screen (from-source builds only; the sideload IPA omits it because free-Apple-ID re-signing breaks extension signatures).
 - **Localized UI** — English, French, Spanish, German, and Italian.
 
 ### Stremio addon ecosystem
@@ -85,7 +85,7 @@ Beta builds ship as an **unsigned tvOS IPA** on the [**Releases page**](https://
 
 1. Download `NuvioTV.ipa` from the [latest release](https://github.com/youngchris29-art/NuvioTV/releases/latest).
 2. Sideload it to your Apple TV with one of:
-   - [**Sideloadly**](https://sideloadly.io/) (Mac / Windows) — detects Apple TVs over the local network; pair the Apple TV if prompted (Settings → Remotes and Devices → Remote App and Devices shows the pairing code). If you hit an "App ID limit" error, enable **Remove app extensions** under Advanced (you only lose the Top Shelf row).
+   - [**Sideloadly**](https://sideloadly.io/) (Mac / Windows) — detects Apple TVs over the local network; pair the Apple TV if prompted (Settings → Remotes and Devices → Remote App and Devices shows the pairing code). If you hit an "App ID limit" error, remove an old sideloaded app first (free Apple IDs allow 3 at a time).
    - [**atvloadly**](https://github.com/bitxeno/atvloadly) — a self-hosted (Docker) web UI that sideloads over the network and can re-sign automatically.
 3. On first launch, trust the developer certificate on the Apple TV (Settings → General → Privacy & Security).
 

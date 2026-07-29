@@ -83,7 +83,7 @@ A web-based sideloader running on Docker. Install once, sideload from your brows
 
 You can only sideload 3 apps per free Apple ID at a time.
 
-**Fix:** In Sideloadly **Advanced Options**, enable **"Remove App Extensions"** before sideload. You'll lose the Top Shelf widget on the Apple TV home screen, but the app installs fine. (Or remove an old sideloaded app first and try again.)
+**Fix:** Remove an old sideloaded app and try again. (Since v0.3.0-beta.8 the IPA ships without app extensions — free-Apple-ID re-signing breaks their signatures anyway — so the "Remove App Extensions" option is no longer needed.)
 
 ### App Stops Opening After 7 Days
 

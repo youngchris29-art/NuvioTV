@@ -46,7 +46,10 @@ Rather than port the touch UI, this fork keeps only what travels well: the prove
 - **Floating pill navigation bar**, horizontal episode shelves, and watched-episode badges.
 - **Continue Watching** with a separate Upcoming row for not-yet-released next episodes.
 - **Appearance themes** — seven accent colors, poster size/corner styles, landscape rows, and title-label options, applied instantly and synced per profile.
-- **Full-screen trailers with sound** from the detail page.
+- **Full-screen trailers with sound** from the detail page — and auto-playing detail-page trailers with a poster backdrop layer (each with its own toggle).
+- **Trailers on Focus** (opt-in, Settings → Home Screen) — hold focus on a poster and it morphs into a wide card playing the trailer right in the row; play/pause toggles sound.
+- **Hero source picker & Home Rows controls** — choose which catalogs feed the hero carousel, reorder Home rows, and collection tiles play their focus GIFs.
+- **Auto-hiding tab bar** — slides away as you scroll into content, returns on scroll-up.
 - **Top Shelf extension** — your content surfaces directly on the Apple TV home screen (from-source builds only; the sideload IPA omits it because free-Apple-ID re-signing breaks extension signatures).
 - **Localized UI** — English, French, Spanish, German, and Italian.
 

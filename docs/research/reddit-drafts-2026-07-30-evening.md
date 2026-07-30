@@ -89,3 +89,23 @@ through completely different paths, and your answers will point me straight at t
   - player opens then fails → URL/mpv level, or the addon-direct-URL case (TorBox links can be
     IP-locked; addon-resolved links break from a different IP — the resolver never runs for
     streams that already carry a direct URL)
+
+---
+
+## beta.8 announcement draft (top-level comment; keyword-safe per the automod map)
+
+beta.8 is up! This is the redesign build - almost every screen got touched:
+
+The whole app now speaks native tvOS. Real system focus everywhere, glass surfaces, and posters that physically track your thumb on the remote's touch surface (u/mrStevenx3 - that reactive poster effect you described way back on beta.6? It's real now, and it turned out to be exactly what the system gives you when you do focus properly). Settings got reorganized into proper panes while we were at it.
+
+New hero options: the hero now has a Go to Movie / Go to Show button instead of the whole title being selectable. And if you prefer the look from Nuvio's modern home screen - title and description on the left, artwork blending in from the right - flip on Settings > Home Screen > Nuvio-Style Hero. That one's for u/mrStevenx3, who asked for it twice.
+
+Trailer fixes, the whole list from the beta.7 review: the full-screen trailer no longer goes black when your Apple TV has Match Content Frame Rate on (the app just doesn't ask for a display-mode switch for short clips anymore - no settings change needed on your end). Trailers play up to 1080p now instead of being quietly stuck at a much lower quality. The background trailer on the detail page finally has its own toggle (Settings > Appearance). And Trailers on Focus keeps the poster at its full height now - it just widens to play.
+
+Collections with focus GIFs scroll smoothly now - the frames get decoded off the main thread.
+
+If you share an account with Nuvio on another TV platform: the two apps used to flip each other's settings back and forth on every launch. NuvioTV now keeps its settings in its own slot, so that fight is over. Everything migrates automatically, nothing to do.
+
+Smaller stuff: focusing a source row in the stream list now expands it to show the full release name however long it is, and the screensaver can no longer kick in during playback.
+
+Grab it from the releases page - same sideload process, your accounts and settings survive the update. Thanks again to u/mrStevenx3 for the beta.7 review that drove most of this list, and to u/Overall_Stuff5982, whose crash reports led straight to the profile fix that's now confirmed working on their setup. Keep the reports coming.

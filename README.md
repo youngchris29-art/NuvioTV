@@ -36,18 +36,20 @@ Rather than port the touch UI, this fork keeps only what travels well: the prove
 | ![Grouped stream picker](design/screenshots/streams.png) <br/> **Streams** — per-addon groups, debrid-cached & quality badges | ![Debrid settings](design/screenshots/debrid.png) <br/> **Debrid** — TorBox, Premiumize, Real-Debrid & AllDebrid |
 | ![Appearance settings](design/screenshots/appearance.png) <br/> **Appearance** — accent themes & poster styles, synced per profile | ![Localized UI](design/screenshots/localization.png) <br/> **Localized** — English, French, Spanish, German & Italian |
 | ![Localized hero](design/screenshots/hero-localized.png) <br/> **Localized hero** — title logos, synopsis & genres in your language via TMDB | ![Wide catalog rows](design/screenshots/landscape-rows.png) <br/> **Wide rows** — 16:9 cards with titles; the focused card lifts clear |
+| ![Nuvio-Style Hero](design/screenshots/hero-nuvio.png) <br/> **Nuvio-Style Hero** (opt-in) — info on the left, artwork blending in from the right | ![Trailers on Focus](design/screenshots/trailer-morph.png) <br/> **Trailers on Focus** — the poster widens in the row and plays the trailer |
 
 ## Features
 
 ### True 10-foot UI
 
+- **Native tvOS design language** — a full Human Interface Guidelines pass: Liquid Glass surfaces, system focus platters and lockups throughout, real Siri-Remote parallax on every card (posters track your thumb on the touch surface), and a reorganized multi-pane Settings.
 - **Native SwiftUI** built around the tvOS focus engine — poster cards scale, lift and tilt toward you on focus (portrait or wide 16:9 layouts, titles always clear), D-pad-first navigation throughout.
-- **Home hero carousel** with auto-advance, manual D-pad paging, title logo artwork, and an always-visible backdrop (or poster-only-on-focus, your choice) — with a TMDB key, hero titles, synopses and logos arrive in your language.
+- **Home hero carousel** with auto-advance, manual D-pad paging, title logo artwork, and a **Go to Movie / Go to Show** button — with a TMDB key, hero titles, synopses and logos arrive in your language. Prefer the look from Nuvio's modern home screen? Flip on **Nuvio-Style Hero** (Settings → Home Screen): title and description on the left, artwork blending in from the right.
 - **Floating pill navigation bar**, horizontal episode shelves, and watched-episode badges.
 - **Continue Watching** with a separate Upcoming row for not-yet-released next episodes.
 - **Appearance themes** — seven accent colors, poster size/corner styles, landscape rows, and title-label options, applied instantly and synced per profile.
-- **Full-screen trailers with sound** from the detail page — and auto-playing detail-page trailers with a poster backdrop layer (each with its own toggle).
-- **Trailers on Focus** (opt-in, Settings → Home Screen) — hold focus on a poster and it morphs into a wide card playing the trailer right in the row; play/pause toggles sound.
+- **Full-screen trailers with sound** from the detail page — now up to 1080p, and no more black screen with Match Content Frame Rate enabled. Auto-play, the background trailer, and the poster backdrop layer each have their own toggle.
+- **Trailers on Focus** (opt-in, Settings → Home Screen) — hold focus on a poster and it widens into a 16:9 card at the poster's own height, playing the trailer right in the row; play/pause toggles sound.
 - **Hero source picker & Home Rows controls** — choose which catalogs feed the hero carousel, reorder Home rows, and collection tiles play their focus GIFs.
 - **Auto-hiding tab bar** — slides away as you scroll into content, returns on scroll-up.
 - **Top Shelf extension** — your content surfaces directly on the Apple TV home screen (from-source builds only; the sideload IPA omits it because free-Apple-ID re-signing breaks extension signatures).
@@ -58,12 +60,12 @@ Rather than port the touch UI, this fork keeps only what travels well: the prove
 - Install **Stremio-compatible addons** for catalogs, metadata, streams, and subtitles.
 - An **on-device QuickJS runtime** executes addon logic natively — no external server.
 - Install addons in-app or from the web (`stremio://` links are picked up on account sync).
-- **Grouped stream picker** — sources collapse into per-addon groups with stream counts and per-group loading, so one slow addon never blocks the list.
+- **Grouped stream picker** — sources collapse into per-addon groups with stream counts and per-group loading, so one slow addon never blocks the list; the focused row expands to show the full release name.
 
 ### Playback
 
 - **Hybrid player** — a native AVPlayer path with on-device MKV remuxing: **Dolby Vision** (including Profile 7 → 8.1 conversion via libdovi), **TrueHD / DTS audio transcoding**, and full seek-anywhere support.
-- **libmpv player** (via MPVKit) for everything else, with HDR tone-mapping (`gpu-next`).
+- **libmpv player** (via MPVKit) for everything else, with HDR tone-mapping (`gpu-next`) — and the screensaver can no longer interrupt playback.
 - **External player handoff** — send any stream to **Infuse**, **VLC**, or **Outplayer**, per stream or via a Default Player setting.
 - **Addon subtitles in both players** (SRT → WebVTT renditions on the native path), with forced/audio-aware subtitle auto-selection and full subtitle styling (color, size, background, outline).
 - **Skip intro**, Play Next, next-episode autoplay, and a Stream Info panel (video/audio/subtitle state at a glance).
@@ -75,6 +77,7 @@ Rather than port the touch UI, this fork keeps only what travels well: the prove
 - **TMDB / MDBList / MyAnimeList** ratings and metadata, catalog-type and release-date display options — plus a **Metadata Language** picker (follow the Apple TV's language, or choose from 12).
 - **Profiles with PIN entry** and a QR-code sign-in flow — pair with your phone instead of typing credentials with the Siri Remote.
 - **Cloud library sync**, collections, and a sortable library with shelf and grid layouts.
+- **A settings slot of its own** — NuvioTV now syncs its settings under a dedicated namespace, so sharing an account with Nuvio on another TV platform can't flip options back and forth between the two apps.
 
 ## Requirements
 

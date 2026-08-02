@@ -9,7 +9,7 @@ MUST below, it doesn't merge.
 
 | Surface | Rule |
 |---|---|
-| **Focus indication** | System treatment only: `.buttonStyle(.card)` platter/lift/parallax for artwork tiles, system brighten/scale for other controls. **No accent focus rings, no custom `scaleEffect` focus chains, no fake parallax tilt.** |
+| **Focus indication** | System treatment only: `.buttonStyle(.card)` platter/lift/parallax for artwork tiles, system brighten/scale for other controls. **No accent focus rings, no custom `scaleEffect` focus chains, no fake parallax tilt.** *Carve-out (FEAT-14):* an **opt-in** accent focus ring (Appearance setting `accent_focus_ring`, default **OFF**) MAY draw a single `strokeBorder` in `Palette.accentFocus` over artwork tiles, aligned to the card's Corners radius and routed through the contrast decision table (`Theme.Palette.focusRingHex`, White-theme fallback required). With the setting off — the default — focus indication remains system-only. |
 | **Typography** | `Theme.Font` tokens only (semantic `Font.TextStyle` under the hood). No `Font.system(size:)` at call sites. |
 | **Text color** | `Theme.Palette.textPrimary/.textSecondary` (semantic `.primary`/`.secondary`). Never hex text colors. |
 | **Overlay surfaces** | `Theme.Surface` materials (or `.glass`/`.glassProminent` buttons, `glassEffect()`) for anything floating over content. Opaque `Palette.surface*` only for in-content fills. |
@@ -29,7 +29,7 @@ MUST below, it doesn't merge.
 
 ## Explicitly out
 
-- Accent-colored focus rings (deleted in P1).
+- Accent-colored focus rings (deleted in P1; reintroduced ONLY via the FEAT-14 opt-in carve-out under Focus indication — default OFF, single ring, contrast-guarded).
 - `posterFocusTilt` fake parallax (system `.card` provides the real thing).
 - Hard-coded text hex colors, fixed font point sizes.
 - `.searchable` (known tvOS keyboard-bleed bug inside TabView — keep TextField, restyled).

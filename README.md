@@ -44,23 +44,25 @@ Rather than port the touch UI, this fork keeps only what travels well: the prove
 
 - **Native tvOS design language** — a full Human Interface Guidelines pass: Liquid Glass surfaces, system focus platters and lockups throughout, real Siri-Remote parallax on every card (posters track your thumb on the touch surface), and a reorganized multi-pane Settings.
 - **Native SwiftUI** built around the tvOS focus engine — poster cards scale, lift and tilt toward you on focus (portrait or wide 16:9 layouts, titles always clear), D-pad-first navigation throughout.
-- **Home hero carousel** with auto-advance, manual D-pad paging, title logo artwork, and a **Go to Movie / Go to Show** button — with a TMDB key, hero titles, synopses and logos arrive in your language. Prefer the look from Nuvio's modern home screen? Flip on **Nuvio-Style Hero** (Settings → Home Screen): title and description on the left, artwork blending in from the right.
+- **Home hero carousel** with auto-advance, manual paging by D-pad click or touch-surface swipe (left and right, wrapping), title logo artwork, and a **Go to Movie / Go to Show** button — with a TMDB key, hero titles, synopses and logos arrive in your language. Prefer the look from Nuvio's modern home screen? Flip on **Nuvio-Style Hero** (Settings → Home Screen): title and description on the left, artwork blending in from the right.
 - **Floating pill navigation bar**, horizontal episode shelves, and watched-episode badges.
 - **Continue Watching** with a separate Upcoming row for not-yet-released next episodes.
-- **Appearance themes** — seven accent colors, poster size/corner styles, landscape rows, and title-label options, applied instantly and synced per profile.
-- **Full-screen trailers with sound** from the detail page — now up to 1080p, and no more black screen with Match Content Frame Rate enabled. Auto-play, the background trailer, and the poster backdrop layer each have their own toggle.
+- **Appearance themes** — seven accent colors, poster size/corner styles, landscape rows, and title-label options, applied instantly and synced per profile. New in this beta: **Settings Style** presets (Default / Minimal), **icon-only detail buttons**, a **background-trailer duration** control (30s / 1 min / 90s / always) with a smooth fade back to the backdrop, and a **Trailer Sound by Default** toggle.
+- **Full-screen trailers with sound** from the detail page — now up to 1080p, and no more black screen with Match Content Frame Rate enabled. Auto-play, the background trailer, and the poster backdrop layer each have their own toggle — and the detail page now dims toward black as you scroll down into the details.
 - **Trailers on Focus** (opt-in, Settings → Home Screen) — hold focus on a poster and it widens into a 16:9 card at the poster's own height, playing the trailer right in the row; play/pause toggles sound.
 - **Hero source picker & Home Rows controls** — choose which catalogs feed the hero carousel, reorder Home rows, and collection tiles play their focus GIFs.
-- **Auto-hiding tab bar** — slides away as you scroll into content, returns on scroll-up.
+- **System-native tab bar** — minimizes as you scroll into content the way tvOS 26's own apps do, and from deep in the page a single **Menu** press jumps you back to the top (the "long way down, short way back" convention).
 - **Top Shelf extension** — your content surfaces directly on the Apple TV home screen (from-source builds only; the sideload IPA omits it because free-Apple-ID re-signing breaks extension signatures).
 - **Localized UI** — English, French, Spanish, German, and Italian.
+- **Settings → About** — version, build number, beta tag and commit at a glance (plus tvOS version and device model), so a bug report can finally say exactly which build it's about.
 
 ### Stremio addon ecosystem
 
 - Install **Stremio-compatible addons** for catalogs, metadata, streams, and subtitles.
 - An **on-device QuickJS runtime** executes addon logic natively — no external server.
 - Install addons in-app or from the web (`stremio://` links are picked up on account sync).
-- **Grouped stream picker** — sources collapse into per-addon groups with stream counts and per-group loading, so one slow addon never blocks the list; the focused row expands to show the full release name.
+- **Grouped stream picker** — sources collapse into per-addon groups with stream counts and per-group loading, so one slow addon never blocks the list; the focused row expands to show the full release name. Stream badges now stay readable in every theme — including White — whether a row is focused or not.
+- **Search Sources** (Settings → Content Sources) — choose exactly which addon catalogs power search, per Apple TV.
 
 ### Playback
 

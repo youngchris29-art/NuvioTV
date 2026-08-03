@@ -3,3 +3,9 @@
 
 # Claude Code — personal local settings (permissions etc.), not shared
 .claude/settings.local.json
+
+# Claude Code — generated worktree snapshots (machine-specific gitdir paths, ~150MB)
+.claude/worktrees/
+
+# Claude Code — session-generated preview launcher (points at ephemeral scratchpad paths)
+.claude/launch.json

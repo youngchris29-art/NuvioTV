@@ -1,0 +1,1096 @@
+<!--
+  NuvioTV beta feedback dashboard — SOURCE OF TRUTH for the published artifact:
+  https://claude.ai/code/artifact/0d62393a-48c8-4bf9-ba1e-43a996052abf
+
+  Visual mirror of docs/beta-feedback-tracker.md (that file stays authoritative for
+  per-item history; this is the at-a-glance board). Update BOTH when the board moves.
+
+  To republish after editing: use the Artifact tool with this file path AND
+  url: https://claude.ai/code/artifact/0d62393a-48c8-4bf9-ba1e-43a996052abf
+  (without the url, a session that didn't publish it mints a NEW url).
+
+  Publishing wraps this file in <!doctype html><head></head><body> — so this file
+  must contain page content only: no doctype/html/head/body tags of its own.
+-->
+<title>NuvioTV Beta Feedback</title>
+
+<style>
+  :root {
+    --bg: #f4f5f8;
+    --surface: #ffffff;
+    --surface-2: #eceef3;
+    --border: #dcdfe8;
+    --border-strong: #c6cbd9;
+    --text: #14161c;
+    --text-2: #4d5364;
+    --text-3: #7c8298;
+    --accent: #3f4fd8;
+    --accent-soft: #e6e8fc;
+    --p0: #c02b32;
+    --p0-soft: #fbe4e5;
+    --p1: #a2610a;
+    --p1-soft: #fbeed6;
+    --p2: #1f5fa8;
+    --p2-soft: #e0ecfa;
+    --p3: #6b7185;
+    --p3-soft: #e8eaf0;
+    --good: #1f7a4d;
+    --good-soft: #dff2e7;
+    --shadow: 0 1px 2px rgba(20, 22, 28, .06), 0 6px 16px rgba(20, 22, 28, .05);
+    --display: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0e1014;
+      --surface: #191c22;
+      --surface-2: #22262e;
+      --border: #2c313b;
+      --border-strong: #3b4250;
+      --text: #eef0f5;
+      --text-2: #a9b0c0;
+      --text-3: #7b8294;
+      --accent: #8f9bff;
+      --accent-soft: #23264a;
+      --p0: #ff8086;
+      --p0-soft: #3a1c1f;
+      --p1: #e8b164;
+      --p1-soft: #37280f;
+      --p2: #79b4f0;
+      --p2-soft: #14263a;
+      --p3: #9aa1b4;
+      --p3-soft: #262a33;
+      --good: #6bd39b;
+      --good-soft: #12301f;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 20px rgba(0, 0, 0, .3);
+    }
+  }
+
+  :root[data-theme="light"] {
+    --bg: #f4f5f8;
+    --surface: #ffffff;
+    --surface-2: #eceef3;
+    --border: #dcdfe8;
+    --border-strong: #c6cbd9;
+    --text: #14161c;
+    --text-2: #4d5364;
+    --text-3: #7c8298;
+    --accent: #3f4fd8;
+    --accent-soft: #e6e8fc;
+    --p0: #c02b32;
+    --p0-soft: #fbe4e5;
+    --p1: #a2610a;
+    --p1-soft: #fbeed6;
+    --p2: #1f5fa8;
+    --p2-soft: #e0ecfa;
+    --p3: #6b7185;
+    --p3-soft: #e8eaf0;
+    --good: #1f7a4d;
+    --good-soft: #dff2e7;
+    --shadow: 0 1px 2px rgba(20, 22, 28, .06), 0 6px 16px rgba(20, 22, 28, .05);
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0e1014;
+    --surface: #191c22;
+    --surface-2: #22262e;
+    --border: #2c313b;
+    --border-strong: #3b4250;
+    --text: #eef0f5;
+    --text-2: #a9b0c0;
+    --text-3: #7b8294;
+    --accent: #8f9bff;
+    --accent-soft: #23264a;
+    --p0: #ff8086;
+    --p0-soft: #3a1c1f;
+    --p1: #e8b164;
+    --p1-soft: #37280f;
+    --p2: #79b4f0;
+    --p2-soft: #14263a;
+    --p3: #9aa1b4;
+    --p3-soft: #262a33;
+    --good: #6bd39b;
+    --good-soft: #12301f;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 20px rgba(0, 0, 0, .3);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 40px 22px 90px;
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+  }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+  code, .mono { font-family: var(--mono); font-size: .88em; }
+
+  /* ---------- header ---------- */
+  header { display: flex; flex-direction: column; gap: 14px; }
+
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--text-3);
+  }
+
+  h1 {
+    font-family: var(--display);
+    font-size: clamp(30px, 5vw, 42px);
+    line-height: 1.1;
+    letter-spacing: -.02em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .lede { margin: 0; color: var(--text-2); max-width: 66ch; }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-2);
+  }
+
+  .meta .pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 4px 11px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .meta .pill strong { color: var(--text); font-weight: 600; }
+
+  /* ---------- stat tiles ---------- */
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
+  }
+
+  .tile {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .tile .n {
+    font-family: var(--display);
+    font-size: 34px;
+    font-weight: 650;
+    letter-spacing: -.02em;
+    line-height: 1.05;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tile.alert .n { color: var(--p0); }
+  .tile.ship .n { color: var(--good); }
+
+  .tile .k {
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--text-3);
+  }
+
+  .tile .sub { font-size: 12.5px; color: var(--text-2); }
+
+  /* ---------- sections ---------- */
+  section { display: flex; flex-direction: column; gap: 14px; }
+
+  h2 {
+    font-family: var(--display);
+    font-size: 21px;
+    letter-spacing: -.01em;
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  h2 .count {
+    font-family: var(--body);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-3);
+    letter-spacing: .04em;
+  }
+
+  .section-note { margin: -4px 0 0; color: var(--text-2); font-size: 13.5px; max-width: 72ch; }
+
+  /* ---------- triage board ---------- */
+  .board {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+  }
+
+  .lane {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .lane.now { border-color: var(--border-strong); }
+  .lane h3 {
+    margin: 0;
+    font-family: var(--display);
+    font-size: 15px;
+    letter-spacing: .01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .lane h3 .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .lane.now h3 .dot { background: var(--p0); }
+  .lane.next h3 .dot { background: var(--p1); }
+  .lane.later h3 .dot { background: var(--p3); }
+
+  .lane ol, .lane ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px; }
+  .lane li { font-size: 13.5px; color: var(--text-2); }
+  .lane li strong { color: var(--text); font-weight: 600; }
+
+  /* ---------- item cards ---------- */
+  .cards { display: flex; flex-direction: column; gap: 10px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 14px 17px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* attention state reads from the card's own border + status pill, not a rail */
+  .card.flag { border-color: var(--p0); }
+  .card.warm { border-color: var(--p1); }
+
+  .card-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .id {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: .01em;
+    color: var(--text);
+    background: var(--surface-2);
+    border-radius: 6px;
+    padding: 2px 7px;
+  }
+
+  .chip {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    border-radius: 999px;
+    padding: 3px 9px;
+    font-family: var(--mono);
+  }
+
+  .chip.p0 { color: var(--p0); background: var(--p0-soft); }
+  .chip.p1 { color: var(--p1); background: var(--p1-soft); }
+  .chip.p2 { color: var(--p2); background: var(--p2-soft); }
+  .chip.p3 { color: var(--p3); background: var(--p3-soft); }
+
+  .status {
+    font-size: 11.5px;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 3px 10px;
+    border: 1px solid var(--border-strong);
+    color: var(--text-2);
+    background: transparent;
+  }
+
+  .status.new { color: var(--p0); border-color: var(--p0); }
+  .status.reopened { color: var(--p0); border-color: var(--p0); background: var(--p0-soft); }
+  .status.progress { color: var(--p1); border-color: var(--p1); }
+  .status.unreleased { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+  .status.done { color: var(--good); border-color: var(--good); background: var(--good-soft); }
+  .status.waiting { color: var(--text-2); }
+  .status.video { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+
+  .card .desc { margin: 0; color: var(--text-2); font-size: 14px; }
+  .card .desc strong { color: var(--text); font-weight: 600; }
+  .card .desc em { color: var(--text-2); }
+
+  .card .fix {
+    margin: 0;
+    padding: 0 0 0 12px;
+    border-left: 2px solid var(--accent);
+    color: var(--text-2);
+    font-size: 13.5px;
+  }
+  .card .fix strong { color: var(--text); font-weight: 600; }
+  .card .fix em { color: var(--text-2); }
+
+  .card .by {
+    font-size: 12.5px;
+    color: var(--text-3);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    align-items: baseline;
+  }
+
+  .card .by .sep { color: var(--border-strong); }
+
+  /* compact shipped list */
+  .shipped {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 6px 4px;
+    overflow-x: auto;
+  }
+
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { text-align: left; padding: 8px 13px; vertical-align: top; }
+  th {
+    font-size: 11px;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody tr + tr td { border-top: 1px solid var(--border); }
+  td.idc { white-space: nowrap; }
+  td .id { font-size: 12px; }
+  td.res { color: var(--text-2); }
+
+  /* ---------- watch list ---------- */
+  .watch { display: flex; flex-direction: column; gap: 10px; }
+
+  .watch-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 13px 17px;
+  }
+
+  .watch-item h4 {
+    margin: 0 0 4px;
+    font-size: 14px;
+    font-family: var(--display);
+    letter-spacing: -.005em;
+  }
+
+  .watch-item p { margin: 0; font-size: 13.5px; color: var(--text-2); }
+
+  /* ---------- timeline ---------- */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-left: 2px solid var(--border);
+    margin-left: 6px;
+    padding-left: 0;
+  }
+
+  .entry {
+    position: relative;
+    padding: 0 0 20px 22px;
+  }
+
+  .entry::before {
+    content: "";
+    position: absolute;
+    left: -6px;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border-strong);
+    border: 2px solid var(--bg);
+  }
+
+  .entry.hot::before { background: var(--p0); }
+  .entry.ship::before { background: var(--good); }
+  .entry.quiet::before { background: var(--accent); }
+
+  .entry .when {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--text-3);
+    letter-spacing: .02em;
+  }
+
+  .entry .what { margin: 2px 0 0; font-size: 13.5px; color: var(--text-2); }
+  .entry .what strong { color: var(--text); font-weight: 600; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    font-size: 12.5px;
+    color: var(--text-3);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .card, .tile, .lane { transition: border-color .15s ease; }
+  }
+
+  @media (max-width: 560px) {
+    .wrap { padding: 28px 15px 60px; }
+    .tile .n { font-size: 28px; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">r/Nuvio · beta announcement thread</div>
+    <h1>NuvioTV Beta Feedback</h1>
+    <p class="lede">
+      Live triage of bug reports, feature requests and UX feedback from the
+      <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/">beta announcement thread</a>,
+      swept daily and mirrored from <code>docs/beta-feedback-tracker.md</code>.
+      <strong>🚢 beta.10 is out</strong> — build <code>0.3.0 (106)</code>, tag <code>tvos-v0.3.0-beta.10</code>, published to both repos and announced on the thread.
+      The headline is the <strong>pinned focus-following hero</strong>: the layout u/mrStevenx3 has asked for since their "Lucky" screenshot, hardened over
+      <strong>eight manual device rounds</strong> after the first build passed every sim gate and fell apart on real hardware. The board is now a retest watch.
+    </p>
+    <div class="meta">
+      <span class="pill"><strong>136</strong> comments <span style="color:var(--text-3)">(floor)</span></span>
+      <span class="pill"><strong>102↑</strong> · <strong>70K</strong> views <span style="color:var(--text-3)">live-read at post time</span></span>
+      <span class="pill">Last checked <strong>2026-08-03</strong> (night)</span>
+      <span class="pill">🚢 Shipped <strong>beta.10</strong> · build 106</span>
+      <span class="pill">📣 Announced <code>p1khg3l</code></span>
+      <span class="pill">🖥 Device pass <strong>DONE</strong> — 8 rounds</span>
+    </div>
+  </header>
+
+  <div class="tiles">
+    <div class="tile alert">
+      <span class="n">1</span>
+      <span class="k">Open bug</span>
+      <span class="sub">of 34 filed · BUG-30, measured at a deterministic 67pt residual</span>
+    </div>
+    <div class="tile ship">
+      <span class="n">10</span>
+      <span class="k">Awaiting tester retest</span>
+      <span class="sub">now in testers' hands · BUG-19/31/32/33/34 · FEAT-14 · UX-7/9/10/11</span>
+    </div>
+    <div class="tile">
+      <span class="n">2</span>
+      <span class="k">Open feature / UX asks</span>
+      <span class="sub">FEAT-3 TestFlight · UX-8 search genres</span>
+    </div>
+    <div class="tile ship">
+      <span class="n">56</span>
+      <span class="k">Shipped or closed</span>
+      <span class="sub">across all sections since 2026-07-21 · +10 in beta.10</span>
+    </div>
+  </div>
+
+  <section>
+    <h2>Triage <span class="count">2026-08-03 night — shipped; now a retest watch</span></h2>
+    <p class="section-note">
+      beta.10 went out with the whole retest wave answered, plus the hero feature that was named this beta's adoption blocker.
+      Nothing on this board is waiting on code right now: <strong>the next move belongs to the testers.</strong>
+      Three items close on <em>their</em> word rather than ours — the pinned hero, the GIF row and Search Sources — and all three have a history of
+      internal passes that hardware or a tester later contradicted.
+    </p>
+    <div class="board">
+
+      <div class="lane now">
+        <h3><span class="dot"></span>Now</h3>
+        <ol>
+          <li><strong>Watch for beta.10 retests, build number attached.</strong> The About pane now reads <code>0.3.0 (106)</code> and the announcement asks for it explicitly. The three that close on a tester's reply: <strong>the pinned hero</strong> (does it behave under someone else's remote and catalog set?), <strong>BUG-19's GIF row</strong> (unfixed across 103, 104 and 105 — this is the fourth attempt and the first with a measured cause), and <strong>BUG-33 Search Sources</strong> (shipped broken in beta.9 to the tester who requested it, and never exercised on hardware).</li>
+          <li><strong>Expect pinned-hero edge reports.</strong> Eight device rounds converged on default poster sizes and the tester's own catalogs; an unusual Poster Size or a very short row can still rest a title or caption against the clip edge. The announcement invites exactly that report, so treat "cut off at the top/bottom" replies as expected traffic, not regressions.</li>
+          <li><strong>Sideload window.</strong> Free-Apple-ID signatures expire after 7 days, so the first wave of "it stopped opening" replies is normal and answered by re-sideloading — worth a one-line reply rather than a bug entry.</li>
+        </ol>
+      </div>
+
+      <div class="lane next">
+        <h3><span class="dot"></span>Next</h3>
+        <ul>
+          <li><strong>BUG-30's real fix</strong> — the probe turned a six-round guessing game into a number: extend the hero's focusable frame to the content top so the focus engine's own scroll-to-visible lands at −157 naturally. Not more completion-scroll machinery, which wedged Down-navigation on device and was reverted. The pinned-hero work just proved the same principle on a bigger scale: reach the <em>focus frame</em>, never the padding around it.</li>
+          <li><strong>UX-8</strong> — genres instead of a wall of queried catalog names. The one retest item deliberately left unbuilt, because the BUG-33 filtering had to be right first: a cleaner list of the wrong results is still the wrong results.</li>
+          <li><strong>A pinned-hero device-verification note for the harness</strong> — the eight rounds produced a hard, reusable fact: long press-sequence sim diagnostics <em>cannot</em> arbitrate device focus bugs (classic mode fails the same harness walk while working fine on every real device). Recorded in memory so the next focus bug starts with instrumentation, not simulation.</li>
+        </ul>
+      </div>
+
+      <div class="lane later">
+        <h3><span class="dot"></span>Later</h3>
+        <ul>
+          <li><strong>FEAT-3</strong> TestFlight — research done, clean-build plan drafted; a separate track from the sideload beta.</li>
+          <li><strong>u/Overall_Stuff5982's BUG-21 reconnect answer</strong> — still outstanding, and All-Debrid's end-to-end resolve is still the one path never verified in the wild.</li>
+          <li><strong>A pre-release settings sweep</strong> — the standing lesson from FEAT-10 and BUG-28: exercise every new settings pane on hardware, in the White theme, before cutting a build. Both of beta.9's broken-on-arrival surfaces would have been caught by it.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Shipped in beta.10 <span class="count">build 106 · 2026-08-03 · the retest wave, answered</span></h2>
+    <p class="section-note">
+      All nine items u/mrStevenx3's review opened, confirmed against build <code>0.3.0 (105)</code> and now answered in build <code>106</code>.
+      Eight are fixed; the ninth (UX-8) was held back on purpose. Codex loops ran over every batch — four rounds on the fixes, twelve on UX-7/UX-10, three more on the pinned hero — and the harness gate closed at <strong>43/43 ×2</strong>.
+      These are in testers' hands as of tonight; the <em>shipped</em> pills mean released, not confirmed. Confirmation is the tester's reply.
+    </p>
+    <div class="cards">
+
+      <div class="card flag">
+        <div class="card-top">
+          <span class="id">BUG-33</span>
+          <span class="chip p1">P1</span>
+          <span class="status done">🚢 All 3 defects fixed · shipped in beta.10</span>
+          <span class="status video">🎥 Defects 2 + 3 on camera</span>
+        </div>
+        <p class="fix">
+          <strong>Fixed:</strong> the Découvrir wipe was <code>reset()</code> where <code>clear()</code> was meant, plus a signature latch;
+          the white-on-white was settings-row-wide explicit <code>foregroundStyle</code> overrides, fixed for <em>every</em> row at once;
+          the ignored selection got collision-proof identity-hash keys (FNV-1a, legacy keys byte-identical, whole-group legacy semantics and a re-enable migration).
+          Round 1 of the Codex loop caught a positional-suffix instability in the first key design — which is why it is hashes and not indices.
+          <strong>The device pass never exercised this pane, so the reporter's retest is the close.</strong>
+        </p>
+        <p class="desc">
+          <strong>The beta.9 Search Sources pane doesn't filter, and loses its selection after every search.</strong>
+          Three defects: <strong>(1)</strong> the selection is ignored — <em>"Even if I select only two catalogs, it still searches all of them"</em>;
+          <strong>(2)</strong> it does not survive a search — <em>"all the catalog selections disappear. They only come back after closing and reopening the app"</em>, so the persisted value is fine and something in the search flow clobbers the in-memory state;
+          <strong>(3)</strong> the first catalog row renders white-on-white — the fifth such site from this reporter after BUG-4, BUG-14, BUG-22 and BUG-28, on a pane that shipped in the very build claiming the contrast fix.
+          A headline feature does not do the one thing it promises, for the tester who requested it.
+          <strong>🎥 Video-verified:</strong> at t≈90.5s the focused <strong>"Search - Films"</strong> row — the first row of Settings → Sources de recherche — renders white text on a white focus platter, so the white-on-white site is the <em>Settings pane</em>, not the search screen. The state wipe is shown as a demo: Découvrir's five catalog rows are present before a search, gone after search + clear, still gone after a tab round-trip — while the Settings toggles read "Activé" throughout — and the tester force-relaunches. Defect 1 is <em>not</em> provable from the footage (the shown source config matches the shown result rows); ask for the exact catalog combo.
+        </p>
+        <div class="by">
+          u/mrStevenx3
+          <span class="sep">·</span>
+          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p196j81/">comment</a>
+          <span class="sep">·</span> first seen 2026-08-02
+        </div>
+      </div>
+
+      <div class="card warm">
+        <div class="card-top">
+          <span class="id">BUG-34</span>
+          <span class="chip p2">P2</span>
+          <span class="status done">🚢 Shipped in beta.10</span>
+          <span class="status video">🎥 On camera</span>
+        </div>
+        <p class="fix">
+          <strong>Fixed:</strong> a focusable header/bio <code>topBlock</code> plus <code>focusSection</code>'d rows, so the focus engine can climb back above the biography instead of dead-ending on the first poster. The EntityBrowse twin got the same treatment.
+        </p>
+        <p class="desc">
+          <strong>The actor page auto-scrolls down on open and can't be scrolled back up.</strong>
+          <em>"When I open an actor's page, the text automatically scrolls down, and it's impossible to scroll back up."</em>
+          The usual tvOS cause is initial focus landing on an off-screen element and dragging the scroll view with it; the header and bio are then stranded above the viewport.
+          P2 because Menu still exits the page — bump to P1 on a second report, or if focus turns out to be genuinely trapped rather than merely scrolled.
+          <strong>🎥 Video-verified (t≈58.3–65s):</strong> the header is visible for under half a second before the auto-scroll pins the bio to the top — and in the scrolled state the focus ring sits on the <em>first Films poster</em>, direct evidence for the focus-drag mechanism. Stuck ~7s until Menu.
+        </p>
+        <div class="by">
+          u/mrStevenx3
+          <span class="sep">·</span>
+          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p196j81/">comment</a>
+          <span class="sep">·</span> first seen 2026-08-02
+        </div>
+      </div>
+
+      <div class="card warm">
+        <div class="card-top">
+          <span class="id">BUG-31</span>
+          <span class="chip p2">P2</span>
+          <span class="status done">🚢 Fixed · device-confirmed · shipped</span>
+          <span class="status video">🎥 On camera</span>
+        </div>
+        <p class="fix">
+          <strong>Fixed, and the artwork-geometry theory was wrong in an instructive way.</strong> The "Top" edge was never top-only at all — it was a closed <code>strokeBorder</code>, now coverage-masked;
+          the ghost-doubled bat figure was a separate defect, killed by <code>.clipped()</code> plus a matching <code>hoverEffect</code> shape.
+          <strong>Device pass: clean</strong> — top band only, no side or bottom hairline, no ghost-double.
+        </p>
+        <p class="desc">
+          <strong>The card depth effect ignores the "only at the top" setting on some posters.</strong>
+          <em>"On Cape Fear the effect is applied correctly, whereas on Batman the entire outline is visible."</em>
+          Poster-dependent with the setting unchanged, which points at artwork geometry rather than the toggle — likely the mask is sized from the image's intrinsic size instead of the card frame, so a poster off the expected 2:3 lets the layer bleed around the full outline.
+          A named repro pair is supplied. Not BUG-10 (the tilt effect, closed as a terminology mismatch) — this is the depth layer.
+          <strong>🎥 Video-verified (t≈20.5–23.5s):</strong> focused Batman (the GOTHA neon poster) shows a gray halo floating outside <em>all four edges</em> of the card, and the bat figure renders <em>doubled</em> — the parallax cutout layer visibly offset from the base poster. Focused Cape Fear at the same zoom is clean-edged.
+        </p>
+        <div class="by">
+          u/mrStevenx3
+          <span class="sep">·</span>
+          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p196j81/">comment</a>
+          <span class="sep">·</span> first seen 2026-08-02
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">BUG-32</span>
+          <span class="chip p3">P3</span>
+          <span class="status done">🚢 Shipped in beta.10</span>
+          <span class="status video">🎥 On camera</span>
+        </div>
+        <p class="fix">
+          <strong>Fixed in one line:</strong> the collection and services tiles were missing <code>.posterButtonShape()</code>, so only the focused branch ever built a square clip. Both states now read the shared corner token — including the Services row the report didn't mention.
+        </p>
+        <p class="desc">
+          <strong>Square corners don't reach collection images until they're focused.</strong>
+          The Corners setting is honoured on every card except collection artwork, which stays rounded unfocused and snaps square the moment focus arrives.
+          That focus-dependence is the tell: the collection tile is building its own clip shape in the focused branch instead of reading the shared corner token in both states.
+          <strong>🎥 Video-verified (t≈28.5–33s):</strong> posters square, Collection cards rounded until focused — and the <em>Services tiles</em> show the same defect, which the report didn't mention.
+        </p>
+        <div class="by">
+          u/mrStevenx3
+          <span class="sep">·</span>
+          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p196j81/">comment</a>
+          <span class="sep">·</span> first seen 2026-08-02
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">UX-9</span>
+          <span class="chip p3">P3</span>
+          <span class="status done">🚢 Shipped in beta.10</span>
+        </div>
+        <p class="fix">
+          <strong>Fixed:</strong> a 1.08 upstream-parity zoom plus <code>clipsToBounds</code>, so the bars are cropped rather than fitted.
+          Shipping in the same build as the 1080p repack, which is the point — a genuinely-fixed trailer still reads as "not fixed" while the bars are there.
+        </p>
+        <p class="desc">
+          <strong>The focus trailer is still letterboxed — zoom to fill like Nuvio.</strong>
+          <em>"They should be zoomed in so the black bars disappear."</em> The layer is aspect-<em>fit</em>; upstream aspect-<em>fills</em> and crops.
+          Distinct from UX-4a (morph geometry) and UX-4c (resolution) — this is video gravity plus a clip.
+          Worth shipping alongside the beta.10 trailer work, or a genuinely-fixed 1080p trailer still gets reported as "not fixed" on account of the bars.
+          <em>Video note: the clip's focus-trailer frames (t≈16.5–18s) are too motion-blurred to separate UI letterbox from the trailer's own content — the review text, not the clip, is the evidence here.</em>
+        </p>
+        <div class="by">
+          u/mrStevenx3
+          <span class="sep">·</span>
+          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p196j81/">comment</a>
+          <span class="sep">·</span> first seen 2026-08-02
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">UX-10</span>
+          <span class="chip p3">P3</span>
+          <span class="status done">🚢 Device-approved · shipped in beta.10</span>
+        </div>
+        <p class="fix">
+          <strong>🖥 Device-approved 2026-08-03</strong>, including the <strong>White-theme captions</strong> — the one untested surface, and the sixth exposure of the white-on-white class after BUG-4, 14, 22, 28 and 33. It held.
+        </p>
+        <p class="fix">
+          <strong>Built (<code>658d7182</code>) — and it resolved to something other than what the reply promised.</strong>
+          Not artwork beside the synopsis: the ask was the detail <em>Trailers &amp; Extras</em> row, 16:9 YouTube-thumbnail cards exactly like upstream.
+          The tester calls the whole detail screen "the description", so the posted reply's "they share the same screen" premise was simply wrong.
+          Device-pass item: White-theme captions.
+        </p>
+        <p class="desc">
+          <strong>Detail screen: show the trailer's thumbnail rather than text alone.</strong>
+          Upstream pairs the trailer list with artwork; the tvOS block was text-only.
+        </p>
+        <div class="by">
+          u/mrStevenx3
+          <span class="sep">·</span>
+          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p196j81/">comment</a>
+          <span class="sep">·</span> first seen 2026-08-02
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">UX-11</span>
+          <span class="chip p3">P3</span>
+          <span class="status done">🚢 Fixed · device-confirmed · shipped</span>
+          <span class="status video">🎥 On camera</span>
+        </div>
+        <p class="fix">
+          <strong>Fixed:</strong> seeded default focus on the first real profile. Confirmed incidentally during the device pass — first focus now lands on the main profile.
+        </p>
+        <p class="desc">
+          <strong>The profile picker should start focused on the main profile, not "Create New Profile".</strong>
+          First focus lands on the add-profile tile, so picking the existing profile costs an extra press on every cold launch and a mis-press drops the user into profile creation.
+          One seeded focus state — the cheapest item on the board, on the first screen every tester sees.
+          <strong>🎥 Video-verified (t≈1–6s):</strong> cold launch lands focus on "Ajouter un profil" while the PRINCIPAL-badged profile sits unfocused beside it; the tester lingers 5 full seconds to make the point.
+        </p>
+        <div class="by">
+          u/mrStevenx3
+          <span class="sep">·</span>
+          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p196j81/">comment</a>
+          <span class="sep">·</span> first seen 2026-08-02
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">UX-8</span>
+          <span class="chip p3">P3</span>
+          <span class="status new">Open — the one item held back</span>
+        </div>
+        <p class="fix">
+          <strong>Deliberately not built with the rest.</strong> Same pane as BUG-33, and the filtering had to be right first — a cleaner list of the wrong results is still the wrong results. Next up once beta.10 is out.
+        </p>
+        <p class="desc">
+          <strong>Search screen: show genres instead of listing every catalog being searched.</strong>
+          With several addons installed the screen renders a row per queried catalog — a wall of source names at ten feet.
+          Same pane as BUG-33, so do them in one pass — but fix the filtering first: a cleaner list of the wrong results is still the wrong results.
+        </p>
+        <div class="by">
+          u/mrStevenx3
+          <span class="sep">·</span>
+          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p196j81/">comment</a>
+          <span class="sep">·</span> first seen 2026-08-02
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">FEAT-14</span>
+          <span class="chip p3">P3</span>
+          <span class="status done">🚢 Device-approved · shipped in beta.10</span>
+        </div>
+        <p class="desc">
+          <strong>Let the focus outline use the user's selected accent colour, like Nuvio.</strong>
+          The accent already drives buttons, chips and badges, but the focus ring on cards is still the default treatment, so the colour picker reads as half-applied.
+          Watch the contrast interaction: this reporter runs the White theme, so route it through the same decision-table guard as BUG-22/28/33 rather than tinting raw.
+          <strong>🖥 Shipped and device-approved after five live rounds on the panel (2026-08-02):</strong> opt-in Appearance toggle (default OFF, contract carve-out amended), contrast-guarded color with a White-theme dark fallback, ring on BOTH the poster cards and the inline trailer surface. The iteration unearthed a real platform fact — tvOS hardware never composites SwiftUI overlays into the <code>hoverEffect</code> lift layer (and the sim doesn't render the lift at all), so ring mode swaps the system lift for an equivalent manual scale. Final architecture in <code>e6abb225</code> with the graveyard documented in-file.
+        </p>
+        <div class="by">
+          u/mrStevenx3
+          <span class="sep">·</span>
+          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p196j81/">comment</a>
+          <span class="sep">·</span> first seen 2026-08-02
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Carried over <span class="count">the longer-running items</span></h2>
+    <div class="cards">
+
+      <div class="card flag">
+        <div class="card-top">
+          <span class="id">UX-7</span>
+          <span class="chip p1">P1</span>
+          <span class="status done">🚢 Extended, device-approved · shipped in beta.10</span>
+          <span class="status video">🖥 8 device rounds</span>
+        </div>
+        <p class="fix">
+          <strong>📌 Extended into the PINNED hero — and the eight rounds it took are the story.</strong>
+          At Christian's direction the feature grew past the original ask: with <strong>Nuvio-Style Hero</strong> on, the hero no longer scrolls away at all. It holds the top of the screen, updating live with the focused title, while only the rows move beneath it — the "Lucky" reference layout, exactly.
+          The first build (<code>679b0bf6</code>) passed a full 43/43 harness and three clean Codex rounds, then <strong>fell apart on the living-room Apple TV</strong>: posters and titles cut at the clip edge, because hardware rests the focus engine's scroll-to-reveal ~40–67pt high (the BUG-30 residual class) and the sim reproduces neither that nor a real swipe.
+          Seven more rounds converged on the mechanism rather than the symptom: <em>every</em> vertical rest on tvOS is a focus reveal aligned to the focused <strong>card's frame</strong>, so padding outside that frame can never protect anything (rounds 2–3), and reaching the frame <em>past its row's bounds</em> puts the focused item outside its own focus section and freezes directional navigation outright (rounds 5–7).
+          What shipped: a compact pinned hero (352pt) so a full row plus its focus frame fits the viewport, all-positive reach inside each card (72 up / 44 down), section titles overlaid <em>inside</em> that reach band, and — Christian's design call — <strong>"See All" moved out of the row header into a card at the end of each shelf</strong>, because the header pill was a focusable stop between rows that produced degenerate rest positions. Final: <code>d7ad446f</code>, suite 43/43 ×2, Codex clean (two collection-row geometry findings fixed post-pass), verdict <em>"everything seems to be working."</em>
+        </p>
+        <p class="fix">
+          <strong>🖥 The focus-follow core was device-approved 2026-08-03 — "all items are working".</strong>
+          The pass covered the one thing no harness can reach: <strong>UX-7 under real Siri-Remote swipes</strong>.
+          Fast multi-title scrubs land on the final title (the 200ms commit and the generation guards doing their job), the carousel reclaims the hero on the way back up, and the focused backdrop survives deep scroll — the BUG-24 ask.
+          That closes the BUG-23 gap class for this feature: sim gates <em>plus</em> a hardware swipe pass, not sim alone.
+        </p>
+        <p class="fix">
+          <strong>The public beta.10 commitment is code-complete (<code>cf2059d9</code>, tests <code>940907c3</code>).</strong>
+          Always-on focus-follow: the focused row poster owns the hero live (200ms commit / 300ms revert grace), and deep scroll keeps the focused title's backdrop behind the rows — which is the BUG-24 ask, finally answered properly.
+          A flash-free crossfade races banner → metahub → poster candidates, with metahub and memoised-TMDB gap-filling that honours <em>useArtwork</em>, <em>useBasicInfo</em> and <em>Show Hero</em>.
+          <strong>The twelve-round Codex loop earned its keep:</strong> eleven rounds produced real findings — a P1 stale-commit hole, a LazyVStack dead-callback race (also caught live in sim, where cold-start rows cached a nil callback while the hero fan-out was still in flight), cross-row trailing-nil cancellation, enrichment races, settings bypasses and fallback-artwork gaps — all fixed and re-reviewed to a clean pass.
+          Sim-verified across classic and Nuvio-style, including the tester's exact "Lucy" arrangement.
+        </p>
+        <p class="desc">
+          <strong>The focus-follows-backdrop hero</strong> — focused title's backdrop right, title + description left, live on every focus change.
+          Asked four times, named the reporter's daily-driver blocker, publicly promised: <em>"Yes, I am building it."</em>
+        </p>
+        <div class="by">
+          u/mrStevenx3
+          <span class="sep">·</span>
+          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p12cg5v/">the re-ask</a>
+          <span class="sep">·</span> first seen 2026-07-31
+        </div>
+      </div>
+
+      <div class="card warm">
+        <div class="card-top">
+          <span class="id">BUG-19</span>
+          <span class="chip p2">P2</span>
+          <span class="status done">🚢 Passed twice on device · shipped in beta.10</span>
+          <span class="status video">🎥 Repro pinned</span>
+        </div>
+        <p class="desc">
+          GIF scroll stutter. <em>"The GIFs still play very slowly… I just wanted to confirm that the issue is still there."</em>
+          Third consecutive build (103 → 104 → 105) reported unchanged, so the decode-off-main + downsample fix is demonstrably not sufficient on their content.
+          <strong>🎥 Video-verified — the repro is pinned.</strong> <code>p12cg5v</code> is a slow D-pad walk along the Home <strong>Services row</strong> (the service-collage GIFs: Netflix, Disney+, Max, Hulu, Apple TV…). Frame analysis, validated against the static Genres row as a control: idle animation <em>works</em> (pans and logo crossfades run, row ~42% active), but around <strong>every scroll step all visible tiles freeze together for ~700–830ms</strong> — including mid-pan compositions that can't be designed hold frames — while the scroll animation itself takes ~100–200ms. Plus a 2-frame blocky-magenta decode corruption on the Apple TV tile as one scroll settles.
+          The Instruments session now has a repro recipe (Home → Services row → step focus tile-by-tile), a numeric target, and a hypothesis: focus changes trigger synchronous GIF-pipeline work that blocks every tile ~¾s. Caveat: the clip is beta.8 — re-verify on beta.9+ when instrumenting.
+        </p>
+        <div class="by">
+          u/mrStevenx3
+          <span class="sep">·</span>
+          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p12cg5v/">video 1</a>
+          <span class="sep">·</span>
+          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p196j81/">video 2</a>
+          <span class="sep">·</span> first seen 2026-07-29
+        </div>
+      </div>
+
+      <div class="card flag">
+        <div class="card-top">
+          <span class="id">BUG-30</span>
+          <span class="chip p2">P2</span>
+          <span class="status progress">Open · now measured</span>
+        </div>
+        <p class="desc">
+          <strong>The system tab bar re-appears clipped at the top after a D-pad walk back up Home</strong> (internal find, hardware-only — the sim never reproduces it).
+          Six fix rounds documented; two caused worse on-device regressions and were reverted the same night. The mechanism is pinned: focus-driven scrolling rests short of the true top edge and the tvOS 26 bar's scroll-linked expansion sticks mid-way.
+          <strong>No further blind retries</strong> — next step is on-device offset instrumentation. Disclosed in the beta.9 notes.
+          <strong>🖥 Instrumented and MEASURED (2026-08-02 device pass):</strong> the probe shipped (<code>debug.homeScrollProbe</code>), the clip reproduced live, and the capture (1,603 samples) shows D-pad walk-ups resting at <strong>y=−90 vs true top −157 — a deterministic 67pt residual</strong>, three occurrences. The fix brief writes itself: the hero "fits" at −90, so extend its focusable frame to the content top and the focus engine lands at −157 on its own.
+        </p>
+        <div class="by">Internal (device pass) <span class="sep">·</span> first seen 2026-08-01</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">UX-4c</span>
+          <span class="chip p3">P3</span>
+          <span class="status done">🚢 Not a regression — the 1080p repack shipped in beta.10</span>
+        </div>
+        <p class="fix">
+          <strong>The build confirm settles this one.</strong> The reporter is on <code>0.3.0 (105)</code>, a build that provably predates <code>515cf6c4</code> — so the "expected, not a regression" reading is no longer an assumption, and no further investigation is warranted before the beta.10 confirm.
+        </p>
+        <p class="desc">
+          <em>"Trailers are still low quality"</em> came back a third time — and this one is <strong>not a regression</strong>:
+          the SABR repack (<code>515cf6c4</code>) was committed hours <em>after</em> build 105 was cut, so it is not on their device.
+          It repackages the demuxed 1080p H.264+AAC pair into a local byte-range HLS playlist for AVPlayer, sim-verified at a measured 1920×1080 (was 640×360), with a fallback to the old path on any failure.
+          <strong>The reply must say this plainly</strong> rather than letting a fourth "still there" accumulate against a fix that never shipped.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> first seen 2026-07-29</div>
+      </div>
+
+      <div class="card warm">
+        <div class="card-top">
+          <span class="id">BUG-21</span>
+          <span class="chip p1">P1</span>
+          <span class="status unreleased">Shipped (beta.9) · awaiting reconnect answer</span>
+        </div>
+        <p class="desc">
+          TorBox links: the full credential-health pipeline shipped in beta.9 and the resolve chain is device-verified end-to-end with a real account.
+          Still owed: the reporter's disconnect/reconnect result, which names their root cause (stale token vs device-flow scoping). Either way the remedy is already in their hands.
+        </p>
+        <div class="by">
+          u/Overall_Stuff5982
+          <span class="sep">·</span>
+          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p0vl1qt/">last reply</a>
+          <span class="sep">·</span> first seen 2026-07-30
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">FEAT-3</span>
+          <span class="chip p2">P2</span>
+          <span class="status waiting">Open · research done</span>
+        </div>
+        <p class="desc">
+          TestFlight (or App Store) distribution instead of sideloading — recurring demand across several testers, some of whom will not install IPAs at all.
+          Clean-build plan drafted; the "Nuvio for iOS" App Store pull is the cited risk being weighed.
+        </p>
+        <div class="by">
+          u/Akis_P
+          <span class="sep">·</span> u/litriss
+          <span class="sep">·</span> first seen 2026-07-21
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Shipped in beta.9 <span class="count">build 105 · 2026-08-02 · all device-verified</span></h2>
+    <div class="shipped">
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Pri</th><th>Item</th><th>Note</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="idc"><span class="id">BUG-25</span></td><td><span class="chip p1">P1</span></td><td>Card settings not applying</td><td class="res">Profile fan-out reload + corner-radius override, two compounding defects</td></tr>
+          <tr><td class="idc"><span class="id">BUG-21</span></td><td><span class="chip p1">P1</span></td><td>TorBox credential health</td><td class="res">Self-diagnosing pipeline; E2E device-verified with a real account</td></tr>
+          <tr><td class="idc"><span class="id">BUG-22</span></td><td><span class="chip p2">P2</span></td><td>White-on-white Settings</td><td class="res"><code>rowAccentTint()</code> across six sites</td></tr>
+          <tr><td class="idc"><span class="id">BUG-23</span></td><td><span class="chip p2">P2</span></td><td>Hero left paging</td><td class="res">Paged TabView removed — swipes and clicks both page, wrapping (the sim never simulated swipes)</td></tr>
+          <tr><td class="idc"><span class="id">BUG-26</span></td><td><span class="chip p2">P2</span></td><td>Slow cold start</td><td class="res">The artwork disk cache had never worked in any beta; one-line fix</td></tr>
+          <tr><td class="idc"><span class="id">BUG-27</span></td><td><span class="chip p2">P2</span></td><td>No way back to top</td><td class="res">Menu-to-top, retry-hardened handoff</td></tr>
+          <tr><td class="idc"><span class="id">BUG-28</span></td><td><span class="chip p2">P2</span></td><td>White-on-white badge chips</td><td class="res">Decision-table contrast guard; unit-tested; White-theme confirmed on device — <strong>but BUG-33 found a fifth site it missed</strong></td></tr>
+          <tr><td class="idc"><span class="id">BUG-29</span></td><td><span class="chip p2">P2</span></td><td>Trailer clipped at row edge</td><td class="res">Trailing-anchor pin + post-morph correction pass</td></tr>
+          <tr><td class="idc"><span class="id">FEAT-13</span></td><td><span class="chip p2">P2</span></td><td>Settings → About</td><td class="res">Version/build/tag/commit — the app had reported 1.0 (1) since forever. <strong>Shipped, but the first retest still arrived without a build number</strong></td></tr>
+          <tr><td class="idc"><span class="id">FEAT-10</span></td><td><span class="chip p2">P2</span></td><td>Search Sources</td><td class="res">Per-catalog search toggles — <strong>reported non-functional on arrival, see BUG-33</strong></td></tr>
+          <tr><td class="idc"><span class="id">FEAT-7</span></td><td><span class="chip p3">P3</span></td><td>Settings Style</td><td class="res">Default / Minimal; Top Bar declined as a 10-foot mismatch</td></tr>
+          <tr><td class="idc"><span class="id">FEAT-8</span></td><td><span class="chip p3">P3</span></td><td>Trailer duration control</td><td class="res">30s / 1 min / 90s / always, 1.5s crossfade return</td></tr>
+          <tr><td class="idc"><span class="id">FEAT-9</span></td><td><span class="chip p3">P3</span></td><td>Icon-only detail buttons</td><td class="res">Accessibility labels preserved</td></tr>
+          <tr><td class="idc"><span class="id">FEAT-11</span></td><td><span class="chip p3">P3</span></td><td>Trailer sound default</td><td class="res">Seeds at launch; full-screen dismiss restores the user's default</td></tr>
+          <tr><td class="idc"><span class="id">UX-5</span></td><td><span class="chip p3">P3</span></td><td>Poster caption tuning</td><td class="res">caption2 + wider artwork gap at all three caption sites</td></tr>
+          <tr><td class="idc"><span class="id">UX-6</span></td><td><span class="chip p3">P3</span></td><td>Detail scroll dim</td><td class="res">0 → 0.85 near-black over ~400pt (0.35 was invisible on a real TV) — <strong>praised by name in the retest</strong></td></tr>
+          <tr><td class="idc"><span class="id">—</span></td><td><span class="chip p3">int</span></td><td>Upstream ports</td><td class="res">Whole-series unwatch fix · realtime stack removed (541 deletions) · tracking abstraction Phase 1, Trakt-only (67→92 tests) · Trakt snapshot to file storage (CFPrefs crash fix, found by the device pass)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Watch list <span class="count">context that shapes the next moves</span></h2>
+    <div class="watch">
+      <div class="watch-item">
+        <h4>The verification loop is closed — and it took shipping a feature to close it</h4>
+        <p>Every retest ask from beta.7 onward stalled on the same thing: the app never displayed its own version, so "did the fix land?" was unanswerable by construction — <em>"I searched everywhere but couldn't find my build number… I don't have an 'About' section."</em> FEAT-13 shipped the pane in beta.9, the release notes made the build number the retest currency, <strong>the first retest still arrived without one</strong>, the reply re-asked, and nine hours later: <em>"Yes I'm 0.3.0 (105)."</em> Keep re-asking — the ask works, but it is not yet a habit, and every unnumbered "still there" costs a fix cycle.</p>
+      </div>
+      <div class="watch-item">
+        <h4>Both tester videos analyzed — the video debt is cleared</h4>
+        <p>Both Reddit clips have been obtained and analyzed frame-by-frame. <code>p196j81</code> (166s): five new items confirmed on camera, stills in <code>docs/research/p196j81-video-evidence/</code>. <code>p12cg5v</code> (83s): BUG-19 pinned to the Services row with a measured ~700–830ms per-step freeze and a decode-corruption sighting, strips in <code>docs/research/p12cg5v-video-evidence/</code>. What used to be "the highest-value minutes on the board" is done — the follow-through is the Instruments session.</p>
+      </div>
+      <div class="watch-item">
+        <h4>Two beta.9 features arrived broken</h4>
+        <p>FEAT-10 (Search Sources) does not filter, and BUG-28's contrast sweep missed a fifth white-on-white site — on a pane in the same build. Both were shipped without an on-device pass of that specific screen. Worth a pre-release checklist item: exercise every new settings pane on hardware, in the White theme.</p>
+      </div>
+      <div class="watch-item">
+        <h4>One tester is still the whole verification signal</h4>
+        <p>Nearly all beta.8 and beta.9 feedback comes from u/mrStevenx3, with u/Overall_Stuff5982 covering the debrid path. Independent confirms on the beta.9 batch are worth soliciting rather than assuming.</p>
+      </div>
+      <div class="watch-item">
+        <h4>Sim-verified ≠ device-verified — now with four named mechanisms</h4>
+        <p>All sim input is discrete D-pad presses; the real Siri Remote swipes, driving native gestures the harness never exercises — BUG-23 passed every sim gate and failed on hardware for exactly that. FEAT-14 added a second, worse one: <strong>the simulator does not render the <code>hoverEffect(.highlight)</code> lift in screenshots at all</strong>, so any sim verification of lift-adjacent UI is not weak evidence, it is false evidence. UX-7's pass hit a third: the harness cannot run on the device at all (the <code>.xctrunner</code> bundle has no provisioning profile), and even if it could, XCUIRemote sends button presses, not swipes. <strong>The pinned hero added the fourth, and it is the sharpest: a passing sim run can be actively misleading in both directions.</strong> The first pinned build passed 43/43 with the layout visibly broken (the harness asserts existence, only the screenshot attachments showed the truth), and later a 12-press up-walk diagnostic "proved" focus was frozen — in <em>classic</em> mode too, which works fine on every real device. Long press-sequence sim results cannot arbitrate device focus bugs; instrument the hardware instead. <strong>Some verification is irreducibly manual — budget for it rather than discovering it at the gate.</strong></p>
+      </div>
+      <div class="watch-item">
+        <h4>Positive signals bank</h4>
+        <p>"Overall, you're making great progress, and everything is looking really clean!" · "The new icons and the dimmed background in the description look great" · "Ok so the app does not crash" · "best Nuvio fork I've tested" — engaged testers who stayed through failed fix rounds; keep crediting by name.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Update log</h2>
+    <div class="timeline">
+      <div class="entry ship">
+        <div class="when">2026-08-03 · night — 🚢 <strong>beta.10 shipped and announced</strong>, after eight device rounds on the pinned hero</div>
+        <p class="what">Build <strong>0.3.0 (106)</strong>, tag <code>tvos-v0.3.0-beta.10</code>, commit <code>d7ad446f</code>, published as a prerelease on both repos with the IPA attached; the <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/comment/p1khg3l/">announcement</a> went up the same night. <strong>The day's work was one feature and its consequences.</strong> Christian asked in the morning for the Nuvio-style hero to stay pinned while only the rows scroll — his reference photo turned out to be the same "Lucky" layout u/mrStevenx3 had been describing for betas. It was planned, delegated, sim-gated (43/43 ×2) and Codex-cleaned by evening as <code>679b0bf6</code> — <strong>and then failed on the first device round.</strong> Seven more followed, each one narrowing the mechanism rather than patching the symptom: tvOS has no momentum scrolling (swipes drive the <em>focus engine</em>, so every rest is a scroll-to-reveal aligned to the focused card's frame), hardware rests that reveal ~40–67pt short, padding outside the card frame can never compensate, and a reach that escapes its row's bounds <em>freezes directional focus entirely</em>. The shipped design: compact pinned hero (352pt), all-positive card reach (72 up / 44 down), section titles overlaid inside the reach band, and <strong>"See All" relocated from the row header to a card at the end of each shelf</strong> — Christian's call, which also killed a class of degenerate scroll rests the header pill was causing. Two Codex rounds after the pass caught real collection-row geometry defects (title clearance, mixed-shape tile alignment); suite closed at 43/43 ×2. <strong>A harness lesson worth keeping:</strong> the 12-press up-walk diagnostic freezes in the sim even in <em>classic</em> mode, which works on every real device — long press-sequence sim results cannot arbitrate device focus bugs. Release-tooling note: <code>gh release create --target &lt;SHA&gt;</code> began returning HTTP 422 tonight; publishing with branch-name targets worked, and a script fix is filed.</p>
+      </div>
+      <div class="entry ship">
+        <div class="when">2026-08-03 · afternoon — 🖥 the UX-7/UX-10 device pass is done: <em>"all items are working"</em></div>
+        <p class="what">Debug build stamped <code>NuvioCommitSHA = 940907c3</code>, built and installed to the Living Room Apple TV, UUID and signature gated before install. <strong>The automated route was closed, and why is worth recording so nobody re-attempts it blind:</strong> running the XCUITest harness on device fails at signing — no provisioning profile for <code>…NuvioTVUITests.xctrunner</code> and <em>"No Accounts: Add a new account in Accounts settings"</em>; <code>devicectl</code> has <code>capture</code> but <strong>no input injection</strong>; pyatv isn't installed and its pairing needs a PIN off the TV. <strong>And a working harness would still not have been enough</strong> — XCUIRemote sends discrete button events, while the acceptance criterion is UX-7 <em>under real swipes</em>, the exact gap that let BUG-23 pass every sim gate and fail on hardware. So the pass was manual against a four-section checklist. <strong>All four green:</strong> UX-7 under swipes (fast scrubs land on the final title, carousel reclaims the hero, backdrop survives deep scroll); the <strong>BUG-19 Services-row re-check</strong> — clean, so UX-7's per-focus-step work did not reintroduce the ~700–830ms stall, which matters because the earlier acceptance predated UX-7 entirely; both themes plus <code>hero_poster_focus_only</code>; and UX-10's thumbnails <strong>including White-theme captions</strong>. UX-11 re-confirmed incidentally from the launch capture. <strong><code>scripts/release-beta.sh</code> is now the only remaining step.</strong></p>
+      </div>
+      <div class="entry ship">
+        <div class="when">2026-08-03 · sweep — ✅ the build number landed: <code>0.3.0 (105)</code></div>
+        <p class="what">Watermark <code>p196j81</code> → <code>p1ctmbp</code>; thread 134 → 136. Two new comments: the maintainer's own eleven-point reply (<code>p19oxes</code>, already logged) and u/mrStevenx3's answer to it nine hours later, in full — <em>"Yes I'm 0.3.0 (105)."</em> <strong>0 new items, 0 priority changes, 0 noise — and still the most useful non-item comment of the beta.</strong> Every finding in the retest omnibus was previously attributed to build 105 <em>by inference</em>, from two beta.9-only changes the reporter complimented. Now it is fact, with two consequences: <strong>BUG-19 is confirmed unfixed across builds 103, 104 and 105</strong> — three shipped attempts, none of which worked, which is what justified measuring before writing the fourth — and <strong>UX-4c's third "still low quality" is confirmed as the expected pre-<code>515cf6c4</code> state</strong>, not a regression. Housekeeping: six status cells had drifted behind the tracker's own log (BUG-19, BUG-31/32/33/34, UX-9, UX-11, plus BUG-30's missing measurement) and were corrected from it — statuses only, no descriptions or reporters touched. Fetch note: Reddit rate-limited this run (429, then 403); the sweep succeeded on a longer-backoff retry.</p>
+      </div>
+      <div class="entry ship">
+        <div class="when">2026-08-03 · early AM — 🏗️ UX-7 + UX-10 are built; the device pass re-opens</div>
+        <p class="what">Three commits on the beta.10 track (<code>cf2059d9</code> UX-7, <code>658d7182</code> UX-10, <code>940907c3</code> tests). <strong>UX-7</strong> is the always-on focus-follows-backdrop hero — source-tagged claims with generation guards, a flash-free crossfade racing banner → metahub → poster candidates, and gap-filling that honours the artwork / basic-info / Show-Hero settings. <strong>UX-10</strong> resolved to the detail <em>Trailers &amp; Extras</em> row (16:9 YouTube thumbnails, mirroring upstream) — <em>not</em> artwork beside the synopsis, so the posted reply's premise was wrong; the tester calls the whole detail screen "the description". <strong>A twelve-round Codex loop produced real findings in eleven of them:</strong> a P1 stale-commit hole, the LazyVStack dead-callback race (also caught live in sim), cross-row trailing-nil cancellation, enrichment races, settings bypasses, fallback-artwork gaps. Suite is now 42 tests and the gate is met at <strong>42/42 ×2</strong>. Sim-verified across classic and Nuvio-style, including the tester's exact "Lucy" arrangement. <strong>The device pass, green hours earlier, is re-opened by this</strong> — UX-7 under real swipes, a BUG-19 hitch re-check on the Services row, both themes, UX-10's White-theme captions.</p>
+      </div>
+      <div class="entry hot">
+        <div class="when">2026-08-02 · post-midnight — the FEAT-14 ring took five device rounds</div>
+        <p class="what">The earlier "fixed" call was premature, and four more rounds followed, each caught by photo or framebuffer capture: a detached halo at 2pt standoff; the ring vanishing whenever the focused poster dwell-morphed into the inline trailer; and then the platform discovery — <strong>tvOS 26 hardware never composites SwiftUI shape overlays into the <code>hoverEffect(.highlight)</code> lift layer, regardless of modifier order, and the simulator does not render that lift in screenshots at all</strong>, which means every sim verification of lift-adjacent UI lies. Final architecture swaps the system lift for a manual 1.06 <code>scaleEffect</code> in ring mode (Reduce-Motion-gated) so ring and artwork scale as one unit — the upstream approach — with the default OFF path byte-identical and three dead architectures documented in-file. <code>e6abb225</code>, device-approved: <em>"it works now."</em></p>
+      </div>
+      <div class="entry ship">
+        <div class="when">2026-08-02 · late night — 🖥 the DEVICE PASS is done: all gates clear, beta.10 releasable</div>
+        <p class="what">Release build deployed to the Living Room Apple TV via devicectl, verified live with Christian at the panel. <strong>BUG-19 acceptance PASSED</strong> — "smooth, no freezes" on the Services/Genres walks; the app sat at ~94MB resident and the pass-window Jetsam kill was <code>storekitd</code>, not us. <strong>BUG-31 clean</strong> at all coverage modes. <strong>BUG-30 reproduced under live instrumentation and measured</strong>: 1,603 probe samples show walk-ups resting at y=−90 vs true top −157 — a deterministic <strong>67pt residual</strong> (fix brief: extend the hero's focusable frame; no more completion-scroll rounds). <strong>FEAT-14 took five live device rounds</strong> — the device pass caught the ring drawing inside posters, then vanishing under the trailer morph, then hiding beneath the hover lift, producing a real platform discovery: <em>tvOS hardware never composites SwiftUI overlays into the <code>hoverEffect</code> lift layer, and the sim doesn't render the lift at all</em> — final architecture (ring on posters + trailer surface, manual 1.06 lift in ring mode) approved with "it works now" and pushed as <code>e6abb225</code>. Logistics learned the hard way: <code>log collect</code> and sysdiagnose both fail against the network-paired Apple TV — live <code>devicectl --console</code> streaming plus launch-arg knobs is the capture path, and <code>devicectl device capture screenshot</code> beats phone photos for pixel truth.</p>
+      </div>
+      <div class="entry ship">
+        <div class="when">2026-08-02 · night, later — ✅ harness gate met, batch PUSHED; the device pass is the sole release gate</div>
+        <p class="what">The four suite-order test failures (test04/09/11/19 — in-suite fail, isolated pass) are <strong>root-caused and fixed</strong>: <code>launchToHome</code>'s blind Menu-press recovery dance exited to the springboard when the prior test ended at a root surface, and re-activation intermittently left the sim compositing a <em>black screen</em> with the AX tree still queryable — the failed run's recordings show the tab-walk presses driving springboard icons. The dance is now root-aware (Menu only while the tab bar is off screen; a springboard escape relaunches instead of re-activating), and five state-sensitive tests start from a forced fresh launch — test16 joined the list after the fix exposed a second class (Settings-tab focus restoration + lazy-pane culling of the Theme rows). <strong>Verified: the full 40-test suite passed twice back-to-back</strong> (16:52 and 17:24), covering the fix-round's test16/test19 gate both times. <strong>All eight batch commits pushed</strong> (<code>becb24b3..7f5ad6ca</code> → <code>origin/tvos-shared-extraction</code>, at Christian's direction) with the submodule pointer bumped (<code>61fb71a</code>). The device pass now gates the beta.10 <em>release</em> only.</p>
+      </div>
+      <div class="entry ship">
+        <div class="when">2026-08-02 · night — 🔧 the beta.10 fix batch: code-complete, Codex loop closed</div>
+        <p class="what">Seven commits (<code>d43780a5</code>…<code>babe1a4d</code>) via model-tiered delegation in five waves. <strong>Fixed:</strong> BUG-33×3 (nuclear <code>reset()</code> + latch; settings-row-wide contrast; identity-hash keys with legacy migration), BUG-34, BUG-31 (closed-stroke root cause — never was top-only), BUG-32, UX-11, UX-9, FEAT-14 (opt-in, contract amended). <strong>BUG-19 package:</strong> dead URLCache directory revived (the ArtworkStore defect inherited verbatim), enforced 12MiB budget, off-main decode, persistent tile mounting. <strong>BUG-30:</strong> release-visible offset probe. <strong>Codex:</strong> 4 rounds — round 1 caught 4 P1s including a real flaw in the batch's own key design (positional suffixes → redesigned to FNV-1a identity hashes); round 4 clean. Kotlin 21 tests + harness green (4 suite-order flakes pass isolated; ordering hygiene spun off). <strong>Gates: device pass + the parallel session's full-suite runs</strong> <em>— both harness gates since met and the batch pushed; see the newer entry above.</em></p>
+      </div>
+      <div class="entry quiet">
+        <div class="when">2026-08-02 · evening, later — 🎥 <code>p12cg5v</code> analyzed: BUG-19 pinned to a row, a trigger and a number</div>
+        <p class="what">The 83s clip is a slow D-pad walk along the Home <strong>Services row</strong> — the GIF row nobody had identified — then a beta.8-era Supergirl detail / streams / trailer tour. Per-frame luma analysis (static Genres row as control): <strong>idle animation works</strong> (~42% active, pans + logo crossfades), but <strong>every scroll step freezes all visible tiles ~700–830ms</strong>; 33 stalls ≥133ms in one 30s window; the scroll itself takes ~100–200ms. Bonus: 2-frame magenta decode corruption on the Apple TV tile. Hypothesis for Instruments: focus changes trigger synchronous GIF-pipeline work blocking every tile ~¾s. <strong>Both tester videos now fully analyzed.</strong></p>
+      </div>
+      <div class="entry quiet">
+        <div class="when">2026-08-02 · evening — 🎥 the <code>p196j81</code> video analyzed frame-by-frame</div>
+        <p class="what">The tester's 166s clip (phone recording of the TV, French locale) mapped with contact sheets, then dense extraction + zoom crops. <strong>Confirmed on camera:</strong> UX-11 (focus starts on "Ajouter un profil"), BUG-31 (four-edge halo + ghost-doubled figure on the Batman poster; Cape Fear clean), BUG-32 (Collection <em>and Services</em> cards rounded until focused), BUG-34 (header gone in &lt;0.5s, focus visibly on the first Films poster — the drag mechanism), BUG-33 defect 3 (white-on-white is the <em>Settings</em> pane's first row) and defect 2 (Découvrir's catalog rows vanish after a search while the Settings toggles stay "Activé" — in-memory clobber). <strong>Not in the clip:</strong> no GIF row (BUG-19's only repro stays <code>p12cg5v</code>), defect 1 unprovable from stills, UX-9 frames too blurred. New minor find: the focused Cape Fear card sits as a blank gray placeholder ~1.5s before its backdrop loads. Stills: <code>docs/research/p196j81-video-evidence/</code>.</p>
+      </div>
+      <div class="entry hot">
+        <div class="when">2026-08-02 · second sweep — the beta.9 retest wave arrived</div>
+        <p class="what">Watermark <code>p1799n2</code> → <code>p196j81</code>. One new comment: u/mrStevenx3's <strong>eleven-point beta.9 review</strong> with a second video attached. <strong>+4 bugs</strong> — BUG-31 (depth effect ignores its "top only" setting, Cape Fear right / Batman wrong), BUG-32 (square corners skip collection art until focused), <strong>BUG-33 at P1</strong> (Search Sources ignores the selection, wipes it after every search, first row white-on-white), BUG-34 (actor page auto-scrolls and won't scroll back). <strong>+1 feature</strong> — FEAT-14 (accent-coloured focus ring). <strong>+4 UX</strong> — UX-8 (genres, not a catalog list), UX-9 (aspect-fill the focus trailer), UX-10 (poster in the description), UX-11 (focus the main profile at login). <strong>Re-confirmed:</strong> BUG-19 (third build unfixed) and UX-4c (expected — the fix landed after the cut). <strong>0 noise.</strong> Still no About-pane build number, and both tester videos remain unwatched.</p>
+      </div>
+      <div class="entry quiet">
+        <div class="when">2026-08-02 · first sweep — no new tester comments</div>
+        <p class="what">Watermark <code>p12cg5v</code> → <code>p1799n2</code>. The feed returned two comments past the previous watermark and <strong>both were our own</strong>: the beta.9 announcement (<code>p178xrs</code>) and the UX-7 reply (<code>p1799n2</code>), their ids recorded for the first time. 0 new items, 0 status changes. Read at the time as early rather than silent — confirmed nine hours later when the retest landed.</p>
+      </div>
+      <div class="entry">
+        <div class="when">2026-08-02 · late — the CFPrefs defect class closed for good</div>
+        <p class="what">The "diet audit later" from the night entry is done: <strong>every remaining unbounded NSUserDefaults payload moved to PayloadFileStore files</strong> (collections, watch progress, library, watched, CW enrichment, stream-link cache — <code>becb24b3</code>, pushed). An external Codex review caught two real gaps before commit: <strong>iOS sign-out left the previous account's payload files readable after re-login</strong>, and <strong>a failed migration write deleted the only remaining copy</strong>. Both fixed, compile + test verified; a second Codex pass came back clean. The stamp-phase fix + release guard landed the same day (<code>baeadb61</code>, <code>df9772d4</code>). All of it rides beta.10.</p>
+      </div>
+      <div class="entry ship">
+        <div class="when">2026-08-02 · 🚢 beta.9 shipped + announced</div>
+        <p class="what"><strong>Tag <code>tvos-v0.3.0-beta.9</code>, build 105, both repos.</strong> Built from a clean clone (SABR WIP kept out); README refreshed; hand-written highlights lead the notes with the honest trailer-quality split and the BUG-30 disclosure. Announcement + the UX-7 reply posted (automod passed first try) — <strong>UX-7 is now a public beta.10 commitment.</strong> Same night, the SABR session landed the 1080p repack (<code>515cf6c4</code>) for the next beta.</p>
+      </div>
+      <div class="entry hot">
+        <div class="when">2026-08-02 · small hours — device pass round 2</div>
+        <p class="what">The three round-1 failures fixed and tester-confirmed: <strong>BUG-29</strong> (trailing-anchor scroll), <strong>BUG-23</strong> (hero de-TabView'd — sim presses never simulated remote swipes), <strong>UX-6</strong> (dim raised to 0.85). <strong>BUG-30</strong> found, fought through six rounds (two on-device regressions reverted same night), and parked with an instrumentation plan.</p>
+      </div>
+      <div class="entry hot">
+        <div class="when">2026-08-01 · night — the crash the device pass caught</div>
+        <p class="what">First hardware run of the batch crash-looped on profile select: <strong>BUG-11's CFPrefs abort class in a second home</strong> — the Trakt library snapshot as one oversized NSUserDefaults write. Root-caused from device <code>.ips</code> pulls (which blamed innocent writers in the same flush batch), fixed with file-backed storage, device-confirmed.</p>
+      </div>
+      <div class="entry">
+        <div class="when">2026-08-01 · evening — the 13-item batch</div>
+        <p class="what">The entire afternoon intake answered in one day across 4 delegated agent waves: BUG-28/29, FEAT-7/8/9/11/13, UX-5/6, the UX-4c variant fix + SABR root-cause discovery, and three upstream items including the Trakt-only tracking abstraction (67→92 tests green).</p>
+      </div>
+      <div class="entry hot">
+        <div class="when">2026-08-01 · afternoon — the most productive reply of the beta</div>
+        <p class="what">u/mrStevenx3's video answer: +2 bugs, +1 feature gap (no About pane), UX-4c scoped as systemic, UX-7 escalated to P1 with the daily-driver framing.</p>
+      </div>
+      <div class="entry ship">
+        <div class="when">2026-07-30 · beta.8</div>
+        <p class="what">The redesign build (HIG revamp) shipped; its 15-point review became this batch's worklist.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>Mirrored from <code>docs/beta-feedback-tracker.md</code> · swept daily via Reddit's public Atom feed (no credentials, no quota).</div>
+    <div>Upvotes, parent ids and comment depth are not exposed by the feed; counts are floors. The 102↑ / 136 comments / 70K views figures were read live off the thread on 2026-08-03 night while posting the beta.10 announcement.</div>
+    <div>Last updated 2026-08-03 night, at the beta.10 cut — build 106, <code>tvos-v0.3.0-beta.10</code>, announcement <code>p1khg3l</code>. Next scheduled sweep watches for beta.10 retests.</div>
+  </footer>
+
+</div>

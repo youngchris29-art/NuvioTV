@@ -184,6 +184,36 @@
 
   .meta .pill strong { color: var(--text); font-weight: 600; }
 
+  /* ---------- outage notice ---------- */
+  .notice {
+    background: var(--p1-soft);
+    border: 1px solid var(--p1);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .notice-title {
+    font-family: var(--display);
+    font-size: 15.5px;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    color: var(--text);
+  }
+
+  .notice p {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--text-2);
+    max-width: 74ch;
+  }
+
+  .notice p strong { color: var(--text); font-weight: 600; }
+
   /* ---------- stat tiles ---------- */
   .tiles {
     display: grid;
@@ -353,6 +383,7 @@
   .status.done { color: var(--good); border-color: var(--good); background: var(--good-soft); }
   .status.waiting { color: var(--text-2); }
   .status.video { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+  .status.warn { color: var(--p1); border-color: var(--p1); background: var(--p1-soft); }
 
   .card .desc { margin: 0; color: var(--text-2); font-size: 14px; }
   .card .desc strong { color: var(--text); font-weight: 600; }
@@ -495,77 +526,121 @@
       Live triage of bug reports, feature requests and UX feedback from the
       <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/">beta announcement thread</a>,
       swept daily and mirrored from <code>docs/beta-feedback-tracker.md</code>.
-      <strong>🚢 beta.10 is out</strong> — build <code>0.3.0 (106)</code>, tag <code>tvos-v0.3.0-beta.10</code>, published to both repos and announced on the thread.
-      The headline is the <strong>pinned focus-following hero</strong>: the layout u/mrStevenx3 has asked for since their "Lucky" screenshot, hardened over
-      <strong>eight manual device rounds</strong> after the first build passed every sim gate and fell apart on real hardware. The board is now a retest watch.
+      <strong>🆕 2026-08-06 — a second voice, and a kind of complaint this board has never had.</strong>
+      u/Ginosaure — the tester who confirmed BUG-2 with <em>"no lag at all with a 44-gig file"</em> back on 2026-07-24 — is back with
+      <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p20ivrz/">p20ivrz</a>:
+      <strong>opening a poster from a <em>View All</em> grid and pressing Back returns you to the very beginning of that grid</strong>, every
+      time. Filed as <strong>UX-13 (P2)</strong>. Every other item here is about how a pixel is drawn or whether a fetch resolves; this one is
+      about the app forgetting where you were, and it is the first of its kind in eighteen days of sweeps.
+      Still the largest open thread beneath it: <strong>UX-9</strong>, where the fix was aimed at the full-screen player and the reporter means
+      the inline focus trailer — the measured answer is a per-item zoom of <strong>z ≈ 1.34</strong> against the 1.08 that shipped.
     </p>
     <div class="meta">
-      <span class="pill"><strong>136</strong> comments <span style="color:var(--text-3)">(floor)</span></span>
-      <span class="pill"><strong>102↑</strong> · <strong>70K</strong> views <span style="color:var(--text-3)">live-read at post time</span></span>
-      <span class="pill">Last checked <strong>2026-08-03</strong> (night)</span>
+      <span class="pill"><strong>144</strong> comments <span style="color:var(--text-3)">(floor)</span></span>
+      <span class="pill"><strong>102↑</strong> · <strong>70K</strong> views <span style="color:var(--text-3)">carried from 2026-08-02, 4 days stale</span></span>
+      <span class="pill">Last checked <strong>2026-08-06</strong> (morning sweep)</span>
+      <span class="pill">Watermark <code>p21m344</code> <span style="color:var(--text-3)">@ 2026-08-06T12:07:13Z</span></span>
       <span class="pill">🚢 Shipped <strong>beta.10</strong> · build 106</span>
-      <span class="pill">📣 Announced <code>p1khg3l</code></span>
-      <span class="pill">🖥 Device pass <strong>DONE</strong> — 8 rounds</span>
+      <span class="pill">🆕 <strong>UX-13</strong> — View All loses your place</span>
+      <span class="pill">⚠️ <strong>UX-9</strong> needs z≈1.34, shipped 1.08</span>
     </div>
   </header>
 
+  <div class="notice">
+    <div class="notice-title">🎥 The video is analyzed — UX-9 is solved with a number, and two of the morning's conclusions were wrong</div>
+    <p>
+      179.6s at 720p30, ~5,390 frames — the longest and most decisive tester clip of the beta.
+      <strong>UX-9 is no longer a hypothesis.</strong> The focused <em>Lucky</em> card renders 350px of video inside a 426px card
+      (<strong>82.2% fill</strong>, with ~38px neutral black bars top and bottom); <em>Futurama</em>, same row and same session, fills edge to edge.
+      Solving <code>visible = zoom × A_card ÷ A_src</code> gives a <strong>2.34:1 source</strong> — CinemaScope — so a 16:9 card needs
+      <strong>z ≈ 1.34</strong>, against the <strong>1.08</strong> that shipped. Compute the zoom per item from the track's natural size;
+      no constant serves both encodes, which is exactly why two attempts missed. It also dissolves the contradiction with the previous clip:
+      Soulm8te and Supergirl really were edge-to-edge, because they are 16:9.
+    </p>
+    <p>
+      <strong>BUG-33 is verified, not merely withdrawn.</strong> The search is finally typed on camera (<em>Avatar</em>, t=118) and returns
+      <strong>exactly two rows</strong> — <em>Search • Films</em> and <em>Search • Séries</em>.
+      <strong>BUG-46 is located:</strong> a focused card black for ~2.7s then collapsing with zero frames of playback, ~92s into a session that
+      cold-starts on camera. <strong>BUG-37 is absent for the second clip running</strong> — though the footage answers the open half of the ask,
+      since <code>Hero style Nuvio</code> is visibly ON.
+    </p>
+    <p>
+      <strong>Two corrections to this morning's notes.</strong> <strong>BUG-38's fix is not partial</strong> — service tiles already render full
+      poster-collage backgrounds at rest; only the collections row is bare, which is what the fix targets. And <strong>BUG-45 goes back to P2</strong>:
+      the focused <em>Hero style Nuvio</em> row measures <strong>1.05:1</strong> against <strong>4.36:1</strong> for the unfocused row eight pixels
+      above it <em>in the same exposure</em>. The sidebar dismissal stands, but this one is real —
+      <strong>blowout can wash light text into a light platter; it cannot make dark text look light.</strong>
+    </p>
+  </div>
+
   <div class="tiles">
     <div class="tile alert">
-      <span class="n">1</span>
-      <span class="k">Open bug</span>
-      <span class="sub">of 34 filed · BUG-30, measured at a deterministic 67pt residual</span>
-    </div>
-    <div class="tile ship">
-      <span class="n">10</span>
-      <span class="k">Awaiting tester retest</span>
-      <span class="sub">now in testers' hands · BUG-19/31/32/33/34 · FEAT-14 · UX-7/9/10/11</span>
+      <span class="n">14</span>
+      <span class="k">Open bugs</span>
+      <span class="sub">of 46 filed · 1 at P1 (BUG-37) · 0 at P0 · BUG-46 opened today</span>
     </div>
     <div class="tile">
-      <span class="n">2</span>
-      <span class="k">Open feature / UX asks</span>
-      <span class="sub">FEAT-3 TestFlight · UX-8 search genres</span>
+      <span class="n">6</span>
+      <span class="k">Open feature requests</span>
+      <span class="sub">FEAT-3, 14, 15 · <strong>+FEAT-16, 17, 18</strong> from today's comment</span>
+    </div>
+    <div class="tile">
+      <span class="n">6</span>
+      <span class="k">Open UX / docs items</span>
+      <span class="sub">UX-4, UX-8, UX-9 (escalated), UX-12, DOC-2 · <strong>+UX-13</strong> today</span>
     </div>
     <div class="tile ship">
-      <span class="n">56</span>
-      <span class="k">Shipped or closed</span>
-      <span class="sub">across all sections since 2026-07-21 · +10 in beta.10</span>
+      <span class="n">53</span>
+      <span class="k">Resolved or shipped</span>
+      <span class="sub">of 79 tracked items since 2026-07-21</span>
     </div>
   </div>
 
   <section>
-    <h2>Triage <span class="count">2026-08-03 night — shipped; now a retest watch</span></h2>
+    <h2>Triage <span class="count">2026-08-05 (late) — reordered by the answer set</span></h2>
     <p class="section-note">
-      beta.10 went out with the whole retest wave answered, plus the hero feature that was named this beta's adoption blocker.
-      Nothing on this board is waiting on code right now: <strong>the next move belongs to the testers.</strong>
-      Three items close on <em>their</em> word rather than ours — the pinned hero, the GIF row and Search Sources — and all three have a history of
-      internal passes that hardware or a tester later contradicted.
+      Two items changed lanes today for opposite reasons, and both changes are about <em>evidence</em> rather than effort:
+      BUG-33 left the critical path because the defect was withdrawn, and UX-9 entered it because the fix was aimed at a surface the
+      reporter has now ruled out. <strong>The new video is the top of the queue</strong> — it is the sole evidence for four live items.
     </p>
     <div class="board">
 
       <div class="lane now">
         <h3><span class="dot"></span>Now</h3>
         <ol>
-          <li><strong>Watch for beta.10 retests, build number attached.</strong> The About pane now reads <code>0.3.0 (106)</code> and the announcement asks for it explicitly. The three that close on a tester's reply: <strong>the pinned hero</strong> (does it behave under someone else's remote and catalog set?), <strong>BUG-19's GIF row</strong> (unfixed across 103, 104 and 105 — this is the fourth attempt and the first with a measured cause), and <strong>BUG-33 Search Sources</strong> (shipped broken in beta.9 to the tester who requested it, and never exercised on hardware).</li>
-          <li><strong>Expect pinned-hero edge reports.</strong> Eight device rounds converged on default poster sizes and the tester's own catalogs; an unusual Poster Size or a very short row can still rest a title or caption against the clip edge. The announcement invites exactly that report, so treat "cut off at the top/bottom" replies as expected traffic, not regressions.</li>
-          <li><strong>Sideload window.</strong> Free-Apple-ID signatures expire after 7 days, so the first wave of "it stopped opening" replies is normal and answered by re-sideloading — worth a one-line reply rather than a bug entry.</li>
+          <li><strong>✅ The <code>p1vylo0</code> video is analyzed</strong> (2026-08-05 night) — results below. It solved UX-9, verified BUG-33, located BUG-46, and corrected two of the same day's earlier conclusions.</li>
+          <li><strong>UX-9 (P2) — now a one-line change with a known constant.</strong> Measured: <em>Lucky</em> fills 82.2% of its card, <em>Futurama</em> fills it entirely ⇒ source is 2.34:1 ⇒ <strong>z ≈ 1.34 required, 1.08 shipped</strong>. Compute per item from the track's natural size and stop shipping constants. Do not claim it fixed a third time until a scope trailer is checked on hardware.</li>
+          <li><strong>BUG-45 (P2, restored) — a measured white-on-white row on the Écran d'accueil pane.</strong> 1.05:1 focused against 4.36:1 unfocused in the same frame. The sidebar report is withdrawn; this content-pane row replaces it. Verify <code>c29da28b</code> reaches toggle rows, not just the sidebar.</li>
+          <li><strong>BUG-37 (P1) — two clips, no repro. Stop looking at video.</strong> Both named rows were walked at 1s sampling and every title is present at every rest. Their own description is "gone at rest", which 1s sampling would catch. The clip does answer the open half though: <code>Hero style Nuvio</code> is ON, so they are in pinned mode. Ship <code>debug.homeScrollProbe</code> or run a pinned-mode device pass and read the numbers.</li>
+          <li><strong>BUG-38 (P2) — corrected: the fix is aimed correctly.</strong> Service tiles already render poster-collage backgrounds at rest; only the collections row is bare. The focused-tile blackout is the beta.7 logo-on-black focus GIF, which is a design question. Note the pinned hero already builds a poster collage for a focused collection while its tile stays a flat gradient — the missing image already exists.</li>
+          <li><strong>BUG-46 (P2, new) — located, and narrowed.</strong> A focused card (source OCS) went black t≈108.5–111.2 then collapsed with zero frames of playback, ~92s into a session that cold-started on camera. The ident proves the trailer <em>resolved</em>, so this is a render/teardown stall rather than extraction — instrument live player and layer instances, not the fetch path. Not demonstrated: the restart-to-recover half.</li>
+          <li><strong>BUG-35 + BUG-42 — still one fix, not two.</strong> The hero commits raw catalog metadata first and the TMDB-enriched localized payload second, rendering the same film twice, English then French. Commit once, on the enriched payload, with the raw one as a timeout fallback.</li>
+          <li><strong>BUG-31 / BUG-36 — one design call, plus a video we owe them.</strong> The reporter asked us to <em>film our own Apple TV</em> so both sides can confirm they mean the same defect. That is the cheapest possible way to end a divergence that has survived six drawing changes.</li>
         </ol>
       </div>
 
       <div class="lane next">
         <h3><span class="dot"></span>Next</h3>
         <ul>
-          <li><strong>BUG-30's real fix</strong> — the probe turned a six-round guessing game into a number: extend the hero's focusable frame to the content top so the focus engine's own scroll-to-visible lands at −157 naturally. Not more completion-scroll machinery, which wedged Down-navigation on device and was reverted. The pinned-hero work just proved the same principle on a bigger scale: reach the <em>focus frame</em>, never the padding around it.</li>
-          <li><strong>UX-8</strong> — genres instead of a wall of queried catalog names. The one retest item deliberately left unbuilt, because the BUG-33 filtering had to be right first: a cleaner list of the wrong results is still the wrong results.</li>
-          <li><strong>A pinned-hero device-verification note for the harness</strong> — the eight rounds produced a hard, reusable fact: long press-sequence sim diagnostics <em>cannot</em> arbitrate device focus bugs (classic mode fails the same harness walk while working fine on every real device). Recorded in memory so the next focus bug starts with instrumentation, not simulation.</li>
+          <li><strong>UX-13 (P2, new 2026-08-06)</strong> — restore the <em>View All</em> grid's position on Back. Already acknowledged on the thread, so it owes an answer as well as a fix. Reproducible in the simulator with no follow-up ask, and cheap relative to its cost: persist the last-focused item id per catalog and drive focus back to it on reappear rather than fighting the focus engine's first-item default. Sweep Home rows and Search results for the same loss while you are in there.</li>
+          <li><strong>BUG-33 (P2, downgraded)</strong> — defect 1 withdrawn, defect 2 unchallenged, defect 3 (the white-on-white chip) fixed in code and unconfirmed. Keep the <code>6926503a</code> instrumentation; it costs nothing and proves the enabled set against any future report, but nothing is gated on reading it.</li>
+          <li><strong>FEAT-15</strong> — the requirement is confirmed verbatim (<em>"you understood exactly what I was asking for"</em>), so <code>0ad450b6</code> is building the right thing. What is unproven is the execution: hero-off must keep the focused title's backdrop and description with no carousel, timer, dots or CTA.</li>
+          <li><strong>UX-8</strong> — the ask reached its end state: hide the genre row <em>too</em>, leaving the search screen with the field, the results and nothing else. Building the old wording literally (drop catalogs, keep genres) would ship exactly what they just asked to be rid of. Confirm in the reply before coding; the BUG-33 gate is released.</li>
+          <li><strong>The cheap, unambiguous ones</strong> — BUG-40 (now confirmed by mechanism; one look at a focused card on the White accent settles it), BUG-43 (light-theme language badge), UX-12 (the Play/Mute glyphs), BUG-39 (raise the GIF bound without regressing BUG-19's stall).</li>
+          <li><strong>Measure before coding</strong> — BUG-41 and BUG-44 are reported regressions; get a before/after, per BUG-26's precedent.</li>
+          <li><strong>A short reply is owed</strong> — confirm the filter works and thank them for saying so, admit UX-9 was aimed at the wrong screen, answer DOC-2 factually, and attach the BUG-31 counter-video they asked for.</li>
         </ul>
       </div>
 
       <div class="lane later">
         <h3><span class="dot"></span>Later</h3>
         <ul>
+          <li><strong>FEAT-16 / FEAT-17 / FEAT-18</strong> — a bundled font choice (Open Sans, as on Android TV), an auto-hiding nav in place of the top bar like Omni, and keeping the title logo on screen during trailer playback. Only FEAT-18 is small enough to ride a fix batch; FEAT-17 should wait for the pinned hero to settle rather than become a fourth nav mode on an unsettled surface.</li>
+          <li><strong>DOC-2</strong> — does a change made on the Nuvio account propagate without signing out and back in? Check the polling path before answering; the fork has been polling-only since the realtime stack was removed.</li>
+          <li><strong>BUG-45 (P3, downgraded)</strong> — a capture artifact, not a white-on-white site. Keep the <code>c29da28b</code> fix as hygiene, but spend no device-pass time on it.</li>
+          <li><strong>BUG-30</strong> — the clipped tab bar after a D-pad walk up, measured to a deterministic 67pt residual. Related to BUG-37; they may share a fix.</li>
           <li><strong>FEAT-3</strong> TestFlight — research done, clean-build plan drafted; a separate track from the sideload beta.</li>
-          <li><strong>u/Overall_Stuff5982's BUG-21 reconnect answer</strong> — still outstanding, and All-Debrid's end-to-end resolve is still the one path never verified in the wild.</li>
-          <li><strong>A pre-release settings sweep</strong> — the standing lesson from FEAT-10 and BUG-28: exercise every new settings pane on hardware, in the White theme, before cutting a build. Both of beta.9's broken-on-arrival surfaces would have been caught by it.</li>
+          <li><strong>A pre-release settings sweep</strong> — the standing lesson from FEAT-10 and BUG-28. Today adds a second one: <em>ask for the demonstration before building the fix.</em></li>
         </ul>
       </div>
 
@@ -573,11 +648,556 @@
   </section>
 
   <section>
-    <h2>Shipped in beta.10 <span class="count">build 106 · 2026-08-03 · the retest wave, answered</span></h2>
+    <h2>New this sweep <span class="count">2026-08-06 · one comment, one item</span></h2>
+    <p class="section-note">
+      Two comments landed above the watermark and only one is a tester's. It is short, it is prose-only, and the repro in it is complete
+      enough to reproduce without asking anything back — which makes it the least expensive item added to this board in two weeks.
+    </p>
+    <div class="cards">
+      <div class="card warm">
+        <div class="card-top">
+          <span class="id">UX-13</span>
+          <span class="chip p2">P2</span>
+          <span class="status new">New</span>
+          <span class="status waiting">Acknowledged on the thread</span>
+        </div>
+        <p class="desc">
+          <strong>Browse position is lost when you come back from a detail page to a <em>View All</em> category grid — Back always lands on the first poster.</strong>
+          <em>"When I browse 'View All' in a category and click on a poster, for example, to learn more, if I press the back button, it always
+          takes me back to the beginning of the posters in that category. Would it be possible to have it resume from the poster I just viewed
+          and allow me to continue scrolling through the rest without having to go back to the beginning every time?"</em>
+          The cost scales with how far in you were, so it bites hardest exactly where <em>View All</em> earns its place: a tester working through
+          a long catalog re-scrolls the whole grid after every single poster they open.
+        </p>
+        <p class="fix">
+          <strong>Read it as state restoration, not focus.</strong> The grid is being rebuilt fresh on pop rather than restoring its scroll offset
+          and last-focused item — so the fix persists the focused item's id per catalog and drives focus back onto it on reappear, instead of
+          fighting the focus engine's default first-item behaviour. Worth checking in the same pass whether Home rows and Search results lose
+          position the same way, and whether it survives a deeper Detail → Season → Back chain.
+          <strong>Neighbours:</strong> UX-7 is the inverse ask (getting back <em>to</em> the top of Home) on a different surface, and BUG-31 shares
+          this grid but is about rendering, not memory.
+        </p>
+        <div class="by">u/Ginosaure <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p20ivrz/">comment</a> <span class="sep">·</span> 2026-08-06 <span class="sep">·</span> also: <em>"this is definitely my favorite fork"</em></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What the answer set settled <span class="count">2026-08-05 · one comment, ten items</span></h2>
+    <p class="section-note">
+      All from u/mrStevenx3's <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1vylo0/">point-by-point reply</a> (2026-08-05T16:44:32Z), ~4 hours after ours —
+      their fastest turnaround of the beta. Four of the ten depend on a video that has not been watched yet.
+    </p>
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">BUG-33</span>
+          <span class="chip p2">P2 ↓</span>
+          <span class="status done">✅ Withdrawn by the reporter</span>
+        </div>
+        <p class="desc">
+          <em>"The option works correctly in the search results: only the two catalogs I selected are displayed. I should have mentioned that."</em>
+          <strong>The filtering was never broken.</strong> The beta.10 identity-hash key rework worked, and the Codex loop that reviewed it was
+          validating the right layer after all. The likeliest source of the original mis-report is UX-8's catalog row — the search screen does
+          still list every catalog being searched, which reads as <em>"deselected catalogs still appear"</em> without being a results defect —
+          though they have not said that, and what they <em>have</em> said is that the filtering itself is correct.
+          <strong>Left on the row:</strong> the white-on-white chip fix, in code and unconfirmed.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1vylo0/">comment</a> <span class="sep">·</span> 2026-08-05</div>
+      </div>
+
+      <div class="card flag">
+        <div class="card-top">
+          <span class="id">UX-9</span>
+          <span class="chip p2">P2 ↑</span>
+          <span class="status reopened">⚠️ Fix aimed at the wrong surface</span>
+        </div>
+        <p class="desc">
+          <em>"I'm talking about the trailers that start playing when they receive focus… 'Lucky' still has black bars, while 'Futurama' is correctly zoomed."</em>
+          <strong>Three consequences.</strong> <strong>(1)</strong> <code>c29da28b</code> rebuilt the full-screen player, which they have just
+          excluded — keep it, but it does not close this row, and beta.11 must not say it does. That would be the third build to claim a fix on
+          one item. <strong>(2)</strong> Broken and correct trailers in the same clip on the same surface settle the mechanism as
+          <strong>source-aspect dependence</strong>: a 2.39:1 trailer needs far more than 1.08 to fill a 16:9 card, a 16:9 one needs none. Both
+          previous attempts were constants, which is exactly why both missed. <strong>(3)</strong> Our frame pass read Soulm8te and Supergirl as
+          edge-to-edge; the likeliest reconciliation is a <em>transient at trailer start</em>, which a sampled contact sheet skips and a live
+          viewer sees every time.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1vylo0/">comment</a> <span class="sep">·</span> <a href="https://reddit.com/link/p1vylo0/video/waxrc8r45lhh1/player">video</a> <span class="sep">·</span> 2026-08-05</div>
+      </div>
+
+      <div class="card warm">
+        <div class="card-top">
+          <span class="id">BUG-46</span>
+          <span class="chip p2">P2</span>
+          <span class="status new">New</span>
+          <span class="status video">🎥 In the unwatched clip</span>
+        </div>
+        <p class="desc">
+          <strong>Focus trailers stop loading after prolonged navigation, and only an app restart brings them back.</strong>
+          <em>"After I've been navigating through the app for a while, the trailers stop loading when an item receives focus. I have to restart
+          the app to get them working again."</em> Reported unprompted, and it is <strong>the first degrades-over-a-session report of the entire
+          beta</strong> — everything else on this board is wrong from the first frame, which makes this a different shape of bug and probably a
+          different part of the code. It reads as resource exhaustion rather than logic, because <em>restart clears it</em> fits every candidate:
+          a player instance leak on the focus path, an <code>AVPlayerLayer</code> never torn down, a connection or token pool that never drains,
+          or a resolution cache latching a failure after the first error. <strong>Instrument before fixing</strong> — count live players and
+          in-flight resolutions across a long browse, the measure-first route that closed BUG-19 and BUG-26.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1vylo0/">comment</a> <span class="sep">·</span> <a href="https://reddit.com/link/p1vylo0/video/waxrc8r45lhh1/player">video</a> <span class="sep">·</span> 2026-08-05</div>
+      </div>
+
+      <div class="card flag">
+        <div class="card-top">
+          <span class="id">BUG-37</span>
+          <span class="chip p1">P1</span>
+          <span class="status warn">🎯 Repro named — and it contradicts our frame pass</span>
+        </div>
+        <p class="desc">
+          <em>"Look at the 'Genres' section: when I scroll down and then back up, the title is gone. The same thing happens with 'New Movies'. I show it again in my second video."</em>
+          <strong>Two named rows, plus a claim the repro was in the previous clip all along.</strong> Our pass read every Home rest in that clip
+          as clean — including a still of <em>Nouveaux films</em> itself — so one of the two readings is wrong, and the sampling is the likelier
+          culprit: 2s contact sheets with selected dense spans will straddle a title that is missing only <em>between</em> rests or only during
+          the up-walk. The other possibility is that it needs the <em>Genres</em> row specifically, which the clip never scrolls to.
+          Do both before trusting <code>0ad450b6</code>. The hero-mode half of the ask went unanswered, and it still matters — the titles-in-band
+          compromise only exists in pinned mode.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1vylo0/">comment</a> <span class="sep">·</span> <a href="https://reddit.com/link/p1vylo0/video/waxrc8r45lhh1/player">video</a> <span class="sep">·</span> 2026-08-05</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">BUG-40</span>
+          <span class="chip p3">P3</span>
+          <span class="status done">🎯 Confirmed by mechanism</span>
+        </div>
+        <p class="desc">
+          <em>"This happens everywhere… Even though the focus ring is actually set to white, it looks gray on screen. If I choose any other color, it works correctly."</em>
+          <strong>Both halves of the fix's prediction are met.</strong> <code>focusRingHex</code> mapped near-white accents to a dark
+          <code>1A1A1A</code> fallback — a property of the <em>colour</em>, not the surface — so "everywhere" and "every other colour works" are
+          exactly what that bug produces. The toggle half of the ask is answered by implication: <em>"if I choose any other color"</em> is only
+          meaningful with Accent Focus Ring on. It also explains our own white measurement — that ring was the system highlight on a surface
+          FEAT-14 does not paint, so we measured the wrong thing rather than the reporter mis-seeing.
+          <strong>The device pass only has to look at one focused card on the White accent.</strong>
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1vylo0/">comment</a> <span class="sep">·</span> 2026-08-05</div>
+      </div>
+
+      <div class="card warm">
+        <div class="card-top">
+          <span class="id">BUG-38</span>
+          <span class="chip p2">P2</span>
+          <span class="status warn">📈 Scope outgrew the fix</span>
+        </div>
+        <p class="desc">
+          <em>"Yes, I'm referring to the colored rectangles, but also to the background images for services like Netflix, Amazon Prime, etc… Missing background images and title images."</em>
+          <strong>So <code>38e83abb</code> is likely partial.</strong> Its root cause is specific — genre collections are TMDB DISCOVER sources
+          that never get a cover minted, so the resolver falls back to the first item's poster. That story does not obviously carry to
+          <em>service</em> collections, which are a different source kind and may well have a real cover URL that simply is not being bound, and
+          it covers <strong>title images</strong> not at all: the reporter lists those as a second missing asset, not a rewording of the first.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1vylo0/">comment</a> <span class="sep">·</span> <a href="https://reddit.com/link/p1vylo0/video/waxrc8r45lhh1/player">video</a> <span class="sep">·</span> 2026-08-05</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">BUG-45</span>
+          <span class="chip p3">P3 ↓</span>
+          <span class="status done">🚫 Not a bug — capture artifact</span>
+        </div>
+        <p class="desc">
+          <em>"I didn't report it because it's just an effect caused by the video. The text actually appears in black as expected."</em>
+          They were looking at their screen while we were looking at their camera. <strong>The reasoning that put this on the board was wrong in a
+          way worth remembering:</strong> the note argued it was "stable across both frames, so not a capture artifact" — but a blown highlight is
+          stable too. Keep the <code>c29da28b</code> fix, which is independently correct (a focused row really did take the inactive colour), but
+          it is hygiene now, not a reported defect, and this stops being the eighth white-on-white site.
+        </p>
+        <div class="by">Internal find, dismissed by <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1vylo0/">u/mrStevenx3</a> <span class="sep">·</span> 2026-08-05</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">FEAT-18</span>
+          <span class="chip p3">P3</span>
+          <span class="status new">New</span>
+        </div>
+        <p class="desc">
+          <strong>Keep the title logo on screen while the focus trailer plays; Nuvio does.</strong>
+          <em>"I couldn't figure out what it was until now. I finally found it: the title (logo) disappears while the trailer is playing, whereas in Nuvio it remains visible."</em>
+          Notable for how it arrived — they had been reporting the <em>feeling</em> of a difference for two rounds without being able to name it,
+          and this is the name. <strong>One condition, but not one line:</strong> the logo is hidden on trailer start deliberately, because UX-6
+          fought exactly this legibility problem over a bright playing trailer. Keep it visible <em>with</em> the scrim rather than deleting the
+          hide, and ship it with UX-12 and UX-9 — same surface, one device check instead of three.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1vylo0/">comment</a> <span class="sep">·</span> 2026-08-05</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">FEAT-16</span>
+          <span class="chip p3">P3</span>
+          <span class="status new">New</span>
+        </div>
+        <p class="desc">
+          <strong>Let the app's font be changed, the way the Nuvio Android TV app does.</strong>
+          <em>"I've selected the 'Open Sans' font. I realize this may be difficult to implement on Apple TV."</em>
+          They pre-empt the objection themselves, and are roughly right though not for the reason they think: tvOS has no user font library, so
+          this means <strong>bundling the faces</strong> — the easy half. <strong>The real cost is the seam:</strong> it only works if every text
+          style routes through the central <code>Theme</code> typography layer, and any site still calling <code>.font(.title)</code> directly
+          would keep the system face and look broken beside the rest. Survey that first, and ship a small named set, never arbitrary fonts.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1vylo0/">comment</a> <span class="sep">·</span> 2026-08-05</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">FEAT-17</span>
+          <span class="chip p3">P3</span>
+          <span class="status new">New</span>
+          <span class="status waiting">Needs a product call</span>
+        </div>
+        <p class="desc">
+          <strong>Remove the top menu bar entirely and replace it with a hidden menu in the top-left corner, like Omni.</strong>
+          The third navigation ask from this reporter, and it brushes against FEAT-7's shipped answer — Default/Minimal shipped in beta.9 and the
+          Top Bar variant was <em>declined</em>, on the grounds that a 10-foot sidebar is the tvOS-native layout. <strong>But it is not the thing
+          that was declined:</strong> chrome that stays invisible until focus walks into it is an auto-hiding nav, an idiom tvOS supports well and
+          that the pinned hero's own band already uses. <strong>The reason to wait is churn, not merit</strong> — this surface has been reworked in
+          three consecutive betas, and a fourth mode on an unsettled pinned hero is how regressions like BUG-37 get made.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1vylo0/">comment</a> <span class="sep">·</span> 2026-08-05</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">DOC-2</span>
+          <span class="chip p3">P3</span>
+          <span class="status new">New</span>
+          <span class="status waiting">Answer owed in the next reply</span>
+        </div>
+        <p class="desc">
+          <strong>Do changes made on the official Nuvio account propagate automatically, or is a sign-out and sign-in required?</strong>
+          <strong>Do not answer this from intent — check the code.</strong> The fork has been polling-only since the realtime client stack was
+          removed, so the true answer depends on the poll interval and on which payloads refresh versus which are cached at sign-in; addons,
+          catalogs and profile preferences may not all behave the same way, and answering "yes, automatically" when one of them needs a relaunch
+          is how BUG-12 and BUG-20 started. Two outputs are owed: the factual answer, and — if it turns out to be "relaunch or re-login" — either
+          a refresh affordance or a line in the install docs.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1vylo0/">comment</a> <span class="sep">·</span> 2026-08-05</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">FEAT-15 · UX-8 · BUG-31</span>
+          <span class="status done">Confirmed, evolved, and one ask back at us</span>
+        </div>
+        <p class="desc">
+          <strong>FEAT-15 — requirement confirmed verbatim:</strong> <em>"Yes, that's correct. You understood exactly what I was asking for."</em>
+          The fourth restatement of this request is closed as understood; what is unproven is the execution, not the intent.
+          <strong>UX-8 flipped to its end state:</strong> hide the genre row <em>too</em>, because their Home already carries the genres — so the
+          destination is a search screen with the field, the results and nothing else, and building the old wording literally would ship exactly
+          what they asked to be rid of.
+          <strong>BUG-31 — they want a counter-video:</strong> <em>"Could you record the result on your Apple TV so I can see how it looks on your
+          end?"</em> The right instinct, and cheap: the whole problem with that row is that it is device-confirmed clean here and still wrong
+          there, which is only a contradiction if both sides are looking at the same thing.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1vylo0/">comment</a> <span class="sep">·</span> 2026-08-05</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>What the video settled <span class="count">2026-08-05 · frame-by-frame, 173s @ 720p30</span></h2>
+    <p class="section-note">
+      Evidence stills in <code>docs/research/p1q89ph-video-evidence/</code>. The negatives are as useful as the confirmations —
+      four items the clip was expected to settle, it settled by <em>not</em> containing them.
+    </p>
+    <div class="cards">
+
+      <div class="card flag">
+        <div class="card-top">
+          <span class="id">BUG-35 + BUG-42</span>
+          <span class="chip p2">P2</span>
+          <span class="status done">🎥 Merged — one root cause</span>
+        </div>
+        <p class="desc">
+          <strong>The hero commits its payload twice.</strong> At t=27.0 it renders <em>the same film twice</em> — “The Devil's Mouth” with an
+          English synopsis crossfading into “La Bouche du Diable” with a French one. Confirmed as state-dependent, not per-title:
+          <em>Backrooms</em> is English at t=16.4 and French at t=163, same install, same session. Corroborated at t=69 by a French synopsis
+          sitting next to English genre labels in one view. <strong>BUG-42 is the swap being visible; BUG-35 is when the second stage never
+          lands.</strong> Fix once: commit on the enriched payload, raw as a timeout fallback.
+        </p>
+      </div>
+
+      <div class="card warm">
+        <div class="card-top">
+          <span class="id">BUG-45</span>
+          <span class="chip p2">P2</span>
+          <span class="status done">🚫 Dismissed 2026-08-05 — capture artifact</span>
+        </div>
+        <p class="desc">
+          <strong>The focused Settings sidebar row renders as a blank white platter.</strong> Found in the same frames as the About pane
+          (t=139 and t=143, stable across both): the sidebar lists its categories and then shows an empty white pill where the focused
+          <em>About</em> label should be — the <strong>eighth</strong> white-on-white site, on the surface BUG-22 was supposed to have fixed.
+          Likely a seam rather than a regression: BUG-22's sweep and FEAT-13's About row shipped in the <em>same</em> build, so the new row
+          plausibly never went through it. Audit every row added since that commit rather than patching this one. <strong>Superseded 2026-08-05:</strong> the reporter says the label is black and readable on their screen, so this was the camera clipping a bright platter, not a white-on-white site. The code fix stands as hygiene; the finding does not.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">BUG-38 · BUG-33₃ · UX-8 · UX-12 · UX-10 · BUG-19</span>
+          <span class="status done">🎥 Confirmed</span>
+        </div>
+        <p class="desc">
+          <strong>BUG-38</strong> — the Collections row renders six flat gradients with no backdrop art at all, persisting across a cold relaunch
+          (and the tiles are correctly square-cornered, so BUG-32's fix is visible in the same frame and is not the cause).
+          <strong>BUG-33 defect 3</strong> — confirmed but re-characterised: <em>grey-on-white at 1.52:1</em> versus 2.23:1 for the unfocused chip
+          in the same frame, i.e. a secondary text token, not a missing override.
+          <strong>UX-8</strong> — cheaper than filed: the genre chip row already renders directly beneath the catalog row, so the ask is to delete a row.
+          <strong>UX-12</strong> — the ▶/🔊 cluster confirmed, over a fully black trailer surface.
+          <strong>UX-10</strong> — 16:9 thumbnails with VF badges, working on their hardware.
+          <strong>BUG-19</strong> — the Services GIFs advance a distinct animation phase in every 0.5s sample across t=55.5–63, on the exact row that used to stall.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">BUG-37 · BUG-40 · BUG-39 · BUG-33₁</span>
+          <span class="status warn">🎥 Not in the footage</span>
+        </div>
+        <p class="desc">
+          <strong>BUG-37</strong> — <em>(contradicted 2026-08-05: the reporter says the repro is in this clip, on the Genres row and Nouveaux films; the sampling gaps are the likely explanation, so this clip needs a full-rate re-scan.)</em> Every Home rest sampled renders its row titles unclipped, including the post-relaunch up-walk. But the clip spends
+          t=0–64 in <em>classic</em> hero mode and only ~20s in <em>pinned</em> mode, so coverage is thin. Not a refutation — ask which row and mode.
+          <strong>BUG-40</strong> — the focus ring measures RGB (250,255,255) against a (245,251,255) white text reference in the same frame. <em>(Resolved 2026-08-05: that was the system highlight on a surface FEAT-14 does not paint — we measured the wrong ring.)</em>
+          <strong>BUG-39</strong> — not honestly assessable through a phone-to-TV capture; check the decoded GIF size against the tile's point size in code instead.
+          <strong>BUG-33 defect 1</strong> — was undemonstrated for the second video running, and <strong>on 2026-08-05 the reporter withdrew it entirely</strong>: the filtering works, so there was never a result set to be wrong.
+          <em>Two artifacts ruled out as camera, not app: mirrored service logos during fast scrolls (rolling shutter) and doubled row labels mid-scroll.</em>
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>New from the beta.10 review <span class="count">2026-08-04 · 12 items from one comment</span></h2>
+    <p class="section-note">
+      All from u/mrStevenx3's <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1q89ph/">16-point beta.10 review</a>
+      (2026-08-04T21:02:08Z), which also re-opened BUG-31 and BUG-33 and confirmed BUG-19 fixed — those sit in the sections below.
+      The build number was not quoted, but the comment cites three beta.10-only behaviours, so build 106 is safe to assume.
+      <strong>Several of these are self-inflicted:</strong> BUG-36 and BUG-39 are the costs of the BUG-31 and BUG-19 fixes, and BUG-37 and BUG-42 are the pinned hero regressing its own surface.
+    </p>
+    <div class="cards">
+
+      <div class="card flag">
+        <div class="card-top">
+          <span class="id">BUG-37</span>
+          <span class="chip p1">P1</span>
+          <span class="status new">New</span>
+          <span class="status video">🎥 In the unwatched clip</span>
+        </div>
+        <p class="desc">
+          <strong>Row/catalog titles vanish after scrolling down and back up, and come back clipped.</strong>
+          <em>"Sometimes they come back, but they're cut off and only display correctly again after scrolling to the right."</em>
+          This is a regression in the beta.10 headline feature. The eight-round device pass ended with section titles overlaid <em>inside</em> the card focus-reach band
+          (<code>d7ad446f</code>) precisely because free content above the focused card frame clips — and this is that compromise failing at the up-walk rest positions,
+          the same BUG-30 residual class (reveals resting ~40–67pt high) the whole pass was fighting.
+          <strong>P1 because it is the navigation surface of the flagship build, the reporter hits it on an ordinary up-scroll, and the announcement asked for exactly this report</strong>
+          — <em>"If you find a spot where something still gets cut off at the top or bottom of the screen, tell me exactly where."</em>
+          The video should show the precise rest position.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1q89ph/">comment</a> <span class="sep">·</span> first seen 2026-08-04</div>
+      </div>
+
+      <div class="card warm">
+        <div class="card-top">
+          <span class="id">BUG-36</span>
+          <span class="chip p2">P2</span>
+          <span class="status new">New</span>
+        </div>
+        <p class="desc">
+          <strong>Poster focus now scales only the inside of the artwork, and the focused title is sometimes hidden.</strong>
+          <em>"It no longer zooms the entire poster but only the inside of it… Because of this, the poster title is sometimes no longer visible when the poster is focused.
+          This happens everywhere, including movie descriptions, studios, etc. For reference, Nuvio doesn't zoom posters at all when they are focused."</em>
+          <strong>Almost certainly self-inflicted by the beta.10 BUG-31 fix</strong> — that change added <code>.clipped()</code> plus a matching <code>hoverEffect</code> shape to kill the
+          ghost-double, which is exactly the mechanism that turns a whole-card lift into an inside-the-frame zoom. The hidden title is BUG-15's failure shape returning
+          (grown artwork overlapping the caption).
+          Two decisions belong together here: whether to restore the whole-card scale, and whether to offer the reporter's stated preference — no zoom at all on focus — as an option.
+          They have now described that preference twice.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1q89ph/">comment</a> <span class="sep">·</span> first seen 2026-08-04</div>
+      </div>
+
+      <div class="card warm">
+        <div class="card-top">
+          <span class="id">BUG-39</span>
+          <span class="chip p2">P2</span>
+          <span class="status new">New</span>
+        </div>
+        <p class="desc">
+          <strong>GIF quality is now very poor — the cost of the BUG-19 fix.</strong>
+          <em>"GIFs are finally smooth, but the downside is that their quality is now very poor."</em>
+          Filed separately from BUG-19 (which is closed — the stall is genuinely gone) because this is a new defect introduced by the same package, not a re-open.
+          The suspect is explicit and already in the fix description: <strong>the enforced 12MiB/GIF cost bound</strong>, which forces aggressive downsampling on the
+          Home Services-row tiles this reporter watches.
+          <strong>It is a budget question, not a decode question</strong> — raise the per-GIF ceiling and/or downsample to the tile's actual pixel size rather than a flat cap,
+          then re-measure against the same Services-row focus walk. The device pass sat at ~94MB resident, so there is headroom.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1q89ph/">comment</a> <span class="sep">·</span> first seen 2026-08-04</div>
+      </div>
+
+      <div class="card warm">
+        <div class="card-top">
+          <span class="id">BUG-35</span>
+          <span class="chip p2">P2</span>
+          <span class="status new">New</span>
+        </div>
+        <p class="desc">
+          <strong>Some catalog items stopped being translated, with a correctly configured TMDB key.</strong>
+          <em>"I didn't have this issue with these catalogs before."</em> A regression, and the reporter is explicit that these same catalogs translated on earlier builds.
+          Suspect the beta.10 hero and metadata work: the focus-follow hero resolves per-focus metadata on a new path, and the enrichment/language plumbing
+          (BUG-17's TMDB hero enrichment plus the Metadata Language picker) is the obvious neighbour.
+          Worth checking whether the untranslated items are the ones the <em>hero</em> resolves versus the ones the catalog row resolves — two resolvers with different
+          language handling would produce exactly this. Reporter runs the French locale.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1q89ph/">comment</a> <span class="sep">·</span> first seen 2026-08-04</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">BUG-42</span>
+          <span class="chip p2">P2</span>
+          <span class="status new">New</span>
+        </div>
+        <p class="desc">
+          <strong>The focus-follow hero swap isn't smooth — an intermediate image shows before the real one.</strong>
+          <em>"It looks like one image starts loading before being replaced by another."</em>
+          Reads as the 200ms commit / 300ms revert grace window exposing a partially-loaded or lower-resolution backdrop, then swapping — a missing crossfade,
+          or a placeholder tier rendering before the full backdrop resolves.
+          Polish on the headline feature and the first thing a new tester sees, so it is worth doing properly: prefetch the focused title's backdrop through
+          <code>ArtworkStore</code> on focus intent, and only commit the swap once decoded, with a crossfade rather than a replace.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1q89ph/">comment</a> <span class="sep">·</span> first seen 2026-08-04</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">BUG-44</span>
+          <span class="chip p2">P2</span>
+          <span class="status new">New</span>
+        </div>
+        <p class="desc">
+          <strong>From some positions in the detail description, focus can't get back to the top without a detour left.</strong>
+          <em>"I have to move the cursor all the way to the left before I can scroll up again."</em>
+          A focus-escape trap in the same family as BUG-34 (the actor page, fixed in beta.10 with a focusable <code>topBlock</code> and <code>focusSection</code>'d rows)
+          — the detail page evidently has a region with no upward focus neighbour.
+          The reporter has found their own workaround, which is what keeps this P2 rather than P1, but it is the second focus-trap report on this screen family.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1q89ph/">comment</a> <span class="sep">·</span> first seen 2026-08-04</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">BUG-41</span>
+          <span class="chip p2">P2</span>
+          <span class="status new">New</span>
+        </div>
+        <p class="desc">
+          <strong>Detail-page description scrolling is choppier than before beta.10.</strong>
+          A reported regression, so it needs a before/after rather than a guess — the discipline that closed BUG-26 (<code>LaunchTrace</code>) and BUG-19 (frame measurement).
+          Candidate causes in this build: UX-6's deepened background ramp (0→0.85 over ~400pt, i.e. a live gradient recompute on every scroll step),
+          UX-10's new 16:9 thumbnail cards in Trailers &amp; Extras, and BUG-34's focusable-header restructuring of the detail page. <strong>Instrument first.</strong>
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1q89ph/">comment</a> <span class="sep">·</span> first seen 2026-08-04</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">BUG-38</span>
+          <span class="chip p2">P2</span>
+          <span class="status new">New</span>
+          <span class="status video">🎥 Needs the clip</span>
+        </div>
+        <p class="desc">
+          <strong>Collection background images don't display.</strong> No further detail, and the scope is genuinely unknown — collection rows on Home, or the collection detail backdrop.
+          Neighbours worth checking first: BUG-32's beta.10 corner-shape change touched the collection and services tiles, and the artwork-cache rework from BUG-26 is the other
+          recent thing in the image path. <strong>Localise from the video before changing any code.</strong>
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1q89ph/">comment</a> <span class="sep">·</span> first seen 2026-08-04</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">FEAT-15</span>
+          <span class="chip p2">P2</span>
+          <span class="status new">New</span>
+        </div>
+        <p class="desc">
+          <strong>Let the scrolling hero be turned off without also losing the new focus-follow description.</strong>
+          <em>"Right now, if I disable the Hero, it also disables the new movie description feature. I'll show you the result I'd like using Nuvio's configuration as an example."</em>
+          <strong>This is the same person whose "Lucky" screenshot drove UX-7, and it is the third time they have described the same end state:</strong> they do not want a
+          rotating hero at all — they want the focused title's own backdrop and text, and nothing else.
+          It also re-states BUG-24 for the third time; the 2026-08-01 note already recorded that their <em>"I just don't really see the point of this option"</em> was never a
+          misunderstanding of the toggle. beta.10 made the focus-follow hero always-on and coupled it to Show Hero, which is precisely what creates this trap.
+          <strong>Cheap and high-value: decouple the two, or add a "no carousel" hero mode.</strong> The promised Nuvio reference is in the attached video.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1q89ph/">comment</a> <span class="sep">·</span> first seen 2026-08-04</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">BUG-40</span>
+          <span class="chip p3">P3</span>
+          <span class="status new">New</span>
+        </div>
+        <p class="desc">
+          <strong>The accent focus ring renders grey when the accent is White.</strong>
+          <em>"The color around the focus works well, but when I choose white, it displays a gray outline instead of a white one."</em>
+          A defect in FEAT-14, which shipped in beta.10 with a deliberate White-theme fallback — the fallback is doing something (grey) rather than nothing, so this is a
+          one-line colour decision, not a missing path. The reporter runs the White accent theme, the same config behind BUG-4/14/22/28/33, so for them this is the only ring they ever see.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1q89ph/">comment</a> <span class="sep">·</span> first seen 2026-08-04</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">BUG-43</span>
+          <span class="chip p3">P3</span>
+          <span class="status new">New</span>
+        </div>
+        <p class="desc">
+          <strong>The stream-list language badge renders in the light theme while the rest of the picker is dark.</strong>
+          <em>"I'm not sure if it's intended… (I'm referring to my badges)."</em>
+          One badge type missing the theme read in the stream picker — adjacent to BUG-28's decision-table contrast guard on the badge chips, which fixed contrast
+          but evidently not this badge's surface colour. Cosmetic, cheap, and in a surface this reporter looks at constantly.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1q89ph/">comment</a> <span class="sep">·</span> first seen 2026-08-04</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">UX-12</span>
+          <span class="chip p3">P3</span>
+          <span class="status new">New</span>
+        </div>
+        <p class="desc">
+          <strong>Drop the Play/Mute icons from the bottom-right of the focus trailer now that the setting exists.</strong>
+          <em>"Since that's now available in the settings, you could remove the Play and Mute icons displayed in the bottom-right corner during trailer playback, as they break the immersion."</em>
+          A direct consequence of FEAT-11 shipping in beta.9: the on-screen affordance was there because there was no setting, and now there is.
+          Trivial removal — though consider keeping it visible briefly on focus, or only while the setting is at its default, so the control stays discoverable for testers who never open Settings.
+        </p>
+        <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1q89ph/">comment</a> <span class="sep">·</span> first seen 2026-08-04</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Shipped in beta.10, and how they landed <span class="count">build 106 · verdicts from the 2026-08-04 review</span></h2>
     <p class="section-note">
       All nine items u/mrStevenx3's review opened, confirmed against build <code>0.3.0 (105)</code> and now answered in build <code>106</code>.
       Eight are fixed; the ninth (UX-8) was held back on purpose. Codex loops ran over every batch — four rounds on the fixes, twelve on UX-7/UX-10, three more on the pinned hero — and the harness gate closed at <strong>43/43 ×2</strong>.
-      These are in testers' hands as of tonight; the <em>shipped</em> pills mean released, not confirmed. Confirmation is the tester's reply.
+      <strong>The reply has now arrived, and the scorecard is mixed:</strong> BUG-32, BUG-34, UX-10 and UX-11 went unchallenged; UX-9 landed partially;
+      FEAT-14 works except on White; and <strong>BUG-31 and BUG-33 are re-opened</strong> — still broken for the reporter in the build whose notes claimed both fixed.
     </p>
     <div class="cards">
 
@@ -585,9 +1205,19 @@
         <div class="card-top">
           <span class="id">BUG-33</span>
           <span class="chip p1">P1</span>
-          <span class="status done">🚢 All 3 defects fixed · shipped in beta.10</span>
+          <span class="status reopened">⚠️ RE-OPENED on beta.10 — 2 of 3 defects survived</span>
           <span class="status video">🎥 Defects 2 + 3 on camera</span>
         </div>
+        <p class="fix">
+          <strong>⚠️ 2026-08-04 — the fix did not take, and the release notes claimed it did.</strong>
+          <em>"Even though you mentioned it was fixed, the search issues I'm experiencing are still there: deselected catalogs are still not taken into account during searches
+          and continue to appear in the results. Also, in recent searches, the white text on a white background is still present."</em>
+          So <strong>defect (1) selection-ignored</strong> and <strong>defect (3) white-on-white</strong> are both still live; only defect (2), the post-search wipe, is unchallenged.
+          This is the second build to ship a claimed fix for this pane, and the identity-hash key rework survived a four-round Codex review — <strong>which means the review was
+          validating the wrong layer.</strong> The next move is instrumentation on the reporter's config, not a third key scheme: log the enabled-catalog set the search path
+          actually receives, the way BUG-19 was finally closed by measuring first. The white-on-white is the <strong>seventh</strong> site in this class, and the
+          settings-row-wide <code>foregroundStyle</code> sweep evidently does not cover the <em>recent searches</em> row.
+        </p>
         <p class="fix">
           <strong>Fixed:</strong> the Découvrir wipe was <code>reset()</code> where <code>clear()</code> was meant, plus a signature latch;
           the white-on-white was settings-row-wide explicit <code>foregroundStyle</code> overrides, fixed for <em>every</em> row at once;
@@ -640,9 +1270,18 @@
         <div class="card-top">
           <span class="id">BUG-31</span>
           <span class="chip p2">P2</span>
-          <span class="status done">🚢 Fixed · device-confirmed · shipped</span>
+          <span class="status reopened">⚠️ RE-OPENED on beta.10 — device-clean here, still wrong there</span>
           <span class="status video">🎥 On camera</span>
         </div>
+        <p class="fix">
+          <strong>⚠️ 2026-08-04 — still broken for the reporter, and this one is a genuine device-vs-device divergence.</strong>
+          <em>"Poster highlighting is still not fixed. It highlights the entire border even though I selected the 'top only' option."</em>
+          The coverage-mask fix <em>was</em> device-confirmed clean on the Living Room Apple TV on 2026-08-02 — top band only, no hairline, no ghost-double — so unlike BUG-19
+          this is not "the fix never worked." It is the same setting reading differently on their config.
+          <strong>Do not write a seventh blind stroke change.</strong> Check whether their "top only" selection is even reaching the renderer: the BUG-25 profile fan-out class
+          and the BUG-33 key-drift class both produced exactly this shape. And cross-read it against <strong>BUG-36</strong>, which reports the depth effect now landing
+          <em>inside</em> the artwork on their build — the two are probably the same change seen from two angles.
+        </p>
         <p class="fix">
           <strong>Fixed, and the artwork-geometry theory was wrong in an instructive way.</strong> The "Top" edge was never top-only at all — it was a closed <code>strokeBorder</code>, now coverage-masked;
           the ghost-doubled bat figure was a separate defect, killed by <code>.clipped()</code> plus a matching <code>hoverEffect</code> shape.
@@ -691,8 +1330,14 @@
         <div class="card-top">
           <span class="id">UX-9</span>
           <span class="chip p3">P3</span>
-          <span class="status done">🚢 Shipped in beta.10</span>
+          <span class="status progress">🟡 Partially landed on beta.10</span>
         </div>
+        <p class="fix">
+          <strong>🟡 2026-08-04 — half the surfaces.</strong> <em>"Some are correctly zoomed to fill the entire screen, while others still display black bars."</em>
+          So the 1.08 zoom and <code>clipsToBounds</code> work in some places and not others. Two plausible readings: the crop is applied to the focus-trailer layer but not to
+          every trailer surface (the full-screen player and the new UX-10 Trailers &amp; Extras cards are separate paths), or it is source-aspect-dependent — a 2.39:1 trailer
+          needs far more zoom than a 16:9 one to fill a 16:9 card. <strong>The video should say which.</strong>
+        </p>
         <p class="fix">
           <strong>Fixed:</strong> a 1.08 upstream-parity zoom plus <code>clipsToBounds</code>, so the bars are cropped rather than fitted.
           Shipping in the same build as the 1080p repack, which is the point — a genuinely-fixed trailer still reads as "not fixed" while the bars are there.
@@ -767,8 +1412,12 @@
         <div class="card-top">
           <span class="id">UX-8</span>
           <span class="chip p3">P3</span>
-          <span class="status new">Open — the one item held back</span>
+          <span class="status reopened">🔁 Re-asked on beta.10 — still gated</span>
         </div>
+        <p class="fix">
+          <strong>🔁 2026-08-04 — asked a second time:</strong> <em>"All catalogs are still displayed. It would be better to display only the genres."</em>
+          <strong>The gate holds</strong> — BUG-33 re-opened the same day, so the original reason for holding this back is now more true, not less.
+        </p>
         <p class="fix">
           <strong>Deliberately not built with the rest.</strong> Same pane as BUG-33, and the filtering had to be right first — a cleaner list of the wrong results is still the wrong results. Next up once beta.10 is out.
         </p>
@@ -789,8 +1438,14 @@
         <div class="card-top">
           <span class="id">FEAT-14</span>
           <span class="chip p3">P3</span>
-          <span class="status done">🚢 Device-approved · shipped in beta.10</span>
+          <span class="status progress">⚠️ Shipped with a defect — White renders grey</span>
         </div>
+        <p class="fix">
+          <strong>⚠️ 2026-08-04 — the feature works, the White path doesn't.</strong>
+          <em>"The color around the focus works well, but when I choose white, it displays a gray outline instead of a white one."</em>
+          The deliberate White-theme fallback is doing something rather than nothing, so it is a colour decision, not a missing path.
+          Tracked as <strong>BUG-40</strong> so this row stays shipped — and it matters more than P3 suggests, because this reporter runs the White accent theme.
+        </p>
         <p class="desc">
           <strong>Let the focus outline use the user's selected accent colour, like Nuvio.</strong>
           The accent already drives buttons, chips and badges, but the focus ring on cards is still the default treatment, so the colour picker reads as half-applied.
@@ -816,9 +1471,16 @@
         <div class="card-top">
           <span class="id">UX-7</span>
           <span class="chip p1">P1</span>
-          <span class="status done">🚢 Extended, device-approved · shipped in beta.10</span>
-          <span class="status video">🖥 8 device rounds</span>
+          <span class="status done">🚢 Landed — <em>"Finally, the real-time Hero update! Congratulations!"</em></span>
+          <span class="status reopened">⚠️ 3 follow-ons</span>
         </div>
+        <p class="fix">
+          <strong>✅ 2026-08-04 — the feature landed, and the reporter led their review with it.</strong> Four cycles of asking, one publicly committed headline, delivered.
+          <strong>But it brought three items of its own:</strong> <strong>BUG-37 (P1)</strong> — row titles vanish on the up-walk and return clipped, i.e. the round-8
+          titles-in-reach-band compromise failing at the very reveal residual the eight rounds were fighting; <strong>BUG-42</strong> — the hero swap shows an intermediate
+          image before the real backdrop; and <strong>FEAT-15</strong> — beta.10 coupled the focus-follow description to Show Hero, so turning off the carousel now costs the
+          description too, which is the opposite of what this reporter has asked for three times.
+        </p>
         <p class="fix">
           <strong>📌 Extended into the PINNED hero — and the eight rounds it took are the story.</strong>
           At Christian's direction the feature grew past the original ask: with <strong>Nuvio-Style Hero</strong> on, the hero no longer scrolls away at all. It holds the top of the screen, updating live with the focused title, while only the rows move beneath it — the "Lucky" reference layout, exactly.
@@ -855,9 +1517,17 @@
         <div class="card-top">
           <span class="id">BUG-19</span>
           <span class="chip p2">P2</span>
-          <span class="status done">🚢 Passed twice on device · shipped in beta.10</span>
+          <span class="status done">✅ CLOSED 2026-08-04 — confirmed fixed in the wild</span>
           <span class="status video">🎥 Repro pinned</span>
         </div>
+        <p class="fix">
+          <strong>✅ <em>"GIFs are finally smooth."</em></strong> Four attempts, and the one that worked is the only one preceded by a measurement rather than a guess —
+          three builds (103, 104, 105) shipped fixes that did nothing, which is exactly what justified spending an evening on frame-by-frame analysis before writing the fourth.
+          The package that closed it: the GIF <code>URLCache</code> finally got its own directory (the same defect the artwork cache had), real cost accounting with an enforced
+          12MiB/GIF bound, off-main decode, persistent tile mounting, truncated-GIF validation.
+          <strong>⚠️ It cost image quality</strong> — the same sentence continues <em>"but the downside is that their quality is now very poor"</em> — tracked as
+          <strong>BUG-39</strong>, a budget knob, not a re-open.
+        </p>
         <p class="desc">
           GIF scroll stutter. <em>"The GIFs still play very slowly… I just wanted to confirm that the issue is still there."</em>
           Third consecutive build (103 → 104 → 105) reported unchanged, so the decode-off-main + downsample fix is demonstrably not sufficient on their content.
@@ -911,16 +1581,24 @@
         <div class="card-top">
           <span class="id">BUG-21</span>
           <span class="chip p1">P1</span>
-          <span class="status unreleased">Shipped (beta.9) · awaiting reconnect answer</span>
+          <span class="status done">✅ CLOSED 2026-08-04 — reporter confirmed working</span>
         </div>
+        <p class="fix">
+          <strong>✅ The discriminating test came back, and in the predicted direction.</strong>
+          <em>"I was initially pasting my Torbox Api, now I just disconnected and connected TB by going to the Auth link and now it's working."</em>
+          That is the exact test posted on 2026-07-31: <strong>reconnect fixes it → the stored credential was the fault, not the resolver chain</strong> — matching both the
+          device end-to-end pass (a freshly-connected TorBox account played Instant links on the Living Room Apple TV) and the live probe's <code>BAD_TOKEN</code> envelope.
+          The credential-health UI shipped in beta.9 is what makes this self-service next time.
+          <strong>The beta's longest-running P1: opened 2026-07-30, closed 2026-08-04.</strong>
+        </p>
         <p class="desc">
           TorBox links: the full credential-health pipeline shipped in beta.9 and the resolve chain is device-verified end-to-end with a real account.
-          Still owed: the reporter's disconnect/reconnect result, which names their root cause (stale token vs device-flow scoping). Either way the remedy is already in their hands.
+          The one thing still never verified in the wild is All-Debrid's end-to-end resolve.
         </p>
         <div class="by">
           u/Overall_Stuff5982
           <span class="sep">·</span>
-          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p0vl1qt/">last reply</a>
+          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1mqg9m/">the confirm</a>
           <span class="sep">·</span> first seen 2026-07-30
         </div>
       </div>
@@ -979,20 +1657,32 @@
     <h2>Watch list <span class="count">context that shapes the next moves</span></h2>
     <div class="watch">
       <div class="watch-item">
-        <h4>The verification loop is closed — and it took shipping a feature to close it</h4>
-        <p>Every retest ask from beta.7 onward stalled on the same thing: the app never displayed its own version, so "did the fix land?" was unanswerable by construction — <em>"I searched everywhere but couldn't find my build number… I don't have an 'About' section."</em> FEAT-13 shipped the pane in beta.9, the release notes made the build number the retest currency, <strong>the first retest still arrived without one</strong>, the reply re-asked, and nine hours later: <em>"Yes I'm 0.3.0 (105)."</em> Keep re-asking — the ask works, but it is not yet a habit, and every unnumbered "still there" costs a fix cycle.</p>
+        <h4>Three failure modes, one sweep — worth separating before fixing anything</h4>
+        <p><strong>BUG-19 died because it was measured first</strong>: three blind fixes across builds 103–105 did nothing, and the frame-by-frame pass that pinned it to a named row with a numeric target produced a fix that worked on the first try. <strong>BUG-33 is the inverse</strong>: a four-round Codex review passed a key redesign that still does not filter in the wild, so the review was validating the wrong layer — instrumentation on the reporter's config is the next move, not a third key scheme. <strong>BUG-31 is a third thing again</strong>: device-confirmed clean here on 2026-08-02 and still wrong on their box, which is a config divergence (the BUG-25 fan-out and BUG-33 key-drift classes both produced this exact shape). Same sweep, three different lessons; treating them alike would waste a build.</p>
       </div>
       <div class="watch-item">
-        <h4>Both tester videos analyzed — the video debt is cleared</h4>
-        <p>Both Reddit clips have been obtained and analyzed frame-by-frame. <code>p196j81</code> (166s): five new items confirmed on camera, stills in <code>docs/research/p196j81-video-evidence/</code>. <code>p12cg5v</code> (83s): BUG-19 pinned to the Services row with a measured ~700–830ms per-step freeze and a decode-corruption sighting, strips in <code>docs/research/p12cg5v-video-evidence/</code>. What used to be "the highest-value minutes on the board" is done — the follow-through is the Instruments session.</p>
+        <h4>We finally know the tester's hardware — and it changes how to read the performance items</h4>
+        <p>The About pane in the video reads <strong>tvOS 26.5</strong> on <strong>AppleTV11,1</strong> — an Apple TV 4K 2nd gen (A12 Bionic, 2021). Two generations behind the Living Room device every device pass runs on, and <em>not</em> the tvOS 27 beta that BUG-11's reporter runs. Every performance report from this tester (BUG-39 GIF quality, BUG-41 choppy scrolling, and the BUG-19 history) should be read against that: a fix that measures clean on newer hardware may still be short on an A12. Worth considering an A12-class target for the next perf acceptance.</p>
       </div>
       <div class="watch-item">
-        <h4>Two beta.9 features arrived broken</h4>
-        <p>FEAT-10 (Search Sources) does not filter, and BUG-28's contrast sweep missed a fifth white-on-white site — on a pane in the same build. Both were shipped without an on-device pass of that specific screen. Worth a pre-release checklist item: exercise every new settings pane on hardware, in the White theme.</p>
+        <h4>All three tester videos are now analyzed — the video debt is clear</h4>
+        <p><code>p196j81</code> (166s) confirmed five items on camera; <code>p12cg5v</code> (83s) pinned BUG-19 to the Services row with a measured ~700–830ms freeze; <code>p1q89ph</code> (173s, 720p) merged BUG-35/BUG-42, confirmed six items, knocked down four and found BUG-45. <strong>Three for three — every clip has changed the board.</strong> Keep asking for video; it is by some distance the highest-yield thing this tester does.</p>
+      </div>
+      <div class="watch-item">
+        <h4>Fixes that create their own bugs — a pattern now, not a coincidence</h4>
+        <p>Four of the ten new items trace back to beta.10's own changes: <strong>BUG-36</strong> from BUG-31's <code>.clipped()</code> mask, <strong>BUG-39</strong> from BUG-19's 12MiB budget, and <strong>BUG-37 / BUG-42</strong> from the pinned hero. None of these are reasons to slow down — they are the visible cost of a large build — but they argue for a "what did this change touch elsewhere?" pass on focus, artwork and scroll surfaces before the next cut, since those three are where every one of them landed.</p>
+      </div>
+      <div class="watch-item">
+        <h4>Build numbers: the ask works — they just answer it in video, not in text</h4>
+        <p>FEAT-13 shipped the About pane precisely so "did the fix land?" would be answerable. The beta.10 review arrived without a build number in the text again — <strong>but the tester filmed the About pane instead</strong>, holding it for ten seconds: <code>0.3.0 (106)</code>, commit <code>d7ad446f</code>. That is the second time FEAT-13 has closed the loop, and it suggests the ask should be phrased as <em>"show me the About screen"</em> rather than <em>"tell me your build number"</em> — it matches how this tester already reports.</p>
       </div>
       <div class="watch-item">
         <h4>One tester is still the whole verification signal</h4>
-        <p>Nearly all beta.8 and beta.9 feedback comes from u/mrStevenx3, with u/Overall_Stuff5982 covering the debrid path. Independent confirms on the beta.9 batch are worth soliciting rather than assuming.</p>
+        <p>Nearly all beta.8, beta.9 and beta.10 feedback comes from u/mrStevenx3, with u/Overall_Stuff5982 covering the debrid path — and with BUG-21 closed, that second thread is now quiet. Sixteen points in one comment is a gift and a single point of failure at the same time. Independent confirms on the beta.10 batch are worth soliciting rather than assuming.</p>
+      </div>
+      <div class="watch-item">
+        <h4>Nothing is parked on a tester — for the first time in the beta</h4>
+        <p>Every previous board had at least one item frozen pending someone's reply: a build number, a crash report, a reconnect result. With BUG-21 closed and the beta.10 verdict in, <strong>every open item is ours to move</strong>. The only external dependency left is a video that is already downloaded on Reddit's side and just needs watching.</p>
       </div>
       <div class="watch-item">
         <h4>Sim-verified ≠ device-verified — now with four named mechanisms</h4>
@@ -1000,7 +1690,7 @@
       </div>
       <div class="watch-item">
         <h4>Positive signals bank</h4>
-        <p>"Overall, you're making great progress, and everything is looking really clean!" · "The new icons and the dimmed background in the description look great" · "Ok so the app does not crash" · "best Nuvio fork I've tested" — engaged testers who stayed through failed fix rounds; keep crediting by name.</p>
+        <p>"Finally, the real-time Hero update! Congratulations!" · "GIFs are finally smooth" · "now it's working" (TorBox) · "Overall, you're making great progress, and everything is looking really clean!" · "Ok so the app does not crash" · "best Nuvio fork I've tested" — a 16-point bug list that still opens with congratulations is a tester who wants the app to win. Keep crediting by name.</p>
       </div>
     </div>
   </section>
@@ -1008,6 +1698,128 @@
   <section>
     <h2>Update log</h2>
     <div class="timeline">
+      <div class="entry quiet">
+        <div class="when">2026-08-06 · morning sweep — 🆕 <strong>one new item from a returning tester</strong>; watermark <code>p1vylo0</code> → <code>p21m344</code></div>
+        <p class="what">
+          Two comments above the watermark, one of them ours. <strong>UX-13 (P2, new)</strong> comes from
+          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p20ivrz/">u/Ginosaure</a> at 07:14:57Z, their first
+          item since confirming BUG-2 on 2026-07-24: <strong>a <em>View All</em> grid loses your position when you come back from a detail page</strong>,
+          landing on the first poster every time. The board was checked for a duplicate and has none — UX-7 is the inverse ask on Home, BUG-31 shares
+          the grid but is a rendering defect — which makes this <strong>the beta's first state-restoration report</strong>, a different shape from
+          everything else tracked here. Prose-only, no video, and it should still reproduce in the simulator without a follow-up ask. Added to <strong>Next</strong>.
+          The second comment (<a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p21m344/">p21m344</a>, 12:07:13Z) is our own
+          <em>"Thanks for the feedback. I'll definitely look into this"</em> — an acknowledgement, not a shipped fix, so nothing moved on its account,
+          but UX-13 is now publicly promised and owes a real answer next reply. Banked alongside it: <em>"this is definitely my favorite fork"</em>.
+          <strong>Totals: +1 UX item, 0 duplicates, 0 priority changes, 0 status changes, 0 noise.</strong> Comments 142 → 144;
+          upvotes still carried at 102↑ from 2026-08-02 and now four days stale — the feed does not expose them and the post page was not opened.
+          Feed saturated again at 99 items / 98 comments, which is expected and harmless for an incremental sweep.
+          <code>check-tracker.py</code> passed before (78 rows) and after (79 rows).
+        </p>
+      </div>
+      <div class="entry hot">
+        <div class="when">2026-08-05 · late sweep — 🗣 <strong>the four asks came back answered in ~4 hours</strong>; watermark <code>p1ugx2g</code> → <code>p1vylo0</code></div>
+        <p class="what">
+          One comment processed, zero noise, and it is the densest single comment of the beta: <strong>1 new bug, 3 feature requests, 1 docs item,
+          6 rows updated and 3 priority changes.</strong>
+          <strong>The headline is a retraction.</strong> BUG-33's defect 1 was withdrawn — <em>"the option works correctly in the search results:
+          only the two catalogs I selected are displayed"</em> — which means the beta.10 key rework worked, the four-round Codex loop validated the
+          right layer, and this morning's reply led by apologising for a defect that did not exist. P1 → P2, and UX-8's gate is released.
+          <strong>Against that, UX-9 got worse:</strong> the reporter excluded the full-screen player that <code>c29da28b</code> rebuilt, and named
+          <em>Lucky</em> (bars) against <em>Futurama</em> (correct) in one clip — which pins the mechanism as source-aspect dependence and makes a
+          computed per-item zoom the only fix that can work. P3 → P2, and beta.11 must not claim it.
+          <strong>BUG-37's repro is named</strong> (Genres and Nouveaux films, down-then-up) and is claimed to be in the previous clip, which our
+          pass read as clean — so both videos need a full-rate re-scan of those up-walks.
+          <strong>BUG-40 is confirmed by mechanism</strong>; <strong>BUG-38 grew</strong> to service backgrounds and title images, outside its fix's
+          root cause; <strong>BUG-45 is knocked down</strong> as a capture artifact, and the "stable across two frames, so not an artifact" reasoning
+          that filed it was simply wrong.
+          <strong>New:</strong> BUG-46 (focus trailers stop loading until restart — the beta's first degrades-over-a-session report), FEAT-16
+          (bundled font choice), FEAT-17 (auto-hiding nav like Omni), FEAT-18 (keep the title logo during trailer playback), DOC-2 (does an account
+          change propagate without re-login?).
+          <strong>A fourth tester video is attached and unanalyzed</strong> — it is the only evidence for four live items and is now the top of the
+          queue. Feed healthy: one clean request, no 429/403, saturation warning again at 99 of ~100 items.
+          <code>check-tracker.py</code> passed before and after (78 item rows, 6 tables).
+        </p>
+      </div>
+      <div class="entry quiet">
+        <div class="when">2026-08-05 · evening sweep — 🔵 <strong>no new comments</strong>; watermark held at <code>p1ugx2g</code></div>
+        <p class="what">
+          The feed served on a single clean request — <strong>no 429, no 403</strong>, so the Reddit-side throttle that blanked the 2026-08-04 midday run has not
+          recurred — and returned <strong>0 comments newer than 12:48:37Z</strong>, which is our own reply from earlier today.
+          <strong>0 new items, 0 duplicates, 0 priority changes, 0 status changes, 0 noise.</strong> Nothing on this board was re-verified today; it stands as the
+          video-analysis pass left it. <code>check-tracker.py</code> passed before and after the tracker edits (73 item rows, 6 tables).
+          <strong>What the silence actually means:</strong> the reply closed with four specific asks — a filmed BUG-37 repro, a filmed search for BUG-33 defect 1,
+          where the grey ring is for BUG-40, and which trailers still letterbox for UX-9 — and roughly eight hours have passed, which is well inside this
+          reporter's usual turnaround (their beta.9 and beta.10 verdicts arrived ~9h and ~1 day after the prompting reply). Three of those four are precisely
+          what the video could not settle, so the next tester comment is worth more than a typical one.
+          <strong>One operational note:</strong> the feed warned it is saturated again at 98 of its ~100-item cap, so the daily cadence is now load-bearing —
+          skipping a day risks comments dropping out of the window entirely, the way the rate-limited day nearly did.
+        </p>
+      </div>
+      <div class="entry ship">
+        <div class="when">2026-08-05 · later — ✅ <strong>the reply is posted: <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1ugx2g/">p1ugx2g</a></strong>, all sixteen points answered</div>
+        <p class="what">
+          Watermark <code>p1q89ph</code> → <code>p1ugx2g</code> (our own comment). It opens with the two things the video gave us — the filmed About screen,
+          and BUG-45 found in their own footage — then <strong>leads with the two we got wrong</strong> rather than the wins, then the confirmed-and-fixing list,
+          then four specific asks matching exactly what the video could not settle.
+          It commits to three product calls that were flagged before posting: restoring the whole-card focus zoom, adding a no-zoom-on-focus option, and
+          decoupling Show Hero from the focus-follow description. No dates promised.
+          <strong>Posting-route notes:</strong> Claude-in-Chrome was not connected, and the release script's OAuth token is scoped <code>read edit</code> by
+          design so it cannot create comments. This went out via ego-browser on old.reddit, whose plain markdown textarea posts verbatim.
+          The first submit died on a CDP mouse-event timeout; <strong>nothing had posted, which was verified against the thread JSON before retrying</strong> —
+          a blind retry would have double-posted. A DOM-level click worked. Verified byte-identical pre-submit and confirmed publicly visible in the Atom feed after.
+        </p>
+      </div>
+      <div class="entry quiet">
+        <div class="when">2026-08-05 — 🎥 <strong><code>p1q89ph</code> analyzed: 1 new bug, 2 merged into one root cause, 3 confirmed, 4 knocked down</strong></div>
+        <p class="what">
+          173.4s at 1280×720@30 (~5,203 frames) — the best-quality tester clip of the beta; the previous two were 480p. Stills in
+          <code>docs/research/p1q89ph-video-evidence/</code>.
+          <strong>The find of the session: the build number was on camera the whole time.</strong> At t=137–147 the tester opens Settings → About and holds it —
+          <strong>0.3.0 (106)</strong>, <code>tvos-v0.3.0-beta.10</code>, commit <code>d7ad446f</code>, <strong>tvOS 26.5</strong>, <strong>AppleTV11,1</strong>
+          (Apple TV 4K 2nd gen, A12). They never typed it; they showed it. FEAT-13 has now paid off twice.
+          <strong>BUG-35 and BUG-42 merged</strong> into a two-stage hero commit, caught mid-crossfade rendering the same film in two languages one frame apart.
+          <strong>Confirmed:</strong> BUG-38 (Collections, flat gradients, no art), BUG-33 defect 3 (re-characterised as grey-on-white at 1.52:1),
+          UX-8 (the genre row already exists — delete the catalog row), UX-12, UX-10, and BUG-19's fix visible in the GIF animation phases.
+          <strong>Knocked down:</strong> BUG-37 is not in the footage, BUG-40 measures white, BUG-39 is not assessable through this capture, and
+          <strong>BUG-33's filtering defect went undemonstrated for the second video running</strong>.
+          <strong>+1 unreported: BUG-45</strong> — the focused Settings sidebar row renders as a blank white platter, the eighth white-on-white site,
+          found incidentally in the About-pane frames.
+        </p>
+      </div>
+      <div class="entry hot">
+        <div class="when">2026-08-04 · evening sweep — 📣 <strong>the beta.10 verdict: 16 points, 12 new items, 2 re-opens, 2 closes</strong></div>
+        <p class="what">
+          Watermark <code>p1ctmbp</code> → <code>p1q89ph</code>; thread 136 → 140 comments. The feed served first try — the Reddit-side 429 throttle that blanked the midday
+          run is gone, and the two-day gap cost nothing because the watermark was correctly left alone.
+          Four comments read, two of them maintainer posts (<code>p1khg3l</code>, the beta.10 announcement naming build 106; <code>p1nwpwi</code>, a reply) — logged, not filed.
+          <strong>The two tester comments both mattered.</strong>
+          <strong>(1) <code>p1mqg9m</code> closes BUG-21:</strong> <em>"I was initially pasting my Torbox Api, now I just disconnected and connected TB by going to the Auth
+          link and now it's working."</em> The discriminating test posted on 2026-07-31, run and returned in the predicted direction — the stored credential was the fault,
+          not the resolver chain, matching both the device end-to-end pass and the probe's <code>BAD_TOKEN</code> envelope. Opened 2026-07-30, closed 2026-08-04.
+          <strong>(2) <code>p1q89ph</code> is u/mrStevenx3's 16-point beta.10 review</strong>, with a second attached video (unanalyzed).
+          Net: <strong>+10 bugs (BUG-35…BUG-44), +1 feature request, +1 UX item, BUG-31 and BUG-33 re-opened, BUG-19 closed on a reporter confirm, UX-9 downgraded to
+          partial, UX-8 re-asked, FEAT-14 marked shipped-with-defect, 0 noise.</strong>
+          <strong>Three distinct lessons in one comment:</strong> BUG-19 died because it was measured first; BUG-33 survived a four-round review that validated the wrong
+          layer; BUG-31 is a config divergence rather than a failed fix — and appears to have caused BUG-36, which changed what focus looks like on every poster in the app.
+          The pinned hero also regressed its own surface (<strong>BUG-37</strong>: row titles vanishing on the up-walk, the round-8 compromise meeting the ~40–67pt reveal
+          residual — hardware-only and sim-blind, and precisely the report the announcement solicited).
+          The build number was not quoted a second time, but three beta.10-only behaviours are cited, so build 106 is safe to assume.
+          <strong>Nothing is parked on a tester for the first time in the beta.</strong>
+        </p>
+      </div>
+      <div class="entry">
+        <div class="when">2026-08-04 · midday — ⛔ <strong>no sweep: Reddit rate-limited the feed</strong>; 0 comments read, watermark held</div>
+        <p class="what">
+          The fetch script failed <strong>8/8 times</strong> between 13:06Z and 13:27Z — 32 HTTP requests, <strong>seven <code>429</code> and a <code>403</code></strong>
+          on the final attempt — with a manual probe still 429 afterwards. Ruled out so nobody re-litigates it next run: it is <strong>not</strong> the historical
+          generic-User-Agent 403 (the unique descriptive UA was sent unmodified on every request); it is <strong>not</strong> a sandbox artefact (a bare
+          <code>curl</code> returns the identical 429 with the sandbox disabled); <code>old.reddit.com/.rss</code> is not a way around it (302 →
+          <code>login/?reason=lor2</code>); the in-app browser pane refuses reddit.com by policy; and <code>WebFetch</code> reports it cannot fetch the host.
+          Apify and Firecrawl stay retired for the reasons already on file and were not re-attempted.
+          <strong>Watermark unchanged at <code>p1ctmbp</code>; no items added, no priorities changed.</strong> The 136-comment floor and 102↑ were carried forward
+          unverified. <em>Holding the watermark was the right call — the evening re-run swept from it and lost nothing.</em>
+        </p>
+      </div>
       <div class="entry ship">
         <div class="when">2026-08-03 · night — 🚢 <strong>beta.10 shipped and announced</strong>, after eight device rounds on the pinned hero</div>
         <p class="what">Build <strong>0.3.0 (106)</strong>, tag <code>tvos-v0.3.0-beta.10</code>, commit <code>d7ad446f</code>, published as a prerelease on both repos with the IPA attached; the <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/comment/p1khg3l/">announcement</a> went up the same night. <strong>The day's work was one feature and its consequences.</strong> Christian asked in the morning for the Nuvio-style hero to stay pinned while only the rows scroll — his reference photo turned out to be the same "Lucky" layout u/mrStevenx3 had been describing for betas. It was planned, delegated, sim-gated (43/43 ×2) and Codex-cleaned by evening as <code>679b0bf6</code> — <strong>and then failed on the first device round.</strong> Seven more followed, each one narrowing the mechanism rather than patching the symptom: tvOS has no momentum scrolling (swipes drive the <em>focus engine</em>, so every rest is a scroll-to-reveal aligned to the focused card's frame), hardware rests that reveal ~40–67pt short, padding outside the card frame can never compensate, and a reach that escapes its row's bounds <em>freezes directional focus entirely</em>. The shipped design: compact pinned hero (352pt), all-positive card reach (72 up / 44 down), section titles overlaid inside the reach band, and <strong>"See All" relocated from the row header to a card at the end of each shelf</strong> — Christian's call, which also killed a class of degenerate scroll rests the header pill was causing. Two Codex rounds after the pass caught real collection-row geometry defects (title clearance, mixed-shape tile alignment); suite closed at 43/43 ×2. <strong>A harness lesson worth keeping:</strong> the 12-press up-walk diagnostic freezes in the sim even in <em>classic</em> mode, which works on every real device — long press-sequence sim results cannot arbitrate device focus bugs. Release-tooling note: <code>gh release create --target &lt;SHA&gt;</code> began returning HTTP 422 tonight; publishing with branch-name targets worked, and a script fix is filed.</p>
@@ -1089,8 +1901,8 @@
 
   <footer>
     <div>Mirrored from <code>docs/beta-feedback-tracker.md</code> · swept daily via Reddit's public Atom feed (no credentials, no quota).</div>
-    <div>Upvotes, parent ids and comment depth are not exposed by the feed; counts are floors. The 102↑ / 136 comments / 70K views figures were read live off the thread on 2026-08-03 night while posting the beta.10 announcement.</div>
-    <div>Last updated 2026-08-03 night, at the beta.10 cut — build 106, <code>tvos-v0.3.0-beta.10</code>, announcement <code>p1khg3l</code>. Next scheduled sweep watches for beta.10 retests.</div>
+    <div>Upvotes, parent ids and comment depth are not exposed by the feed; counts are floors. The 144-comment figure is the 2026-08-05 count of 142 plus today's tester comment and our own acknowledgement. The 102↑ / 70K views figures were read live off the thread on 2026-08-02 and are carried forward, not re-confirmed — they are four days stale.</div>
+    <div>Last updated 2026-08-06 (morning sweep) — watermark <code>p21m344</code> @ 2026-08-06T12:07:13Z. Nothing is parked on a tester. What is owed is ours — a short reply covering UX-13 and DOC-2, the UX-9 correction, and the BUG-31 counter-video they requested.</div>
   </footer>
 
 </div>

@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en" style="overflow:hidden; margin:0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@hyperframes/core/dist/hyperframe.runtime.iife.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@hyperframes/shader-transitions/dist/index.global.js"></script>
+    <style>
+      @font-face {
+        font-family: "JetBrains Sans";
+        font-weight: 400;
+        font-style: normal;
+        font-display: block;
+        src: url(data:font/ttf;base64,__FONT_REGULAR__) format("truetype");
+      }
+      @font-face {
+        font-family: "JetBrains Sans";
+        font-weight: 600;
+        font-style: normal;
+        font-display: block;
+        src: url(data:font/ttf;base64,__FONT_SEMIBOLD__) format("truetype");
+      }
+      @font-face {
+        font-family: "JetBrains Sans";
+        font-weight: 700;
+        font-style: normal;
+        font-display: block;
+        src: url(data:font/ttf;base64,__FONT_BOLD__) format("truetype");
+      }
+
+      :root {
+        --bg: #0d0d0d;
+        --surface: #1a1a1a;
+        --surface-hi: #242424;
+        --ink: #f5f7f8;
+        --muted: #969ca3;
+        --accent: #e53935;
+        --accent-hi: #ff5252;
+        --star: #ffc857;
+        --outline: #252a2a;
+        --font: "JetBrains Sans", system-ui, sans-serif;
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); color: var(--ink); font-family: var(--font); }
+
+      .scene { position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--bg); }
+      .scene-content {
+        width: 100%; height: 100%; display: flex; flex-direction: column;
+        justify-content: center; align-items: center; gap: 0; position: relative; z-index: 1;
+      }
+
+      .grain { position:absolute; inset:0; pointer-events:none; z-index:50; opacity:0.14; mix-blend-mode:overlay;
+        background-image: radial-gradient(rgba(255,255,255,.08) 1px, transparent 1.2px), radial-gradient(rgba(0,0,0,.18) 1px, transparent 1.2px);
+        background-size: 3px 3px, 5px 5px; background-position: 0 0, 1px 2px; }
+
+      .orb { position: absolute; width: 1200px; height: 1200px; border-radius: 50%; pointer-events: none;
+        background: radial-gradient(circle closest-side, rgba(229,57,53,0.22) 0%, rgba(229,57,53,0.0) 100%); }
+
+      .kicker { font-weight: 600; font-size: 30px; letter-spacing: 0.42em; text-transform: uppercase; color: var(--muted); }
+      .display { font-weight: 700; line-height: 1.04; letter-spacing: -0.015em; }
+      .sub { font-weight: 400; font-size: 42px; line-height: 1.4; color: var(--muted); text-align: center; max-width: 1320px; }
+      .chip { font-weight: 600; font-size: 32px; letter-spacing: 0.06em; color: var(--ink);
+        background: var(--surface-hi); border: 2px solid var(--outline); border-radius: 16px; padding: 18px 36px; }
+      .chip .arrow { color: var(--accent-hi); }
+      .char { display: inline-block; }
+
+      /* s1 */
+      #s1-title { font-size: 280px; }
+      #s1-title .tv { color: var(--accent); }
+      #s1-line { width: 460px; height: 10px; margin-top: 34px; border-radius: 5px; background: var(--accent);
+        transform-origin: left center; }
+      #s1-sub { margin-top: 44px; font-size: 46px; font-weight: 600; color: var(--ink); }
+
+      /* s2 */
+      #s2-head { font-size: 128px; margin-top: 18px; text-align: center; }
+      #s2-head em { font-style: normal;
+        background: linear-gradient(var(--accent),var(--accent)) no-repeat 0 88% / 0% 22%; padding: 0 6px; }
+      .langrow { display: flex; align-items: center; gap: 42px; margin-top: 70px; }
+      .lang { font-weight: 600; font-size: 66px; }
+      .s2dot { width: 16px; height: 16px; border-radius: 50%; background: var(--accent); }
+      #s2-sub { margin-top: 66px; }
+
+      /* s3 */
+      #s3-head { font-size: 128px; }
+      .pinrow { display: flex; gap: 28px; margin-top: 66px; }
+      .pinbox { width: 140px; height: 172px; border-radius: 20px; background: var(--surface);
+        border: 3px solid var(--outline); display: flex; align-items: center; justify-content: center;
+        font-weight: 700; font-size: 92px; color: var(--accent-hi); font-variant-numeric: tabular-nums; }
+      #s3-sub { margin-top: 62px; }
+      #s3-chip { margin-top: 40px; }
+
+      /* s4 */
+      #s4-head { font-size: 118px; text-align: center; }
+      .score { display: flex; align-items: baseline; gap: 26px; margin-top: 56px; }
+      #s4-star { font-size: 120px; color: var(--star); line-height: 1; }
+      #s4-score { font-weight: 700; font-size: 220px; color: var(--star); font-variant-numeric: tabular-nums; line-height: 1; }
+      #s4-outof { font-weight: 400; font-size: 64px; color: var(--muted); }
+      #s4-sub { margin-top: 54px; }
+
+      /* s5 — heads-up (amber) */
+      #s5 .orb { background: radial-gradient(circle closest-side, rgba(255,200,87,0.16) 0%, rgba(255,200,87,0.0) 100%); }
+      #s5-chip { font-weight: 600; font-size: 30px; letter-spacing: 0.4em; text-transform: uppercase;
+        color: #0d0d0d; background: var(--star); border-radius: 12px; padding: 14px 30px; }
+      #s5-head { font-size: 118px; margin-top: 56px; text-align: center; }
+      #s5-line { width: 380px; height: 8px; margin-top: 40px; border-radius: 4px; background: var(--star); transform-origin: left center; }
+      #s5-sub { margin-top: 48px; }
+      #s5-sub strong { color: var(--ink); font-weight: 600; }
+
+      /* s6 — outro */
+      #s6-head { font-size: 168px; }
+      #s6-repo { margin-top: 48px; font-weight: 600; font-size: 52px; color: var(--ink); }
+      #s6-repo .at { color: var(--accent-hi); }
+      .s6row { display: flex; gap: 30px; margin-top: 56px; }
+      #s6-sub { margin-top: 62px; font-size: 38px; }
+    </style>
+  </head>
+  <body>
+    <div id="main" data-composition-id="main" data-width="1920" data-height="1080" data-start="0" data-duration="24">
+
+      <!-- SCENE 1 (0–3.2s) — title card -->
+      <div class="scene clip" id="s1" data-start="0" data-duration="3.2" data-track-index="0">
+        <div class="orb" data-layout-ignore id="s1-orb" style="top:-420px; right:-320px;"></div>
+        <div class="scene-content">
+          <p id="s1-kicker" class="kicker">Apple TV · Community Beta</p>
+          <h1 id="s1-title" class="display" style="margin-top:26px;"><span class="char">N</span><span class="char">u</span><span class="char">v</span><span class="char">i</span><span class="char">o</span><span class="char tv">T</span><span class="char tv">V</span></h1>
+          <div id="s1-line"></div>
+          <p id="s1-sub">v0.3.0 beta.5 is out</p>
+        </div>
+        <div class="grain"></div>
+      </div>
+
+      <!-- SCENE 2 (3.2–7.4s) — localization -->
+      <div class="scene clip" id="s2" data-start="3.2" data-duration="4.2" data-track-index="0" style="visibility:hidden;">
+        <div class="orb" data-layout-ignore id="s2-orb" style="bottom:-460px; left:-360px;"></div>
+        <div class="scene-content">
+          <p id="s2-kicker" class="kicker">New in beta.5</p>
+          <h2 id="s2-head" class="display">Now speaks <em id="s2-em">your language</em></h2>
+          <div class="langrow">
+            <span class="lang s2lang">Français</span><span class="s2dot"></span>
+            <span class="lang s2lang">Español</span><span class="s2dot"></span>
+            <span class="lang s2lang">Deutsch</span><span class="s2dot"></span>
+            <span class="lang s2lang">Italiano</span>
+          </div>
+          <p id="s2-sub" class="sub">Follows your Apple TV's system language automatically — nothing to turn on.</p>
+        </div>
+        <div class="grain"></div>
+      </div>
+
+      <!-- SCENE 3 (7.4–11.6s) — All-Debrid -->
+      <div class="scene clip" id="s3" data-start="7.4" data-duration="4.2" data-track-index="0" style="visibility:hidden;">
+        <div class="orb" data-layout-ignore id="s3-orb" style="top:-480px; left:-300px;"></div>
+        <div class="scene-content">
+          <p id="s3-kicker" class="kicker">New in beta.5</p>
+          <h2 id="s3-head" class="display" style="margin-top:18px;">All-Debrid support</h2>
+          <div class="pinrow" id="s3-pins">
+            <div class="pinbox s3pin">7</div>
+            <div class="pinbox s3pin">G</div>
+            <div class="pinbox s3pin">4</div>
+            <div class="pinbox s3pin">K</div>
+          </div>
+          <p id="s3-sub" class="sub">Pair with a PIN from your phone — no typing API keys with the remote.</p>
+          <div id="s3-chip" class="chip">Settings <span class="arrow">→</span> Debrid</div>
+        </div>
+        <div class="grain"></div>
+      </div>
+
+      <!-- SCENE 4 (11.6–15.4s) — MyAnimeList -->
+      <div class="scene clip" id="s4" data-start="11.6" data-duration="3.8" data-track-index="0" style="visibility:hidden;">
+        <div class="orb" data-layout-ignore id="s4-orb" style="bottom:-440px; right:-340px;"></div>
+        <div class="scene-content">
+          <p id="s4-kicker" class="kicker">New in beta.5</p>
+          <h2 id="s4-head" class="display" style="margin-top:18px;">MyAnimeList scores on anime</h2>
+          <div class="score">
+            <span id="s4-star">★</span>
+            <span id="s4-score">0.0</span>
+            <span id="s4-outof">/ 10</span>
+          </div>
+          <p id="s4-sub" class="sub">MAL ratings on detail pages — on by default, toggle in ratings settings.</p>
+        </div>
+        <div class="grain"></div>
+      </div>
+
+      <!-- SCENE 5 (15.4–19.4s) — Trakt heads-up, SHADER ANCHOR 1 -->
+      <div class="scene clip" id="s5" data-start="15.4" data-duration="4" data-track-index="0" style="opacity:0;">
+        <div class="orb" data-layout-ignore style="top:-420px; right:-360px;"></div>
+        <div class="scene-content">
+          <p id="s5-chip">Heads-up</p>
+          <h2 id="s5-head" class="display">Trakt users: sign in again</h2>
+          <div id="s5-line"></div>
+          <p id="s5-sub" class="sub">Logins are now stored <strong>per profile</strong>, not per device.<br />Reconnect once under Settings → Trakt on each profile.</p>
+        </div>
+        <div class="grain"></div>
+      </div>
+
+      <!-- SCENE 6 (19.4–24s) — outro / CTA, SHADER ANCHOR 2 -->
+      <div class="scene clip" id="s6" data-start="19.4" data-duration="4.6" data-track-index="0" style="opacity:0;">
+        <div class="orb" data-layout-ignore style="top:-380px; left:50%; margin-left:-600px;"></div>
+        <div class="scene-content">
+          <h2 id="s6-head" class="display">Get beta.5</h2>
+          <p id="s6-repo"><span class="at">github.com/</span>youngchris29-art/NuvioMobile</p>
+          <div class="s6row">
+            <div class="chip s6chip">Free sideload</div>
+            <div class="chip s6chip">Sideloadly</div>
+            <div class="chip s6chip">atvloadly</div>
+          </div>
+          <p id="s6-sub" class="sub">Feedback in the beta thread — it all gets read.</p>
+        </div>
+        <div class="grain"></div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+
+      // --- visibility toggles ---
+      tl.set("#s1", { autoAlpha: 0 }, 3.2);
+      tl.set("#s2", { autoAlpha: 1 }, 3.2); tl.set("#s2", { autoAlpha: 0 }, 7.4);
+      tl.set("#s3", { autoAlpha: 1 }, 7.4); tl.set("#s3", { autoAlpha: 0 }, 11.6);
+      tl.set("#s4", { autoAlpha: 1 }, 11.6); tl.set("#s4", { autoAlpha: 0 }, 15.4);
+      tl.set("#s5", { opacity: 1 }, 15.4); // first shader anchor — explicit show
+      // s6 is the second anchor — HyperShader manages its opacity.
+
+      // === SCENE 1 (0–3.2) — title ===
+      tl.from("#s1-kicker", { y: 24, autoAlpha: 0, duration: 0.5, ease: "power2.out" }, 0.15);
+      tl.from("#s1-title .char", { y: 90, autoAlpha: 0, duration: 0.6, ease: "power4.out", stagger: { each: 0.06, from: "start" } }, 0.3);
+      tl.from("#s1-line", { scaleX: 0, duration: 0.55, ease: "expo.out" }, 1.0);
+      tl.from("#s1-sub", { autoAlpha: 0, y: 26, duration: 0.5, ease: "power2.out" }, 1.15);
+      tl.to("#s1-title", { y: -8, duration: 0.65, ease: "sine.inOut", yoyo: true, repeat: 1 }, 1.8);
+      tl.to("#s1-orb", { x: -70, y: 40, duration: 2.8, ease: "sine.inOut" }, 0.2);
+
+      // === SCENE 2 (3.2–7.4) — languages ===
+      tl.from("#s2-kicker", { y: 20, autoAlpha: 0, duration: 0.45, ease: "power2.out" }, 3.35);
+      tl.from("#s2-head", { y: 46, autoAlpha: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from(".s2lang", { y: 44, autoAlpha: 0, duration: 0.55, ease: "back.out(1.6)", stagger: { each: 0.13, from: "start" } }, 3.85);
+      tl.from(".s2dot", { scale: 0, autoAlpha: 0, duration: 0.4, ease: "back.out(2)", stagger: { each: 0.13, from: "start" } }, 3.95);
+      tl.from("#s2-sub", { autoAlpha: 0, y: 24, duration: 0.5, ease: "power2.out" }, 4.6);
+      tl.to("#s2-em", { backgroundSize: "100% 22%", duration: 0.6, ease: "power2.out" }, 4.7);
+      tl.to(".s2dot", { scale: 1.45, duration: 0.35, ease: "sine.inOut", yoyo: true, repeat: 3 }, 5.5);
+      tl.to("#s2-orb", { x: 80, y: -50, duration: 3.2, ease: "sine.inOut" }, 3.9);
+
+      // === SCENE 3 (7.4–11.6) — All-Debrid ===
+      tl.from("#s3-kicker", { y: 20, autoAlpha: 0, duration: 0.45, ease: "power2.out" }, 7.55);
+      tl.from("#s3-head", { y: 46, autoAlpha: 0, duration: 0.6, ease: "power3.out" }, 7.7);
+      tl.from(".s3pin", { scale: 0.4, autoAlpha: 0, duration: 0.5, ease: "back.out(1.6)", stagger: { each: 0.14, from: "start" } }, 8.05);
+      tl.from("#s3-sub", { autoAlpha: 0, y: 24, duration: 0.5, ease: "power2.out" }, 8.65);
+      tl.from("#s3-chip", { autoAlpha: 0, y: 22, duration: 0.5, ease: "power2.out" }, 8.95);
+      tl.to(".s3pin", { borderColor: "#e53935", duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 2, stagger: 0 }, 9.6);
+      tl.to("#s3-pins", { y: -6, duration: 0.6, ease: "sine.inOut", yoyo: true, repeat: 1 }, 9.7);
+      tl.to("#s3-orb", { x: 60, y: 60, duration: 3.4, ease: "sine.inOut" }, 7.8);
+
+      // === SCENE 4 (11.6–15.4) — MAL scores ===
+      tl.from("#s4-kicker", { y: 20, autoAlpha: 0, duration: 0.45, ease: "power2.out" }, 11.75);
+      tl.from("#s4-head", { y: 46, autoAlpha: 0, duration: 0.6, ease: "power3.out" }, 11.9);
+      tl.from("#s4-star", { scale: 0, rotation: -80, autoAlpha: 0, duration: 0.6, ease: "back.out(1.8)" }, 12.25);
+      tl.from("#s4-score", { y: 60, autoAlpha: 0, duration: 0.5, ease: "power3.out" }, 12.3);
+      tl.from("#s4-outof", { autoAlpha: 0, x: -24, duration: 0.5, ease: "power2.out" }, 12.5);
+      var mal = { v: 0 };
+      tl.to(mal, { v: 8.6, duration: 0.9, ease: "power2.out",
+        onUpdate: function () { document.getElementById("s4-score").textContent = mal.v.toFixed(1); } }, 12.3);
+      tl.from("#s4-sub", { autoAlpha: 0, y: 24, duration: 0.5, ease: "power2.out" }, 12.9);
+      tl.to("#s4-star", { rotation: 12, duration: 0.6, ease: "sine.inOut", yoyo: true, repeat: 1 }, 13.6);
+      tl.to("#s4-orb", { x: -70, y: -40, duration: 3.0, ease: "sine.inOut" }, 11.8);
+
+      // === SCENE 5 (15.4–19.4) — Trakt heads-up (anchor: children only, no exit tweens) ===
+      tl.from("#s5-chip", { y: 22, autoAlpha: 0, duration: 0.5, ease: "power2.out" }, 15.55);
+      tl.from("#s5-head", { y: 46, autoAlpha: 0, duration: 0.6, ease: "power3.out" }, 15.75);
+      tl.from("#s5-line", { scaleX: 0, duration: 0.55, ease: "expo.out" }, 16.15);
+      tl.from("#s5-sub", { autoAlpha: 0, y: 26, duration: 0.55, ease: "power2.out" }, 16.35);
+      tl.to("#s5-chip", { scale: 1.06, duration: 0.4, ease: "sine.inOut", yoyo: true, repeat: 2 }, 17.2);
+
+      // === SCENE 6 (19.4–24) — outro ===
+      tl.from("#s6-head", { y: 54, autoAlpha: 0, duration: 0.6, ease: "power4.out" }, 19.7);
+      tl.from("#s6-repo", { autoAlpha: 0, y: 28, duration: 0.5, ease: "power2.out" }, 20.0);
+      tl.from(".s6chip", { y: 30, autoAlpha: 0, duration: 0.5, ease: "back.out(1.5)", stagger: { each: 0.12, from: "start" } }, 20.3);
+      tl.from("#s6-sub", { autoAlpha: 0, y: 22, duration: 0.5, ease: "power2.out" }, 20.85);
+      tl.to("#s6-head", { y: -8, duration: 0.8, ease: "sine.inOut", yoyo: true, repeat: 1 }, 21.6);
+
+      // --- one shader transition: heads-up -> CTA ---
+      window.HyperShader.init({
+        bgColor: "#0d0d0d",
+        scenes: ["s5", "s6"],
+        timeline: tl,
+        transitions: [{ time: 19.15, shader: "cinematic-zoom", duration: 0.5 }],
+      });
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

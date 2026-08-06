@@ -526,22 +526,24 @@
       Live triage of bug reports, feature requests and UX feedback from the
       <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/">beta announcement thread</a>,
       swept daily and mirrored from <code>docs/beta-feedback-tracker.md</code>.
-      <strong>🆕 2026-08-06 — a second voice, and a kind of complaint this board has never had.</strong>
-      u/Ginosaure — the tester who confirmed BUG-2 with <em>"no lag at all with a 44-gig file"</em> back on 2026-07-24 — is back with
-      <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p20ivrz/">p20ivrz</a>:
-      <strong>opening a poster from a <em>View All</em> grid and pressing Back returns you to the very beginning of that grid</strong>, every
-      time. Filed as <strong>UX-13 (P2)</strong>. Every other item here is about how a pixel is drawn or whether a fetch resolves; this one is
-      about the app forgetting where you were, and it is the first of its kind in eighteen days of sweeps.
-      Still the largest open thread beneath it: <strong>UX-9</strong>, where the fix was aimed at the full-screen player and the reporter means
-      the inline focus trailer — the measured answer is a per-item zoom of <strong>z ≈ 1.34</strong> against the 1.08 that shipped.
+      <strong>🚨 2026-08-06 — the board has a P0 again, and it did not come through the thread.</strong>
+      A forwarded <strong>Reddit DM</strong> from a third tester, u/tiyeuedm, reports that <strong>pressing Back out of expanded search
+      results crashes NuvioTV to the Apple TV home screen</strong> on beta.10 / <strong>tvOS 27</strong> — filed as <strong>BUG-47 (P0)</strong>,
+      the first hard crash reported since beta.2. They also asked for Vietnamese and a default preferred subtitle language (<strong>FEAT-19</strong>).
+      <strong>Its neighbour arrived a day earlier from a different tester:</strong> u/Ginosaure's
+      <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p20ivrz/">p20ivrz</a> reports that a
+      <em>View All</em> grid <strong>forgets your place</strong> on Back (<strong>UX-13, P2</strong>). Same pop path out of an expanded grid — one
+      degrades, one dies — so they are being worked together.
+      The largest open item beneath them is still <strong>UX-9</strong>: the fix was aimed at the full-screen player and the reporter means the
+      inline focus trailer, where the measured answer is a per-item zoom of <strong>z ≈ 1.34</strong> against the 1.08 that shipped.
     </p>
     <div class="meta">
       <span class="pill"><strong>144</strong> comments <span style="color:var(--text-3)">(floor)</span></span>
       <span class="pill"><strong>102↑</strong> · <strong>70K</strong> views <span style="color:var(--text-3)">carried from 2026-08-02, 4 days stale</span></span>
-      <span class="pill">Last checked <strong>2026-08-06</strong> (morning sweep)</span>
+      <span class="pill">Last checked <strong>2026-08-06</strong> (sweep + DM intake)</span>
       <span class="pill">Watermark <code>p21m344</code> <span style="color:var(--text-3)">@ 2026-08-06T12:07:13Z</span></span>
       <span class="pill">🚢 Shipped <strong>beta.10</strong> · build 106</span>
-      <span class="pill">🆕 <strong>UX-13</strong> — View All loses your place</span>
+      <span class="pill">🚨 <strong>BUG-47</strong> P0 — Back out of search crashes</span>
       <span class="pill">⚠️ <strong>UX-9</strong> needs z≈1.34, shipped 1.08</span>
     </div>
   </header>
@@ -575,14 +577,14 @@
 
   <div class="tiles">
     <div class="tile alert">
-      <span class="n">14</span>
+      <span class="n">15</span>
       <span class="k">Open bugs</span>
-      <span class="sub">of 46 filed · 1 at P1 (BUG-37) · 0 at P0 · BUG-46 opened today</span>
+      <span class="sub">of 47 filed · <strong>1 at P0 (BUG-47)</strong> · 1 at P1 (BUG-37)</span>
     </div>
     <div class="tile">
-      <span class="n">6</span>
+      <span class="n">7</span>
       <span class="k">Open feature requests</span>
-      <span class="sub">FEAT-3, 14, 15 · <strong>+FEAT-16, 17, 18</strong> from today's comment</span>
+      <span class="sub">FEAT-3, 14, 15, 16, 17, 18 · <strong>+FEAT-19</strong> (Vietnamese) via DM</span>
     </div>
     <div class="tile">
       <span class="n">6</span>
@@ -592,7 +594,7 @@
     <div class="tile ship">
       <span class="n">53</span>
       <span class="k">Resolved or shipped</span>
-      <span class="sub">of 79 tracked items since 2026-07-21</span>
+      <span class="sub">of 81 tracked items since 2026-07-21</span>
     </div>
   </div>
 
@@ -608,6 +610,7 @@
       <div class="lane now">
         <h3><span class="dot"></span>Now</h3>
         <ol>
+          <li><strong>🚨 BUG-47 (P0) — a crash, and it outranks everything below it.</strong> Back out of expanded search results ejects to the tvOS home screen on beta.10 / tvOS 27. Three actions in order: <strong>(1) ask for the <code>.ips</code></strong> — an eject to the home screen is a process termination, so a crash log exists, and BUG-11 is the precedent for how fast that ends the guessing; <strong>(2) attempt the repro here first</strong> (search → expand → Back), accepting that our hardware is tvOS 26.5 so a clean run proves only that it is not universal; <strong>(3) work it jointly with UX-13</strong>. <strong>Gate the release on it</strong> — the beta.11 batch touches the search surface.</li>
           <li><strong>✅ The <code>p1vylo0</code> video is analyzed</strong> (2026-08-05 night) — results below. It solved UX-9, verified BUG-33, located BUG-46, and corrected two of the same day's earlier conclusions.</li>
           <li><strong>UX-9 (P2) — now a one-line change with a known constant.</strong> Measured: <em>Lucky</em> fills 82.2% of its card, <em>Futurama</em> fills it entirely ⇒ source is 2.34:1 ⇒ <strong>z ≈ 1.34 required, 1.08 shipped</strong>. Compute per item from the track's natural size and stop shipping constants. Do not claim it fixed a third time until a scope trailer is checked on hardware.</li>
           <li><strong>BUG-45 (P2, restored) — a measured white-on-white row on the Écran d'accueil pane.</strong> 1.05:1 focused against 4.36:1 unfocused in the same frame. The sidebar report is withdrawn; this content-pane row replaces it. Verify <code>c29da28b</code> reaches toggle rows, not just the sidebar.</li>
@@ -648,12 +651,65 @@
   </section>
 
   <section>
-    <h2>New this sweep <span class="count">2026-08-06 · one comment, one item</span></h2>
+    <h2>New this sweep <span class="count">2026-08-06 · three items, two channels</span></h2>
     <p class="section-note">
-      Two comments landed above the watermark and only one is a tester's. It is short, it is prose-only, and the repro in it is complete
-      enough to reproduce without asking anything back — which makes it the least expensive item added to this board in two weeks.
+      Two comments landed above the watermark and only one is a tester's. Separately — and <strong>not through the thread at all</strong> —
+      a forwarded Reddit DM brought a P0 crash and a localization request. Neither DM item is a thread comment, so
+      <strong>the watermark and the comment count are unchanged by them</strong>. All three reports are prose-only and fully specified;
+      none needs a follow-up ask before work can start.
     </p>
     <div class="cards">
+      <div class="card flag">
+        <div class="card-top">
+          <span class="id">BUG-47</span>
+          <span class="chip p0">P0</span>
+          <span class="status new">New</span>
+          <span class="status warn">✉️ via DM — not in the thread</span>
+        </div>
+        <p class="desc">
+          <strong>Pressing Back out of expanded search results crashes the app to the Apple TV home screen.</strong>
+          <em>"I noticed a bug in Beta 10: when I click to expand the search results, I can't go back to perform another search. Pressing back
+          suddenly crashes the Nuvio TV app and kicks me to the Apple TV home screen (tvOS 27)"</em>
+          The board's <strong>first P0 since BUG-11</strong> and the first hard crash reported since beta.2.
+          <strong>Being ejected to the home screen is a process termination</strong>, not a SwiftUI hang or a stuck focus state — so an
+          <code>.ips</code> exists on their device, and asking for it is the single highest-value next step.
+        </p>
+        <p class="fix">
+          <strong>Two reasons our own passes could have missed this.</strong> The reporter is on <strong>tvOS 27</strong>, while the Living Room
+          Apple TV and the most-instrumented tester are both on 26.5 — and tvOS 27 beta has already been a live variable once on this board, in
+          the beta.6-era profile force-close. And the expanded search grid is precisely the surface BUG-33 and UX-8 have been churning through
+          beta.10 and the unreleased beta.11 batch.
+          <strong>Work it with UX-13:</strong> both are the pop path out of an expanded results grid, one loses its position and one dies, and a
+          shared teardown defect would explain both. <strong>Do not cut beta.11 before attempting the repro</strong> — the batch touches search.
+        </p>
+        <div class="by">u/tiyeuedm <span class="sep">·</span> <a href="https://www.reddit.com/user/tiyeuedm/">Reddit DM, no permalink</a> <span class="sep">·</span> 2026-08-05 <span class="sep">·</span> beta.10, tvOS 27</div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">FEAT-19</span>
+          <span class="chip p2">P2</span>
+          <span class="status new">New</span>
+          <span class="status warn">✉️ via DM</span>
+        </div>
+        <p class="desc">
+          <strong>Vietnamese language support, and the ability to set Vietnamese as the default preferred subtitle language.</strong>
+          <em>"I hope in the next version you can add Vietnamese language support and allow setting Vietnamese as the default preferred subtitle."</em>
+          <strong>Part A</strong> is a fifth locale on FEAT-4's existing pipeline (fr/es/de/it shipped in beta.5) — the mechanism is built, the cost
+          is translation plus a catalog sync, and the acceptance bar is <strong>key-count parity</strong>, because German shipped 81 keys short and
+          fell back to English. Vietnamese also brings diacritic-heavy strings that run longer than English at the same point size, so the Settings
+          rows and card titles UX-5 already tightened deserve one look.
+        </p>
+        <p class="fix">
+          <strong>Part B is the larger half, and the app does not appear to have it at all.</strong> The beta.6 Metadata Language picker is a
+          different axis — it localizes <em>metadata</em>, not subtitle track selection — though it is the obvious precedent for where such a
+          setting lives and how it persists. <strong>Check the code before scoping</strong> (the DOC-2 rule): the answer depends on whether subtitle
+          selection has any preference layer to hang a default on, or whether one must be built across the addon subtitle path BUG-6's fetch-race
+          work already touches. Part B removes a chore from every single playback; Part A only translates chrome.
+        </p>
+        <div class="by">u/tiyeuedm <span class="sep">·</span> <a href="https://www.reddit.com/user/tiyeuedm/">Reddit DM, no permalink</a> <span class="sep">·</span> 2026-08-05</div>
+      </div>
+
       <div class="card warm">
         <div class="card-top">
           <span class="id">UX-13</span>
@@ -1698,6 +1754,26 @@
   <section>
     <h2>Update log</h2>
     <div class="timeline">
+      <div class="entry hot">
+        <div class="when">2026-08-06 · DM intake — 🚨 <strong>a P0 arrived on a channel the sweep cannot read</strong>; watermark held at <code>p21m344</code></div>
+        <p class="what">
+          A forwarded screenshot of a Reddit DM thread with <strong>u/tiyeuedm</strong>, dated 2026-08-05 (times local to their device, timezone
+          unrecorded; Christian's reply is already sent). Two items filed, <strong>neither of them a thread comment — so the watermark stays at
+          <code>p21m344</code> and the comment count stays at 144.</strong>
+          <strong>BUG-47 (P0):</strong> Back out of expanded search results crashes NuvioTV to the Apple TV home screen on beta.10 / tvOS 27 —
+          the first P0 since BUG-11 and the first hard crash reported since beta.2. An eject to the home screen is a process termination, so an
+          <code>.ips</code> exists and asking for it is the top action. Our device is on tvOS 26.5, which is one plausible reason this never
+          surfaced in a device pass; the other is that the expanded search grid is exactly what beta.10 and the beta.11 batch have been reworking.
+          <strong>It pairs with UX-13</strong>, filed a day earlier by a different tester on the same pop-out-of-a-grid path.
+          <strong>FEAT-19 (P2):</strong> Vietnamese localization plus a default preferred subtitle language — Part A rides FEAT-4's pipeline with
+          German's 81-key shortfall as the acceptance bar, Part B looks absent from the app entirely and needs a code check before scoping.
+          <strong>The process finding matters as much as the bugs:</strong> the Atom feed only ever sees the thread, so DMs are invisible to the
+          daily sweep unless forwarded by hand. Worth a standing habit, and worth a line in the next reply pointing testers at the thread for
+          anything they want tracked.
+          <strong>Totals: +1 P0 bug, +1 feature request, 0 duplicates, 0 status changes, watermark held.</strong>
+          <code>check-tracker.py</code> passed before (79 rows) and after (81 rows).
+        </p>
+      </div>
       <div class="entry quiet">
         <div class="when">2026-08-06 · morning sweep — 🆕 <strong>one new item from a returning tester</strong>; watermark <code>p1vylo0</code> → <code>p21m344</code></div>
         <p class="what">
@@ -1902,7 +1978,8 @@
   <footer>
     <div>Mirrored from <code>docs/beta-feedback-tracker.md</code> · swept daily via Reddit's public Atom feed (no credentials, no quota).</div>
     <div>Upvotes, parent ids and comment depth are not exposed by the feed; counts are floors. The 144-comment figure is the 2026-08-05 count of 142 plus today's tester comment and our own acknowledgement. The 102↑ / 70K views figures were read live off the thread on 2026-08-02 and are carried forward, not re-confirmed — they are four days stale.</div>
-    <div>Last updated 2026-08-06 (morning sweep) — watermark <code>p21m344</code> @ 2026-08-06T12:07:13Z. Nothing is parked on a tester. What is owed is ours — a short reply covering UX-13 and DOC-2, the UX-9 correction, and the BUG-31 counter-video they requested.</div>
+    <div>BUG-47 and FEAT-19 arrived by Reddit DM, not through the thread — they do not move the watermark or the comment count, and the daily Atom sweep would never have seen them.</div>
+    <div>Last updated 2026-08-06 (sweep + DM intake) — watermark <code>p21m344</code> @ 2026-08-06T12:07:13Z. One thing is now parked on a tester: <strong>the <code>.ips</code> crash log for BUG-47</strong>. What is owed is ours — that request, a short reply covering UX-13 and DOC-2, the UX-9 correction, and the BUG-31 counter-video.</div>
   </footer>
 
 </div>

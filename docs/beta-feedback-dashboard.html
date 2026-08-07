@@ -538,14 +538,15 @@
       15-round Codex loop. All committed and pushed (<code>88abcf9a..b8c4e60c</code> + pointer <code>72ca2a8</code>); release gates below.
     </p>
     <div class="meta">
-      <span class="pill"><strong>144</strong> comments <span style="color:var(--text-3)">(floor)</span></span>
-      <span class="pill"><strong>102↑</strong> · <strong>70K</strong> views <span style="color:var(--text-3)">carried from 2026-08-02, stale</span></span>
-      <span class="pill">Last updated <strong>2026-08-07</strong> (campaign session)</span>
-      <span class="pill">Watermark <code>p21m344</code> <span style="color:var(--text-3)">@ 2026-08-06T12:07:13Z</span></span>
+      <span class="pill"><strong>146</strong> comments <span style="color:var(--text-3)">(floor)</span></span>
+      <span class="pill"><strong>102↑</strong> · <strong>70K</strong> views <span style="color:var(--text-3)">carried from 2026-08-02, 5 days stale</span></span>
+      <span class="pill">Last checked <strong>2026-08-07</strong> (sweep)</span>
+      <span class="pill">Watermark <code>p2a06zj</code> <span style="color:var(--text-3)">@ 2026-08-07T14:58:45Z</span></span>
       <span class="pill">🚢 Shipped <strong>beta.10</strong> · build 106</span>
       <span class="pill">✅ <strong>BUG-47</strong> fixed in code — eject, not crash</span>
       <span class="pill">✅ <strong>UX-9</strong> measured zoom — sim-proven 1.080/1.137</span>
       <span class="pill">🔧 <strong>beta.11</strong> expanded batch committed + pushed</span>
+      <span class="pill">🧩 <strong>FEAT-20</strong> Simkl — asked today, already in beta.11</span>
     </div>
   </header>
 
@@ -572,6 +573,16 @@
       upstream title logos. The upstream <strong>provider-credential sync</strong> port survived an 8-round Codex interrogation of its migration
       path alone — the staged design that emerged cannot resurrect cleared credentials, cannot orphan legacy ones, and cannot mint blank tombstones.
       One upstream flaw is documented rather than diverged from (full-snapshot push-before-pull; upstream-report candidate).
+    </p>
+    <p>
+      <strong>🧩 2026-08-07 sweep — the one new request was already answered, and the repo backs the answer.</strong> u/Ginosaure asked for
+      <strong>Simkl integration</strong> and Christian replied <em>"Already scheduled for the next beta"</em> 46 minutes later — filed as
+      <strong>FEAT-20</strong> with the answer folded in rather than as a New item awaiting triage, because the tvOS Simkl port is already
+      code-complete in this same unreleased batch: a four-part port (<code>4c112d6f</code> backend → <code>9a9c89cf</code> registry →
+      <code>b20d7a33</code> settings surface), the parity commit that closed the deliberately-partial first ship (<code>33c298a5</code>: anime ID
+      picker, sync info, Sync Now, attributions), five hardening commits, and <code>SIMKL_CLIENT_ID</code> now configured. One divergence is worth
+      stating when they see it: tvOS signs in with Simkl's <strong>PIN/device flow</strong>, not upstream's PKCE + redirect, which cannot work on a
+      TV with no browser.
     </p>
     <p>
       <strong>✅ Suite gate met (2026-08-07):</strong> 26.5 ×2 (25/25 UI class, then the full 54-test bundle clean) and the
@@ -616,9 +627,9 @@
       <span class="sub">of 50 filed · <strong>0 unmitigated P0s</strong> — BUG-47 fixed in code, sim-verified on tvOS 27 · BUG-48 (P1) → beta.12 · BUG-37 probe pending</span>
     </div>
     <div class="tile">
-      <span class="n">7</span>
+      <span class="n">8</span>
       <span class="k">Open feature requests</span>
-      <span class="sub">FEAT-3, 14, 15, 16, 17, 18 · <strong>+FEAT-19</strong> (Vietnamese) via DM</span>
+      <span class="sub">FEAT-3, 14, 15, 16, 17, 18 · FEAT-19 (Vietnamese) via DM · <strong>+FEAT-20</strong> (Simkl) — already built, awaiting the cut</span>
     </div>
     <div class="tile">
       <span class="n">6</span>
@@ -628,7 +639,7 @@
     <div class="tile ship">
       <span class="n">53</span>
       <span class="k">Resolved or shipped</span>
-      <span class="sub">of 84 tracked items · <strong>+13 fixed-in-code</strong> awaiting the beta.11 cut</span>
+      <span class="sub">of 85 tracked items · <strong>+14 fixed-in-code</strong> awaiting the beta.11 cut</span>
     </div>
   </div>
 
@@ -763,7 +774,50 @@
   </section>
 
   <section>
-    <h2>New this sweep <span class="count">2026-08-06 · three items, two channels</span></h2>
+    <h2>New this sweep <span class="count">2026-08-07 · one item, answered before the sweep ran</span></h2>
+    <p class="section-note">
+      Two comments landed above the watermark and they are the two halves of one exchange — a request and Christian's reply to it, 46 minutes
+      apart. <strong>Parentage was proven rather than assumed:</strong> the Atom feed carries no <code>parentId</code>, so the reply's own
+      permalink was re-fetched as <code>.rss?context=3</code>, which returns the chain post → <code>p29pw7c</code> → <code>p2a06zj</code>.
+      (The <code>.json</code> endpoint 403s even with the script's descriptive User-Agent; <code>.rss</code> is the only context path that works.)
+      No bugs, no UX items, no noise.
+    </p>
+    <div class="cards">
+      <div class="card">
+        <div class="card-top">
+          <span class="id">FEAT-20</span>
+          <span class="chip p2">P2</span>
+          <span class="status unreleased">Built — rides beta.11</span>
+          <span class="status done">✅ Answered on the thread</span>
+        </div>
+        <p class="desc">
+          <strong>Simkl integration on the Apple TV app.</strong>
+          <em>"Would it be possible to get the Simkl integration, please?"</em>
+          The first request for Simkl on the thread — the name had appeared exactly once in this tracker before today, inside the 2026-08-01 log
+          entry recording that Simkl Phases 2–4 were deferred behind the Phase-1 provider-neutral tracking layer. The ask is bare, naming no
+          particular surface (scrobbling, watched sync, anime IDs, library), but <strong>no scoping question needs to go back to them</strong>:
+          the shipped port covers the full mobile surface.
+        </p>
+        <p class="fix">
+          <strong>Christian's reply — <em>"Already scheduled for the next beta"</em> — checks out against the repo.</strong> The tvOS Simkl port is
+          code-complete in the unreleased beta.11 batch: a four-part port (<code>4c112d6f</code> backend into <code>shared</code> →
+          <code>9a9c89cf</code> tracking-registry registration → <code>b20d7a33</code> the Apple TV settings surface), the parity commit that closed
+          the deliberately-partial first ship (<code>33c298a5</code>: anime ID picker, sync info, Sync Now, attributions), and five hardening commits
+          (<code>91ddd802</code> anime-movie projections, <code>51b93848</code> no series markers on history removal, <code>c6680a78</code>
+          movie/series removal forwarding, <code>ee5749ae</code> + <code>b3c85920</code> account-clear wipe). <code>SIMKL_CLIENT_ID</code> is now
+          present in <code>local.properties</code>, so the PIN flow is configurable rather than stubbed.
+          <strong>One deliberate divergence to mention if they ask:</strong> tvOS signs in with Simkl's <strong>PIN/device flow, client_id only</strong>
+          — not upstream's PKCE + redirect, which cannot work on a TV with no browser; the Rejected-branch behaviour was corrected against the live
+          API after real testing (<code>668e13fa</code>). <strong>Not yet verified by the reporter or on device</strong> — beta.11 is unreleased, so
+          the row stays open until the cut ships and they confirm.
+        </p>
+        <div class="by">u/Ginosaure <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p29pw7c/">comment</a> <span class="sep">·</span> 2026-08-07 <span class="sep">·</span> answered by <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2a06zj/">p2a06zj</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>New on 2026-08-06 <span class="count">three items, two channels</span></h2>
     <p class="section-note">
       Two comments landed above the watermark and only one is a tester's. Separately — and <strong>not through the thread at all</strong> —
       a forwarded Reddit DM brought a P0 crash and a localization request. Neither DM item is a thread comment, so
@@ -1866,6 +1920,29 @@
   <section>
     <h2>Update log</h2>
     <div class="timeline">
+      <div class="entry quiet">
+        <div class="when">2026-08-07 · scheduled sweep — 🧩 <strong>one new item, already built</strong>, and a structural repair to the tracker itself; watermark <code>p21m344</code> → <code>p2a06zj</code></div>
+        <p class="what">
+          Two comments above the watermark, both halves of one exchange: u/Ginosaure asks
+          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p29pw7c/">for Simkl integration</a>
+          (14:12:53Z) and Christian answers <em>"Already scheduled for the next beta"</em>
+          (<a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2a06zj/">p2a06zj</a>, 14:58:45Z).
+          Filed as <strong>FEAT-20 (P2)</strong> with the answer folded in rather than as a New item awaiting triage — the reply is accurate, and the
+          repo shows why: the tvOS Simkl port is code-complete in the unreleased beta.11 batch (four-part port, the settings-parity commit that closed
+          the deliberately-partial first ship, five hardening commits, <code>SIMKL_CLIENT_ID</code> configured), which
+          <strong>supersedes the standing note that Simkl Settings parity was deferred to a future beta</strong>.
+          <strong>Parentage was proven, not inferred:</strong> the Atom feed emits no <code>parentId</code>, so the reply's permalink was re-fetched as
+          <code>.rss?context=3</code> and returns the full chain; the <code>.json</code> endpoint 403s even with the script's descriptive UA.
+          <strong>🛠 Tracker repair, caught by the pre-run guard before anything was written:</strong> BUG-47's Report, Reporter and Date cells had been
+          appended onto <strong>BUG-50</strong>'s row, leaving BUG-47 at 5 columns and BUG-50 at 11 — the exact cell-editing hazard the runbook warns
+          about — which had cost BUG-47 its u/tiyeuedm attribution and DM-source note. The three cells were moved back verbatim; both rows are 8 columns
+          again. <strong>Totals: +1 feature request, 0 bugs, 0 duplicates, 0 priority changes, 0 noise; Now / Next / Later untouched</strong> (BUG-47 still
+          owns <em>Now</em>, and a request already code-complete for the next cut adds nothing to the queue).
+          <code>check-tracker.py</code> failed before the run (2 broken rows), then passed after the repair and again after the edits (85 rows).
+          Counts: thread 144 → 146 comments as a floor — the feed was saturated at 99 items again, and the post page now returns an 8 KB bot-challenge
+          stub, so no live comment or upvote figure could be taken (102↑ from 2026-08-02 carried forward, five days stale).
+        </p>
+      </div>
       <div class="entry hot">
         <div class="when">2026-08-06 · DM intake — 🚨 <strong>a P0 arrived on a channel the sweep cannot read</strong>; watermark held at <code>p21m344</code></div>
         <p class="what">
@@ -2089,9 +2166,9 @@
 
   <footer>
     <div>Mirrored from <code>docs/beta-feedback-tracker.md</code> · swept daily via Reddit's public Atom feed (no credentials, no quota).</div>
-    <div>Upvotes, parent ids and comment depth are not exposed by the feed; counts are floors. The 144-comment figure is the 2026-08-05 count of 142 plus today's tester comment and our own acknowledgement. The 102↑ / 70K views figures were read live off the thread on 2026-08-02 and are carried forward, not re-confirmed — they are four days stale.</div>
+    <div>Upvotes, parent ids and comment depth are not exposed by the feed; counts are floors. The 146-comment figure is the 2026-08-06 count of 144 plus this sweep's tester comment and Christian's reply. The 102↑ / 70K views figures were read live off the thread on 2026-08-02 and are carried forward, not re-confirmed — they are five days stale, and the post page now returns a bot-challenge stub instead of a countable page.</div>
     <div>BUG-47 and FEAT-19 arrived by Reddit DM, not through the thread — they do not move the watermark or the comment count, and the daily Atom sweep would never have seen them.</div>
-    <div>Last updated 2026-08-06 (sweep + DM intake) — watermark <code>p21m344</code> @ 2026-08-06T12:07:13Z. One thing is now parked on a tester: <strong>the <code>.ips</code> crash log for BUG-47</strong>. What is owed is ours — that request, a short reply covering UX-13 and DOC-2, the UX-9 correction, and the BUG-31 counter-video.</div>
+    <div>Last updated 2026-08-07 (scheduled sweep) — watermark <code>p2a06zj</code> @ 2026-08-07T14:58:45Z. BUG-47 no longer needs an <code>.ips</code>: it was reproduced in-house and is fixed in code. What is owed is ours — the reporter drafts (including the two BUG-47 confirming questions), a short reply covering UX-13 and DOC-2, the UX-9 correction, the BUG-31 counter-video, and a line to u/Ginosaure when beta.11 ships with Simkl in it.</div>
   </footer>
 
 </div>

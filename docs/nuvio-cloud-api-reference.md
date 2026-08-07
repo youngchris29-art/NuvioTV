@@ -29,6 +29,7 @@ Public REST and RPC endpoints for third-party clients that integrate with Nuvio 
 - [Watch Progress](#watch-progress)
 - [Watch History](#watch-history)
 - [Profile Settings](#profile-settings)
+- [Provider Credentials](#provider-credentials)
 - [Home Catalog Settings](#home-catalog-settings)
 - [Collections](#collections)
 - [Avatars](#avatars)
@@ -1268,6 +1269,141 @@ Request body:
 
 ---
 
+## Provider Credentials
+
+Per-provider API-key sync, split out of the Profile Settings blob (upstream `24971f4a`, in the
+tvOS fork since the beta.11 batch). The settings blob does a whole-blob replace, so a device with
+an empty key set could blank another device's keys; these RPCs store one row per provider instead,
+and a row only ever replaces the single credential it names.
+
+Known providers (the `provider` values the clients read and write): `tmdb`, `mdblist`,
+`animeskip`, `introdb`, and `debrid:<id>` for each debrid service — `debrid:torbox`,
+`debrid:premiumize`, `debrid:realdebrid`, and (tvOS fork only) `debrid:alldebrid`.
+`credential_json` carries a single field per provider: `api_key` for all of the above except
+`animeskip`, which uses `client_id`.
+
+All three RPCs exist and were signature-verified against this parameter set on 2026-08-07
+(anon calls return Postgres `42501` — execution requires an authenticated user, as designed).
+
+Clients must keep stripping these keys out of the Profile Settings blob on push
+(`ProfileSettingsCredentialPolicy` in the shared module) — a blob that still carries them is
+treated as a legacy blob and triggers the one-time migration described below.
+
+### Pull Provider Credentials
+
+```http
+POST /rest/v1/rpc/sync_pull_provider_credentials
+Content-Type: application/json
+Authorization: Bearer <access_token>
+apikey: <publishable_key>
+```
+
+Request body:
+
+```json
+{
+  "p_profile_id": 1
+}
+```
+
+Parameters:
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `p_profile_id` | integer | Required | Profile index |
+
+Response (200):
+
+```json
+[
+  {
+    "provider": "tmdb",
+    "credential_json": { "api_key": "abc123" },
+    "updated_at": "2026-08-07T00:00:00Z"
+  },
+  {
+    "provider": "debrid:torbox",
+    "credential_json": { "api_key": "def456" },
+    "updated_at": "2026-08-07T00:00:00Z"
+  }
+]
+```
+
+Client merge semantics: a returned row replaces the local value for that provider only; a
+provider with no row keeps its local value. A row whose value is blank is a **clear tombstone**
+(the user removed the key on some device) and must be applied, not skipped.
+
+### Seed Provider Credentials
+
+Insert-if-absent: creates rows for providers that have none and **never touches an existing
+row** — an existing blank row (a clear tombstone) survives a seed. Clients call this before
+every pull with their non-blank local values, so a first-synced device materializes its keys as
+rows without being able to overwrite anything.
+
+```http
+POST /rest/v1/rpc/sync_seed_provider_credentials
+Content-Type: application/json
+Authorization: Bearer <access_token>
+apikey: <publishable_key>
+```
+
+Request body:
+
+```json
+{
+  "p_profile_id": 1,
+  "p_origin_client_id": "3f9c…",
+  "p_credentials": [
+    { "provider": "tmdb", "credential_json": { "api_key": "abc123" } },
+    { "provider": "animeskip", "credential_json": { "client_id": "xyz789" } }
+  ]
+}
+```
+
+Parameters:
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `p_profile_id` | integer | Required | Profile index |
+| `p_credentials` | array | Required | `{provider, credential_json}` entries; send only non-blank values (a blank here would mint a tombstone out of nothing) |
+| `p_origin_client_id` | string | Required | Stable per-install id (`SyncClientIdentity`), for change attribution |
+
+**Response:** `204 No Content`
+
+### Push Provider Credentials
+
+Upsert of every row named in the payload, blanks included — this is the path an intentional
+clear travels on (blank value → tombstone row).
+
+```http
+POST /rest/v1/rpc/sync_push_provider_credentials
+Content-Type: application/json
+Authorization: Bearer <access_token>
+apikey: <publishable_key>
+```
+
+Request body: same shape as the seed call.
+
+**Response:** `204 No Content`
+
+**Known protocol limitation (upstream-report candidate, documented in
+`ProviderCredentialSync.kt`):** the clients push their full snapshot before pulling and rows
+carry no client-side timestamps the server could arbitrate with, so a device reconnecting with
+one stale pending edit rewrites every provider row with its possibly-stale values. The tvOS fork
+deliberately mirrors upstream's behavior here for cross-client consistency.
+
+### Legacy migration
+
+Profiles created before the split may still carry credentials inside the Profile Settings blob.
+The tvOS client migrates them without ever letting the blob overwrite a provider row: blob
+credentials are staged (never written to local storage as if the user typed them), ride the
+insert-if-absent seed so they only fill providers with **no row at all**, and only after that
+round-trip succeeds is the settings blob rewritten in sanitized (credential-free) form. A blob
+that still carries credentials therefore just means the migration hasn't completed yet — it
+re-runs safely on every pull until the rewrite lands.
+
+---
+
 ## Home Catalog Settings
 
 Stores per-profile home catalog configuration as a JSON blob. This is separate from the general profile settings blob so clients can sync home-layout/catalog preferences independently.
@@ -1779,6 +1915,9 @@ curl 'https://api.nuvio.tv/functions/v1/health-check'
 | `rpc/sync_delete_watched_items` | POST | Yes | Delete history entries |
 | `rpc/sync_pull_profile_settings_blob` | POST | Yes | Get profile settings |
 | `rpc/sync_push_profile_settings_blob` | POST | Yes | Update profile settings |
+| `rpc/sync_pull_provider_credentials` | POST | Yes | Per-provider API keys (rows) |
+| `rpc/sync_seed_provider_credentials` | POST | Yes | Insert-if-absent credential rows |
+| `rpc/sync_push_provider_credentials` | POST | Yes | Upsert credential rows (blanks = clear) |
 | `rpc/sync_pull_home_catalog_settings` | POST | Yes | Get home catalog settings |
 | `rpc/sync_push_home_catalog_settings` | POST | Yes | Update home catalog settings |
 | `rpc/sync_pull_collections` | POST | Yes | Get collections |

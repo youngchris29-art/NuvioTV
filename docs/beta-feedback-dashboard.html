@@ -526,27 +526,59 @@
       Live triage of bug reports, feature requests and UX feedback from the
       <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/">beta announcement thread</a>,
       swept daily and mirrored from <code>docs/beta-feedback-tracker.md</code>.
-      <strong>🚨 2026-08-06 — the board has a P0 again, and it did not come through the thread.</strong>
-      A forwarded <strong>Reddit DM</strong> from a third tester, u/tiyeuedm, reports that <strong>pressing Back out of expanded search
-      results crashes NuvioTV to the Apple TV home screen</strong> on beta.10 / <strong>tvOS 27</strong> — filed as <strong>BUG-47 (P0)</strong>,
-      the first hard crash reported since beta.2. They also asked for Vietnamese and a default preferred subtitle language (<strong>FEAT-19</strong>).
-      <strong>Its neighbour arrived a day earlier from a different tester:</strong> u/Ginosaure's
-      <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p20ivrz/">p20ivrz</a> reports that a
-      <em>View All</em> grid <strong>forgets your place</strong> on Back (<strong>UX-13, P2</strong>). Same pop path out of an expanded grid — one
-      degrades, one dies — so they are being worked together.
-      The largest open item beneath them is still <strong>UX-9</strong>: the fix was aimed at the full-screen player and the reporter means the
-      inline focus trailer, where the measured answer is a per-item zoom of <strong>z ≈ 1.34</strong> against the 1.08 that shipped.
+      <strong>✅ 2026-08-06/07 — the P0 is reproduced, re-diagnosed, and FIXED IN CODE, and the whole open-bug board went through one campaign.</strong>
+      BUG-47's "crash" is an <strong>eject, not a crash</strong>: See All from a search row drops the query (new <strong>BUG-48</strong>),
+      the pushed grid comes up <em>empty</em>, focus silently falls to the tab bar, and Menu there is a system app exit — reproduced in-house
+      on the <strong>tvOS 27.0 simulator</strong> with the reporter's exact build, and no <code>.ips</code> ever existed (the process is
+      suspended, not killed). The fix (a focusable empty state + pop/teardown hardening) is <strong>verified by hardened UITests on both
+      runtimes</strong>, alongside the rest of the campaign: <strong>UX-13</strong> grid restoration, the <strong>UX-9</strong> measured
+      per-item zoom (bars are luma-measured from decoded frames — no fourth constant), the <strong>BUG-46</strong> exhaustion fix set behind
+      new <code>[TrailerPipeline]</code> probes, the <strong>BUG-45</strong>-class contrast sweep (+ <strong>BUG-49/50</strong> filed and
+      fixed), <strong>BUG-38</strong> title logos, and the upstream <strong>provider-credential sync</strong> port hardened through a
+      15-round Codex loop. All committed and pushed (<code>88abcf9a..b8c4e60c</code> + pointer <code>72ca2a8</code>); release gates below.
     </p>
     <div class="meta">
       <span class="pill"><strong>144</strong> comments <span style="color:var(--text-3)">(floor)</span></span>
-      <span class="pill"><strong>102↑</strong> · <strong>70K</strong> views <span style="color:var(--text-3)">carried from 2026-08-02, 4 days stale</span></span>
-      <span class="pill">Last checked <strong>2026-08-06</strong> (sweep + DM intake)</span>
+      <span class="pill"><strong>102↑</strong> · <strong>70K</strong> views <span style="color:var(--text-3)">carried from 2026-08-02, stale</span></span>
+      <span class="pill">Last updated <strong>2026-08-07</strong> (campaign session)</span>
       <span class="pill">Watermark <code>p21m344</code> <span style="color:var(--text-3)">@ 2026-08-06T12:07:13Z</span></span>
       <span class="pill">🚢 Shipped <strong>beta.10</strong> · build 106</span>
-      <span class="pill">🚨 <strong>BUG-47</strong> P0 — Back out of search crashes</span>
-      <span class="pill">⚠️ <strong>UX-9</strong> needs z≈1.34, shipped 1.08</span>
+      <span class="pill">✅ <strong>BUG-47</strong> fixed in code — eject, not crash</span>
+      <span class="pill">✅ <strong>UX-9</strong> measured zoom — sim-proven 1.080/1.137</span>
+      <span class="pill">🔧 <strong>beta.11</strong> expanded batch committed + pushed</span>
     </div>
   </header>
+
+  <div class="notice">
+    <div class="notice-title">✅ 2026-08-06/07 — the campaign session: every open code bug fixed, verified, committed, pushed</div>
+    <p>
+      <strong>BUG-47 fell in one sitting, and it rewrote its own description.</strong> The tvOS 27.0 simulator runtime was installed all along;
+      with the reporter's exact build (106) and a cloned signed-in session, the repro took one walk: search → See All → an <strong>empty grid</strong>
+      ("No titles here yet") because the See All target <strong>drops the search query</strong> (filed as <strong>BUG-48</strong>, root-cause fix
+      scheduled for beta.12) → nothing focusable → focus falls to the tab bar → <strong>Menu exits the app</strong>. The process resumes into the
+      same dead-end, which is precisely the reporter's "can't go back to perform another search". No crash log exists, so the DM draft was rewritten
+      from an <code>.ips</code> ask into two confirming questions. The fix keeps focus inside the grid (focusable Go Back in every non-grid state)
+      and hardens the whole pop path; <strong>test23 opens the grid three times and Backs out alive on both runtimes</strong> — after Codex caught
+      the first test run passing without ever opening the grid at all (three stacked harness gaps, all fixed and documented).
+    </p>
+    <p>
+      <strong>The rest of the board moved with it.</strong> <strong>UX-13</strong>: the grid keeps its place on Back (the pop no longer wipes the
+      repository; focus-identity round trip test-verified). <strong>UX-9</strong>: bars baked into a 16:9 encode are invisible to every metadata
+      channel, so the zoom is now <em>measured</em> from decoded luma and applied per item — sim logs show a 16:9 source holding the 1.080 floor and
+      a barred source computing 1.137. <strong>BUG-46</strong>: teardown parity, scoped negative caching, stable repack tokens, and a ticket-guarded
+      extraction latch, all behind release-readable <code>[TrailerPipeline]</code> probes. <strong>BUG-45</strong>: the reported pane renders
+      correctly on HEAD (probe screenshots) — no primitive change needed; the sweep still fixed six unaudited platter surfaces
+      (<strong>BUG-50</strong>) plus the Collections tab chip (<strong>BUG-49</strong>). <strong>BUG-38</strong>: collections now render their
+      upstream title logos. The upstream <strong>provider-credential sync</strong> port survived an 8-round Codex interrogation of its migration
+      path alone — the staged design that emerged cannot resurrect cleared credentials, cannot orphan legacy ones, and cannot mint blank tombstones.
+      One upstream flaw is documented rather than diverged from (full-snapshot push-before-pull; upstream-report candidate).
+    </p>
+    <p>
+      <strong>Remaining before the beta.11 cut:</strong> the full suite ×2 on 26.5 + the first-ever run on 27.0 (in progress), the manual device
+      pass (checklist + a 90s <code>[TrailerPipeline]</code> browse + White-accent toggles + a scope trailer), the
+      <code>sync_*_provider_credentials</code> live RPC check, and Christian's approval of the three reporter drafts + the BUG-31 filming.
+    </p>
+  </div>
 
   <div class="notice">
     <div class="notice-title">🎥 The video is analyzed — UX-9 is solved with a number, and two of the morning's conclusions were wrong</div>
@@ -576,10 +608,10 @@
   </div>
 
   <div class="tiles">
-    <div class="tile alert">
-      <span class="n">15</span>
+    <div class="tile">
+      <span class="n">18</span>
       <span class="k">Open bugs</span>
-      <span class="sub">of 47 filed · <strong>1 at P0 (BUG-47)</strong> · 1 at P1 (BUG-37)</span>
+      <span class="sub">of 50 filed · <strong>0 unmitigated P0s</strong> — BUG-47 fixed in code, sim-verified on tvOS 27 · BUG-48 (P1) → beta.12 · BUG-37 probe pending</span>
     </div>
     <div class="tile">
       <span class="n">7</span>
@@ -589,17 +621,95 @@
     <div class="tile">
       <span class="n">6</span>
       <span class="k">Open UX / docs items</span>
-      <span class="sub">UX-4, UX-8, UX-9 (escalated), UX-12, DOC-2 · <strong>+UX-13</strong> today</span>
+      <span class="sub">UX-4, UX-8, UX-12, DOC-2 · <strong>UX-9 + UX-13 fixed in code</strong>, ride beta.11</span>
     </div>
     <div class="tile ship">
       <span class="n">53</span>
       <span class="k">Resolved or shipped</span>
-      <span class="sub">of 81 tracked items since 2026-07-21</span>
+      <span class="sub">of 84 tracked items · <strong>+13 fixed-in-code</strong> awaiting the beta.11 cut</span>
     </div>
   </div>
 
   <section>
-    <h2>Triage <span class="count">2026-08-05 (late) — reordered by the answer set</span></h2>
+    <h2>The beta.11 campaign <span class="count">2026-08-06/07 · one session, every open code bug</span></h2>
+    <div class="grid">
+      <div class="card">
+        <h3>🎯 BUG-47 — reproduced, re-diagnosed, fixed, verified</h3>
+        <p>
+          <strong>The eject chain:</strong> See All drops the query (<strong>BUG-48</strong>) → empty grid → focus strands on the tab bar →
+          Menu = system exit. Reproduced on the tvOS 27.0 sim with the reporter's build; the process <em>suspends</em> and resumes into the
+          dead-end — <strong>no <code>.ips</code> exists</strong>, and the DM draft now asks the two questions that confirm the mechanism instead.
+          Fixes: focusable Go Back in every non-grid state, inert-after-stop watcher guards, pop-time <code>detach()</code> that retains state,
+          a cancellable expansion-scroll task, an atomic publication generation, profile-switch catalog clearing, and
+          <code>debug.catalogGridProbe</code>. <strong>test23 passes genuinely on 26.5 AND 27.0</strong> — after the first "green" was exposed
+          as vacuous (the See All query never matched any runtime; tvOS 27 never reports <code>hasFocus</code>; its keyboard needs
+          <code>typeText</code> — all three harness gaps fixed).
+        </p>
+      </div>
+      <div class="card">
+        <h3>🧭 UX-13 — the grid keeps your place</h3>
+        <p>
+          The pop no longer wipes <code>CatalogRepository</code>, so returning from a detail page redelivers unchanged state and native focus
+          restoration lands on the poster you left — <strong>no explicit persistence machinery needed</strong> (test24 proves the round trip on
+          both runtimes). The retained state is generation-guarded against stale publication and cleared on profile switch and sign-out.
+        </p>
+      </div>
+      <div class="card">
+        <h3>📏 UX-9 — the zoom is measured now</h3>
+        <p>
+          Third attempt, first with an instrument: bars baked into a 16:9 encode read 1920×1080 in <em>every</em> metadata channel, so
+          <code>TrailerLetterboxProbe</code> luma-scans five decoded frames (a bar must persist in all five) and zooms by the bar fraction
+          only — never the coded aspect, which would over-crop native scope streams. Render-only layer transform; morph geometry untouched;
+          1.08 stays the floor. <strong>Sim-proven: 16:9 → 1.080 · barred → 1.137 · cached per URL</strong>, with <code>[TrailerZoom]</code>
+          logs carrying the numbers the device pass will read on <em>Lucky</em>.
+        </p>
+      </div>
+      <div class="card">
+        <h3>🔋 BUG-46 — the exhaustion fix set, probes first</h3>
+        <p>
+          <code>[TrailerPipeline]</code> probes (release-readable, <code>debug.trailerProbe</code>) count live players with
+          <code>deinit</code> ground truth and classify failures. The sim soak pairs attach/teardown exactly — the leak class is device-only,
+          so the fixes stand on analysis: layer-detach teardown parity with the leak-free full-screen twin, 45s transient negative-caching with
+          a 404-invalidate and a 3-in-60s storm purge, content-identity repack tokens (64→200), and a ticket-guarded extraction latch that can
+          survive — and log — a stranded holder. The 90s organic browse on hardware is the acceptance test.
+        </p>
+      </div>
+      <div class="card">
+        <h3>🎨 BUG-45/49/50 + BUG-38 — one contrast pass, one wiring gap</h3>
+        <p>
+          The reported Home Screen pane toggles render <strong>correctly on HEAD</strong> (fixed-press probe screenshots; the harness can't
+          read toggle focus — documented, not a rendering bug). The class sweep still fixed six raw-palette platter surfaces outside Settings
+          (<strong>BUG-50</strong>: stream picker, cloud library, Trakt comments, addons, swatches) and the Collections tab chip
+          (<strong>BUG-49</strong> — now style-native <code>.chip(selected:)</code>). <strong>BUG-38</strong>: <code>titleLogoUrl</code>,
+          populated upstream and read by no client, now renders as the collection tile's logo overlay with the text as fallback.
+        </p>
+      </div>
+      <div class="card">
+        <h3>🔐 Provider-credential sync — ported, then interrogated</h3>
+        <p>
+          Upstream <code>24971f4a</code> ported with fork guards intact (BUG-20 seeding, presence gate, AllDebrid added to the stripped set).
+          The legacy migration then survived <strong>eight Codex rounds</strong> and came out staged: blob credentials never masquerade as
+          local edits, ride the insert-if-absent seed into true voids only, survive failed seeds, sanitize the blob only after rows are
+          durable, never mint blank tombstones, and die with the account on sign-out. The one flaw left standing is upstream's own
+          (full-snapshot push-before-pull, no client timestamps) — documented in-code, upstream-report candidate.
+          <strong>Ship gate:</strong> live-probe the three new RPCs before the cut.
+        </p>
+      </div>
+      <div class="card">
+        <h3>🧾 The receipts</h3>
+        <p>
+          15-round Codex loop (~20 real findings, incl. two vacuous-green tests, a K/N cross-thread guard, and four generations of migration
+          hardening) · shared tests <strong>318 green</strong> · app + UITest builds green on both runtimes · five NuvioMobile commits
+          <code>88abcf9a..b8c4e60c</code> + pointer <code>72ca2a8</code>, <strong>pushed</strong>. Suite ×2 + 27.0 first-run in progress;
+          then the manual device pass, the RPC probe, and the reporter drafts
+          (<code>docs/research/beta11-reporter-comms-drafts-2026-08-06.md</code>) gate the release.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Triage <span class="count">2026-08-05 (late) — superseded by the campaign above; kept for the record</span></h2>
     <p class="section-note">
       Two items changed lanes today for opposite reasons, and both changes are about <em>evidence</em> rather than effort:
       BUG-33 left the critical path because the defect was withdrawn, and UX-9 entered it because the fix was aimed at a surface the

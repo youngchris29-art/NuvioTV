@@ -130,7 +130,7 @@ post without that paragraph and add it as a follow-up comment.
 ---
 
 ## Posting checklist (after approval)
-- [ ] Draft 1 → DM to u/tiyeuedm (can go now; asks questions, promises no date)
+- [x] Draft 1 → DM to u/tiyeuedm — **SENT 2026-08-07 ~3:57 PM** via the logged-in session (verified in-thread from youngchris2989); the daily sweep cannot read DMs, so watch for their answer manually or via a forwarded screenshot
 - [ ] Draft 2 → reply on `p20ivrz` (best with the beta.11 announcement)
 - [ ] Draft 3 → reply on `p1vylo0` (best with the announcement; BUG-31 paragraph only after filming)
 - [ ] Christian films the BUG-31 video (shot list above)

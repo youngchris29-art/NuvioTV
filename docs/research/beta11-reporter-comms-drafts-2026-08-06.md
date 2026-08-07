@@ -131,7 +131,7 @@ post without that paragraph and add it as a follow-up comment.
 
 ## Posting checklist (after approval)
 - [x] Draft 1 → DM to u/tiyeuedm — **SENT 2026-08-07 ~3:57 PM** via the logged-in session (verified in-thread from youngchris2989); the daily sweep cannot read DMs, so watch for their answer manually or via a forwarded screenshot
-- [ ] Draft 2 → reply on `p20ivrz` (best with the beta.11 announcement)
+- [x] Draft 2 → reply on `p20ivrz` — **POSTED 2026-08-07** (per Christian: last paragraph removed; two-paragraph version live from youngchris2989 as a reply to Ginosaure's comment)
 - [ ] Draft 3 → reply on `p1vylo0` (best with the announcement; BUG-31 paragraph only after filming)
 - [ ] Christian films the BUG-31 video (shot list above)
 - [ ] Log all three in the tracker's update log once posted (the daily sweep watches for answers)

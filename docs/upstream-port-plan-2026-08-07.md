@@ -54,6 +54,10 @@ Nothing else changed upstream this run — the 1-commit window was entirely this
 
 ---
 
+## PORTED — 2026-08-07 (same day)
+
+Landed as fork commit `d8c06127` (pushed). 4-slice verify green including `:composeApp:iosSimulatorArm64Test`. Outer pointer bumped in the same session. Next check only needs to diff upstream past `3ac0a14c`.
+
 ## Next scheduled check
 
 Verify this Simkl poster-suffix fix landed (`grep -n "_ca.webp" shared/src/commonMain/kotlin/com/nuvio/app/features/simkl/SimklProjections.kt` should return nothing); re-fetch `upstream/cmp-rewrite` and diff past `3ac0a14c`.

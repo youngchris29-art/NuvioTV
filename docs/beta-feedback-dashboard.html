@@ -538,15 +538,16 @@
       15-round Codex loop. All committed and pushed (<code>88abcf9a..b8c4e60c</code> + pointer <code>72ca2a8</code>); release gates below.
     </p>
     <div class="meta">
-      <span class="pill"><strong>146</strong> comments <span style="color:var(--text-3)">(floor)</span></span>
-      <span class="pill"><strong>102↑</strong> · <strong>70K</strong> views <span style="color:var(--text-3)">carried from 2026-08-02, 5 days stale</span></span>
-      <span class="pill">Last checked <strong>2026-08-07</strong> (sweep)</span>
-      <span class="pill">Watermark <code>p2a06zj</code> <span style="color:var(--text-3)">@ 2026-08-07T14:58:45Z</span></span>
+      <span class="pill"><strong>147</strong> comments <span style="color:var(--text-3)">(floor)</span></span>
+      <span class="pill"><strong>102↑</strong> · <strong>70K</strong> views <span style="color:var(--text-3)">carried from 2026-08-02, 6 days stale</span></span>
+      <span class="pill">Last checked <strong>2026-08-08</strong> (sweep)</span>
+      <span class="pill">Watermark <code>p2byn5k</code> <span style="color:var(--text-3)">@ 2026-08-07T20:02:55Z</span></span>
       <span class="pill">🚢 Shipped <strong>beta.10</strong> · build 106</span>
       <span class="pill">✅ <strong>BUG-47</strong> fixed in code — eject, not crash</span>
       <span class="pill">✅ <strong>UX-9</strong> measured zoom — sim-proven 1.080/1.137</span>
       <span class="pill">🔧 <strong>beta.11</strong> expanded batch committed + pushed</span>
-      <span class="pill">🧩 <strong>FEAT-20</strong> Simkl — asked today, already in beta.11</span>
+      <span class="pill">🧩 <strong>FEAT-20</strong> Simkl — already in beta.11</span>
+      <span class="pill">✅ <strong>UX-13</strong> fixed + answered — awaiting the cut</span>
     </div>
   </header>
 
@@ -590,6 +591,19 @@
       <strong>Remaining before the beta.11 cut:</strong> the manual device pass (checklist + a 90s <code>[TrailerPipeline]</code> browse +
       White-accent toggles + a scope trailer), the <code>sync_*_provider_credentials</code> live RPC check, and Christian's approval of the
       three reporter drafts + the BUG-31 filming.
+    </p>
+    <p>
+      <strong>🔇 2026-08-08 sweep — no new tester feedback, and the only new comment is one of ours.</strong> The feed returned exactly one
+      comment past the watermark: <code>p2byn5k</code> @ 20:02:55Z, <strong>the UX-13 reply that yesterday's run logged as posted but could
+      not yet see</strong> — the same event arriving with its own id, not a second one, which is worth stating so it is never double-counted.
+      It states the fix landed, so <strong>UX-13 moved New → Fixed (unreleased)</strong> — verified against the tree before the status changed,
+      not taken from the comment: <code>88abcf9a</code> carries the state-restoration fix and <code>b8c4e60c</code> its UITests.
+      <strong>UX-13 and the BUG-47 P0 turned out to be the same commit</strong>, both being See All grid lifecycle, which is how a P2 browse
+      annoyance got fixed inside a P0 campaign it was never scheduled with. Two things stay open rather than resolved:
+      <strong>u/Ginosaure has not responded</strong> (nothing was asked of them, but they are the reporter and their word is the only
+      verification from outside the codebase), and the <strong>BUG-47 DM answer from u/tiyeuedm is still invisible to this sweep</strong> —
+      DMs are out-of-band. Counts: 0 bugs, 0 requests, 0 UX items, 0 noise, 1 status change; the structural guard passed clean before and
+      after the write.
     </p>
   </div>
 
@@ -876,12 +890,12 @@
         <div class="by">u/tiyeuedm <span class="sep">·</span> <a href="https://www.reddit.com/user/tiyeuedm/">Reddit DM, no permalink</a> <span class="sep">·</span> 2026-08-05</div>
       </div>
 
-      <div class="card warm">
+      <div class="card">
         <div class="card-top">
           <span class="id">UX-13</span>
           <span class="chip p2">P2</span>
-          <span class="status new">New</span>
-          <span class="status waiting">Acknowledged on the thread</span>
+          <span class="status unreleased">Fixed (unreleased)</span>
+          <span class="status done">Answered on the thread</span>
         </div>
         <p class="desc">
           <strong>Browse position is lost when you come back from a detail page to a <em>View All</em> category grid — Back always lands on the first poster.</strong>
@@ -892,14 +906,18 @@
           a long catalog re-scrolls the whole grid after every single poster they open.
         </p>
         <p class="fix">
-          <strong>Read it as state restoration, not focus.</strong> The grid is being rebuilt fresh on pop rather than restoring its scroll offset
-          and last-focused item — so the fix persists the focused item's id per catalog and drives focus back onto it on reappear, instead of
-          fighting the focus engine's default first-item behaviour. Worth checking in the same pass whether Home rows and Search results lose
-          position the same way, and whether it survives a deeper Detail → Season → Back chain.
-          <strong>Neighbours:</strong> UX-7 is the inverse ask (getting back <em>to</em> the top of Home) on a different surface, and BUG-31 shares
-          this grid but is about rendering, not memory.
+          <strong>✅ 2026-08-08 — closed out, and the prose-only repro held up: it reproduced on the first try in-house, with no follow-up ask.</strong>
+          The state-restoration read was right, and slightly understated — the grid was not failing to restore focus, it was being torn down and
+          rebuilt from scratch on every pop, so there was no state left to restore and landing on poster 1 was the rebuilt grid behaving normally.
+          Keeping the state instead of reconstructing it returns you to the exact poster and scroll position, and it behaves the same whether the
+          grid was opened from Home or from Search — which also answers this row's own open question about Search.
+          Shipped in <code>88abcf9a</code>, <strong>the same commit as the BUG-47 P0</strong>, because both were See All grid lifecycle;
+          UITest coverage in <code>b8c4e60c</code>. Answered publicly on 2026-08-07 (<code>p2byn5k</code>, crediting the repro).
+          <strong>Still <em>Fixed (unreleased)</em>, not Shipped:</strong> the reply promises "next beta" and beta.11 has not been cut.
+          <strong>u/Ginosaure has not replied</strong> — nothing was asked of them, so silence is fine, but their confirmation is the only
+          verification that comes from outside the codebase.
         </p>
-        <div class="by">u/Ginosaure <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p20ivrz/">comment</a> <span class="sep">·</span> 2026-08-06 <span class="sep">·</span> also: <em>"this is definitely my favorite fork"</em></div>
+        <div class="by">u/Ginosaure <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p20ivrz/">report</a> <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2byn5k/">our reply</a> <span class="sep">·</span> 2026-08-06 <span class="sep">·</span> also: <em>"this is definitely my favorite fork"</em></div>
       </div>
     </div>
   </section>
@@ -1920,6 +1938,28 @@
   <section>
     <h2>Update log</h2>
     <div class="timeline">
+      <div class="entry ship">
+        <div class="when">2026-08-08 · scheduled sweep — ✅ <strong>no new tester feedback; the one new comment is ours, and it closes UX-13</strong>; watermark <code>p2a06zj</code> → <code>p2byn5k</code></div>
+        <p class="what">
+          Exactly one comment past the watermark, and it is <strong>not a new event</strong>:
+          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2byn5k/"><code>p2byn5k</code></a>
+          @ 20:02:55Z is the UX-13 reply that yesterday's run already logged as posted, now surfacing in the Atom feed with its own id for the
+          first time. Stated plainly so a later reader does not double-count it: <strong>yesterday's log entry and today's watermark are the same
+          reply.</strong> It falls under the maintainer-comment exception because it states a fix shipped, so <strong>UX-13 moved
+          New → Fixed (unreleased)</strong> — and the claim was checked against the tree before the status changed rather than trusted from the
+          comment text: <code>88abcf9a</code> holds the state-restoration fix, <code>b8c4e60c</code> its UITests, both in the uncut beta.11 batch.
+          <strong>UX-13 and the BUG-47 P0 turned out to be the same commit</strong> — both See All grid lifecycle — which is how a P2 browse
+          friction got fixed inside a P0 campaign it was never scheduled with. Status deliberately stopped at <em>Fixed (unreleased)</em>:
+          the public reply promises "next beta", and beta.11 is not cut, so the promise is outstanding.
+          Two things left open rather than resolved — <strong>u/Ginosaure has not responded</strong> (nothing was asked of them, but they are the
+          reporter and their confirmation is the only verification from outside the codebase), and the <strong>BUG-47 DM answer from u/tiyeuedm
+          remains invisible to this sweep</strong>, since DMs are out-of-band and only Christian can surface them.
+          Counts: <strong>147 comments</strong> (146 + this reply), a floor as always — the feed warned saturation again (99 items, 98 comments)
+          and the post page still refuses the script's UA on <code>.json</code>, so <strong>upvotes remain the stale 102↑ from 2026-08-02, six
+          days old and explicitly not re-confirmed.</strong> No structural repair needed this run: the guard passed clean both before and after
+          the write, unlike 2026-08-07. Net: <strong>0 bugs, 0 feature requests, 0 UX items, 0 noise, 1 status change.</strong>
+        </p>
+      </div>
       <div class="entry quiet">
         <div class="when">2026-08-07 · scheduled sweep — 🧩 <strong>one new item, already built</strong>, and a structural repair to the tracker itself; watermark <code>p21m344</code> → <code>p2a06zj</code></div>
         <p class="what">
@@ -2166,9 +2206,9 @@
 
   <footer>
     <div>Mirrored from <code>docs/beta-feedback-tracker.md</code> · swept daily via Reddit's public Atom feed (no credentials, no quota).</div>
-    <div>Upvotes, parent ids and comment depth are not exposed by the feed; counts are floors. The 146-comment figure is the 2026-08-06 count of 144 plus this sweep's tester comment and Christian's reply. The 102↑ / 70K views figures were read live off the thread on 2026-08-02 and are carried forward, not re-confirmed — they are five days stale, and the post page now returns a bot-challenge stub instead of a countable page.</div>
+    <div>Upvotes, parent ids and comment depth are not exposed by the feed; counts are floors. The 147-comment figure is the 2026-08-07 count of 146 plus this sweep's single new comment, which is our own UX-13 reply. The 102↑ / 70K views figures were read live off the thread on 2026-08-02 and are carried forward, not re-confirmed — they are six days stale, and the post page still returns a bot-challenge stub instead of a countable page (the <code>.json</code> endpoint 403s even with the script's descriptive UA).</div>
     <div>BUG-47 and FEAT-19 arrived by Reddit DM, not through the thread — they do not move the watermark or the comment count, and the daily Atom sweep would never have seen them.</div>
-    <div>Last updated 2026-08-07 (scheduled sweep) — watermark <code>p2a06zj</code> @ 2026-08-07T14:58:45Z. BUG-47 no longer needs an <code>.ips</code>: it was reproduced in-house and is fixed in code. What is owed is ours — the reporter drafts (including the two BUG-47 confirming questions), a short reply covering UX-13 and DOC-2, the UX-9 correction, the BUG-31 counter-video, and a line to u/Ginosaure when beta.11 ships with Simkl in it.</div>
+    <div>Last updated 2026-08-08 (scheduled sweep) — watermark <code>p2byn5k</code> @ 2026-08-07T20:02:55Z. BUG-47 no longer needs an <code>.ips</code>: it was reproduced in-house and is fixed in code, and UX-13 is now fixed and answered too. What is owed is ours — cutting beta.11 so the "next beta" promise stops being outstanding, the remaining reporter drafts (including the two BUG-47 confirming questions), a short reply covering DOC-2, the UX-9 correction, the BUG-31 counter-video, and a line to u/Ginosaure when beta.11 ships with Simkl in it.</div>
   </footer>
 
 </div>

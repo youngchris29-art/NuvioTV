@@ -526,6 +526,16 @@
       Live triage of bug reports, feature requests and UX feedback from the
       <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/">beta announcement thread</a>,
       swept daily and mirrored from <code>docs/beta-feedback-tracker.md</code>.
+      <strong>🔴 2026-08-09 — beta.11 shipped, and the lead tester's verdict is <em>"nothing has been fixed. In fact, I even feel like some
+      things have gotten worse."</em></strong> Six claims, and the honest scoreboard is <strong>1 win, 1 new regression, 2 fixes that did not
+      take, 2 communication failures</strong>. The regression is the worst of it: <strong>focus-mode trailers no longer play at all</strong>
+      (<strong>BUG-55</strong>, P1) on a surface whose only beta.11 commit states its fixes <em>"stand on code analysis"</em> because the bug
+      class is device-only. Their reported title overlap independently confirms <strong>BUG-53</strong> one day after it was filed in-house
+      (<strong>raised P2 → P1</strong>). <strong>The build is not the problem — that was checked, not assumed:</strong> every beta.11 commit is
+      an ancestor of the released <code>f9e4ae56</code> build 107, so their IPA is correct, but nothing in the release told them how to confirm
+      that themselves (<strong>DOC-3</strong>). <strong>The pattern worth naming before beta.12: everything that failed here was carried on
+      sim-only or code-analysis-only confidence, and every check that would have caught it was already written down.</strong>
+      <em>Previously:</em>
       <strong>✅ 2026-08-06/07 — the P0 is reproduced, re-diagnosed, and FIXED IN CODE, and the whole open-bug board went through one campaign.</strong>
       BUG-47's "crash" is an <strong>eject, not a crash</strong>: See All from a search row drops the query (new <strong>BUG-48</strong>),
       the pushed grid comes up <em>empty</em>, focus silently falls to the tab bar, and Menu there is a system app exit — reproduced in-house
@@ -538,18 +548,80 @@
       15-round Codex loop. All committed and pushed (<code>88abcf9a..b8c4e60c</code> + pointer <code>72ca2a8</code>); release gates below.
     </p>
     <div class="meta">
-      <span class="pill"><strong>147</strong> comments <span style="color:var(--text-3)">(floor)</span></span>
-      <span class="pill"><strong>102↑</strong> · <strong>70K</strong> views <span style="color:var(--text-3)">carried from 2026-08-02, 6 days stale</span></span>
-      <span class="pill">Last checked <strong>2026-08-08</strong> (sweep)</span>
-      <span class="pill">Watermark <code>p2byn5k</code> <span style="color:var(--text-3)">@ 2026-08-07T20:02:55Z</span></span>
-      <span class="pill">🚢 Shipped <strong>beta.10</strong> · build 106</span>
-      <span class="pill">✅ <strong>BUG-47</strong> fixed in code — eject, not crash</span>
-      <span class="pill">✅ <strong>UX-9</strong> measured zoom — sim-proven 1.080/1.137</span>
-      <span class="pill">🔧 <strong>beta.11</strong> expanded batch committed + pushed</span>
-      <span class="pill">🧩 <strong>FEAT-20</strong> Simkl — already in beta.11</span>
-      <span class="pill">✅ <strong>UX-13</strong> fixed + answered — awaiting the cut</span>
+      <span class="pill"><strong>151</strong> comments <span style="color:var(--text-3)">(floor)</span></span>
+      <span class="pill"><strong>102↑</strong> · <strong>70K</strong> views <span style="color:var(--text-3)">carried from 2026-08-02, 7 days stale</span></span>
+      <span class="pill">Last checked <strong>2026-08-09 14:10Z</strong> (1 new — noise)</span>
+      <span class="pill">Watermark <code>p2m5hoa</code> <span style="color:var(--text-3)">@ 2026-08-09T09:13:33Z</span></span>
+      <span class="pill">🚢 Shipped <strong>beta.11</strong> · build 107 · <code>f9e4ae56</code></span>
+      <span class="pill">🔴 <strong>BUG-55</strong> (P1) focus trailers dead — new</span>
+      <span class="pill">🔴 <strong>BUG-53</strong> P2 → P1 — confirmed in the wild</span>
+      <span class="pill">⚠️ <strong>BUG-42 / BUG-39</strong> shipped fixes that did not take</span>
+      <span class="pill">🗣 <strong>BUG-31 / BUG-35</strong> reclassified as comms failures</span>
+      <span class="pill">✅ IPA verified correct — <strong>DOC-3</strong> filed</span>
     </div>
   </header>
+
+  <div class="notice">
+    <div class="notice-title">🔴 2026-08-09 — the beta.11 verdict: 1 win, 1 new regression, 2 fixes that did not take, 2 comms failures</div>
+    <p>
+      <strong>u/mrStevenx3 retested beta.11 25 hours after the cut and opened with a verdict instead of a list:</strong>
+      <em>"from my side, nothing has been fixed. In fact, I even feel like some things have gotten worse."</em>
+      A fuller report is promised. Taking their six claims one at a time rather than accepting the headline:
+    </p>
+    <p>
+      <strong>🔴 The new regression, and the worst item on the board: focus-mode trailers do not play at all</strong> (<strong>BUG-55</strong>, P1).
+      This worked on beta.10 — their beta.10 review faulted trailer <em>letterboxing</em>, never playback. <strong><code>aeff3b64</code> is the only
+      beta.11 commit that touches that surface</strong> (<code>InlineTrailerCard.swift</code> +274, <code>TrailerHeroPlayerView.swift</code> +487)
+      and it landed four changes on the play path at once: teardown parity that detaches <code>playerLayer.player</code>, a new
+      <strong><code>hasToken</code> pre-play check</strong>, a re-scoped extraction latch, and a luma probe that scans five decoded frames before
+      the zoom applies. <strong>The pre-play gate is the most dangerous of the four — returning false for every item yields exactly this symptom:
+      no trailers, no error, no crash.</strong> And the commit message itself concedes none of it was device-verified
+      (<em>"the leak class is device-only, so every fix below stands on code analysis"</em>). The <code>-debug.trailerProbe YES</code>
+      instrumentation shipped in that same commit and should name the cause in one device run.
+    </p>
+    <p>
+      <strong>🟡 The one win, and it came with a defect attached.</strong> <em>"The titles of my collections no longer disappear, but they now
+      overlap my image…"</em> — the first half is real: <code>451a890f</code> worked, and it is the only one of six complaints that moved.
+      The second half is <strong>BUG-53</strong>, filed internally from the 2026-08-08 device pass and now <strong>independently confirmed in the
+      wild by the very reporter whose BUG-37 it was invented to explain</strong> — which closes that loop from the outside and
+      <strong>raises it P2 → P1</strong>, first in the beta.12 queue rather than an entry in it.
+    </p>
+    <p>
+      <strong>⚠️ Two fixes shipped and did not take — and both rows had already written down the check nobody ran.</strong>
+      <strong>BUG-42</strong> (hero double-load): <code>92259a22</code> held the hero publish for enrichment so metadata would commit once, but it
+      was verified in sim, and the <code>first_hero</code> LaunchTrace mark that shipped <em>with</em> the fix exists precisely to settle this on
+      device. Live hypotheses: the 2s cap expires in their enrichment-heavy locale, or the hold covers hero metadata while the
+      <em>backdrop image</em> swaps on a separate path — which matches their wording, since they describe posters loading twice, not text.
+      <strong>BUG-39</strong> (GIF quality): <code>38e83abb</code> bought ~3× more frames per MiB, but frames-per-MiB was never the complaint —
+      <em>sharpness</em> was, and downsampling to the tile size cannot raise sharpness above it. A specific cheap failure is now logged:
+      <strong>if the thumbnail target was computed in points rather than pixels, every GIF decodes at half resolution on a 4K panel</strong>,
+      which would look exactly this bad and would be a one-line fix.
+    </p>
+    <p>
+      <strong>🗣 Two are not code failures at all, and pretending otherwise is what makes this review read as a shutout.</strong>
+      <strong>BUG-31</strong>: the poster zoom is still there <em>on purpose</em> — beta.11 deliberately restored the whole-card lift and shipped
+      their twice-stated preference as <code>no_zoom_on_focus</code>, <strong>default OFF and never mentioned</strong>. So on this point the release
+      moved <em>away</em> from their ask unless they happened to find a switch nobody told them about. <strong>BUG-35</strong>: localization shipped
+      for <em>the hero only</em>, against a row-localization gap the row itself documented before release — and the reporter browses rows, so from
+      their seat nothing changed. Both are one sentence of honesty to repair, and the counter-video owed on BUG-31 is now four days overdue.
+    </p>
+    <p>
+      <strong>✅ The build is not the problem, and this was verified rather than assumed — because they asked directly.</strong>
+      <em>"can you confirm that this is definitely the correct IPA you delivered to us?"</em> Every beta.11 batch commit
+      (<code>451a890f</code>, <code>92259a22</code>, <code>38e83abb</code>, <code>c29da28b</code>, <code>0ad450b6</code>, <code>aeff3b64</code>,
+      <code>31dfff49</code>, <code>c642c083</code>, <code>f248ad39</code>) is an ancestor of the released <code>f9e4ae56</code> build 107,
+      so the IPA is correct and the complaints are about the fixes themselves. What is missing is the one line telling testers how to check:
+      FEAT-13's <strong>Settings → About</strong> pane has carried version, build, tag and SHA since beta.9 for exactly this purpose.
+      Filed as <strong>DOC-3</strong> — put the expected string (<strong>0.3.0 (107)</strong>, SHA <code>f9e4ae56</code>) in every future
+      announcement and in INSTALL.md, so the next report is attributable on arrival.
+    </p>
+    <p>
+      <strong>The reply owes this reporter five specific things, and must not lead with a third "fixed":</strong> the About-pane build string,
+      the No-Zoom switch location, BUG-55 owned outright, BUG-53 named as already-known-and-queued, and a plain statement of which half of
+      localization shipped. <strong>The pattern to carry into beta.12: every beta.11 item that failed here was carried on sim-only or
+      code-analysis-only confidence, and every check that would have caught it was already written down.</strong>
+    </p>
+  </div>
 
   <div class="notice">
     <div class="notice-title">✅ 2026-08-06/07 — the campaign session: every open code bug fixed, verified, committed, pushed</div>
@@ -603,7 +675,8 @@
       <strong>u/Ginosaure has not responded</strong> (nothing was asked of them, but they are the reporter and their word is the only
       verification from outside the codebase), and the <strong>BUG-47 DM answer from u/tiyeuedm is still invisible to this sweep</strong> —
       DMs are out-of-band. Counts: 0 bugs, 0 requests, 0 UX items, 0 noise, 1 status change; the structural guard passed clean before and
-      after the write.
+      after the write. <strong>A second sweep at 13:05Z returned zero comments</strong> — the watermark still stands at <code>p2byn5k</code>,
+      neither reply has drawn a response, and nothing on this board moved between the two runs.
     </p>
   </div>
 
@@ -635,25 +708,25 @@
   </div>
 
   <div class="tiles">
-    <div class="tile">
-      <span class="n">18</span>
+    <div class="tile alert">
+      <span class="n">20</span>
       <span class="k">Open bugs</span>
-      <span class="sub">of 50 filed · <strong>0 unmitigated P0s</strong> — BUG-47 fixed in code, sim-verified on tvOS 27 · BUG-48 (P1) → beta.12 · BUG-37 probe pending</span>
+      <span class="sub">of 55 filed · <strong>2 P1s from this sweep</strong> — <strong>BUG-55</strong> (focus trailers dead, new) and <strong>BUG-53</strong> (raised P2 → P1, confirmed in the wild) · BUG-42 + BUG-39 re-reported as failed fixes</span>
     </div>
     <div class="tile">
       <span class="n">8</span>
       <span class="k">Open feature requests</span>
-      <span class="sub">FEAT-3, 14, 15, 16, 17, 18 · FEAT-19 (Vietnamese) via DM · <strong>+FEAT-20</strong> (Simkl) — already built, awaiting the cut</span>
+      <span class="sub">FEAT-3, 14, 15, 16, 17, 18 · FEAT-19 (Vietnamese) via DM · FEAT-20 (Simkl) <strong>now shipped in beta.11</strong>, awaiting a reporter verdict · none added this sweep</span>
     </div>
     <div class="tile">
-      <span class="n">6</span>
+      <span class="n">7</span>
       <span class="k">Open UX / docs items</span>
-      <span class="sub">UX-4, UX-8, UX-12, DOC-2 · <strong>UX-9 + UX-13 fixed in code</strong>, ride beta.11</span>
+      <span class="sub">UX-4, UX-8, UX-12, DOC-2 · <strong>+DOC-3</strong> (no build-verification line for testers) · UX-9 + UX-13 shipped in beta.11</span>
     </div>
     <div class="tile ship">
-      <span class="n">53</span>
+      <span class="n">56</span>
       <span class="k">Resolved or shipped</span>
-      <span class="sub">of 85 tracked items · <strong>+14 fixed-in-code</strong> awaiting the beta.11 cut</span>
+      <span class="sub">of 91 tracked items · <strong>beta.11 is out</strong> (build 107, <code>f9e4ae56</code>) — its 14 fixed-in-code items are now released and under test in the wild</span>
     </div>
   </div>
 
@@ -788,7 +861,221 @@
   </section>
 
   <section>
-    <h2>New this sweep <span class="count">2026-08-07 · one item, answered before the sweep ran</span></h2>
+    <h2>New this sweep <span class="count">2026-08-09 14:10Z · second sweep — 1 comment, noise only, board unchanged</span></h2>
+    <p class="section-note">
+      <strong>🔵 The 14:10Z sweep added nothing.</strong> One comment landed past the morning watermark —
+      <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2m5hoa/"><code>p2m5hoa</code></a>
+      @ 09:13:33Z, u/Ginosaure: <em>"Great job. Congratulations to you!!!"</em> — praise on the beta.11 announcement with no bug, request or
+      repro in it, so it was classified as noise and skipped. No item was added, no status changed, no priority moved.
+      Worth holding both reactions in view at once: the same announcement drew this from one tester and the harshest review of the beta
+      from another. <strong>Everything below is the morning run (03:31Z) and still stands as the live board</strong> — with one change that
+      came from outside the thread: <strong>BUG-55 has since been reproduced in-house on the released build</strong> (after an initial
+      "pipeline healthy" read), on manual device + sim work rather than anything this sweep saw.
+    </p>
+    <p class="section-note">
+      <strong>2026-08-09 03:31Z — the beta.11 review: 2 new items, 1 priority raise, 5 rows re-reported.</strong>
+      Three comments landed above that watermark. Two are ours and were already logged from the release run (the beta.11 announcement
+      <code>p2k6dyg</code> and the draft-3 reply <code>p2k7g21</code>). The third is <strong>u/mrStevenx3's beta.11 retest</strong> —
+      six claims in one comment, with a fuller report promised and a direct question about whether the right IPA shipped.
+      <strong>The claims were triaged individually rather than accepted as the headline verdict</strong>, which is what separates the one real
+      regression from the two fixes that landed but were never explained. Zero noise comments.
+    </p>
+    <div class="cards">
+
+      <div class="card flag">
+        <div class="card-top">
+          <span class="id">BUG-55</span>
+          <span class="chip p1">P1</span>
+          <span class="status new">New — beta.11 regression</span>
+          <span class="status warn">Not yet reproduced in-house</span>
+        </div>
+        <p class="desc">
+          <strong>Focus-mode trailers do not play at all on beta.11 — a working feature is now fully dead.</strong>
+          <em>"Even worse, none of the trailers play anymore when entering focus mode."</em>
+          This ran on their hardware one build ago: their beta.10 review faulted trailer <em>letterboxing</em> (UX-9) and never playback,
+          so the regression is bounded to the beta.11 batch.
+        </p>
+        <p class="fix">
+          <strong><code>aeff3b64</code> is the only beta.11 commit that touches the focus-trailer surface</strong>
+          (<code>InlineTrailerCard.swift</code> +274, <code>TrailerHeroPlayerView.swift</code> +487), and it put four changes on the play path
+          simultaneously: <strong>B1</strong> teardown parity now detaches <code>playerLayer.player</code>, <strong>B3</strong> adds a
+          <code>hasToken</code> <strong>pre-play check</strong> gated on new content-id+itag repack tokens, <strong>B4</strong> re-scopes the
+          extraction latch behind a ticket guard, and <strong>UX-9's <code>TrailerLetterboxProbe</code> luma-scans five decoded frames</strong>
+          before the zoom is applied. <strong>B3 is the most dangerous of the four: a pre-play gate that returns false for every item produces
+          exactly this symptom — no trailers, no error, no crash.</strong>
+          <strong>And the commit message itself concedes none of it was device-verified</strong> —
+          <em>"the leak class is device-only, so every fix below stands on code analysis"</em> — so an unverified change set shipped straight to
+          the surface now reporting total failure. <strong>The probe already exists and shipped in the same commit:</strong> launch with
+          <code>-debug.trailerProbe YES</code> and read the <code>[TrailerPipeline]</code> failure-cause classification plus the
+          <code>[TrailerZoom]</code> numbers. If B3 is the gate, the log names it directly. Blocks all beta.12 trailer work, and the reply
+          must own it first.
+        </p>
+        <p class="by"><span>u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2keul1/"><code>p2keul1</code></a><span class="sep">·</span><span>first seen 2026-08-09</span></p>
+      </div>
+
+      <div class="card flag">
+        <div class="card-top">
+          <span class="id">BUG-53</span>
+          <span class="chip p1">P1 ⬆️</span>
+          <span class="status reopened">Raised P2 → P1</span>
+          <span class="status done">✅ Confirmed in the wild</span>
+        </div>
+        <p class="desc">
+          <strong>A focused poster with whole-card lift occludes the row title above it — independently confirmed by a tester 25 hours after
+          being filed in-house, and by exactly the person this row predicted.</strong>
+          <em>"The titles of my collections no longer disappear, but they now overlap my image…"</em>
+          The occlusion described from the outside, on their hardware, in their locale, with no knowledge of the internal filing.
+        </p>
+        <p class="fix">
+          <strong>That closes the loop the row was filed on.</strong> The <strong>BUG-53 ⇄ BUG-37</strong> link is no longer an in-house
+          hypothesis, and the mechanism — the restored whole-card lift eating the 12–18pt title clearance the probe measured at rest — is now
+          backed by the very report it was written to explain. It also explains why two tester videos and every sim pass missed BUG-37: the title
+          is only occluded <em>while</em> a card in that row is focused, and a video pass reads titles as present the moment focus moves on.
+          <strong>Raised to P1 for three reasons:</strong> it is a visible regression introduced by a shipped release, it affects every focused card
+          in pinned mode rather than one surface, and it is the second-loudest complaint in a review headlined <em>"nothing has been fixed"</em>.
+          Still beta.12 by Christian's call on focus-geometry risk (BUG-30's six banned rounds are the precedent) — <strong>but it goes first, and
+          the reply should say so plainly instead of leaving the reporter to assume it was missed again.</strong>
+        </p>
+        <p class="by"><span>Internal (2026-08-08 device pass)</span><span class="sep">·</span><span>externally confirmed by u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2keul1/"><code>p2keul1</code></a></p>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">DOC-3</span>
+          <span class="chip p2">P2</span>
+          <span class="status new">New</span>
+          <span class="status done">✅ IPA verified correct this run</span>
+        </div>
+        <p class="desc">
+          <strong>Testers are never told how to verify which build they are on, so an entire regression report arrives build-unattributable.</strong>
+          <em>"I initially thought the update hadn't been installed, but I'm definitely on the latest build you announced. … can you confirm that
+          this is definitely the correct IPA you delivered to us?"</em>
+          The reporter is right to ask, and the doubt is expensive: five of their six complaints are only interpretable once the build is pinned.
+        </p>
+        <p class="fix">
+          <strong>Checked rather than assumed, so the answer is already known: the IPA is correct.</strong> Every beta.11 batch commit —
+          <code>451a890f</code>, <code>92259a22</code>, <code>38e83abb</code>, <code>c29da28b</code>, <code>0ad450b6</code>, <code>aeff3b64</code>,
+          <code>31dfff49</code>, <code>c642c083</code>, <code>f248ad39</code> — is an ancestor of the released <code>f9e4ae56</code> (build 107),
+          so the shipped binary does contain the beta.11 work and the complaints are about the fixes themselves, not a mis-cut release.
+          <strong>The tooling for testers already exists:</strong> FEAT-13's <strong>Settings → About</strong> pane has carried version, build, tag,
+          SHA, tvOS and device since beta.9, precisely so it can be quoted. The only thing missing is the line telling them to.
+          <strong>Two actions:</strong> answer this reporter with the exact string their About pane should read
+          (<strong>0.3.0 (107)</strong>, SHA <code>f9e4ae56</code>) and ask them to quote it back if it differs; then add that same line to every
+          future announcement post and to INSTALL.md.
+        </p>
+        <p class="by"><span>u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2keul1/"><code>p2keul1</code></a><span class="sep">·</span><span>first seen 2026-08-09</span></p>
+      </div>
+
+      <div class="card warm">
+        <div class="card-top">
+          <span class="id">BUG-42</span>
+          <span class="chip p2">P2</span>
+          <span class="status reopened">Re-reported — fix did not take</span>
+        </div>
+        <p class="desc">
+          <strong>Hero posters still load twice on beta.11.</strong> <em>"as is the double loading of the posters in the Hero section"</em>
+        </p>
+        <p class="fix">
+          <code>92259a22</code> held the hero publish for TMDB enrichment (2s cap) so metadata would commit once, and it survived 10 Codex review
+          rounds — <strong>but it was verified in sim, and the reporter sees the pre-fix behaviour unchanged.</strong>
+          <strong>The instrumentation to settle this shipped with the fix and was never read:</strong> the <code>first_hero</code> LaunchTrace mark
+          exists precisely to show hero paint against <code>first_rows</code>. <strong>Two live hypotheses:</strong> the 2s cap expires in their
+          enrichment-heavy French locale and the timeout path commits raw-then-localized after all, or the hold covers the hero <em>metadata</em>
+          while the <strong>backdrop image</strong> still swaps on a separate path — which would match their wording exactly, since they describe
+          posters loading twice, not text.
+        </p>
+        <p class="by"><span>u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2keul1/"><code>p2keul1</code></a></p>
+      </div>
+
+      <div class="card warm">
+        <div class="card-top">
+          <span class="id">BUG-39</span>
+          <span class="chip p2">P2</span>
+          <span class="status reopened">Re-reported — fix did not take</span>
+        </div>
+        <p class="desc">
+          <strong>GIF quality still poor on beta.11.</strong> <em>"The GIFs are still poor quality."</em>
+        </p>
+        <p class="fix">
+          <code>38e83abb</code> moved GIF decode to ImageIO thumbnailing at the tile's rendered size, buying ~3× more frames inside the same 12 MiB
+          budget — <strong>but frames-per-MiB was never the complaint; sharpness was, and downsampling to the tile size cannot raise sharpness above
+          the tile size.</strong> This row's own prescribed check (decoded pixel size vs the tile's actual point size on a 4K Apple TV) still has not
+          been run, and there is a specific cheap failure it would expose: <strong>if the thumbnail target was computed in POINTS rather than pixels,
+          every GIF is decoding at half resolution on a 4K panel</strong> — a 300pt tile is 600px of backing store — which would look exactly this bad
+          and would be a one-line fix.
+        </p>
+        <p class="by"><span>u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2keul1/"><code>p2keul1</code></a></p>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">BUG-31</span>
+          <span class="chip p2">P2</span>
+          <span class="status warn">Re-reported — comms failure, not code</span>
+        </div>
+        <p class="desc">
+          <strong>"The zoom on the posters is still there" — and it is there on purpose.</strong>
+          beta.11's <code>451a890f</code> deliberately <strong>restored</strong> the whole-card lift (Christian's design call) and shipped the
+          reporter's twice-stated no-zoom preference as <code>no_zoom_on_focus</code>, <strong>default OFF</strong>.
+        </p>
+        <p class="fix">
+          So on this point the release moved <em>away</em> from their ask unless they happened to find a switch nobody told them about — which is a
+          large part of why the whole review reads as <em>"nothing fixed"</em> rather than <em>"my preference is now available"</em>.
+          <strong>One sentence repairs it:</strong> name the <strong>No Zoom on Focus</strong> switch, say where in Settings it lives, and state
+          plainly that the default stays whole-card because that is the house design.
+          <strong>The counter-video they asked for is still owed and is now four days overdue</strong> — though BUG-53 has since supplied a mechanism
+          that may explain their side of the old device-vs-device divergence outright, which would retire this row with no further drawing change.
+        </p>
+        <p class="by"><span>u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2keul1/"><code>p2keul1</code></a></p>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">BUG-35</span>
+          <span class="chip p2">P2</span>
+          <span class="status warn">Re-reported — the documented gap, not a failed fix</span>
+        </div>
+        <p class="desc">
+          <strong>Movie metadata still not translated on beta.11.</strong>
+          <em>"The translation of movies into my language still doesn't work, exactly like in the previous beta."</em>
+        </p>
+        <p class="fix">
+          <strong>This row predicted it in writing.</strong> <code>92259a22</code> localized <strong>the hero</strong> by holding its publish for
+          TMDB enrichment; the same note recorded that <strong>catalog rows reuse the overlay only where the hero already fetched it</strong>, with
+          full row localization deferred as a fetch-volume product call. The reporter browses rows, so from their seat almost nothing changed.
+          <strong>This is the clearest case on the board of a fix that is real, partial, and reads as nothing to the person who filed it.</strong>
+          Two obligations, and the second matters more: decide the deferred fetch-volume question for real (per-row enrichment on scroll, batched,
+          cached under the language-qualified key that already exists), and <strong>stop shipping half a localization fix without saying which
+          half</strong> — the announcement implied progress this reporter cannot see.
+        </p>
+        <p class="by"><span>u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2keul1/"><code>p2keul1</code></a></p>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">BUG-36</span>
+          <span class="chip p2">P2</span>
+          <span class="status done">✅ Half-confirmed fixed — the sweep's only win</span>
+        </div>
+        <p class="desc">
+          <strong>Collection titles no longer disappear on focus — the one thing in six complaints that moved.</strong>
+          <em>"The titles of my collections no longer disappear, but they now overlap my image…"</em>
+        </p>
+        <p class="fix">
+          <strong><code>451a890f</code> worked</strong> on the half it was aimed at: titles can no longer be hidden, exactly as claimed.
+          The overlap in the second half of the sentence is <strong>BUG-53</strong>, not a new defect — so the follow-up belongs there rather than in
+          another rework of focus geometry on this surface, which has already had six drawing changes.
+          <strong>Worth stating in the reply for its own sake:</strong> in a review that opens with <em>"nothing has been fixed"</em>, this is the
+          item that proves the loop still works, and acknowledging the half that landed is what makes the rest of the honesty credible.
+        </p>
+        <p class="by"><span>u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2keul1/"><code>p2keul1</code></a></p>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>New on 2026-08-07 <span class="count">one item, answered before the sweep ran</span></h2>
     <p class="section-note">
       Two comments landed above the watermark and they are the two halves of one exchange — a request and Christian's reply to it, 46 minutes
       apart. <strong>Parentage was proven rather than assumed:</strong> the Atom feed carries no <code>parentId</code>, so the reply's own
@@ -1897,6 +2184,33 @@
     <h2>Watch list <span class="count">context that shapes the next moves</span></h2>
     <div class="watch">
       <div class="watch-item">
+        <h4>⚠️ 2026-08-09 — the relationship is the risk now, not the engagement</h4>
+        <p>
+          The notes below track u/mrStevenx3 going from <em>"stepping back"</em> on 2026-07-28 to the most productive tester of the whole beta,
+          and the reason recorded on 2026-08-01 was that <strong>they are being answered</strong>. Today they filed the first review that opens with
+          a verdict instead of a list: <em>"from my side, nothing has been fixed. In fact, I even feel like some things have gotten worse."</em>
+          <strong>The engagement is intact — they promise a fuller report and ran the retest at all — but the goodwill is spending down, and the
+          cause is partly self-inflicted:</strong> two of their six complaints are things beta.11 deliberately did <em>not</em> do
+          (BUG-31's default-off No-Zoom switch, BUG-35's hero-only localization) and were never explained as such, so a release that genuinely
+          fixed one of their bugs reads as a release that ignored them.
+          <strong>What protects this tester is not more fixes, it is an accurate reply:</strong> own BUG-55, confirm their build, name BUG-53 as
+          already-known-and-queued, and say plainly which half of localization shipped. A third undifferentiated <em>"fixed"</em> is the one
+          response that would cost them.
+        </p>
+      </div>
+      <div class="watch-item">
+        <h4>🧪 2026-08-09 — the beta.11 post-mortem pattern: sim-only confidence, and checks written but never run</h4>
+        <p>
+          Every beta.11 item that failed in the wild today shares one property. <strong>BUG-55</strong>'s commit says outright that its fixes
+          <em>"stand on code analysis"</em> because the bug class is device-only. <strong>BUG-42</strong> was verified in sim while the
+          <code>first_hero</code> LaunchTrace mark shipped alongside it, unread. <strong>BUG-39</strong>'s row had already specified the exact
+          measurement (decoded pixels vs tile points on a 4K panel) that would have caught a points-vs-pixels thumbnail bug before release.
+          <strong>In all three cases the instrument existed and the check was already written down — it just was not run on hardware before the
+          cut.</strong> The cheapest process change available for beta.12 is not more review rounds but a gate that refuses to ship any row whose
+          own notes name a device check that has not been executed.
+        </p>
+      </div>
+      <div class="watch-item">
         <h4>Three failure modes, one sweep — worth separating before fixing anything</h4>
         <p><strong>BUG-19 died because it was measured first</strong>: three blind fixes across builds 103–105 did nothing, and the frame-by-frame pass that pinned it to a named row with a numeric target produced a fix that worked on the first try. <strong>BUG-33 is the inverse</strong>: a four-round Codex review passed a key redesign that still does not filter in the wild, so the review was validating the wrong layer — instrumentation on the reporter's config is the next move, not a third key scheme. <strong>BUG-31 is a third thing again</strong>: device-confirmed clean here on 2026-08-02 and still wrong on their box, which is a config divergence (the BUG-25 fan-out and BUG-33 key-drift classes both produced this exact shape). Same sweep, three different lessons; treating them alike would waste a build.</p>
       </div>
@@ -1938,8 +2252,78 @@
   <section>
     <h2>Update log</h2>
     <div class="timeline">
+      <div class="entry">
+        <div class="when">2026-08-09 14:10Z · second scheduled sweep — 🔵 <strong>1 new comment, all noise: 0 items added, 0 statuses changed, 0 priorities moved</strong>; watermark <code>p2keul1</code> → <code>p2m5hoa</code></div>
+        <p class="what">
+          The feed answered on the first request (no 429, no 403) and emitted exactly one comment past the morning watermark:
+          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2m5hoa/"><code>p2m5hoa</code></a>
+          @ 09:13:33Z, u/Ginosaure — <em>"Great job. Congratulations to you!!!"</em> Praise on the beta.11 announcement, no bug, no request,
+          no repro; skipped as noise. Thread count 150 → 151, still a floor (feed saturated at 99 items again), and upvotes were not
+          re-counted — 102↑ from 2026-08-02 carried forward, seven days stale.
+          <strong>Nothing on the board moved from the thread: BUG-55 (P1), BUG-53 raised to P1 and DOC-3 remain the open beta.11 fallout,
+          and a reply to u/mrStevenx3's <code>p2keul1</code> review is still unposted.</strong> BUG-55's row did move between the two
+          sweeps — <strong>reproduced in-house on the released build</strong> after an initial "pipeline healthy" read — but on manual
+          device + sim work, which this run neither caused nor touched.
+          Structural guard passed before and after the edits (91 item rows, 6 tables; next free ids unchanged at
+          <code>BUG-56 · DOC-4 · FEAT-21 · UX-14</code>, as expected for a noise-only run).
+        </p>
+      </div>
+      <div class="entry hot">
+        <div class="when">2026-08-09 03:31Z · scheduled sweep — 🔴 <strong>the beta.11 review landed: +2 items (BUG-55 P1, DOC-3 P2), 1 priority raise (BUG-53 P2 → P1), 5 rows re-reported</strong>; watermark <code>p2byn5k</code> → <code>p2keul1</code></div>
+        <p class="what">
+          Three comments past the watermark. Two are ours and were already logged from the release run — the beta.11 announcement
+          (<code>p2k6dyg</code>) and the draft-3 reply (<code>p2k7g21</code>). The third is the substantive one:
+          <strong>u/mrStevenx3's beta.11 retest, 25 hours after the cut</strong> — <em>"from my side, nothing has been fixed. In fact, I even feel
+          like some things have gotten worse"</em>, with a fuller report promised and a direct question about whether the right IPA shipped.
+          <strong>Their six claims were triaged individually rather than taken at the headline: 1 win, 1 new regression, 2 fixes that did not take,
+          2 communication failures.</strong>
+          <strong>NEW BUG-55 (P1):</strong> focus-mode trailers do not play at all. The single suspect is <code>aeff3b64</code>, the only beta.11
+          commit on that surface, which put four changes on the play path at once — notably a new <code>hasToken</code> pre-play gate whose failure
+          mode is exactly "no trailers, no error" — and whose own message concedes the fixes <em>"stand on code analysis"</em> because the bug class
+          is device-only. The <code>-debug.trailerProbe YES</code> instrumentation shipped in that same commit and should name the cause in one
+          device run.
+          <strong>NEW DOC-3 (P2):</strong> no announcement tells testers how to check their build, so this whole report arrived unattributable —
+          and <strong>because they asked, the build was verified this run rather than assumed:</strong> every beta.11 commit
+          (<code>451a890f</code>, <code>92259a22</code>, <code>38e83abb</code>, <code>c29da28b</code>, <code>0ad450b6</code>, <code>aeff3b64</code>,
+          <code>31dfff49</code>, <code>c642c083</code>, <code>f248ad39</code>) is an ancestor of the released <code>f9e4ae56</code> build 107,
+          so the IPA is correct and the complaints are about the fixes themselves.
+          <strong>BUG-53 raised P2 → P1:</strong> their <em>"titles now overlap my image"</em> independently confirms, 25h after filing, the occlusion
+          found on the 2026-08-08 device pass — closing the BUG-53 ⇄ BUG-37 loop from the outside.
+          <strong>BUG-36 half-confirmed</strong> (titles no longer hidden is the one thing that moved).
+          <strong>BUG-42 and BUG-39 re-reported as failed fixes</strong> — both rows had already recorded the device check that would settle them
+          and neither was run; a concrete new hypothesis is logged on BUG-39 (a thumbnail target computed in points rather than pixels would halve
+          resolution on a 4K panel).
+          <strong>BUG-31 and BUG-35 re-reported but reclassified as communication failures:</strong> the poster zoom is deliberate with a
+          default-off opt-out nobody was told about, and localization shipped hero-only against a row gap the row documented pre-release.
+          <strong>0 noise comments.</strong> The structural guard passed clean before and after the write.
+          ⚠️ <strong>The reply owes five specific things and must not lead with a third "fixed":</strong> the About-pane build string, the No-Zoom
+          switch location, BUG-55 owned outright, BUG-53 named as known-and-first-in-queue, and an honest statement of which half of localization
+          shipped.
+        </p>
+      </div>
+      <div class="entry quiet">
+        <div class="when">2026-08-08 13:05Z · second scheduled sweep — 🔵 <strong>zero new comments; nothing moved</strong>; watermark held at <code>p2byn5k</code></div>
+        <p class="what">
+          The day's second run, ~27 minutes after the first was committed. The feed read cleanly on the first request — no 429, no 403 —
+          and emitted <strong>0 comments newer than the watermark</strong>, so there was nothing to classify, <em>not even noise</em>.
+          <strong>Nothing below was re-verified today</strong>; the only edits this run made are this entry, the tracker's "Last checked"
+          line, and the header timestamp. Two things are worth carrying forward rather than filing as a quiet day.
+          <strong>(1) Both open replies are unanswered, and neither asked a question</strong> — the UX-13 fix reply to u/Ginosaure
+          (<code>p2byn5k</code>, ~17h) and the FEAT-20 Simkl answer (<code>p2a06zj</code>, ~22h) were informational, so silence is the
+          expected outcome and nothing is owed on our side.
+          <strong>(2) The BUG-47 answer will never appear here.</strong> u/tiyeuedm's reply to the DM sent 2026-08-07 travels on a channel
+          this sweep cannot read, so if it has arrived it is sitting unforwarded — the same structural blind spot logged on 2026-08-06, and
+          the one item where feed silence carries no information at all.
+          Counts are carried forward, not re-confirmed: the Atom feed warned saturation again (99 items, 98 comments) and a fresh probe of
+          the post page's <code>.json</code> at <code>limit=1</code> with the script's own UA returned <strong>HTTP 403</strong> and a
+          ~186 KB bot-challenge stub — the third consecutive run unable to take a live comment or upvote count, leaving 102↑ six days stale.
+          <code>check-tracker.py</code> passed before and after (85 item rows, 6 tables). The saturation warning stays the standing risk:
+          the window is ~100 items and holds 98, so <strong>the daily cadence has to keep being met</strong> — a multi-day gap now drops
+          comments off the bottom permanently.
+        </p>
+      </div>
       <div class="entry ship">
-        <div class="when">2026-08-08 · scheduled sweep — ✅ <strong>no new tester feedback; the one new comment is ours, and it closes UX-13</strong>; watermark <code>p2a06zj</code> → <code>p2byn5k</code></div>
+        <div class="when">2026-08-08 · scheduled sweep (first run) — ✅ <strong>no new tester feedback; the one new comment is ours, and it closes UX-13</strong>; watermark <code>p2a06zj</code> → <code>p2byn5k</code></div>
         <p class="what">
           Exactly one comment past the watermark, and it is <strong>not a new event</strong>:
           <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2byn5k/"><code>p2byn5k</code></a>

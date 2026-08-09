@@ -44,7 +44,7 @@ Rather than port the touch UI, this fork keeps only what travels well: the prove
 ### True 10-foot UI
 
 - **Native tvOS design language** — a full Human Interface Guidelines pass: Liquid Glass surfaces, system focus platters and lockups throughout, real Siri-Remote parallax on every card (posters track your thumb on the touch surface), and a reorganized multi-pane Settings.
-- **Native SwiftUI** built around the tvOS focus engine — poster cards scale, lift and tilt toward you on focus (portrait or wide 16:9 layouts, titles always clear), D-pad-first navigation throughout.
+- **Native SwiftUI** built around the tvOS focus engine — poster cards scale, lift and tilt toward you on focus as one piece, artwork edge and title together (portrait or wide 16:9 layouts, titles always clear), D-pad-first navigation throughout. Prefer stillness? **No Zoom on Focus** (Settings → Appearance) marks the focused card with a border and shadow instead of scaling. See All grids remember your position when you back out of a title.
 - **Home hero carousel** with auto-advance, manual paging by D-pad click or touch-surface swipe (left and right, wrapping), title logo artwork, and a **Go to Movie / Go to Show** button — with a TMDB key, hero titles, synopses and logos arrive in your language. Prefer the look from Nuvio's modern home screen? Flip on **Nuvio-Style Hero** (Settings → Home Screen): title and description on the left, artwork blending in from the right — and new in this beta, the hero is **pinned**: it stays at the top of Home, updating live with the focused title, while only the rows scroll beneath it. **See All** also moved into the rows themselves as a card at the end of each shelf.
 - **Floating pill navigation bar**, horizontal episode shelves, and watched-episode badges.
 - **Continue Watching** with a separate Upcoming row for not-yet-released next episodes.
@@ -77,6 +77,8 @@ Rather than port the touch UI, this fork keeps only what travels well: the prove
 
 - **Debrid support** — **TorBox**, **Premiumize**, **Real-Debrid**, and **AllDebrid**; connect with a device code or API key, and cached results resolve to direct streams with quality / codec / service badges in the stream picker.
 - **Trakt scrobbling** — movies and episodes marked watched automatically, with Trakt connections isolated per profile.
+- **Simkl integration** — connect with a short PIN code (Settings → Accounts & Services) and your watch history scrobbles to Simkl too, with anime resolved through Simkl's own ID mapping (including a picker for ambiguous matches) and a **Sync Now** button for on-demand push/pull.
+- **Provider keys sync with your account** — debrid and TMDB API keys follow your Nuvio account to any Apple TV you sign in on (AllDebrid stays device-local).
 - **TMDB / MDBList / MyAnimeList** ratings and metadata, catalog-type and release-date display options — plus a **Metadata Language** picker (follow the Apple TV's language, or choose from 12).
 - **Profiles with PIN entry** and a QR-code sign-in flow — pair with your phone instead of typing credentials with the Siri Remote.
 - **Cloud library sync**, collections, and a sortable library with shelf and grid layouts.

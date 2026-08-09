@@ -132,6 +132,6 @@ post without that paragraph and add it as a follow-up comment.
 ## Posting checklist (after approval)
 - [x] Draft 1 → DM to u/tiyeuedm — **SENT 2026-08-07 ~3:57 PM** via the logged-in session (verified in-thread from youngchris2989); the daily sweep cannot read DMs, so watch for their answer manually or via a forwarded screenshot
 - [x] Draft 2 → reply on `p20ivrz` — **POSTED 2026-08-07** (per Christian: last paragraph removed; two-paragraph version live from youngchris2989 as a reply to Ginosaure's comment)
-- [ ] Draft 3 → reply on `p1vylo0` (best with the announcement; BUG-31 paragraph only after filming)
-- [ ] Christian films the BUG-31 video (shot list above)
-- [ ] Log all three in the tracker's update log once posted (the daily sweep watches for answers)
+- [x] Draft 3 → reply on `p1vylo0` — **POSTED 2026-08-08 night as [`p2k7g21`](https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2k7g21/)**, per Christian: WITHOUT the BUG-31 paragraph, and with the two post-device-pass corrections from `reddit-drafts-2026-08-08-beta11-announcement.md` (UX-9 paragraph rewritten to the honest not-fixed version; row-titles paragraph updated with the probe result + BUG-53 lift-occlusion suspect). Byte-verified fill via old.reddit markdown textarea, threading confirmed (parent = mrStevenx3).
+- [ ] Christian films the BUG-31 video (shot list above) → post as a follow-up comment under `p1vylo0`
+- [x] Announcement + drafts 2 and 3 logged in the tracker's update log (the daily sweep watches for answers — p2k6dyg and p2k7g21 are our own comments, log-don't-file)

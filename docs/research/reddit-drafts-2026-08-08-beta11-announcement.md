@@ -1,6 +1,6 @@
 # Reddit draft, 2026-08-08: beta.11 announcement
 
-Status: **DRAFT. Does not post without Christian's explicit approval.**
+Status: **POSTED 2026-08-08 night as [`p2k6dyg`](https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2k6dyg/)** — approved by Christian ("post it"), went out verbatim via ego-browser on old.reddit's markdown textarea (byte-identical fill verified before submit; rendered check: 12 bold spans, 8 list items, links live, author youngchris2989). Draft 3 still pending (with the corrections below + BUG-31 filming).
 
 Posting notes:
 - Top-level comment on the beta thread. The release is already live on the public repo and the

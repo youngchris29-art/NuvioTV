@@ -82,3 +82,32 @@ xcrun devicectl device process launch --terminate-existing --device <udid> com.n
   backing out of a title.
 - BUG-48: See All from a SEARCH row shows the searched results (Stremio Catalog Plus no longer
   empty; Bingecat shows searched, not unfiltered, titles).
+
+---
+
+## RESULTS (2026-08-11 device pass, recorded live)
+
+**Section 1 — DONE (see beta12-handoff-reach88.md).** Rest error gone on beta.12 (deterministic
+rests), BUG-61 confirmed, BUG-53 fixed via reach 72→88 (`5f6f2900`, gated, pushed). No clamp
+calibration needed — shipped 72 never binds at rest.
+
+**Section 2 — DONE, BUG-31 FIXED.** Reporter was right: the toggle never reached SeeAllCard
+(every Home row), episode cards, or the detail trailer thumbnail (unconditional
+`.hoverEffect(.highlight)`; only PosterCard/LandscapeCard read the key). Fix: shared
+`TileFocusLift` — zoom ON keeps the system lift, OFF draws still-mode border+shadow.
+Device-verified on all three surfaces, sim UITests ×7 green, Codex clean (`c6d762eb`, pushed).
+No filming needed — fixed instead.
+
+**Section 3 — DONE, PASS.** ~15 min trailer soak on the stateless build: trailers survived.
+Probe counts over the soak: 92 focus / 18 dwell / 18 expand (3 resolved, 14 cache-miss →
+resolution) / 12 begin / 11 end / 12 teardown / 0 errors. Gates line:
+`inlineTrailersEnabled=YES systemAutoplay=YES`. BUG-46/55 hardening holds — the dead state
+did not arise; no container dump needed.
+
+**Section 4 — DONE, DATA CAPTURED.** `[GifDecode] side=200 ceiling=782 sourceFrames=90
+keptFrames=78 bytes=7113600` (and side=200 ceiling=782 sourceFrames=80 keptFrames=78).
+Verdict: the doubled 4K ceiling never engages for real collection GIFs — they run 80–90
+source frames, so the 12 MiB per-GIF budget clamps decode side to 200px, far below the 782px
+ceiling. Short GIFs (<~12 frames) gain full resolution; typical collection tiles are
+unchanged from beta.11. The frame-vs-resolution trade (delay-folding subsampling and/or a
+bigger budget) now has its device data: 80–90 frames typical. Deferred to beta.13 tuning.

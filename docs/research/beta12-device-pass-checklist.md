@@ -111,3 +111,88 @@ source frames, so the 12 MiB per-GIF budget clamps decode side to 200px, far bel
 ceiling. Short GIFs (<~12 frames) gain full resolution; typical collection tiles are
 unchanged from beta.11. The frame-vs-resolution trade (delay-folding subsampling and/or a
 bigger budget) now has its device data: 80–90 frames typical. Deferred to beta.13 tuning.
+
+## RESULTS (2026-08-12 device pass, sections 5–10, recorded live)
+
+Build on device: the 2026-08-11 Release product (stamp `5f6f2900`, includes the then-uncommitted
+`c6d762eb` TileFocusLift code — built 21:56, committed 22:01). Console captured live via
+`devicectl … launch --console` with `-debug.trailerProbe YES`. Session noise, both known:
+the non-fatal `PostgrestRestException: Unsupported Nuvio client (22023)` from
+`register_current_device`, and one JetsamEvent at 18:14 whose victim was `storekitd`
+(per-process-limit) — NuvioTV was healthy at ~44 MiB in the same snapshot; the capture's
+signal-9 exit was a foreground force-quit/App Store visit on the TV, not an app problem.
+Release-build gating note: `[LaunchTrace]` and `[ExtPlayerProbe]` are DEBUG-only and never
+appear; `[TrailerPipeline]` is knob-gated and live.
+
+**Section 5 — DONE, PASS.** Langue des métadonnées set to Français through the real UI (profile
+sync forbids prefs injection), then cold relaunch via devicectl. Hero committed ONCE, already
+French — no EN→FR swap (BUG-42 holds; verdict is the eyeball on the committed hero since
+LaunchTrace is compiled out). Rows: captions localize as rows scroll in (BUG-35 fix works) —
+*The Odyssey* renders French while *Spider-Man: Brand New Day* stays English, and that pair is
+CORRECT: TMDB's own fr-FR title is "Spider-Man : Brand New Day" (verified live against
+themoviedb.org fr-FR — French marketing keeps English Marvel titles). "Still English" captions
+are titles whose official French title IS the English one, not enrichment misses. Row HEADER
+names stay addon-manifest English by design; the fix targets item captions only.
+
+**Section 6 — DONE, PASS.** Stream-list language badges compared against the phone side-by-side
+with the badge pack installed: "badges match the phone now" (Christian, live). The beta.12
+8-digit ARGB parsing fix renders pack colors as mobile does; the beta.11 white-box symptom
+(BUG-43) is gone on device.
+
+**Section 9 — DONE, PASS (both halves).** White theme: "shows a dark label in the settings side
+pane for all options" (Christian, live) — the BUG-45 invisible-focused-label state is gone on
+device. Home Screen pane focused toggle rows: "all readable on white theme" — the env-based
+rowAccentTint sites that were deliberately not blind-swept hold up too.
+
+**Section 10 — DONE, ALL PASS.** On the original 2026-08-11 build, pre-bisect-deploy: BUG-56
+trailer sound works (Trailer Sound by Default ON → sound, and it survives navigate-away-and-back
+— the beta.11 report was indeed the container-reset default, as static analysis predicted);
+UX-13 + UX-14 both restore scroll position (See All grid AND collection folder grid, after
+backing out of a title); BUG-48 search See All "shows correctly" — searched results, no empty
+grid (Stremio Catalog Plus class fixed in the wild's exact repro shape).
+
+**Section 7 — IN PROGRESS, /play FAILED on device.** VidHub detected everywhere it should be
+(Default Player dropdown + long-press menu both list it; console shows `open-vidhub://`
+canOpenURL succeeding while vlc/outplayer fail -10814 as expected). But the handoff does NOT
+play: VidHub opens to its home screen with no playback attempt, on the documented `/play`
+method, and a post-onboarding retest reproduced it — first-run interception ruled out.
+VidHub's integration docs claim Apple TV supports `/play` (verified live at
+vidhub.okaapps.com/3rd-party-app-integration); the tvOS build appears to lag them. Encoding
+exonerated (strict RFC 3986 unreserved-only encoder). Bisect build deployed live (stamp
+`c6d762eb` + uncommitted knobs, UUID `688F6DBA-409D-3F8E-938E-5DD967393CC0`): new
+`debug.vidhubMethod` knob (open | minimal | unset=full /play) + knob-gated
+`debug.extPlayerProbe` URL log (single-arg NSLog, %-escaped — the K/N varargs segfault trap).
+
+**Section 7 — VERDICT: VENDOR-SIDE FAILURE, full bisect matrix run on device.** All three
+variants fail identically — VidHub opens to its home screen, zero playback attempt:
+(1) documented `/play` with url+filename+position, (2) legacy `/open` with url only,
+(3) minimal `/play` with url only. The probe captured the exact URL delivered
+(`open-vidhub://x-callback-url/open?url=https%3A%2F%2Fnexus-136.snam.tb-cdn.io%2F…` — clean
+encoding, plain https CDN source), onboarding was completed and retested, and no public
+reports of a working tvOS handoff exist (the Stremio ask, issue #907, is an open feature
+request). Detection/menu integration all works (Default Player dropdown + long-press menu +
+canOpenURL). Conclusion: the tvOS VidHub build ignores its own documented x-callback-url
+API; nothing left to fix on our side. The `debug.vidhubMethod` bisect knob stays (launch-arg
+domain is volatile — no cleanup needed; unset = documented /play). **Ship decision (Christian,
+live): KEEP VidHub listed, with a known-issue note** in the release notes/announcement — "VidHub
+appears in the player list but its tvOS build currently ignores playback handoffs; implemented
+per VidHub's own integration docs and verified byte-exact on device; reported to Oka Apps."
+Follow-ups: report to Oka Apps; retest with the bisect knob when VidHub updates; tell Ginosaure
+(FEAT-21 requester) the state honestly in the reply.
+
+**Section 8 — DONE, PASS.** System language flipped to Tiếng Việt, UI walked: "vietnamese is
+working" (Christian, live). Reported as a pass on the walk; no truncation/overflow or stray
+English called out.
+
+---
+
+**PASS COMPLETE (2026-08-12).** All 10 sections done across two sessions (1–4 on 08-11, 5–10
+today). Scoreboard: sections 1–6, 8, 9, 10 PASS (BUG-53, BUG-31, BUG-46/55 soak, BUG-39 data,
+BUG-42/35, BUG-43, FEAT-19, BUG-45, BUG-56/UX-13/UX-14/BUG-48 all hold on hardware). Section 7
+is the one failure and it is VENDOR-SIDE: VidHub's tvOS build ignores its own documented
+x-callback-url API on all three method variants (byte-verified delivery); shipping listed with
+a known-issue note per Christian's call. Code delta from this pass: the `debug.vidhubMethod`
+bisect knob + gated `[ExtPlayerProbe]` URL log (uncommitted at pass end — gate + commit next).
+Remaining before release: tracker row updates, README features/screenshots, release-beta.sh,
+announcement + replies (BUG-53 + UX-9 publicly promised; FEAT-21 known-issue note; BUG-58/59
+reporter asks).

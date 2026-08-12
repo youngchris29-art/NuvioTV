@@ -1,5 +1,16 @@
 # beta.12 session handoff — continue with the reach-88 experiment (BUG-53)
 
+> **OUTCOME (2026-08-11, follow-up session): reach-88 SHIPPED.** Full sequence ran clean:
+> sim UITests test00z/06/20/22 all green; device walk (Christian) — focus crisp under D-pad +
+> swipes, no title clip on leftmost cards, spacing approved ("this looks good now"); probe
+> re-check — every settled rest parks at margin 0 / slide 0 / net 0 (no slide needed at rest
+> under the new geometry; the only negative-net lines were scrolled-away rows at the 72 clamp
+> mid-flight, which is expected). Committed as NuvioMobile `5f6f2900`, Codex-gated clean
+> (scoped `--base HEAD~1`; the unscoped default reviewed the whole branch vs cmp-rewrite and
+> surfaced 3 pre-existing branch-level findings — Android Sentry URL-path scrubbing, quickjs
+> mavenLocal reproducibility, Hebrew missing from locale_config — none from this change, left
+> for triage). Pushed. BUG-53 is fixed for beta.12; continue with checklist sections 2–10.
+
 Written 2026-08-11 at the end of the campaign session. A new session should read this and
 continue at "NEXT STEP" below. Full campaign record: `beta12-campaign-notes.md`; device pass:
 `beta12-device-pass-checklist.md`.

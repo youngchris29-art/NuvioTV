@@ -64,6 +64,20 @@ The port is mechanical and low-risk: `shared/.../addons/AddonPlatform.kt` **alre
 
 No action needed on `55307c43` (disintegrate animation — Compose-UI-only) or `c861a8ff` (episode spacing — Compose-UI-only, no shared equivalent) or `0d6e30e4` (mobile version bump).
 
+## Addendum — 2026-08-13 (same day): items 1 and 3 ported
+
+Both actionable items landed in `NuvioMobile` on `tvos-shared-extraction` the same day this check ran:
+
+**Cache-control / force-refresh (item 1) — DONE, commit `a040293a`.** Full `shared/` port plus the Android halves this fork's composeApp consumes (OkHttp disk cache in `AddonPlatform.android.kt`, `MainActivity` init, AddonsScreen/SearchScreen forced call sites) and the tvOS Swift side (`StreamsViewModel.reload()` → repository `reload()`, SearchViewModel explicit `forceRefresh: false`). Three deliberate divergences from upstream, documented in the commit: CatalogRepository keeps the fork's detach-healing guard, SearchRepository keeps completed-state reuse for non-forced calls (tvOS re-arms refresh on every screen re-entry), and the streams retry now actually cache-busts.
+
+Notable verification finding: an empirical probe on the tvOS 27 sim (local caching server + the app's real Ktor Darwin client) showed plain addon GETs are **stored in but never served from** NSURLCache — the local-staleness scenario upstream fixed doesn't reproduce on tvOS today. The port still matters: the `Cache-Control: no-cache` header reaches the wire (verified) and instructs addon-server/CDN caches to revalidate, and the wiring is correct if the engine's cache behavior ever changes. No `requestCachePolicy` fallback needed.
+
+Also verified: tvOS shared tests green, NuvioTV sim build clean, Home/Search/Discover smoke on sim (no refetch-storm regression from the `completedRequestKey` removal). Codex review: 3 rounds, 3 findings fixed. Android target not compile-verified locally (no Android SDK on this machine); its changes mirror upstream's shipped commit verbatim.
+
+**TMDB exclusion filters (item 3, carried since 08-10) — shared plumbing DONE, commit `7dac9a67`.** `TmdbCollectionFilters` fields + Discover query-builder wiring + upstream's serialization test (9/9 green on the tvOS sim target). **Remaining on the backlog: the UI half only** — upstream's `CollectionEditorScreen.kt` + strings hunks for the mobile editor, and new tvOS SwiftUI exclusion controls (tvOS has no collection editor yet). Until then the fields are reachable only via imported JSON; additive/default-null, so existing collections are unaffected.
+
+**Subtitle floor (item 2) — unchanged, deliberate no-port** per this doc's Item 1 analysis.
+
 ## Next scheduled check
 
-Re-fetch `upstream/cmp-rewrite`, diff past `0d6e30e4`. Re-verify: (a) TMDB Discover exclusion filters still open, (b) whether the cache-control port (item 1 above) has landed in `shared/` yet — if it has, drop it from the backlog; if partially done, note what's left.
+Re-fetch `upstream/cmp-rewrite`, diff past `0d6e30e4`. The cache-control port and TMDB shared plumbing landed 2026-08-13 (`a040293a`, `7dac9a67` — see addendum); the only carried-forward item is now the TMDB exclusion-filter **UI half** (mobile editor hunks from `0fc4616b` + tvOS controls). Also re-verify the subtitle-floor stance if player styling gets a pass.

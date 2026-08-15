@@ -526,6 +526,17 @@
       Live triage of bug reports, feature requests and UX feedback from the
       <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/">beta announcement thread</a>,
       swept daily and mirrored from <code>docs/beta-feedback-tracker.md</code>.
+      <strong>📬 2026-08-10 (DM pass) — u/tiyeuedm's out-of-band answer landed and settles BUG-47 from the wild:</strong> <em>"it's not a crash, and the app continues running normally"</em> — the reporter withdrew their own "crash" unprompted, matching the eject diagnosis exactly. The clarification doubles as an unwitting A/B test of <strong>BUG-48</strong>: eject with Stremio Catalog Plus (search-only → empty grid), none with Bingecat Search (unfiltered fetch returns content). <strong>+UX-14 (P2)</strong>: collection expansion loses scroll position on Back — UX-13's shape, but <code>FolderDetailView</code> is a path the beta.11 fix does not touch. <em>Previously:</em> <strong>🔬 2026-08-10 (sim repro) — BUG-60 and BUG-61 are one bug, and it is a fix we shipped.</strong> Both are <code>pinnedRowTitleTracking</code>, added for BUG-37: in pinned mode the row title is an overlay inside the card reach band and a <code>visualEffect</code> rides it down by up to <strong>72 pt</strong> when a scroll rest falls short — recomputed per geometry change, <strong>not animated</strong>. <strong>BUG-61 is reproduced frame-exactly</strong> (two frames 60 ms apart: the title moves 33 pt and lands on the artwork) and <strong>raised P3 → P2</strong>. <strong>BUG-60 is reproduced as a transient only</strong> — the static clearance is 8 pt, so slide past 8 is title-on-poster up to 64 pt, but at every settled rest and every poster size the slide caps at exactly 8. That is the expected sim result: the device rests 40–67 pt short, which makes the same displacement a permanent 32–59 pt overlap. <em>Previously:</em> <strong>🎥 2026-08-10 (later) — both clips read frame-by-frame, and the footage overturns the morning's board in three places.</strong> <strong>BUG-45 is not low contrast, it is invisible</strong> — the focused Settings sidebar row measures a flat luma 221 across 6,630 px (range <strong>3</strong>) against range <strong>185</strong> for the unfocused row beside it, with the camera nowhere near clipping; <strong>raised P2 → P1</strong>. <strong>BUG-31's “communication failure” reading is wrong</strong>: their own Apparence pane reads <em>No Zoom on Focus — On</em>, so the reporter found the default-OFF switch unaided and still sees the zoom — it is a code bug again. <strong>BUG-59 is not reproduced and the measurement runs the other way</strong>: the focus trailer fills its card flush on all four sides, and the apparent crop is the phone camera walking past the card's edge. <strong>The best new evidence is on BUG-55</strong> — trailers play continuously for ~26s in the main clip and are dead in the addendum filmed three minutes later, same build, same session, nothing changed. <em>Previously:</em> <strong>🔑 2026-08-10 — the lead tester's second beta.11 review is longer, calmer and worse for the board than the first: 16 points,
+      6 of them new defects — and one sentence in the middle of it resolves the contradiction that has held BUG-55 open since yesterday.</strong>
+      <em>"Completely uninstalling and reinstalling the application fixed the issue."</em> Trailers die from <strong>persisted state</strong>,
+      not from the released binary, which is exactly why the pipeline tested healthy on hardware <em>and</em> the symptom reproduced in the sim —
+      both readings were right. <strong>BUG-46 carries the same evidence and is raised P2 → P1 as one bug with BUG-55</strong>; the next action
+      for both is a data-container dump taken while the symptom is live, not another soak. Alongside it:
+      <strong>BUG-43's shipped, test-pinned contrast fix demonstrably did not take</strong> (raised P3 → P2 — the diagnosis was wrong, not the
+      patch), and <strong>six new defects</strong> land at once. Four known rows were re-reported unchanged, and
+      <strong>three of those four are blocked on a device check this board prescribed and skipped.</strong>
+      <strong>The through-line is not that the fixes were wrong — it is that they were verified in the sim and the answers were never sent.</strong>
+      <em>Previously:</em>
       <strong>🔴 2026-08-09 — beta.11 shipped, and the lead tester's verdict is <em>"nothing has been fixed. In fact, I even feel like some
       things have gotten worse."</em></strong> Six claims, and the honest scoreboard is <strong>1 win, 1 new regression, 2 fixes that did not
       take, 2 communication failures</strong>. The regression is the worst of it: <strong>focus-mode trailers no longer play at all</strong>
@@ -548,18 +559,252 @@
       15-round Codex loop. All committed and pushed (<code>88abcf9a..b8c4e60c</code> + pointer <code>72ca2a8</code>); release gates below.
     </p>
     <div class="meta">
-      <span class="pill"><strong>151</strong> comments <span style="color:var(--text-3)">(floor)</span></span>
-      <span class="pill"><strong>102↑</strong> · <strong>70K</strong> views <span style="color:var(--text-3)">carried from 2026-08-02, 7 days stale</span></span>
-      <span class="pill">Last checked <strong>2026-08-09 14:10Z</strong> (1 new — noise)</span>
-      <span class="pill">Watermark <code>p2m5hoa</code> <span style="color:var(--text-3)">@ 2026-08-09T09:13:33Z</span></span>
+      <span class="pill"><strong>157</strong> comments <span style="color:var(--text-3)">(floor)</span></span>
+      <span class="pill"><strong>102↑</strong> · <strong>70K</strong> views <span style="color:var(--text-3)">carried from 2026-08-02, 13 days stale</span></span>
+      <span class="pill">Last checked <strong>2026-08-15</strong> · 🆕 <strong>1 new comment, 1 new item</strong></span>
+      <span class="pill">🗣 <strong>New reporter</strong> — u/Gullible_Kick6921, 19th voice</span>
+      <span class="pill">🆕 <strong>+FEAT-23</strong> (P3) — first macOS-build ask · <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p3s5usg/"><code>p3s5usg</code></a></span>
+      <span class="pill">📤 <strong>FEAT-23 answered same day</strong> — declined with reason, reply posted</span>
+      <span class="pill">⏳ <strong>Awaiting u/StudioKentin</strong> — ~2 days since the ask; BUG-62 + FEAT-22 both blocked on it</span>
+      <span class="pill">🗣 <strong>Prior new reporter</strong> — u/StudioKentin, 18th voice (2026-08-13)</span>
+      <span class="pill">🆕 <strong>+2 items</strong> — BUG-62, FEAT-22 <span style="color:var(--text-3)">(both P2)</span></span>
+      <span class="pill">📤 <strong>Replied same day</strong> — <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p3h0asv/"><code>p3h0asv</code></a>, verified byte-identical</span>
+      <span class="pill">Watermark <code>p3s5usg</code> <span style="color:var(--text-3)">@ 2026-08-15T04:16:14Z</span></span>
       <span class="pill">🚢 Shipped <strong>beta.11</strong> · build 107 · <code>f9e4ae56</code></span>
-      <span class="pill">🔴 <strong>BUG-55</strong> (P1) focus trailers dead — new</span>
-      <span class="pill">🔴 <strong>BUG-53</strong> P2 → P1 — confirmed in the wild</span>
-      <span class="pill">⚠️ <strong>BUG-42 / BUG-39</strong> shipped fixes that did not take</span>
-      <span class="pill">🗣 <strong>BUG-31 / BUG-35</strong> reclassified as comms failures</span>
-      <span class="pill">✅ IPA verified correct — <strong>DOC-3</strong> filed</span>
-    </div>
+      <span class="pill">🔑 <strong>BUG-55 explained</strong> — a reinstall cleared it: persisted state, not the binary</span>
+      <span class="pill">🔴 <strong>BUG-46</strong> P2 → P1 — restart no longer clears it</span>
+      <span class="pill">🔴 <strong>BUG-43</strong> P3 → P2 — the shipped fix did not take</span>
+      <span class="pill">🆕 <strong>+7 items</strong> — BUG-56…BUG-61, FEAT-21</span>
+      <span class="pill">⏳ <strong>2 prescribed device checks</strong> still unrun</span>
+      <span class="pill">🎥 <strong>BUG-45</strong> P2 → P1 — sidebar label draws <em>zero</em> pixels</span>
+      <span class="pill">🔄 <strong>BUG-31</strong> — their pane reads “No Zoom on Focus — On”</span>
+      <span class="pill">❌ <strong>BUG-59</strong> not reproduced — trailer fills its card</span>
+      <span class="pill">🔬 <strong>BUG-60 + BUG-61 = one bug</strong> — <code>pinnedRowTitleTracking</code></span>
+      <span class="pill">🔬 <strong>BUG-61</strong> P3 → P2 — reproduced in the sim</span>
+      <span class="pill">📬 <strong>BUG-47 DM answer in</strong> — “it’s not a crash”, eject confirmed</span>
+      <span class="pill">📤 <strong>Retest ask sent</strong> — tiyeuedm DM, 19:30, verified in-thread</span>
+      <span class="pill">🆕 <strong>UX-14</strong> — collection Back loses scroll position</span>
+</div>
   </header>
+
+  <div class="notice">
+    <div class="notice-title">📬 2026-08-10 (DM pass) — the BUG-47 answer arrived out-of-band, and it confirms the eject from the wild</div>
+    <p>
+      u/tiyeuedm replied in Reddit chat on <strong>Aug 7 at 17:22</strong> — before the beta.11 cut, so every observation is beta.10 — and the
+      sweep cannot read DMs, so it surfaced only today. Neither of the two questions the 2026-08-07 DM asked (empty page? resumes into it?) was
+      answered directly, and neither is needed any more: the clarification carries more information than both.
+    </p>
+    <p>
+      <strong>📬 BUG-47 — confirmed and corrected by its own reporter.</strong> <em>"Clarification on the search issue: this happens when I expand
+      the search in the Stremio Catalog Plus addon. Pressing back takes me back to the home screen — it's not a crash, and the app continues
+      running normally. However, when I expand search in the Bingecat Search addon and press back, I don't run into this issue."</em>
+      The reporter withdrew "crash" unprompted — no process death, the app keeps running — which is precisely the suspend-not-kill eject reproduced
+      in-house on 2026-08-06, and the final proof that no <code>.ips</code> ever existed.
+    </p>
+    <p>
+      <strong>🟢 BUG-48 — its mechanism was just A/B-tested by someone who has never seen the row.</strong> Eject with <strong>Stremio Catalog
+      Plus</strong>, none with <strong>Bingecat Search</strong>: the query-drop means the pushed grid fetches the addon's <em>unfiltered</em>
+      catalog — a search-only addon returns nothing (empty grid → focus strands → eject), a browsable one returns content (populated but silently
+      wrong grid). One end-to-end check remains on beta.11, where the empty-state fix shipped but the root fix waits for beta.12: their Stremio
+      repro should now show an <em>empty grid</em> instead of ejecting. Saying so in the reply prevents it being filed as a new bug.
+    </p>
+    <p>
+      <strong>🆕 UX-14 (P2) — collection expansion loses scroll position on Back.</strong> <em>"When I expand a collection and scroll down to
+      select a movie, pressing back resets me to the top of the page."</em> UX-13's complaint shape, but <strong>not its code path</strong>: a
+      collection pushes <code>FolderRoute</code> → <code>FolderDetailView</code>, which builds its own <code>FolderDetailViewModel</code> per push —
+      untouched by the beta.11 fix. First suspect, from reading not testing: <code>.onDisappear {{ model.stop() }}</code> fires when the pushed
+      title screen merely <em>covers</em> the folder view; if pop republishes from scratch, the grid rebuilds at the top — UX-13's teardown
+      mechanism relocated. Fix shape, if confirmed, mirrors UX-13: stop on true teardown, not on cover.
+    </p>
+    <p>
+      <strong>📤 The reply went out the same day (19:30, verified in-thread):</strong> beta.11 fix shipped + retest ask + the interim empty-grid
+      behaviour stated in advance so it is not re-filed as a regression + UX-14 acknowledged. FEAT-19 (Vietnamese) was re-acknowledged and adds
+      nothing new. Their answer arrives in the DM thread, which the sweep cannot read.
+    </p>
+  </div>
+
+  <div class="notice">
+    <div class="notice-title">🔬 2026-08-10 (sim repro) — BUG-60 and BUG-61 are one bug, and the cause is a fix we shipped</div>
+    <p>
+      Both were driven in the <strong>tvOS 26.5 simulator</strong> in the reporter's exact configuration: signed-in container,
+      <strong>Afficher le Hero = Off</strong> so Home runs in PINNED mode, <code>debug.homeScrollProbe</code> on, poster size set by rewriting
+      <code>poster_card_style_payload_2</code> in prefs rather than walking Settings. Swept <strong>Small 105 dp / Medium 126 / Large 154</strong>,
+      ~740 probe samples and 12 rows each, plus a 600 fps <code>simctl io recordVideo</code> capture.
+      <strong>Unlike the tester's handheld footage the sim is a real instrument — 3840×2160 for a 1920×1080 screen is exactly 2 px per point.</strong>
+    </p>
+    <p>
+      <strong>The mechanism is <code>pinnedRowTitleTracking</code> (BrowseComponents.swift), added for BUG-37.</strong> In pinned mode the row title
+      is not a sibling above the shelf — it is an <em>overlay inside the card reach band</em>, and a <code>visualEffect</code> offsets it DOWN by
+      <code>min(max(viewport.minY,0), heroPinnedRowTitleMaxSlide)</code>, up to <strong>72 pt</strong>, to keep it inside the rows viewport whenever a
+      scroll rest falls short. It recomputes on every geometry change and <strong>is not animated</strong>, so each focus-driven reveal snaps the
+      title to a new offset while everything else on screen eases.
+    </p>
+    <p>
+      <strong>🔬 BUG-61 — reproduced frame-exactly, raised P3 → P2.</strong> Two frames <strong>60 ms apart</strong>: at t=7.07 the
+      <em>Latest Apple TV+ - Movies</em> title sits clear above its posters; at t=7.13 it has moved ~66 px (<strong>33 pt</strong>) and is drawn
+      directly on the artwork. Across one walk the app's own probe reports the title occupying <strong>10–13 distinct on-screen offsets</strong>
+      (0, 2, 4, 6, 8, 12, 18, 26, 30, 38, 44, 48, 68, 72 pt) at every poster size. <em>Two limits stated rather than buried:</em> it fires on
+      <strong>vertical</strong> row-to-row movement, and a 7-step <strong>horizontal</strong> walk along one row left the title fixed — so either the
+      reporter means row-to-row, or a second trigger is still unfound.
+    </p>
+    <p>
+      <strong>🟡 BUG-60 — reproduced as a transient, not as a resting state, and the arithmetic is now exact.</strong> The band above the art is
+      shelf padding 24 + reach 72 = <strong>96 pt</strong>; the title is inset 48 and is ~40 pt tall, leaving <strong>8 pt</strong> of static
+      clearance — so every point of slide past 8 is title drawn on its own poster, to a maximum of <strong>64 pt</strong> (Theme.swift concedes this
+      in writing). Measured at all three poster sizes: the <strong>settled</strong> slide caps at exactly <strong>8 pt → 0 pt of overlap</strong>,
+      while mid-scroll it reaches 68–72 → <strong>60–64 pt onto the artwork</strong>. No poster-size dependence in the sim.
+    </p>
+    <p>
+      <strong>That is the expected result, not a refutation — this class is device-only.</strong> The 2026-08-02 device run measured a
+      <strong>40–67 pt rest error</strong> (1,603 probe samples) where the sim rests true. A settled device rest short by that much puts the title at
+      a <em>settled</em> slide of 40–67, i.e. <strong>32–59 pt of permanent overlap</strong> — exactly what the reporter describes, and exactly why
+      changing a setting that shifts which rests occur appeared to fix it. <strong>Neither item needs the tester again:</strong> one manual device
+      pass with the probe on, reading <code>slide</code> at rest, closes BUG-60. Fix candidates are scaling the clamp to the poster height instead of
+      a fixed 72, or reserving the band so no slide is ever needed.
+    </p>
+  </div>
+
+  <div class="notice">
+    <div class="notice-title">🎥 2026-08-10 (later) — the two clips, read frame-by-frame: three of the morning's conclusions were wrong</div>
+    <p>
+      Both tester videos were pulled and analysed: the main review (<strong>107.5s @ 720p30</strong>) and the addendum (<strong>36.3s @ 720p30</strong>).
+      Frames are saved under <code>docs/research/p2qudtq-video-evidence/</code> and <code>docs/research/p2quzd3-video-evidence/</code>; the MP4s were deliberately
+      not left in the repo, matching the p1q89ph precedent of keeping named frames only. <strong>Nothing new was filed — but three rows changed meaning and two
+      moved from “ask the tester” to “reproduce in-house”.</strong>
+    </p>
+    <p>
+      <strong>🔴 BUG-45 — raised P2 → P1, and it is worse than the row ever claimed.</strong> The focused Settings sidebar row is not low-contrast; it renders
+      <strong>no glyphs at all</strong>. Sampling the platter interior gives luma <strong>220–223, a total range of 3</strong> across 6,630 px, and a horizontal scan
+      reads a constant <strong>221.0</strong> at every column. The unfocused row immediately beneath it spans <strong>65–250 (range 185)</strong> in the same frame
+      under the same exposure. <strong>The camera is not the cause — the platter peaks at 223, not 255, so the sensor is not clipping and dark text would have
+      survived.</strong> The 2026-08-05 pass measured this class at 1.05:1 and BUG-50's sweep was scoped away from the Settings primitive on the assumption it was
+      already fine. It is not. The practical effect is that the user cannot see which Settings section they are in — plausibly why this reporter has twice failed to
+      find controls that were on screen.
+    </p>
+    <p>
+      <strong>🔄 BUG-31 — the comms-failure reading is retired; this is a code bug again.</strong> Their Apparence pane is on screen long enough to read, and it says
+      <strong>“No Zoom on Focus — On · Focused cards keep their size — highlight and shadow only”</strong>, in the same subtitle format as
+      <em>“Accent Focus Ring — On”</em> directly above it. <strong>So the switch shipped default OFF, the reporter found it unaided, enabled it, and still reports
+      poster zoom.</strong> Two days of “one sentence retires this complaint” were aimed at a problem that does not exist. Verify on device with the toggle ON before
+      writing to them about it again. <em>Caveat held honestly: the toggle control itself sits at the right edge of the pane where the camera does not resolve it, so
+      the state is read from the subtitle format of the sibling row.</em>
+    </p>
+    <p>
+      <strong>❌ BUG-59 — not reproduced, and the footage shows the opposite.</strong> Two clean wide shots of a playing focus trailer show the video
+      <strong>flush to the focus ring on all four sides</strong> — no letterbox, no pillarbox, no spill — with a measured card interior of 406×230 px
+      (aspect <strong>1.765</strong>, 16:9 within the perspective error of a handheld shot). <strong>The “beyond the frame” impression is an artefact of the
+      recording:</strong> from t≈35–45 the reporter walks the phone toward the TV until the card's right edge is outside the <em>phone's</em> frame, so the trailer's
+      own centred title cards run off the side of the video. That is the camera cropping the TV, not the app cropping the trailer. The UX-9 aspect-fit pairing was an
+      inference from prose — don't build on it; ask which title instead.
+    </p>
+    <p>
+      <strong>🎥 The best new evidence is on BUG-55 / BUG-46, and it is the degrade caught on camera.</strong> In the main clip the focus trailer <strong>works, at
+      length</strong> — the Lioness card morphs to landscape and plays continuously from t≈20 to t≈46, filling the card. In the addendum, filmed
+      <strong>three minutes later on the same build and session</strong>, focus dwells on four different posters and <strong>not one morphs or plays</strong>.
+      Nothing was changed between the two recordings, which rules out a settings explanation and fits the reinstall evidence exactly: the pipeline is healthy until
+      accumulated state poisons it. <em>Caveat: the addendum's dwells are ~1.5–2s each and the working clip's morph had already completed before filming started, so a
+      dwell-threshold effect is not excluded by footage alone.</em> The container dump settles both readings at once.
+    </p>
+    <p>
+      <strong>⏸ BUG-60 and BUG-61 stay open on prose, and both become ours to reproduce.</strong> The poster-size control is <strong>never opened on camera</strong> —
+      <em>Style des affiches → Taille</em> is clipped by the bottom edge of the screen and they navigate away without touching it, and every Home frame is at the Large
+      size they said they reverted to. For BUG-61 the obvious mechanism was <strong>measured and killed</strong>: with the hero banner off, the pinned hero shows the
+      focused title's synopsis, but the block is <strong>fixed-height</strong> — the distance from the hero's genre line to the row title is <strong>117 px vs
+      118 px</strong> across a 2-line and a 4-line synopsis at identical nav-bar scale, with the slack absorbed inside the block (60 px → 22 px). The rows do not
+      reflow. Reproduce both in the sim, where the header's y is readable exactly.
+    </p>
+    <p>
+      <strong>📐 Instrument note worth keeping for the next clip.</strong> This is a handheld phone recording of a TV: the screen occupies ~900 px of a 720p frame, so
+      <strong>one tvOS point is ≈0.47 px</strong>. Within-frame comparisons — contrast, geometry, layout distances — are sound. Anything needing absolute or
+      cross-frame position is not, and every normalisation tried for BUG-61 (nav-bar height, screen fraction, poster height) had detection noise larger than the
+      effect. Better to say so than to report a number that cannot carry weight.
+    </p>
+    <p>
+      <strong>✅ Also confirmed on camera.</strong> Build <strong>0.3.0 (107) · <code>tvos-v0.3.0-beta.11</code> · <code>f9e4ae56</code> · tvOS 26.6 (23.773) ·
+      AppleTV11,1</strong> — note <strong>tvOS 26.6, not 27</strong>, so this reporter is <em>not</em> on the runtime where BUG-47 was reproduced. They found
+      <strong>Settings → About unaided</strong> and filmed it for fourteen seconds, which half-answers DOC-3: the pane is discoverable, and what is still missing is
+      the expected string in the announcement. And <strong>Langue des métadonnées = Français</strong>, which grounds BUG-35 and BUG-42's shared
+      enrichment-heavy-locale hypothesis in a read setting rather than an assumption.
+    </p>
+  </div>
+
+  <div class="notice">
+    <div class="notice-title">🔑 2026-08-10 — the second beta.11 review: one sentence explains the worst bug on the board</div>
+    <p>
+      <strong>u/mrStevenx3 delivered the fuller report they promised — 16 distinct points with video (<a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2qudtq/"><code>p2qudtq</code></a>), plus a three-line
+      addendum three minutes later (<a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2quzd3/"><code>p2quzd3</code></a>) — and it is calmer than the "nothing has been fixed" verdict that preceded it.</strong>
+      It is also worse for the board: six of the points are new defects. Taken in order of what it changes.
+    </p>
+    <p>
+      <strong>🔑 The find of the run is a single aside: <em>"For your information, at one point my trailers would no longer play at all.
+      Completely uninstalling and reinstalling the application fixed the issue."</em></strong>
+      That resolves the contradiction that has held <strong>BUG-55</strong> open since yesterday, when the same day produced both a
+      "pipeline is verified healthy on the released build" result and an in-house reproduction of the symptom.
+      <strong>Both were correct, because the fault is not in the binary but in state the binary accumulates.</strong>
+      Wipe the container and it works; let the state rebuild and it stops — and the addendum confirms it came back the same evening
+      (<em>"the trailers are no longer playing again"</em>), so the reinstall bought one session at most.
+      <strong>This retires the "config-only, awaiting two toggle checks" reading outright:</strong> a default-OFF toggle is not repaired by a
+      reinstall and does not re-break on its own an hour later. <strong>BUG-46 carries the same evidence and escalates with it</strong> —
+      that row has always read as resource exhaustion because <em>"a restart clears it"</em> fit every candidate, and a restart no longer does.
+      State that survives a process restart but dies with the app container is <em>persisted</em>, which is a short and enumerable list: the
+      trailer resolve cache, a stored extraction token, a poisoned negative-cache entry, a settings key written to a bad value.
+      <strong>Raised P2 → P1 and worked as one bug with BUG-55. Next action is a live container dump, not another soak.</strong>
+    </p>
+    <p>
+      <strong>🔴 A shipped, test-pinned fix that changed nothing on screen — and that is a diagnosis failure, not a patch failure.</strong>
+      <strong>BUG-43</strong>'s language badge is still white, reported twice in one evening (<em>"the language of my badges in the Flux list
+      stays in white, like in the previous beta"</em>, then unprompted in the addendum). <code>c29da28b</code> added a luminance-distance guard
+      to the <code>tagColor</code>-without-<code>textColor</code> branch, was pinned by tests, and shipped in beta.11.
+      <strong>So the live question is whether this badge takes that branch at all</strong> — read the actual chip construction before stacking a
+      second guard on the first, and check specifically for an explicit <code>textColor</code> that defeats the path.
+      <strong>Raised P3 → P2 on the failure mode, not the report count.</strong>
+    </p>
+    <p>
+      <strong>🆕 Six new defects, and two of them pair with items already on the board.</strong>
+      <strong>BUG-56</strong> (P2) — focus trailers no longer start with sound and re-mute after navigating away and back, which is a
+      <em>regression against shipped FEAT-11</em>, not a missing feature; <code>aeff3b64</code> is the first suspect, the same commit already
+      under suspicion in BUG-55. <strong>BUG-59</strong> (P2) — trailers now render <em>outside</em> their card, which read against
+      <strong>UX-9</strong>'s letterboxing is the same aspect-ratio-blind fit rule failing in the other direction: a fixed zoom under-fills a
+      2.39:1 source and overshoots a narrow one, so fix the fit once, aspect-aware, and both close together.
+      <strong>BUG-60</strong> (P2) — every non-Large poster size drops the row title inside the artwork, making a shipped setting unusable at
+      two of its three values. <strong>BUG-57</strong> (P3) — the "Upwards" card-depth mode is wrong while "Full" is fine, which is a comparison
+      only reachable by having tried both, so the ambiguity that closed BUG-10 does not apply here. <strong>BUG-58</strong> (P3) — the Appearance
+      colour picker draws on a black background: BUG-45/BUG-50's token-misuse class, inverted. <strong>BUG-61</strong> (P3) — row titles jump as
+      focus moves between cards.
+    </p>
+    <p>
+      <strong>⏳ Four rows re-reported unchanged, and three are waiting on a measurement this board wrote down and skipped.</strong>
+      <strong>BUG-42</strong> needs the <code>first_hero</code> LaunchTrace read against <code>first_rows</code> on device in a French locale —
+      prescribed twice now. <strong>BUG-39</strong> needs decoded GIF pixels compared against the tile's point size, which would either confirm or
+      kill the points-vs-pixels hypothesis in one reading. <strong>BUG-31</strong> needs no code at all: one sentence naming the
+      <strong>No Zoom on Focus</strong> switch, where it lives, and that the whole-card default is deliberate — undelivered through two consecutive
+      reviews while the reporter re-files a setting they already own. <strong>BUG-35</strong> is the fourth, and its blocker is a product decision
+      rather than a check: hero-only localization is invisible to someone who browses rows, so the deferred per-row enrichment question has to be
+      answered for real.
+    </p>
+    <p>
+      <strong>🔵 One re-specification worth more than its priority.</strong> <strong>BUG-38</strong> stops being "collection artwork does not load":
+      the reporter names the source — their collections carry a <em>user-configured</em> title and background image in Nuvio, and the tvOS tile
+      shows neither, falling back to <em>"the first movie from my home list"</em>. That is not a resolver failing to fetch; it is fields never
+      read, with a positional default underneath. Start at the shared collection model, not <code>FolderCoverResolver</code>.
+    </p>
+    <p>
+      <strong>🗣 Two feature asks repeated and one simplified.</strong> <strong>FEAT-18</strong> (keep the title on screen during the focus trailer)
+      is the only <em>feature</em> they chose to repeat inside a review otherwise made of regressions, which makes it a reliable read on what would
+      register as progress. <strong>FEAT-17</strong> (hide the top bar behind a corner menu) is now attributed to <em>"Nuvio/Omni"</em> rather than
+      Omni alone — both of their daily drivers — and <strong>UX-8</strong> reached its simplest form: hide the whole <em>Discover</em> section,
+      which is cheaper than either earlier reading and satisfies both. Separately, <strong>u/Ginosaure</strong> asked for
+      <strong>VidHub as an external player</strong> (<strong>FEAT-21</strong>) — small work <em>if</em> it exposes a documented URL scheme, which
+      has never been checked, unlike Infuse and VLC.
+    </p>
+    <p>
+      <strong>The one bright line, and it is spendable exactly once:</strong> on the trailer black bars (<strong>UX-9</strong>) the reporter writes
+      <em>"You told me that this would be fixed in the next version, so I won't dwell on it."</em> That is a live complaint parked on our public
+      word — credit extended. It makes UX-9 the first thing checked in the beta.12 review and the item whose recurrence would cost the most.
+      <strong>⚠️ Both comments carry video that has not been analysed frame-by-frame.</strong> On the 2026-08-05 precedent the footage materially
+      corrects the prose read, so BUG-59, BUG-60 and BUG-61 stand as prose-only until someone watches it.
+    </p>
+  </div>
 
   <div class="notice">
     <div class="notice-title">🔴 2026-08-09 — the beta.11 verdict: 1 win, 1 new regression, 2 fixes that did not take, 2 comms failures</div>
@@ -709,24 +954,24 @@
 
   <div class="tiles">
     <div class="tile alert">
-      <span class="n">20</span>
+      <span class="n">27</span>
       <span class="k">Open bugs</span>
-      <span class="sub">of 55 filed · <strong>2 P1s from this sweep</strong> — <strong>BUG-55</strong> (focus trailers dead, new) and <strong>BUG-53</strong> (raised P2 → P1, confirmed in the wild) · BUG-42 + BUG-39 re-reported as failed fixes</span>
+      <span class="sub">of 62 filed · 🆕 <strong>+BUG-62</strong> (top menu bar freezing, u/StudioKentin) — no repro yet, and it may be <strong>BUG-30</strong> — whose reframe <em>shipped</em> in beta.11, so the build number decides it · 🎥 <strong>BUG-45 raised P2 → P1 by the video pass</strong> (the focused Settings sidebar row draws no label at all on the released build) · <strong>+6 earlier today</strong> (BUG-56…BUG-61) · <strong>BUG-46</strong> raised P2 → P1 and merged with <strong>BUG-55</strong> — a reinstall cleared the dead trailers, so the trigger is persisted state · <strong>BUG-43</strong> raised P3 → P2, its shipped fix did not take</span>
+    </div>
+    <div class="tile">
+      <span class="n">11</span>
+      <span class="k">Open feature requests</span>
+      <span class="sub">of 23 filed · 🆕 <strong>+FEAT-23</strong> (a macOS build, u/Gullible_Kick6921) — the first platform-port ask this thread has produced, and an answer rather than a build · <strong>+FEAT-22</strong> (auto-play a preferred quality, u/StudioKentin) — the first ask for <em>automatic</em> stream selection rather than a better manual picker · <strong>+FEAT-21</strong> (VidHub as an external player, u/Ginosaure) · FEAT-17 and FEAT-18 both re-requested this sweep · FEAT-19 (Vietnamese) via DM · FEAT-20 (Simkl) shipped in beta.11, verdict pending</span>
     </div>
     <div class="tile">
       <span class="n">8</span>
-      <span class="k">Open feature requests</span>
-      <span class="sub">FEAT-3, 14, 15, 16, 17, 18 · FEAT-19 (Vietnamese) via DM · FEAT-20 (Simkl) <strong>now shipped in beta.11</strong>, awaiting a reporter verdict · none added this sweep</span>
-    </div>
-    <div class="tile">
-      <span class="n">7</span>
       <span class="k">Open UX / docs items</span>
-      <span class="sub">UX-4, UX-8, UX-12, DOC-2 · <strong>+DOC-3</strong> (no build-verification line for testers) · UX-9 + UX-13 shipped in beta.11</span>
+      <span class="sub"><strong>+UX-14</strong> (collection Back loses scroll — via DM) · <strong>UX-8</strong> restated at its simplest (hide the whole <em>Discover</em> section) and <strong>UX-9</strong> re-confirmed as a kept promise — <em>"so I won't dwell on it"</em></span>
     </div>
     <div class="tile ship">
       <span class="n">56</span>
       <span class="k">Resolved or shipped</span>
-      <span class="sub">of 91 tracked items · <strong>beta.11 is out</strong> (build 107, <code>f9e4ae56</code>) — its 14 fixed-in-code items are now released and under test in the wild</span>
+      <span class="sub">of <strong>102</strong> tracked items <span style="color:var(--text-3)">(the guard's row count; earlier boards said 98)</span> · nothing closed this sweep — beta.11's released fixes are still being judged in the wild, and two of them (BUG-43, BUG-42) were reported as not having taken</span>
     </div>
   </div>
 
@@ -820,7 +1065,50 @@
       <div class="lane now">
         <h3><span class="dot"></span>Now</h3>
         <ol>
-          <li><strong>🚨 BUG-47 (P0) — a crash, and it outranks everything below it.</strong> Back out of expanded search results ejects to the tvOS home screen on beta.10 / tvOS 27. Three actions in order: <strong>(1) ask for the <code>.ips</code></strong> — an eject to the home screen is a process termination, so a crash log exists, and BUG-11 is the precedent for how fast that ends the guessing; <strong>(2) attempt the repro here first</strong> (search → expand → Back), accepting that our hardware is tvOS 26.5 so a clean run proves only that it is not universal; <strong>(3) work it jointly with UX-13</strong>. <strong>Gate the release on it</strong> — the beta.11 batch touches the search surface.</li>
+                                          <li><strong>📤 The tiyeuedm reply is SENT (19:30, verified in-thread):</strong> beta.11 fix + retest ask + the pre-announced interim
+          empty-grid behaviour + UX-14 acknowledged. Their answer arrives in the DM thread, which the sweep cannot read.</li>
+        <li><strong>🆕 UX-14 (P2)</strong> — collection Back loses scroll position; <code>FolderDetailView</code>'s
+          <code>.onDisappear {{ model.stop() }}</code> is the first suspect, and the sim check is minutes: expand, scroll, push a title, pop, watch
+          whether content republishes.</li>
+        <li><strong>🔬 BUG-60 + BUG-61 are one bug and it is ours to fix without the tester.</strong> <code>pinnedRowTitleTracking</code>
+          offsets the pinned row title by up to 72 pt at render time, unanimated. BUG-61 reproduced frame-exactly (33 pt move in 60 ms, landing on
+          the artwork) and raised P3 → P2; BUG-60 reproduces as a transient in the sim and should be permanent on device given the measured
+          40–67 pt rest error. <strong>One manual device pass with <code>debug.homeScrollProbe</code>, reading <code>slide</code> at rest,
+          closes it.</strong> Fix candidates: scale the clamp to the poster height instead of a fixed 72, or reserve the band so no slide is
+          needed.</li>
+        <li><strong>🎥 BUG-45 (P1, raised by the video pass) joins the top.</strong> The focused Settings sidebar row draws no label at all on the released
+          build (flat luma 221, range 3) — the user cannot see which pane they are in, which is plausibly why this reporter keeps missing controls that are on
+          screen. This is a different fix from the chip sweep: the chips render faintly, the sidebar renders nothing.</li>
+        <li><strong>🔄 BUG-31 goes back to being a bug.</strong> Their pane reads <em>No Zoom on Focus — On</em> — the switch was found and enabled and the zoom is
+          still reported. Verify on device with the toggle ON; the “one sentence in the reply” plan is retired.</li>
+        <li><strong>❌ BUG-59 leaves the queue.</strong> Not reproduced; the trailer fills its card and the crop is the phone camera. Ask which title before spending
+          the aspect-aware-fit work.</li>
+        <li><strong>⏸ BUG-60 and BUG-61 move to in-house repro</strong>, not tester follow-up — cycle <em>Style des affiches</em> on Home sampling header y at each
+          value, and walk a row in the UITest harness sampling the header on each focus change. BUG-61's hero-reflow explanation is measured and dead.</li>
+        <li><strong>📌 When you run BUG-42's <code>first_hero</code> trace, force the metadata language to Français</strong> — now confirmed from the footage rather
+          than assumed.</li>
+        <li><strong>🔑 BUG-55 + BUG-46 (both P1) — now one bug, and the mechanism is known.</strong>
+          A full uninstall+reinstall temporarily cleared the dead focus trailers, so the trigger is <strong>persisted state</strong>, not the
+          released binary — which is why the pipeline tested healthy on device <em>and</em> the symptom reproduced in the sim.
+          <strong>Next action is a data-container dump taken while the symptom is live</strong> (<code>devicectl … appDataContainer</code>),
+          diffed against a healthy one; first suspects are the trailer resolve/negative cache and any stored extraction token.
+          Do this before touching <code>aeff3b64</code> again.</li>
+        <li><strong>⏳ The three cheap unpaid debts, and they are why the review reads as "nothing fixed".</strong>
+          <strong>BUG-31</strong> needs <em>one sentence</em> naming the No Zoom on Focus switch — no code, undelivered through two reviews.
+          <strong>BUG-42</strong> needs the <code>first_hero</code> LaunchTrace read on device in a French locale.
+          <strong>BUG-39</strong> needs decoded GIF pixels compared against tile points. All three were prescribed by this board and skipped.</li>
+        <li><strong>🔴 BUG-43 (P2, raised) — re-diagnose before re-patching.</strong>
+          A released, test-pinned contrast guard changed nothing on screen, so the branch assumption is wrong. Read the actual chip
+          construction for the Flux language badge.</li>
+        <li><strong>🆕 BUG-56 (P2) — focus-trailer sound regressed against shipped FEAT-11</strong>, same commit family as BUG-55; confirm in the
+          sim with the toggle ON and a focus-away-and-return walk.</li>
+        <li><strong>🆕 BUG-59 + BUG-60 (P2).</strong> BUG-59 pairs with UX-9 as one aspect-blind fit rule (letterbox one way, overflow the other) —
+          fix the fit once. BUG-60 makes the poster-size setting unusable at every value but Large.</li>
+        <li><strong>🤝 UX-9 is the promise to keep.</strong> The reporter parked a live complaint on our public word for beta.12
+          (<em>"so I won't dwell on it"</em>). It is the first thing they will check.</li>
+        <li><strong>🎥 Watch the two new videos before acting on BUG-59/60/61.</strong> The 2026-08-05 precedent is that the footage materially
+          corrects the prose read — twice it reversed a same-day conclusion.</li>
+        <li><strong>🚨 BUG-47 (P0) — a crash, and it outranks everything below it.</strong> Back out of expanded search results ejects to the tvOS home screen on beta.10 / tvOS 27. Three actions in order: <strong>(1) ask for the <code>.ips</code></strong> — an eject to the home screen is a process termination, so a crash log exists, and BUG-11 is the precedent for how fast that ends the guessing; <strong>(2) attempt the repro here first</strong> (search → expand → Back), accepting that our hardware is tvOS 26.5 so a clean run proves only that it is not universal; <strong>(3) work it jointly with UX-13</strong>. <strong>Gate the release on it</strong> — the beta.11 batch touches the search surface.</li>
           <li><strong>✅ The <code>p1vylo0</code> video is analyzed</strong> (2026-08-05 night) — results below. It solved UX-9, verified BUG-33, located BUG-46, and corrected two of the same day's earlier conclusions.</li>
           <li><strong>UX-9 (P2) — now a one-line change with a known constant.</strong> Measured: <em>Lucky</em> fills 82.2% of its card, <em>Futurama</em> fills it entirely ⇒ source is 2.34:1 ⇒ <strong>z ≈ 1.34 required, 1.08 shipped</strong>. Compute per item from the track's natural size and stop shipping constants. Do not claim it fixed a third time until a scope trailer is checked on hardware.</li>
           <li><strong>BUG-45 (P2, restored) — a measured white-on-white row on the Écran d'accueil pane.</strong> 1.05:1 focused against 4.36:1 unfocused in the same frame. The sidebar report is withdrawn; this content-pane row replaces it. Verify <code>c29da28b</code> reaches toggle rows, not just the sidebar.</li>
@@ -848,6 +1136,11 @@
       <div class="lane later">
         <h3><span class="dot"></span>Later</h3>
         <ul>
+          <li><strong>FEAT-23</strong> — a macOS build. Out of scope for this fork rather than merely unscheduled: the repo is a
+            tvOS SwiftUI frontend over the shared KMP core, upstream owns the Android and iOS frontends, and a Mac client is a whole
+            new pointer-and-keyboard UI layer. <strong>📤 Answered same day (2026-08-15):</strong> the plainly-worded reply is posted —
+            declined with the reason, plus the pointer that Nuvio's own macOS/iOS/iPadOS builds already cover desktop. Nothing left to
+            schedule; watching for a reply.</li>
           <li><strong>FEAT-16 / FEAT-17 / FEAT-18</strong> — a bundled font choice (Open Sans, as on Android TV), an auto-hiding nav in place of the top bar like Omni, and keeping the title logo on screen during trailer playback. Only FEAT-18 is small enough to ride a fix batch; FEAT-17 should wait for the pinned hero to settle rather than become a fourth nav mode on an unsettled surface.</li>
           <li><strong>DOC-2</strong> — does a change made on the Nuvio account propagate without signing out and back in? Check the polling path before answering; the fork has been polling-only since the realtime stack was removed.</li>
           <li><strong>BUG-45 (P3, downgraded)</strong> — a capture artifact, not a white-on-white site. Keep the <code>c29da28b</code> fix as hygiene, but spend no device-pass time on it.</li>
@@ -861,7 +1154,329 @@
   </section>
 
   <section>
-    <h2>New this sweep <span class="count">2026-08-09 14:10Z · second sweep — 1 comment, noise only, board unchanged</span></h2>
+    <h2>New this sweep <span class="count">2026-08-15 04:16Z · one comment, one item — 0 duplicates, 0 priority changes, 0 noise</span></h2>
+    <p class="section-note">
+      <strong>A 19th voice arrives, asks one line, and it is the first thing this thread has ever asked for that is not Apple TV.</strong>
+      <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p3s5usg/"><code>p3s5usg</code></a> @ 04:16:14Z — <strong>u/Gullible_Kick6921</strong>, a name new to this board, in full:
+      <em>"Planning to build MacOS anytime soon?"</em> No context, no follow-up, and no indication they are running the tvOS beta at all.
+      Watermark <code>p3h0asv</code> → <code>p3s5usg</code>; comment floor 156 → 157. Unlike yesterday's, this watermark <em>is</em> a
+      tester comment, so the newest-comment and newest-tester-comment pointers are the same again.
+    </p>
+    <p class="section-note">
+      <strong>📤 Answered the same day:</strong> the maintainer's decline is posted under the comment — no macOS version planned from
+      this fork (tvOS-specific app; a Mac version is a new app, not a port), and macOS is already covered by Nuvio's own
+      macOS/iOS/iPadOS builds. Permalink lands with tomorrow's sweep. FEAT-23 moves New → Answered and stays on the board only to
+      watch for a reply.
+    </p>
+    <p class="section-note">
+      <strong>Nothing else moved, and the standing clock keeps running:</strong> u/StudioKentin has still not answered the 2026-08-13 reply,
+      so <strong>BUG-62</strong> (blocked on the build number that separates it from BUG-30) and <strong>FEAT-22</strong> (blocked on the
+      fallback-tier decision) are both ~2 days stalled. No engineering ran and nothing below was re-verified. The structural guard passed
+      before and after the write — <strong>102 item rows</strong> across 6 tables.
+    </p>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-top">
+          <span class="id">FEAT-23</span>
+          <span class="chip p3">P3</span>
+          <span class="status done">Answered 2026-08-15 — same day</span>
+          <span class="status waiting">Declined with reason · watching for a reply</span>
+        </div>
+        <p class="desc"><strong>A macOS build of Nuvio.</strong> <em>"Planning to build MacOS anytime soon?"</em> — one clause, filed by a
+          first-time reporter, and the first time in 157 comments that anyone has asked this thread for a platform other than Apple TV.</p>
+        <p class="fix"><strong>Scope note, so this is not misread as a roadmap item.</strong> This repo is a <em>tvOS</em> frontend — SwiftUI,
+          the focus engine, 10-foot layout — sitting on the Compose-free KMP core, while upstream NuvioMedia/NuvioMobile owns the Android and
+          iOS Compose frontends. <strong>A Mac client is therefore a fourth frontend, not a target flag:</strong> the shared core would come
+          along unchanged, but every screen is a new pointer-and-keyboard UI and nothing in the tvOS layer transfers.
+          <strong>The cheaper answer worth naming in the reply</strong> is that the realistic near-term route to Nuvio on a Mac is upstream's
+          iOS build running on Apple silicon where distribution allows it, and that a desktop client proper is upstream's call rather than this
+          fork's. Better to say "not planned here, and here is why" than to leave a soft maybe on a thread that reads this board for roadmap
+          signal. <strong>P3</strong>: no existing user is blocked by its absence, and the whole cost is one honest paragraph.</p>
+        <p class="fix"><strong>📤 2026-08-15 — that paragraph is posted, same day as the ask.</strong> The reply declines plainly and gives
+          the reason: no macOS version planned from this fork — the project is specifically a native Apple TV app (focus navigation, 10-foot
+          layout, Siri Remote handling are tvOS-specific, so a Mac version is a new app, not a port) — and macOS is already covered by
+          Nuvio's own macOS/iOS/iPadOS builds, which serve desktop users better than a duplicate would. Closed with a soft invite to the
+          tvOS beta. <strong>Permalink pending:</strong> posted after this morning's feed pass, so tomorrow's sweep assigns the id and
+          advances the watermark over it as a known-ours comment, exactly as <code>p3h0asv</code> was handled on 2026-08-14. Nothing left to
+          schedule; the row stays only to watch for a reply.</p>
+        <p class="by"><span>u/Gullible_Kick6921</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p3s5usg/"><code>p3s5usg</code></a><span class="sep">·</span><span>first seen 2026-08-15</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Previous sweep <span class="count">2026-08-13 15:15Z · a new reporter, one comment, two items — 0 duplicates, 0 noise</span></h2>
+    <p class="section-note">
+      <strong>The three-day quiet streak ends, and it ends with a name that has never appeared on this board.</strong>
+      <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p3gjuxc/"><code>p3gjuxc</code></a>
+      @ 15:15:57Z — <strong>u/StudioKentin</strong>, the <strong>18th distinct reporter</strong> here and the first new one since
+      u/tiyeuedm on 2026-08-05 — opens with <em>"Nice app so far!"</em> and files two things in two clauses. Watermark
+      <code>p2quzd3</code> → <code>p3gjuxc</code>; comment floor 154 → 155.
+      <strong>The morning run's release-cadence read survives this rather than being overturned by it:</strong> a newly-arrived
+      tester is not a reaction to a build, and beta.12 is still unannounced.
+    </p>
+    <p class="section-note">
+      <strong>The action for both items is the same single reply, not engineering.</strong> Neither can be worked as written —
+      one has no repro and no build number, the other has no fallback rule — so both sit in <em>Later</em> and neither displaces
+      the P1s above.
+    </p>
+    <p class="section-note">
+      <strong>📤 That reply is POSTED</strong> (<a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p3h0asv/"><code>p3h0asv</code></a>, 15:45:29Z, ~30 minutes after their comment — verified byte-identical to the approved draft and confirmed parented to <code>p3gjuxc</code>; draft and route notes in <code>docs/research/reddit-drafts-2026-08-13-p3gjuxc-reply.md</code>),
+      and two checks made before writing it changed what it says. <strong>BUG-30's reframe shipped in beta.11</strong> — the row's
+      <em>unreleased</em> status was written four days before the cut — so the draft deliberately <strong>does not name a cause</strong>
+      and asks for the build number first: on build 107 the fix is already in their app, on 106 or older it explains the freeze and is
+      already fixed. Naming it early would repeat the <em>"you told me it was fixed"</em> failure that damaged the mrStevenx3
+      relationship. And <strong>the quality primitive already exists in the shared layer but is not wired to any tvOS setting</strong>,
+      so the reply could honestly say the groundwork is there without promising a date.
+      <strong>The ball is now entirely on their side:</strong> it asks for the build number, stuck-visually vs stops-responding, whether they were scrolling back up Home, an optional clip, and the two FEAT-22 design calls. The next sweep should watch for their answer.
+    </p>
+
+    <div class="cards">
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">BUG-62</span>
+          <span class="chip p2">P2</span>
+          <span class="status new">New</span>
+          <span class="status waiting">Needs a repro + build number</span>
+          <span class="status done">Answered 2026-08-13</span>
+        </div>
+        <p class="desc"><strong>Top menu bar freezing.</strong>
+          <em>"I have a small 'bug' with the top menu bar freezing."</em> One clause, no build number, no repro, no duration —
+          and the reporter put <em>bug</em> in scare quotes and called it <em>small</em>, which is why this is <strong>P2 rather
+          than P1</strong>. A genuine navigation freeze would be P1; nothing here establishes that it is one.</p>
+        <p class="fix"><strong>The leading duplicate candidate is BUG-30, and that call is made out loud rather than silently.</strong>
+          BUG-30 is the tvOS 26 system tab bar re-appearing <em>clipped</em> after a D-pad walk back up Home, where the bar's
+          scroll-linked expansion <em>sticks mid-way until focus moves within the bar</em> — a bar stuck part-way is exactly what a
+          tester would call freezing. <strong>It is still filed separately</strong>: merging a one-clause report from a first-time
+          reporter into a specific internal find would destroy the independent signal if this is really something else — a focus-engine
+          stall, or the BUG-47-class focus strand where the bar holds focus and stops responding.
+          <strong>Corrected against git before publishing:</strong> that reframe (<code>0ad450b6</code>) is <strong>not unreleased — it shipped in beta.11</strong>, verified as an ancestor of the released <code>f9e4ae56</code> build 107. BUG-30's row still says <em>unreleased</em> only because the status was written on 2026-08-05, four days before the cut. <strong>That makes the build number the discriminator rather than a formality:</strong> on build 107 the reframe is already in their app and this is likely a different defect; on 106 or older, BUG-30 explains it and is already fixed for them. <strong>Ask three things before spending any device time:</strong> which build (Settings ▸ About, shipped
+          in beta.9 for exactly this), whether the bar is stuck <em>visually</em> or stops <em>responding to the remote</em>, and what
+          they were doing immediately before — scrolling back up Home would confirm BUG-30 outright.</p>
+        <p class="by"><span>u/StudioKentin</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p3gjuxc/"><code>p3gjuxc</code></a><span class="sep">·</span><span>first seen 2026-08-13</span></p>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">FEAT-22</span>
+          <span class="chip p2">P2</span>
+          <span class="status new">New</span>
+          <span class="status waiting">Fallback rule undecided</span>
+          <span class="status done">Answered 2026-08-13</span>
+        </div>
+        <p class="desc"><strong>Auto-play a specific quality — a preferred-quality setting that picks the stream for you.</strong>
+          <em>"Any plans for some more 'playback-quality' options? Like a auto play 'specific' quality option."</em>
+          Read plainly: choose a quality once, and have playback auto-select the matching stream instead of picking from the stream
+          picker on every play.</p>
+        <p class="fix"><strong>No existing row covers this, and the whole quality cluster is about something else</strong> — FEAT-2
+          grouped the indexer list, BUG-16 fixed truncated release names <em>inside</em> the picker, FEAT-12 settled that debrid link
+          resolution is always-on, and UX-4/UX-9 are trailer quality rather than stream selection. So this is
+          <strong>the first ask for <em>automatic</em> selection rather than a better manual chooser</strong>.
+          <strong>P2 because it touches every single playback but has a complete workaround today</strong> (pick the stream by hand).
+          <strong>The design question the ask does not answer, and the reply should:</strong> an auto-pick needs a fallback when the
+          preferred tier is absent — nearest-below, nearest-either-way, or defer to the picker — and it collides with debrid
+          cached-vs-uncached ranking, since the highest-quality stream is frequently not the instantly-playable one.
+          Note too that they wrote <em>"more"</em> quality options, which implies they may already have found an existing control —
+          identify which one before promising anything new.</p>
+        <p class="fix"><strong>🔍 Checked in the tree before drafting the reply, and the answer is better than the row first assumed:
+          the primitive already exists, so this is wiring plus UI rather than new infrastructure.</strong>
+          <strong>What tvOS has today</strong> is Stream Badges (<code>Settings/StreamBadgesSection.swift</code>), which
+          <em>label</em> quality, HDR and audio channels on stream rows but choose nothing, and
+          <code>PlaybackSettingsPane.swift</code> carries <strong>no</strong> quality or resolution control at all — so their
+          <em>"more"</em> almost certainly means the badges. <strong>What the shared layer already has, unexposed:</strong>
+          <code>DebridSettings.preferredResolutions</code> (an ordered 2160p → 360p ranking, consumed by
+          <code>DebridStreamPresentation.resolutionRank</code>) and <code>StreamAutoPlayMode</code>
+          (MANUAL / FIRST_STREAM / REGEX_MATCH) with <code>StreamAutoPlaySource</code>.
+          <strong>Neither is wired into any tvOS Settings pane, and <code>DebridStreamPresentation</code> is not referenced from
+          Swift anywhere</strong> — so on tvOS the resolution ranking never runs, and the auto-play machinery is reachable only
+          through the next-episode binge path. Same shape as the upstream cache-control port: thread existing shared state into a
+          new Settings section.</p>
+        <p class="by"><span>u/StudioKentin</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p3gjuxc/"><code>p3gjuxc</code></a><span class="sep">·</span><span>first seen 2026-08-13</span></p>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Last sweep before this one <span class="count">2026-08-10 · 3 comments, zero noise — +7 items, 2 priority raises, 12 rows updated · the 08-11, 08-12 and 08-13-morning sweeps all found nothing newer</span></h2>
+    <p class="section-note">
+      <strong>The largest single feedback drop of the beta, and the first run on this thread where every comment was actionable.</strong>
+      u/mrStevenx3 posted a <strong>16-point second review of beta.11 with video</strong> (<a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2qudtq/"><code>p2qudtq</code></a>, 00:29:10Z) and a three-line
+      <strong>addendum</strong> three minutes later (<a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2quzd3/"><code>p2quzd3</code></a>, 00:32:37Z); u/Ginosaure asked for <strong>VidHub as an external player</strong>
+      (<a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2on085/"><code>p2on085</code></a>, 2026-08-09 17:46:56Z). Watermark <code>p2m5hoa</code> → <code>p2quzd3</code>; thread 151 → 154 comments, still a floor
+      (feed saturated at 98 items, the post page still unreadable for a live count, upvotes still carried at the stale 102↑ from 2026-08-02).
+    </p>
+    <p class="section-note">
+      <strong>Six new defects (BUG-56…BUG-61), one new request (FEAT-21), two priority raises</strong> — BUG-46 P2 → P1 and BUG-43 P3 → P2 —
+      and <strong>four rows re-reported unchanged</strong> (BUG-31, BUG-35, BUG-39, BUG-42), three of them blocked on a device check this board
+      already prescribed. The two highest-value cards are first below: they are not the newest items, they are the two whose <em>meaning</em>
+      changed. <strong>⚠️ Neither video has been analysed frame-by-frame</strong>, so BUG-59, BUG-60 and BUG-61 stand as prose-only.
+    </p>
+    <div class="cards">
+
+      <div class="card flag">
+        <div class="card-top">
+          <span class="id">BUG-46</span>
+          <span class="chip p1">P1</span>
+          <span class="status reopened">Recurred + escalated</span>
+          <span class="status warn">P2 → P1</span>
+        </div>
+        <p class="desc"><strong>The dead-trailer fault now survives an app restart — the reporter had to uninstall and reinstall, and it came back the same evening.</strong>
+          <em>"For your information, at one point my trailers would no longer play at all. Completely uninstalling and reinstalling the application
+          fixed the issue."</em> Then, twenty minutes later: <em>"the trailers are no longer playing again."</em></p>
+        <p class="fix"><strong>This row has always read as resource exhaustion because "a restart clears it" fit every candidate — an AVPlayer leak, a layer leak,
+          a starved queue. That reasoning no longer holds.</strong> State that survives a process restart but dies with the app container is
+          <em>persisted</em>: the trailer resolve cache, a stored extraction token, a poisoned negative-cache entry, or a settings key written to a
+          bad value. It is directly testable — <strong>dump the app data container while the symptom is live</strong>, not after a relaunch, and
+          diff it against a healthy one. <strong>Raised P2 → P1 and merged with BUG-55</strong>, which it also explains: a clean sim install
+          carries none of this state, so the released build tests healthy exactly as it did on 2026-08-09.</p>
+        <p class="by"><span>u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2qudtq/"><code>p2qudtq</code></a><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2quzd3/"><code>p2quzd3</code></a><span class="sep">·</span><a href="https://reddit.com/link/p2quzd3/video/zg35y9na0gih1/player">video</a></p>
+      </div>
+
+      <div class="card warm">
+        <div class="card-top">
+          <span class="id">BUG-43</span>
+          <span class="chip p2">P2</span>
+          <span class="status reopened">Shipped fix did not take</span>
+          <span class="status warn">P3 → P2</span>
+        </div>
+        <p class="desc"><strong>The Flux-list language badge is still white on beta.11, reported twice in one evening.</strong>
+          <em>"The language of my badges in the Flux list stays in white, like in the previous beta"</em> — then unprompted in the addendum,
+          <em>"the language badges that remain white."</em></p>
+        <p class="fix"><code>c29da28b</code> added the luminance-distance guard to the <code>tagColor</code>-without-<code>textColor</code> branch, was pinned by
+          tests, and shipped in beta.11 — and the rendered result did not change. <strong>That makes the diagnosis wrong rather than the patch:</strong>
+          the live question is whether this badge takes that branch at all. Read the actual chip construction for the stream-list language badge
+          before stacking a second guard on the first, and check for an explicit <code>textColor</code> that defeats the path.
+          <strong>Raised P3 → P2 on the failure mode, not the report count.</strong></p>
+        <p class="by"><span>u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2qudtq/"><code>p2qudtq</code></a><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2quzd3/"><code>p2quzd3</code></a><span class="sep">·</span><span>first seen 2026-08-04</span></p>
+      </div>
+
+      <div class="card warm">
+        <div class="card-top">
+          <span class="id">BUG-56</span>
+          <span class="chip p2">P2</span>
+          <span class="status new">New — regression</span>
+        </div>
+        <p class="desc"><strong>Focus-view trailers no longer start with sound, and the preference does not survive navigation.</strong>
+          <em>"The trailers in the focus view no longer play with sound automatically (unless I press Play). However, when I go back and then
+          return, they become muted again."</em></p>
+        <p class="fix"><strong>A regression on shipped behaviour, not a missing feature</strong> — FEAT-11 delivered the <em>Trailer Sound by Default</em> toggle in
+          beta.9 (<code>190f96b5</code>+<code>b6372525</code>), seeding at launch and restoring the default after full-screen playback. Both halves
+          point at one cause: the seeded preference is not applied to <strong>newly created</strong> focus players, and pressing Play sets it only on
+          the live instance, so navigating away and back builds a fresh player that falls back to muted.
+          <strong>First suspect is <code>aeff3b64</code></strong> — the same beta.11 trailer-path commit already under suspicion in BUG-55 —
+          rebuilding the focus player without reading the persisted preference. Cheap to confirm in the sim.</p>
+        <p class="by"><span>u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2qudtq/"><code>p2qudtq</code></a><span class="sep">·</span><a href="https://reddit.com/link/p2qudtq/video/ddzkmc9ozfih1/player">video</a><span class="sep">·</span><span>first seen 2026-08-10</span></p>
+      </div>
+
+      <div class="card warm">
+        <div class="card-top">
+          <span class="id">BUG-59</span>
+          <span class="chip p2">P2</span>
+          <span class="status new">New</span>
+          <span class="status warn">Pairs with UX-9</span>
+        </div>
+        <p class="desc"><strong>Focus-view trailers render outside the bounds of their card.</strong>
+          <em>"The trailers in the focus view extend beyond the frame."</em></p>
+        <p class="fix"><strong>Read alongside UX-9, which is the opposite complaint about the same surface:</strong> some focus trailers letterbox with ~38px bars
+          top and bottom (measured 2026-08-05), and now others spill past the card edge. <strong>One aspect-ratio-blind fit rule explains both</strong> —
+          a fixed zoom fills a 16:9 source neatly, under-fills a 2.39:1 source, and overshoots anything narrower, while a <code>clipsToBounds</code>
+          not applied on <em>every</em> trailer surface lets the overshoot escape instead of cropping. The fix is an aspect-aware fill with clipping
+          proven per surface — and it closes UX-9's still-unlocated half at the same time.</p>
+        <p class="by"><span>u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2qudtq/"><code>p2qudtq</code></a><span class="sep">·</span><a href="https://reddit.com/link/p2qudtq/video/ddzkmc9ozfih1/player">video</a><span class="sep">·</span><span>first seen 2026-08-10</span></p>
+      </div>
+
+      <div class="card warm">
+        <div class="card-top">
+          <span class="id">BUG-60</span>
+          <span class="chip p2">P2</span>
+          <span class="status new">New</span>
+          <span class="status waiting">Workaround: keep size Large</span>
+        </div>
+        <p class="desc"><strong>Changing the poster size makes row titles overlap the posters.</strong>
+          <em>"I tried changing the poster size. The titles of my lists ('Trending Series', 'New Series', etc.) then overlap directly with the
+          posters. I had to set the size back to 'large' to get rid of the issue."</em></p>
+        <p class="fix">The row header's vertical placement is evidently laid out against the <strong>default</strong> card height rather than the selected one, so
+          every non-Large size drops the title inside the artwork. <strong>P2 despite the trivial workaround:</strong> this makes a shipped setting
+          unusable at its other values, and a setting that visibly breaks the layout when you touch it reads as a broken app rather than as an
+          unwise choice. Reproducible in one sim pass by cycling the setting on Home and sampling the header's y-position at each value.</p>
+        <p class="by"><span>u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2qudtq/"><code>p2qudtq</code></a><span class="sep">·</span><a href="https://reddit.com/link/p2qudtq/video/ddzkmc9ozfih1/player">video</a><span class="sep">·</span><span>first seen 2026-08-10</span></p>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">BUG-57</span>
+          <span class="chip p3">P3</span>
+          <span class="status new">New</span>
+          <span class="status waiting">Workaround taken</span>
+        </div>
+        <p class="desc"><strong>The "Upwards" card-depth mode still renders incorrectly; "Full" works.</strong>
+          <em>"Regarding the depth of the cards when I select the 'upwards' option, it is still not correct. I have therefore enabled the 'full'
+          mode, which works well. For now, I'm going to abandon the 'upwards' option."</em></p>
+        <p class="fix"><strong>Distinct from BUG-10, which closed as a terminology mismatch</strong> — that closure turned on the reporter expecting swipe-tracked
+          parallax rather than a discrete focus animation, and it named no setting at all. This names <strong>one mode of a multi-way setting as
+          wrong while another is right</strong>, a comparison only reachable by having tried both, so the ambiguity that closed BUG-10 does not apply.
+          Render the same card in each depth mode in the sim and compare against the "Full" reference they accept. P3 because a working alternative
+          exists and they have already moved to it.</p>
+        <p class="by"><span>u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2qudtq/"><code>p2qudtq</code></a><span class="sep">·</span><a href="https://reddit.com/link/p2qudtq/video/ddzkmc9ozfih1/player">video</a><span class="sep">·</span><span>first seen 2026-08-10</span></p>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">BUG-58</span>
+          <span class="chip p3">P3</span>
+          <span class="status new">New</span>
+          <span class="status waiting">Sweep with BUG-45/50</span>
+        </div>
+        <p class="desc"><strong>The colour picker in Appearance settings draws on a black background regardless of theme.</strong>
+          <em>"When selecting the desired color in the appearance settings, the color selection screen has a black background."</em></p>
+        <p class="fix">Filed by the White-accent-theme user who has produced most of this board's contrast defects, so the complaint is that the picker
+          <strong>ignores the surrounding theme</strong>, not that black is wrong in itself. Likely the same class as BUG-45 and BUG-50 — a surface
+          painting a raw palette colour instead of the themed token — but inverted: those drew light content on a light platter, this draws a dark
+          platter under light chrome. Sweep it with them rather than patching alone, since a one-off fix would leave the same token misuse elsewhere.</p>
+        <p class="by"><span>u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2qudtq/"><code>p2qudtq</code></a><span class="sep">·</span><a href="https://reddit.com/link/p2qudtq/video/ddzkmc9ozfih1/player">video</a><span class="sep">·</span><span>first seen 2026-08-10</span></p>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">BUG-61</span>
+          <span class="chip p3">P3</span>
+          <span class="status new">New</span>
+        </div>
+        <p class="desc"><strong>Row titles jump as focus moves from one card to the next.</strong>
+          <em>"Also, as you can see in the video, these titles 'jump' when I move from one movie to another."</em></p>
+        <p class="fix">Reported next to BUG-60 but described as happening during <strong>ordinary focus movement</strong>, so it is a separate defect from the
+          poster-size layout error and should not be assumed fixed by it. Most likely the row header is re-laid-out or re-measured on every focus
+          change — a title sized to the focused card's caption metrics, or a header participating in the focus scale animation it should be exempt
+          from. <strong>Sample the header's y-position across consecutive focus frames and measure the amplitude before hunting in code</strong>:
+          a two-point shift and a ten-point shift have different causes.</p>
+        <p class="by"><span>u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2qudtq/"><code>p2qudtq</code></a><span class="sep">·</span><a href="https://reddit.com/link/p2qudtq/video/ddzkmc9ozfih1/player">video</a><span class="sep">·</span><span>first seen 2026-08-10</span></p>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="id">FEAT-21</span>
+          <span class="chip p3">P3</span>
+          <span class="status new">New</span>
+          <span class="status waiting">Verify the URL scheme first</span>
+        </div>
+        <p class="desc"><strong>Add VidHub as an external-player option.</strong>
+          <em>"Would it also be possible to include the vidhubvideoplayer as an external player in a future update, please?"</em>
+          u/Ginosaure's second ask, filed separately from their beta.11 congratulations the same morning.</p>
+        <p class="fix"><strong>Filed as its own row rather than folded into FEAT-5 because FEAT-5 is closed and shipped</strong>, and a closed row never resurfaces
+          on the triage board. The work is the smallest kind this board carries <em>if</em> VidHub exposes a documented URL scheme: one entry in the
+          existing default-player dropdown plus one handoff template. <strong>Verify the scheme before promising it</strong> — unlike Infuse and VLC
+          it has never been checked, and an absent scheme turns this from an afternoon into a non-starter worth saying so plainly.</p>
+        <p class="by"><span>u/Ginosaure</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2on085/"><code>p2on085</code></a><span class="sep">·</span><span>first seen 2026-08-10</span></p>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Previous sweep <span class="count">2026-08-09 14:10Z · second sweep — 1 comment, noise only, board unchanged</span></h2>
     <p class="section-note">
       <strong>🔵 The 14:10Z sweep added nothing.</strong> One comment landed past the morning watermark —
       <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2m5hoa/"><code>p2m5hoa</code></a>
@@ -2252,6 +2867,252 @@
   <section>
     <h2>Update log</h2>
     <div class="timeline">
+      <div class="entry ship">
+        <div class="when">2026-08-15 · evening — 📤 <strong>FEAT-23 answered same day: declined with reason, reply posted</strong> · no fetch this pass; watermark unchanged at <code>p3s5usg</code></div>
+        <p class="what">
+          The maintainer replied directly under u/Gullible_Kick6921's comment: <strong>no macOS version planned from this fork</strong>,
+          because the project is specifically a native Apple TV app — focus navigation, 10-foot layout, Siri Remote handling are all
+          tvOS-specific, so a Mac version would be a new app rather than a port — and because <strong>macOS is already covered</strong> by
+          Nuvio's own macOS/iOS/iPadOS builds, which serve desktop users better than a duplicate would. Closed with a soft invite to the
+          tvOS beta, since nothing indicates the reporter runs it. <strong>Permalink pending:</strong> the reply went out after this
+          morning's feed pass, so tomorrow's sweep assigns its id and advances the watermark over it as a known-ours comment, exactly as
+          <code>p3h0asv</code> was handled on 2026-08-14. FEAT-23 moves <strong>New → Answered</strong>; nothing is scheduled and the row
+          stays only to watch for a reply. One naming correction recorded en route: the ask was briefly attributed to u/StudioKentin while
+          drafting — it is u/Gullible_Kick6921's; StudioKentin remains the separate, still-unanswered BUG-62/FEAT-22 thread, ~2 days quiet.
+        </p>
+      </div>
+      <div class="entry hot">
+        <div class="when">2026-08-15 · scheduled sweep — 🆕 <strong>one new comment, one new item: FEAT-23, the first platform-port ask on the board</strong> · +1 feature request, 0 duplicates, 0 priority changes, 0 noise</div>
+        <p class="what">
+          The Atom feed answered on the first request — no 429, no 403 — returning 97 comments, exactly one of them newer than yesterday's
+          watermark: <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p3s5usg/"><code>p3s5usg</code></a> @ 04:16:14Z from <strong>u/Gullible_Kick6921</strong>, the
+          <strong>19th distinct reporter</strong> and the first new name since u/StudioKentin two days ago, asking a single line —
+          <em>"Planning to build MacOS anytime soon?"</em> — with no context and no follow-up. Filed as <strong>FEAT-23 (P3)</strong> and
+          placed in <em>Later</em>. Watermark <code>p3h0asv</code> → <code>p3s5usg</code>; comment floor 156 → 157, and this time the bump is
+          a tester's post rather than our own.
+          <strong>It deserves a plain answer rather than a deferral:</strong> this fork is a tvOS SwiftUI frontend over the Compose-free KMP
+          core, upstream owns the Android and iOS frontends, and a Mac client would be a whole new pointer-and-keyboard UI layer rather than a
+          build target — the shared core ports, the 10-foot layer does not. The realistic near-term Mac path is upstream's iOS build on Apple
+          silicon, not a fourth frontend here.
+          <strong>Unchanged and now ~2 days old: u/StudioKentin has not replied</strong>, so BUG-62 stays blocked on the build number (it
+          cannot be separated from BUG-30 without it) and FEAT-22 on the fallback-tier call.
+          <strong>No engineering ran and nothing below was re-verified today.</strong> The structural guard passed before and after the write
+          (<strong>102 item rows</strong>, 6 tables). The two carried-forward gaps are unchanged: the post page still serves a bot-challenge
+          stub to the script's UA, so 157 is a floor and 102↑ is now thirteen days stale; and <strong>beta.12 is still unannounced</strong>.
+        </p>
+      </div>
+      <div class="entry quiet">
+        <div class="when">2026-08-14 · scheduled sweep — ⚪️ <strong>no new tester comments; the one comment past the watermark is our own</strong> · 0 items, 0 duplicates, 0 priority changes, 0 noise</div>
+        <p class="what">
+          The Atom feed answered on the first request — no 429, no 403 — returning 97 comments, of which exactly one is newer than
+          yesterday's watermark: <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p3h0asv/"><code>p3h0asv</code></a>
+          @ 16:25:29Z, the <strong>maintainer reply to u/StudioKentin</strong>. <strong>That reply is not a new event</strong> — yesterday's
+          second sweep recorded it on BUG-62 and FEAT-22 the moment it went out, and the feed has only now caught up and given it an id.
+          The watermark advances purely so tomorrow's run does not re-read it: <code>p3gjuxc</code> → <code>p3h0asv</code>, comment floor
+          155 → 156. <strong>The newest <em>tester</em> comment on this thread is still <code>p3gjuxc</code></strong>, so the floor bump is
+          a maintainer post, not tester engagement.
+          <strong>The board is therefore exactly yesterday's, with one clock running:</strong> u/StudioKentin was asked ~19 hours ago for the
+          build number (Settings ▸ About), whether the bar freezes <em>visually</em> or stops <em>responding</em>, whether they were
+          scrolling back up Home, and — separately — FEAT-22's two design calls (which tier to fall back to, best-quality vs fastest-start).
+          <strong>Both items are genuinely blocked on that single answer</strong>, and the build number is the discriminating fact: BUG-30's
+          reframe <code>0ad450b6</code> shipped in beta.11, so a build-107 report is a <em>different</em> defect needing real investigation,
+          while 106-or-older makes it the already-fixed one and the correct reply is "update".
+          <strong>One factual correction, recorded rather than silently patched:</strong> BUG-62 and FEAT-22 both give the reply's timestamp
+          as 15:45:29Z; the feed's authoritative value is <strong>16:25:29Z</strong>. The rows were hand-written at post time, are accurate
+          in every other respect, and were left intact under the append-only rule — the header now carries the correct time.
+          <strong>No engineering ran and nothing below was re-verified today.</strong> The structural guard passed before and after the write
+          (<strong>101 item rows</strong>, 6 tables). Two carried-forward gaps are unchanged: the post page still serves a bot-challenge stub
+          to the script's UA, so 156 is a floor and 102↑ is now twelve days stale; and <strong>beta.12 is still unannounced</strong>, which
+          remains the honest explanation for the quiet — the next real intake wave arrives when the release does.
+        </p>
+      </div>
+      <div class="entry hot">
+        <div class="when">2026-08-13 · second sweep (re-run on request) — 🔴 <strong>the quiet streak ends; a new reporter arrives</strong> · +2 items (BUG-62 P2, FEAT-22 P2), 0 duplicates, 0 priority changes, 0 noise</div>
+        <p class="what">
+          Re-run of the same sweep ~6 hours after the morning pass, which had returned zero. The feed answered on the first
+          request — no 429, no 403 — and emitted exactly one comment past the watermark:
+          <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p3gjuxc/"><code>p3gjuxc</code></a>
+          @ 15:15:57Z from <strong>u/StudioKentin</strong> — a name that has never appeared on this board, the
+          <strong>18th distinct reporter</strong> and the first new one in eight days. Watermark <code>p2quzd3</code> →
+          <code>p3gjuxc</code>; comment floor 154 → 155; upvotes still uncounted since 2026-08-02.
+          <strong>Both items were checked against every existing row before being filed, and the near-miss is recorded rather than
+          buried:</strong> <strong>BUG-62</strong> (<em>"top menu bar freezing"</em>) overlaps <strong>BUG-30</strong> — the tvOS 26
+          system tab bar sticking mid-expansion after a D-pad walk back up Home — closely enough that they may be the same defect, and
+          <strong>BUG-30's reframe (<code>0ad450b6</code>) in fact SHIPPED in beta.11</strong> — verified against git as an ancestor of the released <code>f9e4ae56</code> build 107, correcting this row's own stale <em>unreleased</em> status text (written 2026-08-05, four days pre-cut). The build number therefore discriminates: build 107 means the reframe is already in their app. It is filed separately anyway, because merging a one-clause report from a first-time
+          reporter into a specific internal find would destroy the signal if it is really a focus stall or a BUG-47-class focus strand.
+          <strong>FEAT-22</strong> (auto-play a preferred quality) has no neighbour at all — FEAT-2 grouped the indexer list, BUG-16
+          fixed truncation inside the picker, FEAT-12 settled that debrid resolution is always-on, UX-4/UX-9 are trailer quality —
+          making it <strong>the first ask for automatic stream selection</strong>, and it needs a fallback rule (nearest-below /
+          nearest-either-way / defer to the picker) plus a cached-vs-uncached ranking decision before it can be designed.
+          <strong>Both sit in Later and neither displaces the P1s</strong>, because the next action for both is one reply: ask for the
+          build number, ask whether the bar is stuck <em>visually</em> or stops <em>responding</em>, and ask which fallback they want.
+          <strong>The morning run's release-cadence read survives intact</strong> — this is a newly-arrived tester, not a reaction to a
+          build; beta.12 is still unannounced. Feed warned saturated again (98 items), so 155 remains a floor, and the post page still
+          serves a bot-challenge stub to the script's UA. The structural guard passed before and after the write
+          (<strong>101 item rows</strong>, 6 tables).
+        </p>
+      </div>
+      <div class="entry quiet">
+        <div class="when">2026-08-13 · scheduled sweep (morning) — ⚪️ <strong>no new comments, three days running</strong> · 0 items, 0 priority changes, 0 rows updated, 0 noise</div>
+        <p class="what">
+          The Atom feed answered on the first request — no 429, no 403 — and returned <strong>97 comments whose newest entry
+          <em>is</em> the <code>p2quzd3</code> watermark itself</strong>, so nothing has been posted to the thread in ~3.5 days
+          (last comment 2026-08-10T00:32Z). Watermark, the 154-comment floor and the 102↑ figure all carry forward untouched.
+          <strong>The release-cadence read now rests on three consecutive data points rather than an inference</strong>: testers
+          are still on beta.11, and while <strong>beta.12's device pass completed on 2026-08-12 — all ten sections</strong>, the
+          build itself is <strong>still unannounced</strong>, so no tester has anything new to react to. The one exception in
+          that pass is worth carrying onto this board: <strong>FEAT-21 (VidHub external player) is blocked vendor-side</strong> —
+          VidHub's own tvOS build ignores its published x-callback API on all three method variants — so it ships
+          <em>listed with a known-issue note</em> rather than working, which is the first thing u/Ginosaure will check.
+          <strong>The queue is therefore unchanged and still ordered around the 08-10 drop</strong>: <strong>BUG-45</strong>,
+          <strong>BUG-55</strong> and <strong>BUG-46</strong> at P1, with <strong>BUG-53</strong> and <strong>UX-9</strong> the
+          two items publicly promised for beta.12. <strong>The thing to watch is the announcement itself</strong> — every prior
+          burst on this thread followed a release post within a day, and the filmed 08-10 rows are the ones that will
+          confirm-or-reopen against it: the trailer regression (<strong>BUG-55/BUG-46</strong>), the white language badges
+          (<strong>BUG-43</strong>) and pinned-Home focus zoom (<strong>BUG-60/BUG-61</strong> →
+          <code>pinnedRowTitleTracking</code>). Standing caveats unchanged: the feed warned saturation again (98 items ≈ the ~100
+          cap), so 154 is a floor rather than a count, and the post page still serves a bot-challenge stub to the script's UA, so
+          <strong>the upvote figure is now eleven days stale</strong>. <strong>Nothing below was re-verified today</strong> — the
+          only edits this run made are this entry, the tracker's "Last checked" line and its matching log line, and the header
+          pill above. The tracker structural guard passed before and after the write (99 item rows, 6 tables).
+        </p>
+      </div>
+      <div class="entry quiet">
+        <div class="when">2026-08-12 · scheduled sweep — ⚪️ <strong>no new comments, two days running</strong> · 0 items, 0 priority changes, 0 rows updated, 0 noise</div>
+        <p class="what">
+          The Atom feed answered on the first request — no 429, no 403 — and returned <strong>97 comments whose newest entry
+          <em>is</em> the <code>p2quzd3</code> watermark itself</strong>: nothing has been posted to the thread in ~2.5 days
+          (last comment 2026-08-10T00:32Z). Watermark, the 154-comment floor and the 102↑ figure all carry forward untouched.
+          <strong>Yesterday's read now has a second data point behind it, and it holds: the quiet is release cadence, not
+          disengagement.</strong> The newest thing a tester can install is still beta.11; <strong>beta.12 is mid-device-pass and
+          unannounced</strong>, so there is nothing new to react to. Two of its contents are <em>publicly promised</em> —
+          <strong>BUG-53</strong> (title-overlap reach) and <strong>UX-9</strong> — which makes that announcement the likely
+          trigger for the next burst, and makes the 08-10 filmed rows the ones to watch for confirm-or-reopen: the trailer
+          regression (<strong>BUG-55/BUG-46</strong>), the white language badges (<strong>BUG-43</strong>) and pinned-Home focus
+          zoom (<strong>BUG-60/BUG-61</strong> → <code>pinnedRowTitleTracking</code>). Standing caveats unchanged: the feed warned
+          saturation again (98 items ≈ the ~100 cap), so 154 is a floor rather than a count, and the post page still serves a
+          bot-challenge stub to the script's UA, so <strong>the upvote figure is now ten days stale</strong>. The two manual
+          beta.11 items remain outstanding and untouched by this sweep: the physical-device pass and the BUG-31 filming that gates
+          the draft-3 reply. <strong>Nothing below was re-verified today</strong> — the only edits this run made are this entry,
+          the tracker's "Last checked" line and its matching log line, and the header pill above. The tracker structural guard
+          passed before and after the write (99 item rows, 6 tables).
+        </p>
+      </div>
+      <div class="entry quiet">
+        <div class="when">2026-08-11 · scheduled sweep — ⚪️ <strong>no new comments</strong> · 0 items, 0 priority changes, 0 rows updated, 0 noise</div>
+        <p class="what">
+          The Atom feed answered on the first request — no 429, no 403 — and returned <strong>97 comments, none newer than the
+          <code>p2quzd3</code> watermark</strong>, so the watermark, the 154-comment floor and the 102↑ figure all carry forward
+          untouched. <strong>Quiet is the expected outcome:</strong> the 08-10 drop was the lead tester's beta.11 second review plus
+          its addendum, both already triaged into BUG-56…BUG-61 and FEAT-21, and <strong>beta.12 has not been announced</strong> — no
+          tester has a new build to react to. The next wave should follow that announcement and will likely be re-tests of the 08-10
+          items: the trailer regression (<strong>BUG-55/BUG-46</strong>), the white language badges (<strong>BUG-43</strong>) and the
+          pinned-Home focus zoom (<strong>BUG-60/BUG-61</strong> → <code>pinnedRowTitleTracking</code>) are the three things that tester
+          filmed, so those are the rows to watch for a confirm-or-reopen. Standing caveats unchanged: the feed warned saturation again
+          (98 items ≈ the ~100 cap), so 154 is a floor rather than a count, and the post page still serves a bot-challenge stub to the
+          script's UA, so <strong>the upvote figure is now nine days stale</strong>. Two manual beta.11 items remain outstanding and
+          were untouched by this sweep: the physical-device pass and the BUG-31 filming that gates the draft-3 reply.
+          <strong>Nothing below was re-verified today</strong> — the only edits this run made are this entry, the tracker's
+          "Last checked" line and its matching log line, and the header pills above.
+        </p>
+      </div>
+      <div class="entry ship">
+        <div class="when">2026-08-10 · evening — 📤 <strong>the owed tiyeuedm reply is sent</strong> (Reddit chat, 19:30, verified in-thread after posting)</div>
+        <p class="what">
+          One message, per the DM-pass plan: beta.11 (build 107) carries the BUG-47 empty-state fix and Settings &gt; About shows the build; please
+          retry the Stremio Catalog Plus expansion; <strong>interim behaviour until beta.12 is an empty grid where results should be</strong>
+          (BUG-48's root fix), stated in advance so it is not re-filed as a regression; the addon A/B detail credited; UX-14 acknowledged as
+          tracked. Sent via ego-browser from the logged-in session (Chrome extension was disconnected). ⚠️ Their answer arrives in the DM thread,
+          which the daily sweep cannot read.
+        </p>
+      </div>
+      <div class="entry quiet">
+        <div class="when">2026-08-10 · DM pass — 📬 <strong>u/tiyeuedm's out-of-band answers (sent Aug 7 17:22, pre-beta.11): +1 item (UX-14 P2), BUG-47 confirmed-and-corrected from the wild, BUG-48's mechanism confirmed by an unwitting A/B test</strong></div>
+        <p class="what">
+          The reporter withdrew their own "crash" unprompted — <em>"it's not a crash, and the app continues running normally"</em> — exactly the
+          suspend-not-kill eject reproduced in-house on 2026-08-06, and the final proof no <code>.ips</code> ever existed. The addon detail is the
+          find: eject with <strong>Stremio Catalog Plus</strong> (search-only catalog → unfiltered fetch returns nothing → empty grid → strand →
+          eject), none with <strong>Bingecat Search</strong> (unfiltered fetch returns content) — BUG-48's query-drop mechanism observed from
+          outside. <strong>UX-14 (P2, new):</strong> collection expansion loses scroll position on Back; UX-13's shape but a different path
+          (<code>FolderDetailView</code> builds its own model per push; <code>.onDisappear</code> stop-on-cover is the first suspect). All
+          observations are beta.10 — the message predates the beta.11 cut. Owed reply: retest on build 107, expect an empty grid until beta.12.
+          Guard passed before and after (99 rows).
+        </p>
+      </div>
+      <div class="entry hot">
+        <div class="when">2026-08-10 · sim repro pass — 🔬 <strong>BUG-60 and BUG-61 reproduced and root-caused as one bug: <code>pinnedRowTitleTracking</code>, the BUG-37 fix. 1 priority raise (BUG-61 P3 → P2), 0 new items</strong></div>
+        <p class="what">
+          Built NuvioTV Debug for the tvOS 26.5 sim, cloned the signed-in container, set the reporter's configuration
+          (<strong>Afficher le Hero = Off</strong> → pinned Home) and enabled <code>debug.homeScrollProbe</code>; poster size was set by rewriting
+          <code>poster_card_style_payload_2</code> in prefs rather than walking Settings. Swept Small 105 dp / Medium 126 / Large 154, ~740 probe
+          samples and 12 rows each, plus a 600 fps screen recording for frame-exact geometry (the sim renders 2 px per point — a real instrument,
+          unlike the tester footage).
+          <strong>Mechanism:</strong> in pinned mode the row title is an overlay inside the card reach band, and a <code>visualEffect</code> offsets
+          it down by up to <strong>72 pt</strong> when a rest falls short — recomputed per geometry change and not animated.
+          <strong>BUG-61 reproduced frame-exactly:</strong> two frames 60 ms apart, the title moves ~66 px (33 pt) and lands on the artwork; the
+          probe shows 10–13 distinct on-screen offsets per walk. Fires on vertical row-to-row movement; a horizontal walk left the title fixed.
+          <strong>BUG-60 reproduced as a transient only:</strong> static clearance is 8 pt, so slide past 8 is title-on-poster up to 64 pt, but the
+          settled slide caps at exactly 8 at every poster size. Expected — the device rests 40–67 pt short, which makes it a permanent 32–59 pt
+          overlap. Neither needs the tester again; one device pass reading <code>slide</code> at rest closes BUG-60.
+          Harness, probe dumps and frames in <code>docs/research/bug60-bug61-sim-repro-2026-08-10</code>; guard passed before and after.
+        </p>
+      </div>
+      <div class="entry hot">
+        <div class="when">2026-08-10 · video-analysis pass — 🎥 <strong>both clips read frame-by-frame: 1 priority raise (BUG-45 P2 → P1), 3 readings overturned, 2 rows reclassified as not-testable-from-footage, 7 evidence frames saved, 0 new items</strong></div>
+        <p class="what">
+          Both videos pulled from the v.redd.it DASH manifests (the comment permalinks 429 through yt-dlp's Reddit extractor; the manifest URL with the sweep's
+          descriptive User-Agent works) — main review <strong>107.5s @ 720p30</strong>, addendum <strong>36.3s @ 720p30</strong>. Frames saved under
+          <code>docs/research/p2qudtq-video-evidence/</code> and <code>docs/research/p2quzd3-video-evidence/</code>; <strong>the MP4s were deliberately not left in
+          the repo</strong>, matching the p1q89ph precedent.
+          <strong>Three of the morning's conclusions were wrong.</strong> <strong>BUG-45</strong> raised P2 → P1: the focused Settings sidebar row renders
+          <strong>no glyphs at all</strong> — 6,630 px of platter interior span luma 220–223 (range 3), a horizontal scan reads a constant 221.0, and the unfocused
+          row beneath spans 65–250 (range 185) in the same frame; the platter peaks at 223 so the camera is not clipping.
+          <strong>BUG-31's</strong> comms-failure framing is retired — their pane reads <em>“No Zoom on Focus — On”</em>, so the reporter found the default-OFF
+          switch unaided and still reports zoom. <strong>BUG-59</strong> is not reproduced and the measurement runs the other way: the trailer fills its card flush
+          on all four sides (interior 406×230, aspect 1.765) and the apparent crop is the phone camera walking past the card's right edge.
+          <strong>Best new evidence:</strong> the main clip shows the focus trailer playing continuously for ~26s and the addendum, three minutes later on the same
+          build and session, shows four consecutive poster focuses with no morph and no playback — the degrade-within-a-session signature on camera for the first
+          time (caveat: ~1.5–2s dwells, so a dwell threshold is not excluded).
+          <strong>BUG-60 and BUG-61</strong> stay open on prose and move to in-house repro: the poster-size control is never opened on camera, and BUG-61's obvious
+          mechanism was measured and killed — the pinned-hero block is fixed-height (genre line to row title, <strong>117 px vs 118 px</strong> across a 2-line and a
+          4-line synopsis).
+          <strong>Instrument note:</strong> the TV occupies ~900 px of a 720p handheld frame, so 1 tvOS point ≈ 0.47 px; within-frame contrast and geometry are sound,
+          cross-frame position is not.
+          <strong>Also confirmed:</strong> build 0.3.0 (107) · <code>f9e4ae56</code> · <strong>tvOS 26.6</strong> (not 27) · AppleTV11,1; Settings → About found
+          unaided (DOC-3 half-answered); metadata language <strong>Français</strong>.
+          Structural guard passed before and after (98 item rows, 6 tables).
+        </p>
+      </div>
+      <div class="entry hot">
+        <div class="when">2026-08-10 · scheduled sweep — 🔴 <strong>the biggest feedback drop of the beta: +7 items (BUG-56…BUG-61, FEAT-21), 2 priority raises (BUG-43 P3 → P2, BUG-46 P2 → P1), 12 rows updated, 0 noise</strong>; watermark <code>p2m5hoa</code> → <code>p2quzd3</code></div>
+        <p class="what">
+          Three comments past the watermark and <strong>every one of them actionable — a first for this thread</strong>. u/mrStevenx3 posted a
+          <strong>16-point second review of beta.11 with video</strong> (<a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2qudtq/"><code>p2qudtq</code></a>, 00:29:10Z) plus a three-line addendum three minutes later
+          (<a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2quzd3/"><code>p2quzd3</code></a>, 00:32:37Z); u/Ginosaure asked for <strong>VidHub as an external player</strong> (<a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2on085/"><code>p2on085</code></a>), filed as FEAT-21.
+          Thread 151 → 154 comments, still a floor (feed saturated at 98 items, post page unreadable for a live count, upvotes carried at the
+          stale 102↑ from 2026-08-02).
+          <strong>The find of the run is one sentence: <em>"completely uninstalling and reinstalling the application fixed the issue."</em></strong>
+          It resolves the contradiction that has held BUG-55 open since 2026-08-09 — the pipeline is healthy on the released build <em>and</em> the
+          symptom is real, because the trigger is persisted state rather than code, which also explains why a clean sim install could not reproduce
+          it. BUG-46 carries the same evidence (a restart no longer clears the fault) and is <strong>raised to P1 as one bug with BUG-55</strong>;
+          next action for both is a live data-container dump instead of another soak.
+          <strong>Six new defects:</strong> BUG-56 (focus-trailer sound regressed against shipped FEAT-11), BUG-57 ("Upwards" card-depth mode wrong,
+          "Full" fine), BUG-58 (Appearance colour picker on a black background), BUG-59 (focus trailers overflow their cards — UX-9's fit rule failing
+          the other way), BUG-60 (row titles overlap posters at every non-Large poster size), BUG-61 (row titles jump on focus change).
+          <strong>BUG-43 raised P3 → P2 on the failure mode:</strong> <code>c29da28b</code> shipped, was test-pinned, and the badge is still white in
+          two separate comments — so the diagnosis was wrong, not the patch.
+          <strong>Four rows re-reported unchanged (BUG-31, BUG-35, BUG-39, BUG-42), and three are blocked on a check this board prescribed and
+          skipped</strong> — <code>first_hero</code> on device in a French locale, decoded GIF pixels vs tile points, and for BUG-31 no code at all
+          but one sentence naming the No Zoom on Focus switch, now undelivered through two consecutive reviews.
+          <strong>Also updated:</strong> BUG-38 re-specified (collections carry a configured title and backdrop in Nuvio that tvOS never reads,
+          falling back to "the first movie from my home list"), FEAT-17 and FEAT-18 re-requested, UX-8 restated at its simplest.
+          <strong>The one bright line is UX-9</strong> — <em>"You told me that this would be fixed in the next version, so I won't dwell on it"</em>
+          — a live complaint parked on our public promise. ⚠️ Neither video has been analysed; on the 2026-08-05 precedent the footage materially
+          corrects the prose read, so BUG-59/60/61 stand as prose-only.
+          Structural guard passed before and after the edits (98 item rows, 6 tables; next free ids now
+          <code>BUG-62 · DOC-4 · FEAT-22 · UX-14</code>).
+        </p>
+      </div>
       <div class="entry">
         <div class="when">2026-08-09 14:10Z · second scheduled sweep — 🔵 <strong>1 new comment, all noise: 0 items added, 0 statuses changed, 0 priorities moved</strong>; watermark <code>p2keul1</code> → <code>p2m5hoa</code></div>
         <p class="what">
@@ -2590,9 +3451,9 @@
 
   <footer>
     <div>Mirrored from <code>docs/beta-feedback-tracker.md</code> · swept daily via Reddit's public Atom feed (no credentials, no quota).</div>
-    <div>Upvotes, parent ids and comment depth are not exposed by the feed; counts are floors. The 147-comment figure is the 2026-08-07 count of 146 plus this sweep's single new comment, which is our own UX-13 reply. The 102↑ / 70K views figures were read live off the thread on 2026-08-02 and are carried forward, not re-confirmed — they are six days stale, and the post page still returns a bot-challenge stub instead of a countable page (the <code>.json</code> endpoint 403s even with the script's descriptive UA).</div>
+    <div>Upvotes, parent ids and comment depth are not exposed by the feed; counts are floors. The 156-comment figure is the 2026-08-09 count of 151, plus the three comments the 2026-08-10 sweep processed, plus u/StudioKentin's opener on 2026-08-13 and the maintainer reply to it seen on 2026-08-14; the 2026-08-11, 2026-08-12 and 2026-08-13-morning sweeps added none. The 102↑ / 70K views figures were read live off the thread on 2026-08-02 and are carried forward, not re-confirmed — they are twelve days stale, and the post page still returns a bot-challenge stub instead of a countable page (the <code>.json</code> endpoint 403s even with the script's descriptive UA).</div>
     <div>BUG-47 and FEAT-19 arrived by Reddit DM, not through the thread — they do not move the watermark or the comment count, and the daily Atom sweep would never have seen them.</div>
-    <div>Last updated 2026-08-08 (scheduled sweep) — watermark <code>p2byn5k</code> @ 2026-08-07T20:02:55Z. BUG-47 no longer needs an <code>.ips</code>: it was reproduced in-house and is fixed in code, and UX-13 is now fixed and answered too. What is owed is ours — cutting beta.11 so the "next beta" promise stops being outstanding, the remaining reporter drafts (including the two BUG-47 confirming questions), a short reply covering DOC-2, the UX-9 correction, the BUG-31 counter-video, and a line to u/Ginosaure when beta.11 ships with Simkl in it.</div>
+    <div>Last updated 2026-08-14 (scheduled sweep, no new tester comments — the one comment past the watermark is our own reply, already on file) — watermark <code>p3h0asv</code> @ 2026-08-13T16:25:29Z; the newest <em>tester</em> comment is still <code>p3gjuxc</code>. Two items sit blocked on one unanswered question: <strong>BUG-62</strong> needs u/StudioKentin's build number to be told apart from the already-shipped BUG-30 fix, and <strong>FEAT-22</strong> needs their fallback-rule answer before it can be designed. beta.11 is out (build 107, <code>f9e4ae56</code>) and the tiyeuedm reply is sent, so what is owed is still ours and still short: the <strong>manual device pass</strong>, the <strong>BUG-31 filming</strong> that gates the draft-3 reply, and the <strong>beta.12 cut</strong> carrying the BUG-48 root fix — until that ships, expanding a search row on a search-only addon shows an empty grid rather than ejecting, which testers should be told in advance rather than left to re-file.</div>
   </footer>
 
 </div>

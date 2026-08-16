@@ -85,7 +85,7 @@ a Codex gate per wave, sim suite + one consolidated manual device pass, then `re
   0 %). Skips loudly if the swatch never reports focus (27.0 runtime gotcha). One more test in
   the suite (57 → 58 in the Verification count below).
 - ⏳ Device check on the White theme by the reporter's route → device-pass item (1).
-- Codex gate 1 (pending).
+- ✅ Codex gate 1 clean (2026-08-16, `--base HEAD~2 --scope branch`: "focused swatch now uses a legible foreground color for the platter-free borderless style, and the added UI test appropriately exercises that state"; the one P1 raised — CGFloat×Double — was a false positive under SE-0307 but the scale factor is now an explicit CGFloat, `5a7830f8`).
 
 ### Wave 2 — Small tester asks (each independent, each its own commit)
 - **FEAT-18** — title overlay always shown on the inline focus-trailer card (it exists in the

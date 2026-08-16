@@ -110,7 +110,7 @@ Verdict: the doubled 4K ceiling never engages for real collection GIFs — they 
 source frames, so the 12 MiB per-GIF budget clamps decode side to 200px, far below the 782px
 ceiling. Short GIFs (<~12 frames) gain full resolution; typical collection tiles are
 unchanged from beta.11. The frame-vs-resolution trade (delay-folding subsampling and/or a
-bigger budget) now has its device data: 80–90 frames typical. Deferred to beta.13 tuning.
+bigger budget) now has its device data: 80–90 frames typical. ~~Deferred to beta.13 tuning.~~ **Pulled into beta.12 on 2026-08-15 (`85c357f9`) — see §11 for the device re-read.**
 
 ## RESULTS (2026-08-12 device pass, sections 5–10, recorded live)
 
@@ -196,3 +196,29 @@ bisect knob + gated `[ExtPlayerProbe]` URL log (uncommitted at pass end — gate
 Remaining before release: tracker row updates, README features/screenshots, release-beta.sh,
 announcement + replies (BUG-53 + UX-9 publicly promised; FEAT-21 known-issue note; BUG-58/59
 reporter asks).
+
+---
+
+## 11. BUG-39 — frame-vs-resolution trade re-read (added 2026-08-15, NuvioMobile `85c357f9`)
+
+Section 4's data was spent: the planner is now aspect-aware and tiered (resolution down to
+1 px/pt first, then frames down to an ~8 fps floor, then resolution to 200 px, then frames), with
+an 18 MiB per-GIF budget on the 4K panel (12 MiB on HD, unchanged). Sim cannot verify this — the sim
+account's Home never focuses a GIF-covered tile — so it needs one device read before release.
+
+- Build + install the Release product at `85c357f9` (or later), launch with
+  `-debug.gifDecodeProbe YES` (launch-arg route, `--` before app args with devicectl).
+- Focus the same landscape collection tiles as section 4 and read the new probe shape:
+  `[GifDecode] side= ceiling= preferred= sourceFrames= keptFrames= minKept= source= budget= bytes=`.
+- **Expected for the section-4 GIF (90 frames, ~1.75 aspect, 10 cs):** `side=328 … keptFrames=75
+  minKept=75 budget=18874368`, `bytes` ≈ 18.4 MB (tier 4). Same GIF at 5 cs frames would read
+  `side=391 keptFrames=53` (tier 3). If `source=` reports a long edge < 782, `ceiling=` will equal it
+  and `side` may be higher/all frames kept — that is the ImageIO-never-upscales clamp, correct.
+- **Verdicts:** (a) tiles visibly sharper than the section-4 build at 10 ft (screenshot the same
+  tile focused, both builds if practical); (b) playback not noticeably choppier — every kept frame
+  stands in for ≤ 12 cs of source time by construction, but eyeball it; (c) memory: after walking a
+  full GIF row, `footprint` (via `xcrun devicectl device info processes` / a jetsam-free console)
+  should stay well under the ~270 MiB row worst case — any Jetsam of NuvioTV = revert the budget
+  growth (`decodeBudgetBytes`) to flat 12 MiB and keep the planner.
+- Honest ceiling for the reply: a 90-frame 10 cs GIF cannot decode at the full 782 px on any sane
+  budget (~126 MiB); the trade buys "visibly sharper", not "pixel-perfect".

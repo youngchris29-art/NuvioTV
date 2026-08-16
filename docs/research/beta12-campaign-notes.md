@@ -87,3 +87,29 @@ Confirmed empirically: at sim rests the parked title clears the art (screenshots
 
 ### BUG-57 — parked to Wave 3; prefs-injection A/B is INVALID for this setting
 Two attempts to A/B `card_depth_style_payload_2` via prefs injection produced pixel-identical Top-vs-Full renders with no visible treatment at all — even after fixing the cfprefsd ordering (terminate app FIRST, then `simctl spawn defaults write`, then launch; writing the plist while the app runs gets clobbered at terminate). Remaining explanation: profile settings sync restores the account's `enabled=false` over the injected payload at launch. Wave 3 must A/B via the Settings UI walk (or disable sync for the run). Methodology note kept for every future payload-key injection.
+
+## Post-pass addendum (2026-08-15) — BUG-39 frame-vs-resolution trade, folded into beta.12
+
+Section 4's device data (`side=200 ceiling=782 sourceFrames=90 keptFrames=78 bytes=7113600`)
+exposed two things beyond "the budget binds": (1) the planner assumed SQUARE frames (`side² × 4`),
+so a landscape tile's 200×114 px frames used only 59% of the 12 MiB budget; (2) resolution was
+always sacrificed first — straight to the 200 px floor — before a single frame was dropped, with no
+notion of a sharpness floor. Shipped as NuvioMobile `85c357f9` (Codex gate: clean first pass;
+`GifDecodePlanTests` mirror 14/14; test06/test22 focus walks green with the change built):
+- `AnimatedGifDecoder.GifDecodePlanner` — pure-Swift, aspect-aware (container properties; ceiling
+  capped at the source's long edge because ImageIO thumbnails never upscale), tiered: all frames at
+  the full backing store → all frames down to `preferredMinSide` = 1 px/pt (HD parity) → drop
+  frames evenly down to `minKeptFrames` = GIF duration ÷ 12 cs (~8 fps floor, from the file's own
+  delays) → shrink to 200 px → drop more frames. Kept frames still absorb skipped frames' delays, so
+  total duration is unchanged in every tier.
+- Row-stride estimate uses 32-byte alignment; verified against real
+  `CGImageSourceCreateThumbnailAtIndex` output for six source shapes × six sides — never undercounts,
+  and reproduces the device's 91,200 bytes/frame exactly (so the reporter's GIF is ~1.75:1).
+- `decodeBudgetBytes(scale:)`: 12 MiB × (1 + 0.5 × (cappedScale − 1)) → 12 MiB HD (byte-identical),
+  18 MiB 4K — half the pixel-proportional growth, sized to the 4K box's extra RAM. Row worst case
+  now 270 MiB on 4K (15 × 18); the LazyHStack unmount + NSCache still bound it in practice.
+- Predicted for the measured GIF: 328×187 × 75 frames on 4K (2.7× pixels/frame), 270×154 × 75 on HD.
+- Probe line extended (`preferred= minKept= source= budget=`); device re-read is checklist §11.
+- The sim cannot exercise the real decoder (no GIF-covered tile on the sim account's Home; probe
+  armed via `simctl spawn defaults write` + test06/test22 walk produced zero `[GifDecode]` lines) —
+  the mirror tests + the macOS ImageIO stride script are the automated evidence; §11 is the manual.

@@ -92,7 +92,7 @@ a Codex gate per wave, sim suite + one consolidated manual device pass, then `re
   and > 0.5 % bright pixels (26.5 sim result: max 1.0, 17.2 % bright; pre-fix would be ≈0.05 /
   0 %). Skips loudly if the swatch never reports focus (27.0 runtime gotcha). One more test in
   the suite (57 → 58 in the Verification count below).
-- ⏳ Device check on the White theme by the reporter's route → device-pass item (1).
+- ✅ Device check 2026-08-16 (Christian, Debug `301792fe` on the Living Room box): "everything seems to be working" — item (1) PASS.
 - ✅ Codex gate 1 clean (2026-08-16, `--base HEAD~2 --scope branch`: "focused swatch now uses a legible foreground color for the platter-free borderless style, and the added UI test appropriately exercises that state"; the one P1 raised — CGFloat×Double — was a false positive under SE-0307 but the scale factor is now an explicit CGFloat, `5a7830f8`).
 
 ### Wave 2 — Small tester asks (each independent, each its own commit) — ✅ BUILT 2026-08-16

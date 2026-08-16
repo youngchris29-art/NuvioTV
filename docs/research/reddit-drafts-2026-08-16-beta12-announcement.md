@@ -94,9 +94,9 @@ Status: **DRAFT — not posted.**
 u/mrStevenx3, one thing worth clearing up about the poster "zoom" you keep seeing: that motion
 is not the app zooming the artwork. It is tvOS's own focus lift, the system behaviour every
 native Apple TV app has where the focused card rises toward you and tilts a little with your
-thumb on the remote. It is what makes the Apple TV feel like the Apple TV, so the app keeps it
-on by default. What the No Zoom on Focus option turns off is our scaling on top of that, and in
-beta 12 that option finally reaches every tile (See All cards, episode cards, the detail-page
-trailer thumbnail), which is the part that was genuinely broken in your report. If you would
-rather have the cards sit completely still, tell me and I will look at making the option cover
-the system lift as well.
+thumb on the remote. That one is staying. A big part of the point of this fork is that it feels
+like an app made for the Apple TV rather than an Android TV app carried over, and the system
+focus behaviour is a large part of what makes the Apple TV feel like the Apple TV. What the No
+Zoom on Focus option turns off is our own scaling on top of that, and in beta 12 that option
+finally reaches every tile (See All cards, episode cards, the detail-page trailer thumbnail),
+which is the part that was genuinely broken in your report.

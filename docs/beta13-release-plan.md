@@ -72,7 +72,7 @@ a Codex gate per wave, sim suite + one consolidated manual device pass, then `re
 - Codex gate 0.
 
 ### Wave 1 — BUG-58 + the theme family (P3 but promised; highest comms risk)
-- ✅ **Fix landed 2026-08-16 (uncommitted, in `AppearanceSettingsPane.swift`):** focused swatch
+- ✅ **Fix landed 2026-08-16 (`2799bc79` in NuvioMobile, `AppearanceSettingsPane.swift`):** focused swatch
   label → `textPrimary` (focus brightens; selection reads primary at rest — the same shape as
   ProfileSelectionView's borderless avatar tiles); the misleading BUG-50 comment replaced.
 - ✅ **Class sweep done:** every other `onFocusPlatter` consumer (`RowTextColor`, the Settings

@@ -1,0 +1,141 @@
+# beta.13 release plan (drafted 2026-08-16, the day beta.12 shipped)
+
+Successor to the beta.12 plan (`~/.claude/plans/lets-build-a-plan-elegant-frost.md`, executed
+2026-08-10 → 08-16; record in `docs/research/beta12-campaign-notes.md`). Same shape: scoped waves,
+a Codex gate per wave, sim suite + one consolidated manual device pass, then `release-beta.sh`.
+
+## Context — where beta.12 left the board
+
+- **Shipped 2026-08-16:** `tvos-v0.3.0-beta.12` (build 108, `2a8c387c`), announced as `p41ifp4`.
+  17 tracker rows flipped to released; all await "confirmed in the wild".
+- **Public promises now outstanding:** **BUG-58** (colour picker in Appearance draws on a black
+  background — Christian promised the fix "in the next beta" in `p41ifp4`). Nothing else was
+  promised in the announcement.
+- **Open questions posted, awaiting reporters:** UX-9 (which title shows the letterboxed focus
+  trailer?), BUG-62 (tab bar clipped — repro asked 08-13), FEAT-22 (auto quality — answered
+  08-13), BUG-47 (u/tiyeuedm's Stremio Catalog Plus retest, DM), DOC-2 (account-change
+  propagation — needs a code check THEN an answer).
+- **Retests due on 108:** BUG-46/55 (long-session trailer survival on the stateless build),
+  BUG-31 (No Zoom on Focus everywhere; the system lift stays by design), BUG-38 (collection
+  backdrop against the reporter's own config), BUG-39 ("still average" → sharper?), BUG-43/45 on
+  the White theme, FEAT-19 (u/tiyeuedm in Tiếng Việt).
+- **Explicitly deferred out of beta.12:** TMDB Discover exclusion-filter *UI* (shared plumbing
+  landed `7dac9a67`), self-hosted server discovery (upstream `ddc28dc8`/`cc20e716`, product
+  decision), subtitle minimum font size (product decision), title-hoisting rework (moot now —
+  BUG-53 closed by reach 88; keep parked), further BUG-39 gains (source-limited; the trade shipped).
+- **Watch list carried:** non-fatal `PostgrestRestException: Unsupported Nuvio client (22023)`
+  from `register_current_device` on every launch (caught, retried every 15 min) — the backend
+  does not recognise this fork's client id; harmless today, but it is a silent dependency on the
+  official backend's tolerance. Codex branch-level findings left for triage: quickjs `mavenLocal`
+  reproducibility (Sentry URL scrubbing `d5b29180` and Hebrew locale `df18b711` already fixed).
+
+## Scope decisions (PROPOSED — Christian to confirm before Wave 0)
+
+1. **BUG-58 is the headline** — it is the only public promise; the campaign is not done until it
+   is fixed AND device-verified on the White theme with the reporter's exact route.
+2. **Ship the three small, well-specified tester asks that have survived multiple releases:**
+   FEAT-18 (title always shown in the trailer focus view — "smallest and best-specified item on
+   the board", asked twice), UX-8 (hide the entire Discover section — one container toggle
+   satisfies all three statements), and the BUG-57 "Upwards" card-depth mode.
+3. **FEAT-17 (hide the top pill nav) — decide, don't drift.** Recommendation: **decline as
+   asked, offer the native answer.** The tab bar is the tvOS system tab bar and already
+   minimizes on scroll (beta.11); removing it entirely is the Android-TV-copied feel this fork
+   exists to avoid (memory: `nuvio-tvos-native-feel-principle`). If Christian wants a middle
+   ground, the only native-shaped option is "start minimized" — scope it only if he says so.
+4. **Upstream ports:** TMDB Discover exclusion-filter UI needs real tvOS design → **Later**
+   unless a tester asks. Self-hosted discovery → **decision only** this cycle (yes/no/later),
+   no build. Subtitle min size → decide tvOS's own range when the player gets a styling pass.
+5. **Not this cycle:** FEAT-3 TestFlight (research done, separate track), FEAT-16 font choice,
+   FEAT-22 auto quality (needs the reporter's fallback answer first), UX-2/UX-3 batches (done),
+   BUG-39 beyond the shipped trade, title hoisting.
+
+## Wave structure
+
+### Wave 0 — Identify before fixing (sim-runnable now)
+- **BUG-58 surface hunt.** Wave 3 of beta.12 could not find a "colour-selection screen in
+  Appearance with a black background" — the theme picker is inline and the subtitle-preview
+  card is deliberately black. Re-read the reporter's clip (`docs/research/p2qudtq-video-evidence/`
+  + the p2qudtq video link) frame-by-frame for the exact screen and route; candidates: the
+  accent picker's presentation on the **White** theme, the subtitle-colour picker (SubtitleColor
+  scout, `phase1-batch5b-subtitlecolor-scout.md`), or a pushed picker reachable only from
+  Nuvio-Style Settings. **Output: one named view + one repro route, or a precise ask.**
+- **BUG-57 A/B method.** Prefs injection is INVALID for profile-synced payload keys
+  (beta.12 lesson: sync restores the account value at launch). Plan the A/B through the real
+  Settings UI in the UITest harness (or with sync disabled for the run) — decide which before
+  anyone touches `card_depth_style_payload_2`.
+- **DOC-2 code check:** how do account-side changes (addons/collections/settings) reach the
+  tvOS app — realtime, poll interval, or sign-in only? Answer feeds the next reply.
+- **`Unsupported Nuvio client (22023)`:** read `register_current_device` in the fork vs upstream;
+  is it a client-id string we can set, or a server allowlist? Decide fix-or-document.
+- Codex gate 0.
+
+### Wave 1 — BUG-58 + the theme family (P3 but promised; highest comms risk)
+- Fix the identified surface theme-aware (Theme tokens, not hard-coded black); sweep the same
+  class once (any other picker/sheet backgrounds that ignore the theme — the BUG-45/BUG-50
+  audit list is the map).
+- UITest on the White theme (screenshot-diff, like test13/test25) so it cannot regress silently.
+- Codex gate 1.
+
+### Wave 2 — Small tester asks (each independent, each its own commit)
+- **FEAT-18** — title overlay always shown on the inline focus-trailer card (it exists in the
+  card's still state; the ask is to keep it while the trailer plays). Respect the BUG-53/61
+  title geometry (no new overlap on the pinned band).
+- **UX-8** — Settings → Content Sources (or Home Screen): "Hide Discover" toggle that hides the
+  whole Discover section on the Search page; per-profile synced like the rest of the
+  appearance payload.
+- **BUG-57** — "Upwards" depth renders wrong, "Full" works: reproduce with the Wave-0 method,
+  fix the render, UITest both modes.
+- Codex gate 2.
+
+### Wave 3 — Home tab-bar clip (BUG-30 / BUG-62), device-only
+- The `0ad450b6` measured reframe shipped in beta.11 with the device verdict PENDING and an
+  open question in code (engine may align to the `.glass` CTA frame; `debug.homeScrollEdgeHard`
+  A/B knob ships off). BUG-62 (a new reporter, 08-13) is likely the same. Device pass item:
+  read `REST classic residual` on hardware; if 67 unchanged → restyle the CTA (device in the
+  loop, NOT one of the six banned rounds). No sim work possible.
+
+### Wave 4 — Localization catch-up + upstream check
+- Every new string from Waves 1–3 through the populate pipeline: 6 languages (incl. vi) at
+  key-count parity — FEAT-4's failure mode (German 81 keys short) is the acceptance test.
+- Daily upstream check continues (`docs/upstream-port-plan-*.md`); port anything mechanical
+  that lands; carry the three decision items unchanged unless decided.
+
+## Verification
+
+- **Automated:** full suite (57 UITests + `GifDecodePlanTests` 14 + `StreamBadgeColorTests`
+  + `AccentFocusRingTests`) on tvOS 26.5, structural guard, `TrailerSoakTests`; new tests for
+  Waves 1–2. Check for concurrent sim sessions before runs (osascript sim input is dead while
+  the Claude app is frontmost — drive via the XCUIRemote harness).
+- **Manual device pass** (one consolidated checklist, `docs/research/beta13-device-pass-checklist.md`
+  when written): (1) BUG-58 on the White theme by the reporter's route; (2) FEAT-18 with
+  Trailers on Focus in both hero modes; (3) UX-8 toggle round-trip incl. sync; (4) BUG-57 both
+  depth modes; (5) BUG-30/62 residual read; (6) VidHub retest with the `debug.vidhubMethod` knob
+  IF VidHub has shipped an update; (7) regression sweep of beta.12's device-verified items.
+  Launch-arg knob route + live `devicectl … --console` capture (no USB on the Living Room box).
+
+## Release + comms
+
+- `release-beta.sh` discipline unchanged: README features (+ screenshots for anything visible:
+  FEAT-18/UX-8) FIRST, `bump version` (109) + `scripts/release-notes/tvos-beta13-highlights.md`,
+  cut `tvos-v0.3.0-beta.13` to both repos, then the Reddit block via old.reddit
+  `/api/editusertext` + modhash (works on the gallery post — beta.12 lesson, no UI needed).
+- Announcement must: close BUG-58 by name (promised); name FEAT-18/UX-8 to their askers
+  (u/mrStevenx3); state BUG-30/62 honestly; carry the retest asks; keep the native-feel line on
+  focus motion (`p41ijt8`) — do not re-open "still cards".
+- Tracker: release entry, rows flipped, Now cell rolled; the beta.12 rows move to Resolved only
+  on wild confirmation.
+
+## Out of scope (explicit)
+
+- Removing/hiding the system tab bar (FEAT-17 as asked) and any "no focus motion at all" —
+  design principle, see Scope decision 3.
+- TMDB Discover exclusion-filter UI, self-hosted discovery build, subtitle-size range — decisions
+  recorded, no build unless Christian says so.
+- FEAT-3 TestFlight, FEAT-16 fonts, FEAT-22 (until the reporter answers), title hoisting.
+
+## Open questions for Christian (answer before Wave 0 starts)
+
+1. Confirm the headline (BUG-58) + the three small asks (FEAT-18, UX-8, BUG-57) as the build set.
+2. FEAT-17: decline-with-native-answer as recommended, or scope "start minimized"?
+3. Self-hosted discovery: yes / no / later?
+4. Any beta.12 retest that comes back negative jumps the queue — agreed default?

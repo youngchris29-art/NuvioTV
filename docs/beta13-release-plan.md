@@ -65,10 +65,18 @@ a Codex gate per wave, sim suite + one consolidated manual device pass, then `re
   (beta.12 lesson: sync restores the account value at launch). Plan the A/B through the real
   Settings UI in the UITest harness (or with sync disabled for the run) — decide which before
   anyone touches `card_depth_style_payload_2`.
-- **DOC-2 code check:** how do account-side changes (addons/collections/settings) reach the
-  tvOS app — realtime, poll interval, or sign-in only? Answer feeds the next reply.
-- **`Unsupported Nuvio client (22023)`:** read `register_current_device` in the fork vs upstream;
-  is it a client-id string we can set, or a server allowlist? Decide fix-or-document.
+- **DOC-2 code check — ✅ DONE 2026-08-16.** Pull-only, two triggers (profile pick = full pull;
+  every foreground = forced full pull), NO timer on tvOS (the 4-min loop is composeApp-only);
+  appearance prefs are per-platform namespaced (phone/web changes never reach the TV — by design);
+  addon set removed to zero on web won't clear the TV. Answer drafted in the tracker row.
+- **`Unsupported Nuvio client (22023)` — ✅ ROOT-CAUSED + FIXED 2026-08-16.** Not a server
+  allowlist we can't influence: the fork's 07-29 port renamed `p_client_name` from upstream's
+  `"Nuvio Mobile"` to `"Nuvio tvOS"`, and the RPC rejects unknown names. Reverted to the
+  accepted literal (`DeviceSessionRegistration.kt`; platform "tvOS 27.x" + device name still
+  identify the box honestly). **Empirical (sim unified log, 2026-08-16):** the warning fired
+  on 3/3 launches before the rebuild (11:49, 11:59, 12:09) and on 1 of ~18 launches after it
+  (13:52, no "Unsupported" text alongside — read as transient). Watch once on device; the
+  Living Room box should now appear in the account's device list.
 - Codex gate 0.
 
 ### Wave 1 — BUG-58 + the theme family (P3 but promised; highest comms risk)
@@ -87,16 +95,33 @@ a Codex gate per wave, sim suite + one consolidated manual device pass, then `re
 - ⏳ Device check on the White theme by the reporter's route → device-pass item (1).
 - ✅ Codex gate 1 clean (2026-08-16, `--base HEAD~2 --scope branch`: "focused swatch now uses a legible foreground color for the platter-free borderless style, and the added UI test appropriately exercises that state"; the one P1 raised — CGFloat×Double — was a false positive under SE-0307 but the scale factor is now an explicit CGFloat, `5a7830f8`).
 
-### Wave 2 — Small tester asks (each independent, each its own commit)
-- **FEAT-18** — title overlay always shown on the inline focus-trailer card (it exists in the
-  card's still state; the ask is to keep it while the trailer plays). Respect the BUG-53/61
-  title geometry (no new overlap on the pinned band).
-- **UX-8** — Settings → Content Sources (or Home Screen): "Hide Discover" toggle that hides the
-  whole Discover section on the Search page; per-profile synced like the rest of the
-  appearance payload.
-- **BUG-57** — "Upwards" depth renders wrong, "Full" works: reproduce with the Wave-0 method,
-  fix the render, UITest both modes.
-- Codex gate 2.
+### Wave 2 — Small tester asks (each independent, each its own commit) — ✅ BUILT 2026-08-16
+- ✅ **FEAT-18** (`f6bf490e`) — the premise was subtler than the tracker note: nothing "hides" a
+  title on trailer start; the caption below the tile survives playback. The reporter runs **Hide
+  Titles** (p2qudtq t22 — no captions anywhere), so the playing tile carried no title at all.
+  Fix: logo art (text fallback) drawn ON the tile bottom-left over a foot scrim, only when the
+  caption slot is hidden; bottom-anchored (pinned band untouched), after `.clipShape` (ring
+  precedent). Sim-verified (test28).
+- ✅ **UX-8** (`a9b1b05e`) — Content Sources → Search Sources → "Hide Discover", synced via the
+  shared home-catalog payload (`hide_discover`, hideCatalogUnderline precedent; other clients
+  ignore unknown keys and merge on push). Skips the Discover fan-out while hidden and re-arms on
+  clear. Sim-verified (test29 round-trip).
+- ✅ **BUG-57** — "upwards" is *En haut* = Edge Coverage **Top** (BUG-31's unfixed half). The
+  Settings-UI A/B (test27, Bold, ring+no-zoom) showed Top's 1 pt ≤56 % hairline is invisible at
+  couch distance while Full's closed hairline registers. Top/Half now draw a 2 pt rail with the
+  top stop lifted ×1.5 (cap 0.9); mask geometry and Full unchanged. `CardDepthRailTests` (6 unit
+  tests). Sim A/B renders on file (`docs/research/bug57-sim-ab/`).
+- **Harness work this wave (kept, it is what made the A/Bs possible):** `openTab` climbs until
+  a tab reports focus (fixed Up×8 could not leave a long pane); `walkToRowByTreeIndex` counts
+  ROWS by frame (chip rows are one row), anchors on the focused element's frame, hops only to
+  unique-label rows, re-enters the pane by category when a tree rebuild drops focus onto the
+  sidebar, and excludes the tab bar; `ensureToggleRow` is state-aware via a new
+  `accessibilityValue("On"/"Off")` on `SettingsToggleRow` (a real VoiceOver gain);
+  `test30AppearanceBaselineRestore` puts the synced sim profile back to Ocean/portrait/all-OFF
+  — run it after ANY failed appearance test (a mis-landed walk once flipped Landscape Rows and
+  the theme on the real account). Sim-run lesson: Right-first along chip/swatch rows — Left from
+  the leftmost element exits to the sidebar, whose focus SWITCHES panes.
+- ✅ Codex gate 2 clean (2026-08-16, `--base 5a7830f8 --scope branch`: "No actionable correctness defects … persistence, synchronization, view-model lifecycle, and UI wiring changes appear internally consistent").
 
 ### Wave 3 — Home tab-bar clip (BUG-30 / BUG-62), device-only
 - The `0ad450b6` measured reframe shipped in beta.11 with the device verdict PENDING and an

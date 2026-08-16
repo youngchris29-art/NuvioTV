@@ -113,3 +113,10 @@ notion of a sharpness floor. Shipped as NuvioMobile `85c357f9` (Codex gate: clea
 - The sim cannot exercise the real decoder (no GIF-covered tile on the sim account's Home; probe
   armed via `simctl spawn defaults write` + test06/test22 walk produced zero `[GifDecode]` lines) —
   the mirror tests + the macOS ImageIO stride script are the automated evidence; §11 is the manual.
+
+### 2026-08-16 device read — PASS, plus a cache follow-up (`0733d0ee`)
+Release `85c357f9` on the Living Room: 13-tile Collections row all plans to ~18.6 MB (tier 3,
+`side=391`, 51–67 of 62–92 frames; 36-frame GIFs full 480 px). First walk-back re-decoded every
+tile — the flat 144 MB `AnimatedGifCache` held ~7 of the row. Fixed: cost limit = 16 × per-GIF
+budget (302 MB 4K / 192 MB HD), set from `decode`; re-walk 0 re-decodes. Christian: "sharper and
+smooth enough." Probe gains `file=`. Codex clean both commits. Full numbers: checklist §11 results.

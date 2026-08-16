@@ -222,3 +222,21 @@ account's Home never focuses a GIF-covered tile — so it needs one device read 
   growth (`decodeBudgetBytes`) to flat 12 MiB and keep the planner.
 - Honest ceiling for the reply: a 90-frame 10 cs GIF cannot decode at the full 782 px on any sane
   budget (~126 MiB); the trade buys "visibly sharper", not "pixel-perfect".
+
+**Section 11 — DONE, PASS (2026-08-16, recorded live).** Release build stamp `85c357f9` installed via
+devicectl, console captured with `-debug.gifDecodeProbe YES`. Christian walked the Collections row
+forward and back twice (second time on the cache-fix build, `0733d0ee`).
+- Real GIF population: 13 distinct GIFs on the row, sources 400–960 px wide, ~1.75:1, 36–92 frames.
+  Every plan spends the 18 MiB budget to within 1.5% (`bytes` 18.63–18.81 MB). Nearly all land in
+  tier 3 — `side=391` (HD parity; was 200 on the section-4 build → 3.8× the pixels per frame) keeping
+  51–67 frames; the 36-frame 960×540 GIFs get `side=480` with every frame; one 536×302 source
+  lands tier 4 at 371 px × 60 frames. No line at the 200 px floor.
+- **First read (85c357f9) surfaced a cache regression:** forward walk = 13 decodes, walk back =
+  ALL 12 others re-decoded (one per D-pad step) — 13 × 18.6 MB = 242 MB > the flat 144 MB
+  `AnimatedGifCache`. Fixed same session: cost limit = 16 × per-GIF budget (302 MB on 4K,
+  192 MB HD), `0733d0ee`, Codex clean. **Re-walk on the fix: forward 13 decodes, back 0
+  re-decodes.** The trailing run of same-shaped 960×540 lines is the next row's tiles (11 distinct
+  URLs, ~1 s apart = D-pad stepping), not thrash — probe now prints `file=` so this is unambiguous.
+- **Verdict (Christian, live): "sharper and smooth enough."** No Jetsam, no memory warnings in
+  either capture. BUG-39 ships in beta.12 as fixed-within-budget; the reply should still state the
+  honest ceiling (a 90-frame GIF can't reach 782 px on any sane budget).

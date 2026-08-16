@@ -52,13 +52,15 @@ a Codex gate per wave, sim suite + one consolidated manual device pass, then `re
 ## Wave structure
 
 ### Wave 0 — Identify before fixing (sim-runnable now)
-- **BUG-58 surface hunt.** Wave 3 of beta.12 could not find a "colour-selection screen in
-  Appearance with a black background" — the theme picker is inline and the subtitle-preview
-  card is deliberately black. Re-read the reporter's clip (`docs/research/p2qudtq-video-evidence/`
-  + the p2qudtq video link) frame-by-frame for the exact screen and route; candidates: the
-  accent picker's presentation on the **White** theme, the subtitle-colour picker (SubtitleColor
-  scout, `phase1-batch5b-subtitlecolor-scout.md`), or a pushed picker reachable only from
-  Nuvio-Style Settings. **Output: one named view + one repro route, or a precise ask.**
+- **BUG-58 surface hunt — ✅ DONE 2026-08-16.** Christian's own Apple TV clip (`IMG_0193.MOV`,
+  12 s, default theme) settled it: it is the inline **Theme swatch row itself**, not a pushed
+  screen. As focus walks the row, the FOCUSED swatch's name label vanishes — near-black text on
+  the dark pane ("Amber" disappears while focused). Cause: beta.11's BUG-50 sweep (`6028ef1c`)
+  painted the focused `SwatchLabel` `onFocusPlatter` (`black.opacity(0.85)`) on the false
+  premise that the `.borderless` swatch button draws the white system platter — it doesn't
+  (lift only). Route: Settings → Appearance → Right into the pane → any swatch focused.
+  (The reporter's "black background" = this; on the White theme every other pixel is light so
+  the black label reads as a black backdrop.)
 - **BUG-57 A/B method.** Prefs injection is INVALID for profile-synced payload keys
   (beta.12 lesson: sync restores the account value at launch). Plan the A/B through the real
   Settings UI in the UITest harness (or with sync disabled for the run) — decide which before
@@ -70,11 +72,20 @@ a Codex gate per wave, sim suite + one consolidated manual device pass, then `re
 - Codex gate 0.
 
 ### Wave 1 — BUG-58 + the theme family (P3 but promised; highest comms risk)
-- Fix the identified surface theme-aware (Theme tokens, not hard-coded black); sweep the same
-  class once (any other picker/sheet backgrounds that ignore the theme — the BUG-45/BUG-50
-  audit list is the map).
-- UITest on the White theme (screenshot-diff, like test13/test25) so it cannot regress silently.
-- Codex gate 1.
+- ✅ **Fix landed 2026-08-16 (uncommitted, in `AppearanceSettingsPane.swift`):** focused swatch
+  label → `textPrimary` (focus brightens; selection reads primary at rest — the same shape as
+  ProfileSelectionView's borderless avatar tiles); the misleading BUG-50 comment replaced.
+- ✅ **Class sweep done:** every other `onFocusPlatter` consumer (`RowTextColor`, the Settings
+  sidebar, `StreamBadges` focused chips) sits on `.settingsRow`/chip styles that DO draw the
+  platter — `SwatchLabel` was the only misapplication. `PlaybackSettingsPane`'s borderless
+  subtitle-colour swatches carry no text label, so nothing to fix there.
+- ✅ **Regression guard:** `test26ThemeSwatchFocusedLabelLegible` (NuvioTVUITests) walks focus
+  onto Violet and MEASURES the label band under it in the screenshot — asserts max luma > 0.7
+  and > 0.5 % bright pixels (26.5 sim result: max 1.0, 17.2 % bright; pre-fix would be ≈0.05 /
+  0 %). Skips loudly if the swatch never reports focus (27.0 runtime gotcha). One more test in
+  the suite (57 → 58 in the Verification count below).
+- ⏳ Device check on the White theme by the reporter's route → device-pass item (1).
+- Codex gate 1 (pending).
 
 ### Wave 2 — Small tester asks (each independent, each its own commit)
 - **FEAT-18** — title overlay always shown on the inline focus-trailer card (it exists in the

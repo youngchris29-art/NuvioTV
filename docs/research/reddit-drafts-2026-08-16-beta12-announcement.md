@@ -14,9 +14,12 @@ Posting notes:
   u/mrStevenx3) and UX-9 (letterbox zoom). UX-9's measured zoom actually shipped in beta.11
   (`aeff3b64`); beta.12 adds the diagnostics that say WHY a source keeps the floor. Do NOT claim
   a new UX-9 fix here — say what is true.
-- BUG-58: no matching surface exists (Appearance has no pushed colour screen) — ask which
-  screen/how reached. BUG-59: footage showed the phone camera cropping, not the app — ask which
-  title if it recurs.
+- BUG-58 (colour picker in Settings): Christian's call 2026-08-16 — PROMISE the fix for the next
+  beta (beta.13) rather than ask which screen. BUG-59: footage showed the phone camera cropping,
+  not the app — ask which title if it recurs.
+- Separate reply to u/mrStevenx3 (below the announcement) about the poster "zoom": what he sees
+  is tvOS's own focus lift, not the app's zoom. Post as a reply on his p2qudtq thread, not inside
+  the announcement.
 - FEAT-21 (VidHub, u/Ginosaure): honest known-issue note, verified byte-exact on device.
 
 ---
@@ -73,12 +76,27 @@ Also new or fixed:
   large libraries), faster Trakt watched sync, a Simkl "completed series" fix, and add-on
   cache-control on manual refresh.
 
-Two asks: u/mrStevenx3, the "colour-selection screen in Appearance with a black background"
-report, I cannot find a screen that matches. The theme picker is inline and the subtitle preview's
-black card is deliberate (it simulates video). Which screen and how do you reach it? And the
-letterboxed focus trailer, if you see it again, which title? Your clip showed the card filled
-edge to edge, so I want to catch it on the title where it happens.
+u/mrStevenx3, two of yours are still open: the colour picker in Settings with the black
+background is on the list and will be fixed in the next beta. And the letterboxed focus trailer,
+if you see it again, which title? Your clip showed the card filled edge to edge, so I want to
+catch it on the title where it happens.
 
 As always: sideload with a free Apple ID, instructions in the release notes. If you retest
 anything, Settings -> About should read **0.3.0 (108)**, include that number with your report.
 Thanks to u/mrStevenx3, u/Ginosaure and u/tiyeuedm for the reports behind most of this build.
+
+---
+
+## Draft: reply to u/mrStevenx3 (on his p2qudtq review thread) — the poster "zoom"
+
+Status: **DRAFT — not posted.**
+
+u/mrStevenx3, one thing worth clearing up about the poster "zoom" you keep seeing: that motion
+is not the app zooming the artwork. It is tvOS's own focus lift, the system behaviour every
+native Apple TV app has where the focused card rises toward you and tilts a little with your
+thumb on the remote. It is what makes the Apple TV feel like the Apple TV, so the app keeps it
+on by default. What the No Zoom on Focus option turns off is our scaling on top of that, and in
+beta 12 that option finally reaches every tile (See All cards, episode cards, the detail-page
+trailer thumbnail), which is the part that was genuinely broken in your report. If you would
+rather have the cards sit completely still, tell me and I will look at making the option cover
+the system lift as well.

@@ -29,7 +29,7 @@ a Codex gate per wave, sim suite + one consolidated manual device pass, then `re
   official backend's tolerance. Codex branch-level findings left for triage: quickjs `mavenLocal`
   reproducibility (Sentry URL scrubbing `d5b29180` and Hebrew locale `df18b711` already fixed).
 
-## Scope decisions (PROPOSED — Christian to confirm before Wave 0)
+## Scope decisions (CONFIRMED by Christian 2026-08-16 — "yes to all four": BUG-58 headline + FEAT-18/UX-8/BUG-57 build set; FEAT-17 DECLINED as asked (native answer in the reply); self-hosted discovery = LATER; negative beta.12 retests jump the queue)
 
 1. **BUG-58 is the headline** — it is the only public promise; the campaign is not done until it
    is fixed AND device-verified on the White theme with the reporter's exact route.
@@ -144,7 +144,7 @@ a Codex gate per wave, sim suite + one consolidated manual device pass, then `re
   recorded, no build unless Christian says so.
 - FEAT-3 TestFlight, FEAT-16 fonts, FEAT-22 (until the reporter answers), title hoisting.
 
-## Open questions for Christian (answer before Wave 0 starts)
+## Open questions for Christian — ANSWERED 2026-08-16 (all four: yes / decline / later / agreed)
 
 1. Confirm the headline (BUG-58) + the three small asks (FEAT-18, UX-8, BUG-57) as the build set.
 2. FEAT-17: decline-with-native-answer as recommended, or scope "start minimized"?

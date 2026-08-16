@@ -1,6 +1,6 @@
 # Reddit draft, 2026-08-16: beta.12 announcement
 
-Status: **DRAFT — not posted.** Release is live on both repos (`tvos-v0.3.0-beta.12`, build 108,
+Status: **POSTED 2026-08-16 as [`p41ifp4`](https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p41ifp4/)** (verbatim via ego-browser on old.reddit, byte-identical fill verified; rendered 11 bold / 13 list items). Zoom reply posted as [`p41ijt8`](https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p41ijt8/) under p2qudtq. Post-body Latest-build block swapped to beta 12 via old.reddit's `/api/editusertext` (modhash from `/api/me.json`; works for the gallery post even though old.reddit shows no edit UI — selftext verified identical, gallery items intact). *Original status:* DRAFT — release is live on both repos (`tvos-v0.3.0-beta.12`, build 108,
 `2a8c387c`). The post-body "Latest build" block still says beta 11 — swap it for
 `tvos-beta12-reddit-block.md` (gallery post: new-reddit Markdown editor via ego-browser, as for
 beta.11) before or right after posting this comment.
@@ -89,7 +89,7 @@ Thanks to u/mrStevenx3, u/Ginosaure and u/tiyeuedm for the reports behind most o
 
 ## Draft: reply to u/mrStevenx3 (on his p2qudtq review thread) — the poster "zoom"
 
-Status: **DRAFT — not posted.**
+Status: **POSTED 2026-08-16 as `p41ijt8`.**
 
 u/mrStevenx3, one thing worth clearing up about the poster "zoom" you keep seeing: that motion
 is not the app zooming the artwork. It is tvOS's own focus lift, the system behaviour every

@@ -8,3 +8,5 @@
 - Plus: White-theme sidebar label fixed, stream badge colors match the phone, French hero/rows arrive already localized, collection backdrop artwork renders on tiles, and VidHub appears in the player list (known issue: VidHub's tvOS build currently ignores the handoff — reported to its developer).
 
 Settings -> About should read 0.3.0 (108), beta tag tvos-v0.3.0-beta.12.
+
+<!-- As posted 2026-08-16 via old.reddit /api/editusertext (thing t3_1v26ebw); replaced the beta 11 block verbatim; verified identical via .json -->

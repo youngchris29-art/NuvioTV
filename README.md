@@ -67,11 +67,11 @@ Rather than port the touch UI, this fork keeps only what travels well: the prove
 
 ### Playback
 
-- **Hybrid player** — a native AVPlayer path with on-device MKV remuxing: **Dolby Vision** (including Profile 7 → 8.1 conversion via libdovi), **TrueHD / DTS audio transcoding**, and full seek-anywhere support.
+- **Native player, on by default** — an AVPlayer path with on-device MKV remuxing: **Dolby Vision** (including Profile 7 → 8.1 conversion via libdovi), **TrueHD / DTS audio transcoding**, and full seek-anywhere support. New in this beta, the player's **swipe-down panel is the real tvOS one**: an **Info** tab (poster, title, synopsis and live stream details), the system **Subtitles** tab listing the file's **embedded subtitle tracks** alongside your addon subtitles (Off, forced and SDH tracks flagged), and the system **Audio** tab listing **every audio track** in the file — switching is instant, no rebuild — with your Preferred Audio / Subtitle Language applied on start.
 - **libmpv player** (via MPVKit) for everything else, with HDR tone-mapping (`gpu-next`) — and the screensaver can no longer interrupt playback.
 - **External player handoff** — send any stream to **Infuse**, **VLC**, or **Outplayer**, per stream or via a Default Player setting; the handoff carries your resume position and addon subtitles. **VidHub** is listed too, implemented per its x-callback-url docs — but its current tvOS build ignores the handoff (known issue, reported to Oka Apps; it will start working when they fix it).
-- **Addon subtitles in both players** (SRT → WebVTT renditions on the native path), with forced/audio-aware subtitle auto-selection and full subtitle styling (color, size, background, outline).
-- **Skip intro**, Play Next, next-episode autoplay, and a Stream Info panel (video/audio/subtitle state at a glance).
+- **Addon subtitles in both players** (SRT → WebVTT renditions on the native path; embedded MKV text tracks are extracted on the fly as segmented WebVTT), with forced/audio-aware subtitle auto-selection and full subtitle styling (color, size, background, outline) — "Show only preferred languages" now trims the native Subtitles tab too.
+- **Skip intro**, Play Next, next-episode autoplay, and the Info tab's live stream rows (engine, codecs, resolution, active audio/subtitle, bitrate, transfer).
 
 ### Sources & accounts
 

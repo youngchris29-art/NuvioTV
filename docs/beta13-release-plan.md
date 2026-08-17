@@ -136,6 +136,17 @@ a Codex gate per wave, sim suite + one consolidated manual device pass, then `re
 - Daily upstream check continues (`docs/upstream-port-plan-*.md`); port anything mechanical
   that lands; carry the three decision items unchanged unless decided.
 
+### Wave 5 — Native player swipe-down panel (Christian's ask 2026-08-16) — ✅ BUILT 2026-08-16/17
+Plan + status: `docs/tvos-native-player-info-panel-plan.md`. Three commits on
+`tvos-shared-extraction`: W1 `2477ba7f` (Info tab header + rows, Preferred Audio/Subtitle
+Language on the native path), W2 `740845e2` (embedded text subtitles as segmented WebVTT
+renditions in the system Subtitles tab; **native engine default-ON**), W3 `b08b4f62` (demuxed
+alternate audio renditions — the system Audio tab lists every track, switching is AVPlayer's own;
+D4 rebuild + transport-bar menu removed). Codex-gated (14 / 4 / 6 rounds). l10n: 13 new keys ×
+fr/es/de/it/vi merged (catalog at parity). README Playback bullets updated.
+**Sim can't verify the system tabs** (the tvOS simulator renders no Subtitles/Audio tabs — not
+even for Apple's reference stream); those are device-pass items (below).
+
 ## Verification
 
 - **Automated:** full suite (57 UITests + `GifDecodePlanTests` 14 + `StreamBadgeColorTests`
@@ -146,7 +157,16 @@ a Codex gate per wave, sim suite + one consolidated manual device pass, then `re
   when written): (1) BUG-58 on the White theme by the reporter's route; (2) FEAT-18 with
   Trailers on Focus in both hero modes; (3) UX-8 toggle round-trip incl. sync; (4) BUG-57 both
   depth modes; (5) BUG-30/62 residual read; (6) VidHub retest with the `debug.vidhubMethod` knob
-  IF VidHub has shipped an update; (7) regression sweep of beta.12's device-verified items.
+  IF VidHub has shipped an update; (7) regression sweep of beta.12's device-verified items;
+  **(8) native player panel (Wave 5)**: swipe down on a native-routed title → tabs = Info ·
+  Subtitles · Audio (three tabs, no system Info duplicate); Info shows poster/title/S·E/synopsis +
+  the live rows; Subtitles lists the MKV's embedded text tracks (named by language, SDH/Forced
+  flagged) alongside addon subs and cues render; Audio lists every track (language · codec ·
+  layout) and switching plays on within a few seconds with the video continuing (no black/reload)
+  — Info "Audio" row follows; Preferred Audio Language picks the start track; a DV title still
+  lights the DOLBY VISION badge on the demuxed master; seek after an audio switch; an audio
+  switch during a seek. Native engine is now default-ON: retest one plain H.264/HEVC MKV end to
+  end. Grab a real-title panel screenshot for the README (design/screenshots/player-panel.png).
   Launch-arg knob route + live `devicectl … --console` capture (no USB on the Living Room box).
 
 ## Release + comms

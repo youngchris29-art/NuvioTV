@@ -191,7 +191,7 @@ superseded by the WebVTT-rendition approach) so the two plan docs agree.
 | **W0 spike** (main session) | Info-tab hide/show behaviour with empty metadata; confirm AVPlayer accepts a demuxed master from `LocalHLSServer` with a video-only variant (H.264 fixture, sim); confirm subtitle segment `X-TIMESTAMP-MAP` cues render from a synthetic 3-segment VTT playlist. | throwaway probes under `debug.avplayerProbeURL` | ½ day |
 | **W1 ✅ 2026-08-16** | §3 Info tab (rename "Stream Info" → "Info", poster/title/S·E/synopsis header, updated stream rows — no `externalMetadata`, per spike 1); ~~native engine default-ON~~ → **moved to W2's commit** (`UserDefaults.register(defaults: [PlayerTuning.nativeDVKey: true])` at launch so `SettingsViewModel`/`PlayerScreen` `bool(forKey:)` reads flip together; toggle label loses "(beta)"; Settings copy + l10n); §1b/§2 media-selection criteria from `PlayerSettingsRepository` (audible criteria inert until W3 but harmless); AUTOSELECT/DEFAULT rules in `masterPlaylist`. | `NativePlayerScreen.swift`, `NativePlaybackCoordinator.swift`, `SegmentMap.swift`, `PlayerScreen.swift` (pass meta) | 1 day |
 | **W2 ✅ 2026-08-16** | §1a embedded subtitle sinks + segmented VTT serving + master renditions + probe/router check; **+ the native default-ON flip** (register defaults, label, l10n) — same commit, so no build ships default-ON without embedded subs. | `RemuxSession.swift`, `LocalHLSServer.swift`, `SegmentMap.swift`, `SubtitleVTT.swift`, `MediaProbe.swift` | 2 days |
-| **W3** | §2A demuxed audio renditions; remove UIMenu + D4 rebuild (behind the smoke knob first). | `RemuxSession.swift`, `LocalHLSServer.swift`, `SegmentMap.swift`, `NativePlaybackCoordinator.swift`, `NativePlayerScreen.swift`, `RemuxSmokeTest.swift` | 3–4 days |
+| **W3 ✅ 2026-08-17** | §2A demuxed audio renditions; remove UIMenu + D4 rebuild (behind the smoke knob first). | `RemuxSession.swift`, `LocalHLSServer.swift`, `SegmentMap.swift`, `NativePlaybackCoordinator.swift`, `NativePlayerScreen.swift`, `RemuxSmokeTest.swift` | 3–4 days |
 | **W4** | l10n of new strings (fr/es/de/it/vi via the xcstrings scripts), Codex review → fix → re-review, README + screenshot (release script enforces), tracker/plan entries. | `Localizable.xcstrings`, docs | ½ day |
 
 W2 and W3 both touch `RemuxSession`/`LocalHLSServer` → **serial**, W2 first (smaller, and its
@@ -342,6 +342,54 @@ sinks: 1 (#3→esub-0)`, legible group lists "English · Embedded English", AVPl
 both `esub-0-00001.vtt` and `esub-0-00002.vtt`; seeks (90 s, 30 s) and an audio-switch rebuild keep
 the rendition (empty 52-byte segments, no 503s, selection restored). Not exercised: a mid-file
 reposition on a source that hasn't remuxed to EOF (the 16 MB fixture finishes first) — device pass.
+
+## 5e. W3 — BUILT + sim-verified + Codex-gated 2026-08-17
+
+**Landed (2A):** the master is now Apple's demuxed shape — a **video-only variant + one `AUDIO`
+rendition per playable source track** (`aud-<streamIndex>.m3u8`, `aud-<T>-init.mp4`,
+`aud-<T>-NNNNN.m4s` on the same segment grid), `CODECS` = video + the union of the tracks' tokens,
+`DEFAULT=YES` on the track production starts with (Preferred Audio Language pick), `CHANNELS`,
+`LANGUAGE`, unique `NAME`s.
+- `RemuxSession.runRemux`: each run drives **two muxers** (video-only, and the ACTIVE track's
+  audio-only, copy or transcode) from one demux pass, both cut at the video keyframe boundaries;
+  per-representation `SegmentWriter` init names; a run interrupted before its first fragment flush
+  does NOT mark its init written (delay_moov). **Audio switch = a run boundary**:
+  `selectAudio(streamIndex:atSegment:)` (mailbox + read-kick like a reposition; a segment-carrying
+  switch also sets the reposition target so the JIT window covers it) → the worker ends the run and
+  restarts at the requested segment on the new track; `activeAudioStream` is published. Empty audio
+  window mid-stream ⇒ session failure ⇒ mpv fallback (not an invalid segment); only the final
+  segment tolerates an empty audio window (KNOWN LIMITATION: zero-byte file — movenc can't emit a
+  zero-sample fragment).
+- `LocalHLSServer`: audio playlists/segments through the JIT path; a request for a non-active
+  track's file switches the worker **only if that track is AVPlayer's current audible selection**
+  (`selectedAudio` closure — stale requests for the old rendition can't ping-pong production).
+- `NativePlaybackCoordinator`: relays AVPlayer's audible selection (media-selection notification
+  **and** a per-tick check — the notification alone did not fire in the sim; the option is mapped
+  to our track via its common-metadata title = rendition NAME, since `displayName` is the
+  localized language) → `remux.selectAudio`; the D4 rebuild (`selectAudioTrack`,
+  `pendingResumeSec`, subtitle carry-over) and the transport-bar Audio `UIMenu` are **gone**;
+  audible criteria applied once per item (never re-applied after a manual pick); the subtitle
+  selection is left alone on an audio switch (mpv parity: auto-select once). Retry item re-binds
+  the observers. Info row: "Audio tracks: N · in the Audio tab".
+- Harness: `debug.remuxSmokeAudioSwitchSec` now switches via media selection and reports
+  selection/position/`remuxActive`; `debug.avplayerUIURL` presents a bare `AVPlayerViewController`
+  (sim control); `NuvioTVUITests/InfoPanelProbeTests` (env-gated `TEST_RUNNER_INFO_PANEL_PROBE=1`)
+  opens the panel via `XCUIRemote` — the reliable way to drive the panel in the sim.
+
+**Sim-verified (tvOS 26.5):** demuxed master accepted; two-track fixture plays; **mid-run switch**
+(throttled source, `[Remux] audio switch: abandoning segment 13 → audio track → stream 2 from
+segment 13`) with a brief stall while the new track's init + first segment are produced (same cost
+as the old rebuild), seeks before/after the switch, playback continuous on the new track; unthrottled:
+switch at 93 s → 93.3→101.0 in 8 s at rate 1.0, `remuxActive=#2`, embedded subtitle cues still render.
+**Sim caveat (important):** the tvOS simulator's `AVPlayerViewController` renders **no system panel
+tabs at all** — not for our master and not for Apple's reference `bipbop_adv` stream (alternate
+audio + subtitles); only `customInfoViewControllers` tabs appear. The Subtitles/Audio tabs and the
+seamless switch UX are therefore **device-only verification** (Living Room Apple TV, plus DV
+engagement on the demuxed master).
+
+**Codex loop:** 6 rounds; fixed: init-written tracking, JIT window for switch targets, unique NAMEs,
+selection-tied switching, criteria not re-applied after manual picks, mid-stream empty audio ⇒ fail,
+retry-item rebinding. Round 6 clean.
 
 ## 6. Decisions — CONFIRMED by Christian 2026-08-16: **2A** (native demuxed audio renditions),
 ## **three tabs** (fold stream rows under "Info"), **native engine default-ON**, **target beta.13**.

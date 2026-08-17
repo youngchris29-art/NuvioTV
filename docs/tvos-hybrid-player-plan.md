@@ -92,11 +92,11 @@ Play request (PlaybackContext)
 **D3 — fMP4 via the mov/mp4 muxer + hand-written playlists.** (Forced by the missing hls muxer, but the right call regardless.)
 Init segment (`moov`) + independent fragments (`movflags`-style `frag_custom`/`dash`/`delay_moov` split) captured through a custom AVIO write callback into the segment cache. `hvc1` codec tag; attach `AVDOVIDecoderConfigurationRecord` stream side data so movenc writes the `dvvC` box (verify whether n8.1.2 still needs `strict=unofficial` — carry the `ffmpeg -tag:v dvh1 -strict unofficial` reference). Playlist `CODECS` per the Apple HLS Authoring Spec: P5 `dvh1.05.xx`; P8.1 `hvc1...` plus `SUPPLEMENTAL-CODECS` DV cross-compatibility signaling.
 
-**D4 — One audio track per remux session; track switch = session rebuild.** *(DONE — polish batch 3 below.)*
+**D4 — One audio track per remux session; track switch = session rebuild.** *(DONE — polish batch 3 below. SUPERSEDED 2026-08-17 by the info-panel W3: video-only variant + per-track audio renditions, one demux pass, active track only, switch = run boundary — see docs/tvos-native-player-info-panel-plan.md §5e.)*
 Probe lists every track; the existing track-picker UI shows them all; picking a different audio track tears down the RemuxSession and rebuilds it with the new stream index, resuming at the current position (sub-second on a warm loopback connection — this is Infuse's behavior).
 *Rejected:* muxing all audio tracks as HLS alternate renditions — N parallel segment pipelines for no user-visible gain.
 
-**D5 — App-rendered subtitle overlay for v1, not WEBVTT renditions.**
+**D5 — App-rendered subtitle overlay for v1, not WEBVTT renditions.** *(SUPERSEDED: shipped as WebVTT renditions — addon files whole (polish batch 2), embedded text tracks segmented (info-panel W2, docs/tvos-native-player-info-panel-plan.md §5d).)*
 External `SubtitleFile`s (SRT/VTT from addons) are downloaded, parsed to cues, and rendered by a SwiftUI overlay synced via `addPeriodicTimeObserver`. Embedded MKV *text* subs (SRT/ASS) are extracted at probe/remux time and fed to the same overlay.
 *Why:* WEBVTT renditions require segmented VTT with `X-TIMESTAMP-MAP` alignment, and AVPlayer's built-in rendering obeys system accessibility styling — breaking parity with the app's KMP-synced subtitle-style settings that libass honors today. Bitmap subs (PGS/VobSub) are a routing criterion → MPV.
 

@@ -164,8 +164,9 @@ have no public API); output routing re-added via `AVRoutePickerView`. `PlaybackC
 fr/es/de/it/vi (parity); 5 dead keys pruned. **Sim-verified** with `NuvioTVUITests/PlayerTopPanelProbeTests`
 (`TEST_RUNNER_PLAYER_PANEL_PROBE=1`, app pre-warmed on `long2a-sub.mkv`): Down opens, tabs switch,
 subtitle select/Off round-trip, audio select → `audio selection → stream 2`, Menu closes without
-popping the player, Down with the transport bar visible opens too. mpv adoption of the same panel
-= agreed follow-up (its swipe-up TrackPickerView stays for now).
+popping the player, Down with the transport bar visible opens too. **W5c (same day): mpv adopted the
+same panel** — swipe-up TrackPickerView deleted; 4th "Playback" tab (speed · delays · diagnostics ·
+episodes · sources); Down / down-swipe opens; probe green on both engines (panel plan §5g).
 
 ## Verification
 

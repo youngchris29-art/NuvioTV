@@ -462,6 +462,28 @@ output is block-buffered when piped — run it under `script -q <log>` and read 
 **Device pass (item 8 in the beta13 plan) still owed:** real swipes, glass over real video, route
 picker sheet, Enhance Dialogue still in the native popover, chip/caption geometry on tvOS 26.
 
+## 5g. W5c — mpv adopts the same top panel (+ Playback tab) — BUILT + sim-verified 2026-08-17
+
+Christian: "let's do the mpv follow-up now"; decision (AskUserQuestion): the mpv-only extras become a
+**4th tab "Playback"** (Infuse's Video tab analogue), the swipe-up menu goes away.
+- `PlayerTopPanel` gained an optional `extraTab: PlayerPanelExtraTab` (→ `PlayerPanelTab.playback`).
+- `Screens/Player/MPVPlaybackTab.swift`: speed chips · Subtitle/Audio Delay rows · Diagnostics toggle
+  | Episodes list (watched ✓ / playing ▶, jumps via `NextEpisodeEngine.jumpToEpisode`) | Sources list
+  (`loadSources`/`playSource`) — three focus-section columns; the old `TrackPickerView` is deleted.
+- `Screens/Player/MPVPlayerPanelAdapter.swift`: `MPVPlaybackState.audioTracks/subtitleTracks`
+  (id −1 = Off) → rows, `streamInfo` → Info rows + chips (codec chip = first name of mpv's verbose
+  string), route name via AVAudioSession; `state.panelOpen` keeps `buildStreamInfo` running while
+  the panel is up.
+- `MPVTVPlayerViewController`: D-pad Down (when no skip/up-next is pending) or a down swipe
+  (`UISwipeGestureRecognizer`) → `onOpenPanel`; the representable presents `PlayerPanelHostController`
+  (Menu swallowed, `reclaimFocus` on close so libmpv is first responder again). Up no longer opens
+  anything; the transport-bar hint now reads "Swipe down for info". `showTracks` removed.
+- Probe: `PlayerTopPanelProbeTests` accepts either engine (`player.native` / `player.mpv`) and
+  visits the Playback tab when present — PASS on the 26.5 sim against a 10-min synthetic MKV
+  (`fixtures/long10.mkv`: H.264 + eng/fra AAC + SRT; the 3-min fixture hits EOF too fast under the
+  sim's failed hwaccel). Codex: clean, 1 round. Dead keys pruned (Playback Settings, None found,
+  Sub %@ · Audio %@, Swipe up…). Device pass owed: real swipe-down on mpv, Playback tab focus paths.
+
 ## 6. Decisions — CONFIRMED by Christian 2026-08-16: **2A** (native demuxed audio renditions),
 ## **three tabs** (fold stream rows under "Info"), **native engine default-ON**, **target beta.13**.
 ## W0 spike started 2026-08-16.

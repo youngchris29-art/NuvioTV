@@ -190,7 +190,7 @@ superseded by the WebVTT-rendition approach) so the two plan docs agree.
 |---|---|---|---|
 | **W0 spike** (main session) | Info-tab hide/show behaviour with empty metadata; confirm AVPlayer accepts a demuxed master from `LocalHLSServer` with a video-only variant (H.264 fixture, sim); confirm subtitle segment `X-TIMESTAMP-MAP` cues render from a synthetic 3-segment VTT playlist. | throwaway probes under `debug.avplayerProbeURL` | ½ day |
 | **W1 ✅ 2026-08-16** | §3 Info tab (rename "Stream Info" → "Info", poster/title/S·E/synopsis header, updated stream rows — no `externalMetadata`, per spike 1); ~~native engine default-ON~~ → **moved to W2's commit** (`UserDefaults.register(defaults: [PlayerTuning.nativeDVKey: true])` at launch so `SettingsViewModel`/`PlayerScreen` `bool(forKey:)` reads flip together; toggle label loses "(beta)"; Settings copy + l10n); §1b/§2 media-selection criteria from `PlayerSettingsRepository` (audible criteria inert until W3 but harmless); AUTOSELECT/DEFAULT rules in `masterPlaylist`. | `NativePlayerScreen.swift`, `NativePlaybackCoordinator.swift`, `SegmentMap.swift`, `PlayerScreen.swift` (pass meta) | 1 day |
-| **W2** | §1a embedded subtitle sinks + segmented VTT serving + master renditions + probe/router check; **+ the native default-ON flip** (register defaults, label, l10n) — same commit, so no build ships default-ON without embedded subs. | `RemuxSession.swift`, `LocalHLSServer.swift`, `SegmentMap.swift`, `SubtitleVTT.swift`, `MediaProbe.swift` | 2 days |
+| **W2 ✅ 2026-08-16** | §1a embedded subtitle sinks + segmented VTT serving + master renditions + probe/router check; **+ the native default-ON flip** (register defaults, label, l10n) — same commit, so no build ships default-ON without embedded subs. | `RemuxSession.swift`, `LocalHLSServer.swift`, `SegmentMap.swift`, `SubtitleVTT.swift`, `MediaProbe.swift` | 2 days |
 | **W3** | §2A demuxed audio renditions; remove UIMenu + D4 rebuild (behind the smoke knob first). | `RemuxSession.swift`, `LocalHLSServer.swift`, `SegmentMap.swift`, `NativePlaybackCoordinator.swift`, `NativePlayerScreen.swift`, `RemuxSmokeTest.swift` | 3–4 days |
 | **W4** | l10n of new strings (fr/es/de/it/vi via the xcstrings scripts), Codex review → fix → re-review, README + screenshot (release script enforces), tracker/plan entries. | `Localizable.xcstrings`, docs | ½ day |
 
@@ -307,6 +307,41 @@ native will, via `allowedSubtitleOptionLanguages`, once W2 lands).
 
 **Codex loop:** 14 rounds (`codex-companion review --wait`), findings fixed each round until the
 remaining items were out-of-scope mpv-parity asks; last round's only finding is the follow-up above.
+
+## 5d. W2 — BUILT + sim-verified + Codex-gated 2026-08-16
+
+**Landed:** embedded text subtitle tracks are offered in the system Subtitles tab on the native path.
+- `EmbeddedSubtitleSink` (new): one per text track (subrip/ass/ssa/mov_text/webvtt/ttml/…), fed by
+  the remux worker's demux loop (`RemuxSession.runRemux` routes the stream's packets to it), decodes
+  with libavcodec (`avcodec_decode_subtitle2` → ASS dialogue / plain text → `SubtitleVTT.vttCueText`),
+  times cues from packet pts/duration (+ `start_display_time`, `end_display_time` fallbacks), and
+  writes `esub-<sink>-NNNNN.vtt` when video segment N finalizes (`X-TIMESTAMP-MAP=MPEGTS:0`,
+  absolute playlist times, boundary-spanning cues repeated, header-only files for empty segments).
+  Reposition: pending cues cleared before the seek; packets read during the boundary scan are
+  ingested (pre-roll). EOF writes the last segment. Tracks without a decoder are skipped
+  (`subtitleSinkIndices`) so no rendition can point at files that never appear.
+- `LocalHLSServer`: `esub-K.m3u8` (per-segment VOD playlist, `SegmentMap.embeddedSubtitlePlaylist`)
+  and `esub-K-NNNNN.vtt` served through the video segments' JIT path (`segmentIndex` parses both
+  names). `SubtitleRendition` gained `source: .remote(URL) | .embedded(sink:)`, `forced`,
+  `hearingImpaired`; master gets `FORCED=YES` / SDH `CHARACTERISTICS`.
+- Renditions: embedded first, then addon; names "English", "English (SDH)", "English (Forced)",
+  "English · Commentary" (title used as-is when it starts with the language), deduped across both
+  lists (`SubtitleVTT.embeddedRenditions`).
+- Language plan: forced-only ⇒ DEFAULT only a forced match; normal ⇒ DEFAULT only a full (non-forced)
+  match; **forced renditions are always AUTOSELECT=YES** (HLS requires it with FORCED=YES; forced
+  tracks show per the player's rules — foreign dialogue — regardless of the subtitle preference,
+  which is also mpv's default). Codex flip-flopped on this across rounds 1/3/4; decided, documented.
+- Info row: "Embedded subtitles: N · in the Subtitles tab" (or "k of N" when a track had no decoder).
+- **Native engine default-ON** landed here (`UserDefaults.register(defaults:)` in `NuvioTVApp.init`,
+  toggle titled "Native player (Dolby Vision & HDR)").
+- Harness: `RemuxSmokeTest` now logs the first cues AVPlayer renders for the selected subtitle.
+
+**Sim-verified (tvOS 26.5, `test2a-sub.mkv` / `long2a-sub.mkv`):** `[Remux] embedded subtitle
+sinks: 1 (#3→esub-0)`, legible group lists "English · Embedded English", AVPlayer requests
+`esub-0.m3u8` + per-segment VTTs, all four cues render at 1/5/11/16 s, the 5–9 s cue appears in
+both `esub-0-00001.vtt` and `esub-0-00002.vtt`; seeks (90 s, 30 s) and an audio-switch rebuild keep
+the rendition (empty 52-byte segments, no 503s, selection restored). Not exercised: a mid-file
+reposition on a source that hasn't remuxed to EOF (the 16 MB fixture finishes first) — device pass.
 
 ## 6. Decisions — CONFIRMED by Christian 2026-08-16: **2A** (native demuxed audio renditions),
 ## **three tabs** (fold stream rows under "Info"), **native engine default-ON**, **target beta.13**.

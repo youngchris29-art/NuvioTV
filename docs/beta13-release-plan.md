@@ -147,6 +147,26 @@ fr/es/de/it/vi merged (catalog at parity). README Playback bullets updated.
 **Sim can't verify the system tabs** (the tvOS simulator renders no Subtitles/Audio tabs — not
 even for Apple's reference stream); those are device-pass items (below).
 
+### Wave 5b — App-drawn swipe-down top panel + HIG-uniform chips (Christian's ask 2026-08-17) — ✅ BUILT 2026-08-17
+Christian's device clip showed the truth about tvOS 26: **there is no system swipe-down tabbed
+panel any more** — a `customInfoViewControllers` tab renders as a bottom-left "Info" pill under
+the seek bar, and Subtitles/Audio are transport-bar popovers. He wants Infuse's UX: no Info under
+the seek bar, a swipe-down/D-pad-down top panel with **Info · Subtitles · Audio**, Menu closes it.
+Built (plan: `~/.claude/plans/…lazy-pillow.md`, results in `docs/tvos-native-player-info-panel-plan.md` §5f):
+`Screens/Player/` — `PlayerPanelHost.swift` (container VC over AVPlayerViewController with
+Down-press/down-swipe recognizers; presented `.overFullScreen` hosting VC that swallows Menu),
+`PlayerTopPanel.swift` (+ Info/Subtitles/Audio tabs, `PlayerTopPanelModel`, `NativePlayerPanelAdapter`,
+`PlayerSwipeHint`), `PlayerChipStyle.swift` (shared chip look; native = contextualActions with static
+titles + a countdown caption, mpv = matching `PlayerActionChip`; `UpNextCard`/`SkipPromptPill`
+deleted). Native transport-bar Subtitles/Audio popovers KEPT (Enhance Dialogue / Reduce Loud Sounds
+have no public API); output routing re-added via `AVRoutePickerView`. `PlaybackContext.meta`
+(year/runtime/rating/genres from Detail) + `fileSizeBytes` feed the Info chip row. l10n: 10 keys ×
+fr/es/de/it/vi (parity); 5 dead keys pruned. **Sim-verified** with `NuvioTVUITests/PlayerTopPanelProbeTests`
+(`TEST_RUNNER_PLAYER_PANEL_PROBE=1`, app pre-warmed on `long2a-sub.mkv`): Down opens, tabs switch,
+subtitle select/Off round-trip, audio select → `audio selection → stream 2`, Menu closes without
+popping the player, Down with the transport bar visible opens too. mpv adoption of the same panel
+= agreed follow-up (its swipe-up TrackPickerView stays for now).
+
 ## Verification
 
 - **Automated:** full suite (57 UITests + `GifDecodePlanTests` 14 + `StreamBadgeColorTests`
@@ -158,9 +178,15 @@ even for Apple's reference stream); those are device-pass items (below).
   Trailers on Focus in both hero modes; (3) UX-8 toggle round-trip incl. sync; (4) BUG-57 both
   depth modes; (5) BUG-30/62 residual read; (6) VidHub retest with the `debug.vidhubMethod` knob
   IF VidHub has shipped an update; (7) regression sweep of beta.12's device-verified items;
-  **(8) native player panel (Wave 5)**: swipe down on a native-routed title → tabs = Info ·
-  Subtitles · Audio (three tabs, no system Info duplicate); Info shows poster/title/S·E/synopsis +
-  the live rows; Subtitles lists the MKV's embedded text tracks (named by language, SDH/Forced
+  **(8) native player panel (Wave 5/5b — app-drawn)**: swipe down AND D-pad down on a
+  native-routed title (controls hidden and visible) → our top panel with Info · Subtitles · Audio;
+  **no "Info" pill under the seek bar**; Menu closes the panel without exiting; swipe up closes;
+  playback never pauses; the transport bar doesn't react to panel presses; Up from a list lands
+  on the CURRENT tab; Info shows poster/title/S·E·episode name/synopsis + the chip strip + the
+  live rows; the "Swipe down for info" hint shows after start and after a pause; the Speakers &
+  Headphones column names the route and the picker opens the AirPods/HomePod sheet; the native
+  Audio popover still offers Enhance Dialogue / Reduce Loud Sounds; the up-next countdown caption
+  sits above (not on) the contextual pill — tune `contextualActionClearance` if it overlaps; Subtitles lists the MKV's embedded text tracks (named by language, SDH/Forced
   flagged) alongside addon subs and cues render; Audio lists every track (language · codec ·
   layout) and switching plays on within a few seconds with the video continuing (no black/reload)
   — Info "Audio" row follows; Preferred Audio Language picks the start track; a DV title still

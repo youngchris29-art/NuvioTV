@@ -12,6 +12,14 @@ output routing).
 
 ---
 
+> **2026-08-17 addendum — tvOS 26 reality (supersedes §0's premise).** Christian's device clip of
+> the W1–W3 build showed that **tvOS 26's `AVPlayerViewController` has no swipe-down tabbed panel
+> at all**: a `customInfoViewControllers` tab renders as a bottom-left **"Info" pill under the seek
+> bar** whose content expands above the transport bar, and Subtitles/Audio are transport-bar
+> popover buttons. The sim "rendering no tabs" (§5e) was that same reality, not a sim quirk. The
+> W1–W3 *plumbing* (embedded WebVTT renditions, demuxed audio renditions, language plan) is all
+> still load-bearing — it now feeds an **app-drawn Infuse-style top panel** instead (W5b, §5f).
+
 ## 0. Where we actually are (this changes the shape of the work)
 
 The swipe-down panel **already exists** on the native screen — it's `AVPlayerViewController`'s own
@@ -390,6 +398,69 @@ engagement on the demuxed master).
 **Codex loop:** 6 rounds; fixed: init-written tracking, JIT window for switch targets, unique NAMEs,
 selection-tied switching, criteria not re-applied after manual picks, mid-stream empty audio ⇒ fail,
 retry-item rebinding. Round 6 clean.
+
+## 5f. W5b — App-drawn swipe-down top panel + uniform chips — BUILT + sim-verified 2026-08-17
+
+**Ask (Christian, 2026-08-17, from the device clip vs. Infuse):** no Info under the seek bar; a
+swipe-down / D-pad-down top panel like Infuse with Info · Subtitles · Audio; Menu closes it; all
+pop-up chips (Skip Intro/Recap/Outro, Next Episode) uniform and HIG. Decisions via AskUserQuestion:
+Info · Subtitles · Audio in the custom panel; **keep the native transport-bar Subtitles/Audio
+popovers** (Enhance Dialogue / Reduce Loud Sounds have NO public API — only `.moviePlayback`
+session mode makes them eligible); native path first, mpv reuses the panel in a follow-up; chips =
+`contextualActions` on native.
+
+**W0 spike (sim 26.5, `FA87E9B6`) — ALL PASS:** a container VC (child = AVPlayerViewController)
+with `UITapGestureRecognizer(allowedPressTypes: [.downArrow])` + `UISwipeGestureRecognizer(.down)`
+on its view (delegate allows simultaneous recognition) sees the Down press whichever AVPVC view
+holds focus; presenting a clear `.overFullScreen` `UIHostingController` gives focus containment
+(Select hit the panel's buttons), Menu swallowed in its `pressesBegan` closes the panel and does NOT
+pop the player, playback ticks continue underneath, Down while the transport bar is visible opens
+the panel too (bar stays under it — accepted). No transport-bar flash on the hidden-controls path.
+
+**Built (`Screens/Player/`):**
+- `PlayerPanelHost.swift` — `NativePlayerHostController` (+ `onOpenPanel`/`onPanelClosed`,
+  `present(panel:)`, `closePanel`), `PlayerPanelHostController<Content>` (Menu swallow, swipe-up
+  close, `PlayerPanelPresenting`). `AVPlayerContainer` now wraps the host; `customInfoViewControllers`
+  removed; `dismantleUIViewController` closes any open panel.
+- `PlayerTopPanel.swift` — top-anchored glass panel; tab row = default tvOS `Button`s whose
+  selection follows focus; **Up from a list re-lands on the CURRENT tab** (the focus engine would
+  otherwise pick the geometrically nearest tab and silently switch — found by the probe);
+  `PlayerPanelOptionRow` (checkmark rows, `.borderless`), `PlayerPanelSectionCaption`.
+- `PlayerInfoTab.swift` — `NativeInfoHeader` (now "S3 · E2 · Episode name" from `context.episodes`,
+  release name demoted to a caption) + metadata chip row + the 2-column rows (moved verbatim).
+- `PlayerSubtitlesTab.swift` (Off first, embedded, addon; Forced/SDH details; scrolls with focus),
+  `PlayerAudioTab.swift` (LANGUAGE column full-width so Down from the centred tab lands on it — not
+  on the route picker; SPEAKERS & HEADPHONES column: route name + `AVRoutePickerView` + the
+  Enhance-Dialogue pointer caption).
+- `PlayerTopPanelModel.swift` (engine-agnostic), `NativePlayerPanelAdapter.swift` (Combine sinks on
+  the coordinator's groups/`selectionVersion`/`audioTracks`, tick → rows/chips only when changed,
+  AVAudioSession route name), `PlayerSwipeHint.swift` (1 s after readyToPlay for 4 s; again 1.5 s
+  into a pause; hidden while the panel is open).
+- `NativePlaybackCoordinator`: `legibleGroup`/`audibleGroup` published, `selectionVersion`,
+  `subtitleRenditionsByName`, `isPaused` (KVO `timeControlStatus`), `select(subtitle:)`/`select(audio:)`
+  (same `AVPlayerItem.select(_:in:)` path as the native popovers → the popover and the panel agree),
+  `renditionName(of:)`, `subtitleOptionAllowed`, `infoChips()`.
+- `PlaybackModels`: `PlaybackContext.meta: PlaybackMeta?` (year/runtime/imdbRating/ageRating/genres,
+  threaded from `DetailView` through `StreamPickerView`) + `fileSizeBytes` (`behaviorHints.videoSize`).
+- Chips: `PlayerChipStyle.swift` (`PlayerActionChip`, `PlayerChipCaption`, symbols, 0.25 s ease,
+  `lastSecondExclusion`); native `UpNextCard` gone → static-title contextual actions ("Play Next
+  Episode" / "Continue Watching", phase KIND in the signature, never the count) + caption above
+  (`contextualActionClearance = 96`, device-tune); mpv `SkipPromptPill`/`UpNextCard` →
+  `PlayerActionChip` + `PlayerChipCaption` (still D-pad-Down triggered, outro clamp kept).
+- l10n: 10 keys × fr/es/de/it/vi (parity); pruned 5 dead keys; accessibility values are
+  `Text(verbatim:)` so "selected" never enters the catalog.
+
+**Sim probe (`NuvioTVUITests/PlayerTopPanelProbeTests`, `TEST_RUNNER_PLAYER_PANEL_PROBE=1`, app
+pre-warmed via `debug.mpvSmokeURL` on `long2a-sub.mkv`):** PASS — Down opens on Info; Right →
+Subtitles (Off + "English · Embedded English"); Down·Down·Select → row selected (`[NativePlayer]
+subtitle selection → English · Embedded English`), Up·Select → Off; Up·Right → Audio; Down·Down·Select
+→ French (`audio selection → stream 2 (French)`); Menu → panel gone, `player.native` still there;
+Select (bar) → Down → opens again. Gotchas: an `accessibilityIdentifier` on a SwiftUI CONTAINER
+overrides every descendant's id (took the tab ids with it) — only tag leaves; `xcodebuild test`
+output is block-buffered when piped — run it under `script -q <log>` and read the log.
+
+**Device pass (item 8 in the beta13 plan) still owed:** real swipes, glass over real video, route
+picker sheet, Enhance Dialogue still in the native popover, chip/caption geometry on tvOS 26.
 
 ## 6. Decisions — CONFIRMED by Christian 2026-08-16: **2A** (native demuxed audio renditions),
 ## **three tabs** (fold stream rows under "Info"), **native engine default-ON**, **target beta.13**.

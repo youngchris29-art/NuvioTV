@@ -559,11 +559,19 @@
       15-round Codex loop. All committed and pushed (<code>88abcf9a..b8c4e60c</code> + pointer <code>72ca2a8</code>); release gates below.
     </p>
     <div class="meta">
-      <span class="pill"><strong>160</strong> comments <span style="color:var(--text-3)">(floor)</span></span>
-      <span class="pill"><strong>102↑</strong> · <strong>70K</strong> views <span style="color:var(--text-3)">carried from 2026-08-02, 15 days stale</span></span>
-      <span class="pill">Last checked <strong>2026-08-17</strong> · ⚪️ <strong>no new tester comments — second quiet run</strong></span>
-      <span class="pill">🚀 <strong>beta.12 announced</strong> — <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p41ifp4/"><code>p41ifp4</code></a> (build 108), ~24h old · <strong>no field reports yet</strong></span>
-      <span class="pill">🔍 <strong>Focus lift explained, not removed</strong> — <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p41ijt8/"><code>p41ijt8</code></a> to u/mrStevenx3: the system lift stays, our own scaling is what the toggle kills (BUG-31)</span>
+      <span class="pill"><strong>161</strong> comments <span style="color:var(--text-3)">(floor)</span></span>
+      <span class="pill"><strong>102↑</strong> · <strong>70K</strong> views <span style="color:var(--text-3)">carried from 2026-08-02, 16 days stale</span></span>
+      <span class="pill">Last checked <strong>2026-08-18</strong> · 🔴 <strong>beta.12&#8217;s first tester verdict — 2 rows closed, 4 re-opened, BUG-63 is the new P1</strong></span>
+      <span class="pill">🔑 <strong>BUG-63</strong> (P1) — trailers are gated on the <em>Metadata Language</em> with no fallback; set it to English and they all play · <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p4afwfo/"><code>p4afwfo</code></a></span>
+      <span class="pill">🔴 <strong>BUG-59 reopened</strong> — ~90% still letterbox, and he filmed a working case and a failing case in <em>one</em> clip</span>
+      <span class="pill">✅ <strong>BUG-31 closed by the reporter</strong> — <em>&#8220;je consid&#232;re ce probl&#232;me comme r&#233;solu&#8221;</em>, after four re-reports</span>
+      <span class="pill">✅ <strong>BUG-35 confirmed in the wild</strong> — posters and descriptions fully in his language</span>
+      <span class="pill">⚠️ <strong>BUG-38 retest came back negative</strong> — collection covers <em>and</em> title images still missing on his config</span>
+      <span class="pill">🔴 <strong>BUG-39</strong> — sharper GIFs cost the smoothness that closed BUG-19</span>
+      <span class="pill">🆕 <strong>+4 items</strong> — BUG-63, BUG-64, FEAT-24, FEAT-25</span>
+      <span class="pill">🎯 <strong>Fusion</strong> is now his reference app on three separate surfaces</span>
+      <span class="pill">Prior · 🚀 <strong>beta.12 announced</strong> — <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p41ifp4/"><code>p41ifp4</code></a> (build 108), ~48h old · <strong>the first field report is in, and it is below</strong></span>
+      <span class="pill">Prior · 🔍 <strong>Focus lift explained, not removed</strong> — <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p41ijt8/"><code>p41ijt8</code></a> to u/mrStevenx3: the system lift stays, our own scaling is what the toggle kills (BUG-31)</span>
       <span class="pill">Prior · 📤 <strong>FEAT-23 reply permalink confirmed</strong> — <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p3ud2m3/"><code>p3ud2m3</code></a>, that run's only comment and it was ours</span>
       <span class="pill">⏳ <strong>Awaiting u/Gullible_Kick6921</strong> — ~2 days since the decline; FEAT-23 is watch-only</span>
       <span class="pill">🗣 <strong>Prior new reporter</strong> — u/Gullible_Kick6921, 19th voice (2026-08-15)</span>
@@ -572,7 +580,7 @@
       <span class="pill">🗣 <strong>Prior new reporter</strong> — u/StudioKentin, 18th voice (2026-08-13)</span>
       <span class="pill">🆕 <strong>+2 items</strong> — BUG-62, FEAT-22 <span style="color:var(--text-3)">(both P2)</span></span>
       <span class="pill">📤 <strong>Replied same day</strong> — <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p3h0asv/"><code>p3h0asv</code></a>, verified byte-identical</span>
-      <span class="pill">Watermark <code>p41ijt8</code> <span style="color:var(--text-3)">@ 2026-08-16T15:22:10Z</span></span>
+      <span class="pill">Watermark <code>p4afwfo</code> <span style="color:var(--text-3)">@ 2026-08-17T20:31:14Z</span></span>
       <span class="pill">🚢 Shipped <strong>beta.12</strong> · build 108 · <code>2a8c387c</code></span>
       <span class="pill">Prior · 🚢 Shipped <strong>beta.11</strong> · build 107 · <code>f9e4ae56</code></span>
       <span class="pill">🔑 <strong>BUG-55 explained</strong> — a reinstall cleared it: persisted state, not the binary</span>
@@ -958,14 +966,14 @@
 
   <div class="tiles">
     <div class="tile alert">
-      <span class="n">27</span>
+      <span class="n">28</span>
       <span class="k">Open bugs</span>
-      <span class="sub">of 62 filed · 🆕 <strong>+BUG-62</strong> (top menu bar freezing, u/StudioKentin) — no repro yet, and it may be <strong>BUG-30</strong> — whose reframe <em>shipped</em> in beta.11, so the build number decides it · 🎥 <strong>BUG-45 raised P2 → P1 by the video pass</strong> (the focused Settings sidebar row draws no label at all on the released build) · <strong>+6 earlier today</strong> (BUG-56…BUG-61) · <strong>BUG-46</strong> raised P2 → P1 and merged with <strong>BUG-55</strong> — a reinstall cleared the dead trailers, so the trigger is persisted state · <strong>BUG-43</strong> raised P3 → P2, its shipped fix did not take</span>
+      <span class="sub">of 64 filed · 🆕 <strong>+BUG-63</strong> (P1 — the Metadata-Language trailer gate, and the first deterministic repro this thread has produced for &#8220;trailers do not play&#8221;) and <strong>+BUG-64</strong> (P3 — the focus ring draws over the poster) · ✅ <strong>&#8722;BUG-31</strong>, closed by the reporter himself · <strong>four rows went backwards on the beta.12 verdict</strong>: BUG-38, BUG-39, BUG-42 and BUG-59 — all four were carried as <em>Fixed &amp; RELEASED</em> and are not · 🆕 <strong>+BUG-62</strong> (top menu bar freezing, u/StudioKentin) — no repro yet, and it may be <strong>BUG-30</strong> — whose reframe <em>shipped</em> in beta.11, so the build number decides it · 🎥 <strong>BUG-45 raised P2 → P1 by the video pass</strong> (the focused Settings sidebar row draws no label at all on the released build) · <strong>+6 earlier today</strong> (BUG-56…BUG-61) · <strong>BUG-46</strong> raised P2 → P1 and merged with <strong>BUG-55</strong> — a reinstall cleared the dead trailers, so the trigger is persisted state · <strong>BUG-43</strong> raised P3 → P2, its shipped fix did not take</span>
     </div>
     <div class="tile">
-      <span class="n">11</span>
+      <span class="n">13</span>
       <span class="k">Open feature requests</span>
-      <span class="sub">of 23 filed · 🆕 <strong>+FEAT-23</strong> (a macOS build, u/Gullible_Kick6921) — the first platform-port ask this thread has produced, and an answer rather than a build · <strong>+FEAT-22</strong> (auto-play a preferred quality, u/StudioKentin) — the first ask for <em>automatic</em> stream selection rather than a better manual picker · <strong>+FEAT-21</strong> (VidHub as an external player, u/Ginosaure) · FEAT-17 and FEAT-18 both re-requested this sweep · FEAT-19 (Vietnamese) via DM · FEAT-20 (Simkl) shipped in beta.11, verdict pending</span>
+      <span class="sub">of 25 filed · 🆕 <strong>+FEAT-24</strong> (season posters instead of &#8220;Season 1&#8221; text) and <strong>+FEAT-25</strong> (choose whether the trailer plays in the hero or the thumbnail) — with FEAT-15, FEAT-17 and FEAT-18 that is <strong>four settings one reporter has asked for on the same square inch of screen</strong>, which is one design decision rather than four toggles · 🆕 <strong>+FEAT-23</strong> (a macOS build, u/Gullible_Kick6921) — the first platform-port ask this thread has produced, and an answer rather than a build · <strong>+FEAT-22</strong> (auto-play a preferred quality, u/StudioKentin) — the first ask for <em>automatic</em> stream selection rather than a better manual picker · <strong>+FEAT-21</strong> (VidHub as an external player, u/Ginosaure) · FEAT-17 and FEAT-18 both re-requested this sweep · FEAT-19 (Vietnamese) via DM · FEAT-20 (Simkl) shipped in beta.11, verdict pending</span>
     </div>
     <div class="tile">
       <span class="n">8</span>
@@ -973,9 +981,9 @@
       <span class="sub"><strong>+UX-14</strong> (collection Back loses scroll — via DM) · <strong>UX-8</strong> restated at its simplest (hide the whole <em>Discover</em> section) and <strong>UX-9</strong> re-confirmed as a kept promise — <em>"so I won't dwell on it"</em></span>
     </div>
     <div class="tile ship">
-      <span class="n">56</span>
+      <span class="n">57</span>
       <span class="k">Resolved or shipped</span>
-      <span class="sub">of <strong>102</strong> tracked items <span style="color:var(--text-3)">(the guard's row count; earlier boards said 98)</span> · nothing closed this sweep — beta.11's released fixes are still being judged in the wild, and two of them (BUG-43, BUG-42) were reported as not having taken</span>
+      <span class="sub">of <strong>106</strong> tracked items <span style="color:var(--text-3)">(the guard's row count)</span> · <strong>+BUG-31, closed on the reporter's own word</strong> — the longest-running visual dispute on this board, ended after four re-reports, a counter-video request and the <code>p41ijt8</code> focus-lift explanation he accepted without argument; <strong>BUG-35</strong> is likewise confirmed in the wild. <span style="color:var(--text-3)">Caveat kept honest: this open/resolved split is carried from before beta.12 and <strong>understates</strong> what that build closed — it has not been recomputed row by row since.</span> · <em>Prior:</em> nothing closed that sweep — beta.11's released fixes are still being judged in the wild, and two of them (BUG-43, BUG-42) were reported as not having taken</span>
     </div>
   </div>
 
@@ -1384,7 +1392,7 @@
           <span class="status warn">Pairs with UX-9</span>
         </div>
         <p class="desc"><strong>Focus-view trailers render outside the bounds of their card.</strong>
-          <em>"The trailers in the focus view extend beyond the frame."</em></p>
+          <em>"The trailers in the focus view extend beyond the frame."</em> <br><br><strong>🔴 2026-08-18 &#8212; REOPENED. The beta.12 re-report supplies the control the 2026-08-10 frame-by-frame lacked:</strong> a <em>working</em> case and a <em>failing</em> case filmed in one clip (<em>&#8220;S&#233;rie GIGN OK et d&#8217;autres pas OK&#8221;</em>), with ~90% of titles still letterboxing. A phone camera cannot be wrong on one card and right on the next, so the &#8220;the crop is the camera&#8221; reading does not survive. He names <strong>Fusion</strong> as an app that gets this right. A second, separate symptom on the same surface: after updating to beta.12 <em>every</em> trailer was extremely zoomed until an uninstall+reinstall cleared it &#8212; BUG-55&#8217;s persisted-state signature, attached to zoom rather than playback.</p>
         <p class="fix"><strong>Read alongside UX-9, which is the opposite complaint about the same surface:</strong> some focus trailers letterbox with ~38px bars
           top and bottom (measured 2026-08-05), and now others spill past the card edge. <strong>One aspect-ratio-blind fit rule explains both</strong> —
           a fixed zoom fills a 16:9 source neatly, under-fills a 2.39:1 source, and overshoots anything narrower, while a <code>clipsToBounds</code>
@@ -1514,7 +1522,7 @@
           <em>"Even worse, none of the trailers play anymore when entering focus mode."</em>
           This ran on their hardware one build ago: their beta.10 review faulted trailer <em>letterboxing</em> (UX-9) and never playback,
           so the regression is bounded to the beta.11 batch.
-        </p>
+         <br><br><strong>🔴 2026-08-18 &#8212; THE REPORTER NAMED THE MECHANISM, AND IT IS NOT PERSISTED STATE.</strong> Trailer lookup is gated on the <em>Metadata Language</em>: set it to English and every trailer plays, set it back to Fran&#231;ais and only the titles with a French trailer do. Split out as <strong>BUG-63</strong>, and it explains this row&#8217;s two contradictory 2026-08-10 clips without any state poisoning &#8212; whether a title has a French trailer is a property of the <em>title</em>, not the session. The reinstall evidence still stands (a reinstall does not change TMDB&#8217;s catalogue), so this row stays open, but <strong>do BUG-63 first and re-test here after</strong>; the container-dump forensics may be unnecessary.</p>
         <p class="fix">
           <strong><code>aeff3b64</code> is the only beta.11 commit that touches the focus-trailer surface</strong>
           (<code>InlineTrailerCard.swift</code> +274, <code>TrailerHeroPlayerView.swift</code> +487), and it put four changes on the play path
@@ -1603,7 +1611,7 @@
           enrichment-heavy French locale and the timeout path commits raw-then-localized after all, or the hold covers the hero <em>metadata</em>
           while the <strong>backdrop image</strong> still swaps on a separate path — which would match their wording exactly, since they describe
           posters loading twice, not text.
-        </p>
+         <br><br><strong>⚠️ 2026-08-18 &#8212; RE-REPORTED A THIRD TIME, AND THE beta.12 VERIFY CHECKED THE WRONG AXIS.</strong> <em>&#8220;Le H&#233;ros affiche toujours une couverture et ensuite en charge une autre par-dessus.&#8221;</em> The <code>2a8c387c</code> check was a <em>localization</em> pass (cold launch in Fran&#231;ais, no EN→FR swap) and passed on that axis; what he reports is the <em>double image commit</em>, which a language check cannot see. The <code>first_hero</code> LaunchTrace device check this row has prescribed three times is still the only way to read the commit sequence.</p>
         <p class="by"><span>u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2keul1/"><code>p2keul1</code></a></p>
       </div>
 
@@ -1623,7 +1631,7 @@
           been run, and there is a specific cheap failure it would expose: <strong>if the thumbnail target was computed in POINTS rather than pixels,
           every GIF is decoding at half resolution on a 4K panel</strong> — a 300pt tile is 600px of backing store — which would look exactly this bad
           and would be a one-line fix.
-        </p>
+         <br><br><strong>🔴 2026-08-18 &#8212; THE SHARPNESS FIX LANDED AND COST THE SMOOTHNESS.</strong> <em>&#8220;Les GIFs sont maintenant affich&#233;s de mani&#232;re plus nette, mais ils sont beaucoup plus saccad&#233;s.&#8221;</em> He reads it as a deliberate trade and is not complaining &#8212; but <strong>BUG-19 was closed on this same reporter&#8217;s <em>&#8220;GIFs are finally smooth&#8221;</em></strong>, so this is a regression of a closed row, not an accepted cost. The 3.8&#215;-pixels-per-frame decode (200 → 391 px) is the suspect; a middle setting (decode at tile size, or fewer retained frames at the higher resolution) beats a revert.</p>
         <p class="by"><span>u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2keul1/"><code>p2keul1</code></a></p>
       </div>
 
@@ -1645,7 +1653,7 @@
           plainly that the default stays whole-card because that is the house design.
           <strong>The counter-video they asked for is still owed and is now four days overdue</strong> — though BUG-53 has since supplied a mechanism
           that may explain their side of the old device-vs-device divergence outright, which would retire this row with no further drawing change.
-        </p>
+         <br><br><strong>✅ 2026-08-18 &#8212; CLOSED BY THE REPORTER, ON beta.12.</strong> <em>&#8220;Concernant le zoom des affiches, je consid&#232;re ce probl&#232;me comme r&#233;solu.&#8221;</em> The <code>p41ijt8</code> explanation &#8212; the residual motion is tvOS&#8217;s own focus lift and stays by design &#8212; was accepted without argument. Four re-reports and one counter-video request later, <strong>the longest-running visual dispute on this board is closed</strong>. The one residual he names in the same breath is <em>not</em> this row: with the focus <em>border</em> on, the poster reads as hidden behind its own outline &#8212; filed as <strong>BUG-64</strong> against FEAT-14&#8217;s ring.</p>
         <p class="by"><span>u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2keul1/"><code>p2keul1</code></a></p>
       </div>
 
@@ -1667,7 +1675,7 @@
           Two obligations, and the second matters more: decide the deferred fetch-volume question for real (per-row enrichment on scroll, batched,
           cached under the language-qualified key that already exists), and <strong>stop shipping half a localization fix without saying which
           half</strong> — the announcement implied progress this reporter cannot see.
-        </p>
+         <br><br><strong>✅ 2026-08-18 &#8212; CONFIRMED FIXED IN THE WILD (beta.12), unprompted.</strong> <em>&#8220;Les affiches et les descriptions de mes films sont de nouveau enti&#232;rement dans ma langue.&#8221;</em> Listed under <em>Ce qui a &#233;t&#233; corrig&#233;</em> in his beta.12 review &#8212; <code>923400df</code> confirmed by the person who reported the defect, on his hardware and his config.</p>
         <p class="by"><span>u/mrStevenx3</span><span class="sep">·</span><a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p2keul1/"><code>p2keul1</code></a></p>
       </div>
 
@@ -1869,7 +1877,7 @@
           previous attempts were constants, which is exactly why both missed. <strong>(3)</strong> Our frame pass read Soulm8te and Supergirl as
           edge-to-edge; the likeliest reconciliation is a <em>transient at trailer start</em>, which a sampled contact sheet skips and a live
           viewer sees every time.
-        </p>
+         <br><br><strong>🔴 2026-08-18 &#8212; RE-CONFIRMED ON beta.12 AND QUANTIFIED FOR THE FIRST TIME: ~90% of titles still letterbox.</strong> The promise this row is parked on is now <strong>two betas overdue</strong>, and he is no longer declining to dwell on it. Evidence and the working-vs-failing side-by-side live on <strong>BUG-59</strong>. This row stays the design half: decide the fit rule once &#8212; aspect-aware fill with clipping proven on <em>every</em> trailer surface &#8212; rather than another per-case tweak. He offers <strong>Fusion</strong> as the reference implementation.</p>
         <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1vylo0/">comment</a> <span class="sep">·</span> <a href="https://reddit.com/link/p1vylo0/video/waxrc8r45lhh1/player">video</a> <span class="sep">·</span> 2026-08-05</div>
       </div>
 
@@ -1941,7 +1949,7 @@
           that never get a cover minted, so the resolver falls back to the first item's poster. That story does not obviously carry to
           <em>service</em> collections, which are a different source kind and may well have a real cover URL that simply is not being bound, and
           it covers <strong>title images</strong> not at all: the reporter lists those as a second missing asset, not a rewording of the first.
-        </p>
+         <br><br><strong>⚠️ 2026-08-18 &#8212; THE RETEST THIS ROW WAS WAITING ON CAME BACK NEGATIVE.</strong> <em>&#8220;Les couvertures, ainsi que les images de titre de mes collections, ne s&#8217;affichent toujours pas.&#8221;</em> <strong>Both halves are still missing for him</strong> &#8212; covers <em>and</em> title images &#8212; so <code>cabbed73</code> is not reaching his data at all, which is exactly the never-verified-against-his-config risk Wave 0 flagged. Ask for a Collections screenshot plus the collection names, or diff a synced folder payload from his account against a local one; a positional fallback masking a key-name mismatch is the first suspect, BUG-52&#8217;s <code>titleLogoURL</code> gating the second.</p>
         <div class="by">u/mrStevenx3 <span class="sep">·</span> <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p1vylo0/">comment</a> <span class="sep">·</span> <a href="https://reddit.com/link/p1vylo0/video/waxrc8r45lhh1/player">video</a> <span class="sep">·</span> 2026-08-05</div>
       </div>
 
@@ -2872,6 +2880,58 @@
   <section>
     <h2>Update log</h2>
     <div class="timeline">
+      <div class="entry hot">
+        <div class="when">2026-08-18 · sweep — 🔴 <strong>The quiet streak ends: one comment, and it is the biggest single feedback drop this thread has had</strong> · watermark <code>p41ijt8</code> → <code>p4afwfo</code>; floor 160 → 161</div>
+        <p class="what">
+          One comment newer than the watermark, and it is u/mrStevenx3&#8217;s structured <strong>beta.12 review</strong>
+          (<a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p4afwfo/"><code>p4afwfo</code></a>, 2026-08-17T20:31:14Z), laid out as
+          <em>Ce qui a &#233;t&#233; corrig&#233;</em> / <em>Ce qui ne fonctionne toujours pas</em> /
+          <em>Fonctionnalit&#233;s que j&#8217;aimerais encore voir ajout&#233;es</em>, with a side-by-side video attached.
+          Eleven distinct points, all substantive. <strong>+4 rows, 12 rows edited, 0 noise.</strong>
+        </p>
+        <p class="what">
+          <strong>The headline is BUG-63, and it is the most useful thing a tester has handed this project.</strong>
+          <em>&#8220;J&#8217;ai test&#233; cela en changeant la langue des m&#233;tadonn&#233;es en anglais, et toutes les bandes-annonces se sont
+          ensuite affich&#233;es correctement.&#8221;</em> Trailer lookup is gated on the <strong>Metadata Language</strong> with no fallback —
+          set it to English and every trailer plays; set it back to Fran&#231;ais and only the titles that <em>have</em> a French trailer play.
+          That is a deterministic, one-minute, user-toggleable repro for a symptom <strong>BUG-55</strong> has chased since 2026-08-09 through
+          soaks, device passes and container theories — and a per-title language property explains BUG-55&#8217;s two contradictory
+          2026-08-10 clips <em>without</em> any state poisoning, because whether a title has a French trailer is a property of the title, not of
+          the session. BUG-55 stays open (a reinstall does not change TMDB&#8217;s catalogue) but is now explicitly parked behind BUG-63.
+          The likely culprit is the beta.12 localization pass itself: a bare <code>language=fr-FR</code> on the TMDB <code>videos</code> query
+          returns an empty array rather than falling back, so the fix is a chain — selected locale → original language → any.
+        </p>
+        <p class="what">
+          <strong>Two rows close on his word.</strong> <strong>BUG-31</strong> — <em>&#8220;je consid&#232;re ce probl&#232;me comme
+          r&#233;solu&#8221;</em> — ends the longest-running visual dispute on this board after four re-reports, a counter-video request and the
+          <code>p41ijt8</code> focus-lift explanation, which he accepted without argument. <strong>BUG-35</strong> is confirmed fixed in the
+          wild, unprompted, in his own French locale. <strong>Four go backwards:</strong> <strong>BUG-38</strong> (the beta.12 retest this row
+          was waiting on came back negative — collection covers <em>and</em> title images still missing, exactly the
+          never-verified-against-his-config risk Wave 0 flagged), <strong>BUG-42</strong> (re-reported a third time; the <code>2a8c387c</code>
+          verify checked <em>localization</em>, he is reporting the <em>double image commit</em>, which a language check cannot catch),
+          <strong>BUG-39</strong> (the sharpness fix landed and cost the smoothness that closed BUG-19 on this same reporter&#8217;s
+          <em>&#8220;GIFs are finally smooth&#8221;</em> — a regression of a closed row, not an accepted trade), and
+          <strong>BUG-59</strong>, which most deserves a re-read: he filmed <strong>a working case and a failing case in the same clip</strong>
+          (<em>&#8220;S&#233;rie GIGN OK et d&#8217;autres pas OK&#8221;</em>) and put a number on it (~90% still letterbox). That side-by-side is
+          the control the 2026-08-10 frame-by-frame lacked, and it kills the &#8220;the crop is the phone camera&#8221; reading outright — a
+          camera cannot be wrong on one card and right on the next. <strong>BUG-59 is reopened</strong>, and UX-9 is re-confirmed with it.
+        </p>
+        <p class="what">
+          <strong>Three smaller things worth not losing.</strong> He names <strong>Fusion</strong> as the app that gets trailer zoom right, and
+          separately as a reference for keeping the title up during playback — three surfaces now where Fusion is his benchmark, and one session
+          looking at it would pay for itself. He reports that on the first launch after updating to beta.12 <em>every</em> trailer was extremely
+          zoomed until an uninstall+reinstall cleared it — the persisted-state signature BUG-55 chased, now attached to <em>zoom</em> rather than
+          playback (recorded on BUG-59). And he <strong>retires his own BUG-17 report</strong> — <em>&#8220;Je ne vais plus mentionner ce
+          probl&#232;me&#8230; le texte reste lisible&#8221;</em> — so that one needs no reply and no disambiguation.
+          <strong>New and small:</strong> BUG-64 (the focus ring drawn over the poster), FEAT-24 (season posters), FEAT-25 (choose the trailer
+          surface). <strong>Re-requests, not new rows:</strong> FEAT-18, already fixed in code for beta.13 and simply not seen yet, and
+          <strong>FEAT-17</strong> — now the fifth navigation ask from this reporter and the plainest, written in English rather than through
+          translation: <em>&#8220;Hide the &#8216;Home, Search the Library...&#8217; bar at the top&#8221;</em>. The beta.13 plan recommends
+          declining that one with the native answer; five asks from the thread&#8217;s most engaged tester is worth weighing before the decline
+          is written. Feed saturation warned again (97 items, 96 comments), so 161 is a floor; upvotes still carried at 102↑ from 2026-08-02,
+          now sixteen days stale. Guard passed before and after — 106 item rows, up from 102.
+        </p>
+      </div>
       <div class="entry quiet">
         <div class="when">2026-08-17 · sweep — ⚪️ <strong>Quiet run: both new comments are ours, and both were already on the board</strong> · watermark <code>p3ud2m3</code> → <code>p41ijt8</code>; floor 158 → 160</div>
         <p class="what">

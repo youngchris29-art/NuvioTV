@@ -168,14 +168,102 @@ popping the player, Down with the transport bar visible opens too. **W5c (same d
 same panel** — swipe-up TrackPickerView deleted; 4th "Playback" tab (speed · delays · diagnostics ·
 episodes · sources); Down / down-swipe opens; probe green on both engines (panel plan §5g).
 
+### Waves 6–10 — the beta.12 tester verdict + upstream ports (added 2026-08-18, plan `~/.claude/plans/let-s-make-a-plan-tranquil-ember.md`)
+
+Trigger: u/mrStevenx3's structured beta.12 review (`p4afwfo`, 2026-08-17) — BUG-63 (P1, new),
+BUG-64/FEAT-24/FEAT-25 new, BUG-59 reopened, BUG-38/39/42/UX-9 re-reported on 108 — plus the
+three mechanical upstream ports from `docs/upstream-port-plan-2026-08-18.md`. Christian's
+standing rule ("a negative beta.12 retest jumps the queue") applied. All on `tvos-shared-extraction`,
+one Codex gate per wave, sim-verified where the sim can see it.
+
+- ✅ **Wave 6 — `d66ae6c3` (Kotlin):** **BUG-63** — `fetchTmdbVideos` sent `language=fr-FR` alone
+  and TMDB `/videos` returns only that language's tagged videos, so a non-English Metadata
+  Language made "no trailer" the common case (the reporter proved it by flipping the setting).
+  Fix: `include_video_language=fr,fr-FR,en,null` on every `/videos` call AND, for non-English
+  languages, a parallel `en-US` request merged preferred-first (correct whether or not the
+  standalone endpoint honors the param); `TmdbVideoResult.iso_639_1` → `MetaTrailer.language`;
+  `selectHeroTrailer(trailers, preferredLanguage)` overload (preferred > en > untagged > other,
+  BELOW the official/type tiers; 1-arg selector byte-compatible + language-neutral); wired at
+  MetaDetailsScreen.kt / DetailViewModel.swift / InlineTrailerCard.swift. Invalidation:
+  language change (setters, `loadFromDisk`, profile switch) → `MetaDetailsRepository.clear()`,
+  which now has a cache GENERATION (main-dispatcher, atomic with `clear()`) so an in-flight
+  old-language load can neither repopulate the cache nor publish UI; Swift
+  `TrailerResolutionCache` is language-scoped and `resolve()` drops a result whose language
+  changed mid-flight. **Upstream ports:** `96618a86` Simkl anime `mediaCategory` (3 files;
+  `LibraryDisplaySettings` hunk is parity-only on tvOS — no type-filter UI), `5327166f` PIN verify
+  pulls profiles first (faithful port), `3c0ab547` `AppLanguage.ARABIC` as a **2-file** port
+  (shared enum + composeApp `AppLanguageLabels` exhaustive `when`) plus upstream's `values-ar/
+  strings.xml` trimmed to the fork's key set (129 upstream-only keys dropped, 3 fork-only keys
+  translated → full parity) and `ar` in Android `locale_config`. Tests: shared/commonTest
+  HeroTrailerLanguageSelectionTest (4), TmdbVideoLanguageTest (3), LibraryAnimeCategoryTest (1);
+  `:shared:tvosSimulatorArm64Test` 51/51. Codex gate 6: 11 rounds → clean.
+- ✅ **Wave 7 — `72064a5a` (Swift, trailer surface):** **BUG-59/UX-9** — the beta.12 probe could
+  not measure before ~2–3.5 s and the memo was per playback URL + process-lifetime (loopback
+  port + repack token change every process/extraction), so nearly every focus started at the
+  1.08 floor. Now: eager video output, first sample 0.25 s / 0.25 s ticks, INTERIM zoom after the
+  2nd usable sample (skipped while clamped at maxZoom — a fade-in signature), FINAL needs ≥3
+  samples over ≥0.95 s, `TrailerZoomCache` keyed by TITLE and PERSISTED (`trailerZoom.v1`,
+  `{zoom, token, at}`, cap 300, clamp [1.0, 1.45], drop >30 d, drop the blob on version mismatch;
+  `token` = repack token or host/path+id+itag for direct URLs, never nil), a mismatched entry
+  applies as interim and re-measures. `debug.trailerSmokeVideoId` honored ONLY with
+  `debug.trailerProbe` (the one persisted knob matching "every trailer extremely zoomed until I
+  reinstalled"), logged once per session. Sim (`TrailerSoakTests.testShortDwellZoomProfile`, 2
+  launches): 8 final (all 1.343 for the forced 2.39:1 stream), interims ~1 s after attach, 17
+  persisted-hits incl. across launches (`store loaded n=7`), 0 insufficient. Codex gate 7: 3
+  rounds → clean.
+- ✅ **Wave 8 — `cb580fab` (Kotlin + Swift):** **BUG-42** artwork half — four mechanisms found by
+  the new release-safe probe (`debug.homeHeroProbe` → `[HomeHero] publish/paint`) and closed:
+  (1) `HeroCrossfadeImage` painted the cached POSTER first and crossfaded to the backdrop —
+  first paint now waits up to 600 ms for the backdrop, later swaps give a FETCHED poster a
+  150 ms grace from arrival, a late primary after a committed first-paint fallback is
+  suppressed; (2) hero was re-shuffled from a growing pool on every batch publish —
+  `stableHeroSelection` (HeroSelection.kt) keeps a stable RANKING across request keys and forced
+  refreshes (tvOS force-refreshes on every addon-manifest arrival), reserved half + newcomers +
+  displaced tail, reset only by `clear()` and an ACCEPTED explicit Hero Sources change (atomic
+  `resetHeroSelectionAround`); (3) the collection fallback filled the hero before the catalog
+  hero existed (`rank=0` first heads) — held while a load is in flight and while no catalog-bearing
+  refresh has happened (`awaitingFirstRefresh`, 5 s grace for collection-only profiles); (4)
+  publishes/resets/clear serialized under one lock. `first_hero` also on Release behind the knob.
+  test31HeroCommitsOnce ×6 launches on the final code: exactly one `paint first=1`, zero
+  `headChanged=1`. HeroSelectionTest (9). Codex gate 8: 16 rounds → clean.
+- ✅ **Wave 9 — `b22ea933` / `f67a9582` / `28285016` / `f0ff367d`:** **BUG-39** GIF frame-rate
+  floor 12 → 5 cs (~20 fps): device case 391 px/53 f → 301 px/90 f (still 1.5× beta.11),
+  GifDecodePlanTests re-pinned + 2 new (16/16). **BUG-64** ring mode draws the artwork inset by
+  `ringWidth` inside the same card frame (static, concentric inner radius; LandscapeCard progress
+  bar too; inline trailer tile unchanged) — test32AccentRingArtworkInset: outerDelta 0.497 /
+  innerDelta 0.001. **BUG-38** title-logo gate keys on company/network source + tmdb.org cover
+  (not "any own cover"), `[CollectionCover]` probe (`debug.collectionCoverProbe`) names the raw
+  JSON keys the build doesn't read per folder (`unknownFolderKeysFromRawPayload`,
+  collectionId|folderId); emoji-vs-collection-backdrop precedence left as designed. **FEAT-24**
+  season posters (Fallout: Season 1 / Season 2 / Specials with real art, test33). Codex gate 9:
+  3 rounds → clean.
+- **Wave 10:** no new user-facing strings landed (grep-verified) → no l10n pass. Docs: this
+  section, `docs/research/beta13-campaign-notes.md`, device checklist items 9–15, tracker rows.
+  Full sim suite: see campaign notes.
+- **Decisions applied (defaults from the plan):** FEAT-17 stays declined-with-native-answer
+  (now a fifth ask — weigh before the reply is written); FEAT-25 not built (answer with
+  FEAT-15/17/18 as one design decision); `values-ar` WAS ported after all (Codex gate 6 argued,
+  correctly, that exposing "Arabic" without strings is a half-feature; trimmed to fork keys);
+  BUG-39 at fps floor 20 / budget unchanged; BUG-59 zoom persisted with clamp+version.
+
 ## Verification
 
 - **Automated:** full suite (57 UITests + `GifDecodePlanTests` 14 + `StreamBadgeColorTests`
   + `AccentFocusRingTests`) on tvOS 26.5, structural guard, `TrailerSoakTests`; new tests for
   Waves 1–2. Check for concurrent sim sessions before runs (osascript sim input is dead while
   the Claude app is frontmost — drive via the XCUIRemote harness).
-- **Manual device pass** (one consolidated checklist, `docs/research/beta13-device-pass-checklist.md`
-  when written): (1) BUG-58 on the White theme by the reporter's route; (2) FEAT-18 with
+- **Manual device pass** (one consolidated checklist, `docs/research/beta13-device-pass-checklist.md`):
+  **new for Waves 6–9 — (9) BUG-63:** Metadata Language = Français, focus 10 titles that failed on
+  108 → trailers play; `[TrailerPipeline] noTrailerListed` ≈0; flip language → no 20-min stale
+  window (`[TrailerPipeline] cache purge reason=language`); **(10) BUG-59:** `debug.trailerProbe`
+  → `[TrailerZoom] interim` within ~1 s of play, `final … persisted=1`, relaunch → `persisted-hit`;
+  the reporter's GIGN-vs-neighbours pair if identifiable; **(11) BUG-42:** `debug.homeHeroProbe`,
+  reboot-cold launch ×5 → one `paint first=1`, zero `headChanged=1`; **(12) BUG-39:**
+  `debug.gifDecodeProbe` on the collections row → `keptFrames=sourceFrames`, phone 60 fps clip for
+  cadence; **(13) BUG-64:** ring ON + No Zoom ON, poster edge visible inside the ring; **(14)
+  BUG-38:** `debug.collectionCoverProbe` on Christian's account (unknownKeys=[] expected), the
+  reporter's JSON when it arrives; **(15) FEAT-24** on a multi-season series (Fallout). Then the
+  original items: (1) BUG-58 on the White theme by the reporter's route; (2) FEAT-18 with
   Trailers on Focus in both hero modes; (3) UX-8 toggle round-trip incl. sync; (4) BUG-57 both
   depth modes; (5) BUG-30/62 residual read; (6) VidHub retest with the `debug.vidhubMethod` knob
   IF VidHub has shipped an update; (7) regression sweep of beta.12's device-verified items;
@@ -204,7 +292,12 @@ episodes · sources); Down / down-swipe opens; probe green on both engines (pane
   `/api/editusertext` + modhash (works on the gallery post — beta.12 lesson, no UI needed).
 - Announcement must: close BUG-58 by name (promised); name FEAT-18/UX-8 to their askers
   (u/mrStevenx3); state BUG-30/62 honestly; carry the retest asks; keep the native-feel line on
-  focus motion (`p41ijt8`) — do not re-open "still cards".
+  focus motion (`p41ijt8`) — do not re-open "still cards". **Waves 6–9 additions:** name BUG-63
+  as the trailer fix and credit u/mrStevenx3's repro; acknowledge BUG-31 closed on his word; state
+  BUG-38 honestly (needs his exported Collections JSON — ask for it); carry BUG-59 as "the zoom
+  now learns per title and survives relaunch — tell us if GIGN's neighbours still bar"; FEAT-24
+  shipped for him; FEAT-25/FEAT-17 answered as one design note (not toggles). Consider a short
+  interim reply on `p4afwfo` before the cut ("found the trailer cause — Metadata Language gate").
 - Tracker: release entry, rows flipped, Now cell rolled; the beta.12 rows move to Resolved only
   on wild confirmation.
 

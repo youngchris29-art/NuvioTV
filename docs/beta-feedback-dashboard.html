@@ -2880,6 +2880,24 @@
   <section>
     <h2>Update log</h2>
     <div class="timeline">
+      <div class="entry ship">
+        <div class="when">2026-08-18 · build session — 🔧 <strong>beta.13 Waves 6–10: the whole 08-17 verdict is in code</strong> · seven commits on <code>tvos-shared-extraction</code>, unpushed</div>
+        <p class="what">
+          <strong>BUG-63</strong> <code>d66ae6c3</code> — the trailer language gate: <code>/videos</code> was asked for one language only (same defect
+          upstream); now <code>include_video_language</code> + a parallel <code>en-US</code> request merged preferred-first, the Metadata Language
+          preferred at selection rather than filtered, and every language-blind cache invalidated on a flip (+ the Simkl / PIN / Arabic upstream
+          ports). <strong>BUG-59 / UX-9</strong> <code>72064a5a</code> — the zoom now measures ~1 s into playback, applies an interim, and is
+          remembered per title across relaunches (sim soak: 0 insufficient). <strong>BUG-42</strong> <code>cb580fab</code> — the artwork half:
+          a release-safe <code>[HomeHero]</code> probe found <em>four</em> mechanisms (poster-first crossfade, per-batch reshuffle, collection
+          fallback before any catalog load, force-refresh/sync churn) — all closed; six cold launches: one paint each, zero head changes.
+          <strong>BUG-39</strong> <code>b22ea933</code> — 20 fps floor, every frame kept, 301 px. <strong>BUG-64</strong> <code>f67a9582</code> —
+          the ring gets its own band (poster band delta 0.001). <strong>BUG-38</strong> <code>28285016</code> — logos next to user covers +
+          a <code>[CollectionCover]</code> probe that names any payload key this build doesn't read; still needs the reporter's exported JSON.
+          <strong>FEAT-24</strong> <code>f0ff367d</code> — season posters (Fallout on the sim). Every wave Codex-gated to clean
+          (11 / 3 / 16 / 3 rounds); harness tests 31–33 added; no new strings. Device pass items 9–15 written; then README/screenshots,
+          the 109 cut, and the announcement (BUG-63 credited to u/mrStevenx3, BUG-31 acknowledged closed on his word).
+        </p>
+      </div>
       <div class="entry hot">
         <div class="when">2026-08-18 · sweep — 🔴 <strong>The quiet streak ends: one comment, and it is the biggest single feedback drop this thread has had</strong> · watermark <code>p41ijt8</code> → <code>p4afwfo</code>; floor 160 → 161</div>
         <p class="what">

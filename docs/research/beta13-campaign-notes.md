@@ -72,3 +72,17 @@ first half (Waves 0–2, 5/5b/5c) is in `docs/beta13-release-plan.md`. All commi
   StreamBadgeColorTests 16 + TabChipContrastTests 4 — the earlier "57" count in the plan was the
   UI class + a subset). Soak zoom profile and test31 were run separately during their waves.
 - Kotlin: `:shared:tvosSimulatorArm64Test` 51/51 after Wave 6, home tests 9/9 after Wave 8.
+
+## Device pass (2026-08-18 evening, Living Room Apple TV, build 109)
+- Items 9–15 all PASS on Christian's read + the console stream (details in the checklist Notes).
+- **One reversal:** BUG-38's refined logo gate (`28285016`) doubled the curated Services
+  wordmarks — those folders are addon-sourced with a wordmark cover + titleLogoUrl, exactly the
+  case the TMDB company/network discriminator can't see. Reverted in `5cb2f8b9`; the probe stays.
+- **Probe finding for a future row:** the synced Services folders carry `focusVideoUrl` /
+  `focusVideoWebmUrl` — focus VIDEO fields this build ignores. Not the reporter's cover issue,
+  but a real capability another client has.
+- Ledger: `5cb2f8b9` (revert) — pointer `a5a5eee`, both repos pushed.
+- Gotchas: devicectl `--console` streams from two launches into one file collide (relaunch 2's
+  output vanished — start each launch's capture in its own file next time); free-team profiles
+  expire on a 7-day clock and Xcode needs the Apple ID signed in to renew — check
+  `embedded.mobileprovision` ExpirationDate before a pass, not just the profile store.

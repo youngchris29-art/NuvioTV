@@ -73,6 +73,21 @@ first half (Waves 0–2, 5/5b/5c) is in `docs/beta13-release-plan.md`. All commi
   UI class + a subset). Soak zoom profile and test31 were run separately during their waves.
 - Kotlin: `:shared:tvosSimulatorArm64Test` 51/51 after Wave 6, home tests 9/9 after Wave 8.
 
+## Waves 11/12 additions (2026-08-19, self-hosted discovery + TMDB filter editor)
+- Kotlin: `:shared:tvosSimulatorArm64Test` now **423 tests, 0 failures** (+45: ServerDiscoveryPolicyTest 18,
+  ServerConfigurationTest 9, TmdbSourceFilterEditorTest 18); `:composeApp:iosSimulatorArm64Test` 412/412.
+- UI class gains **test35ServerDiscoveryReview** (non-destructive: loopback `DiscoveryStubServer` on
+  127.0.0.1, official-host refusal + review step; never presses Connect) → UI class = 36 tests. New
+  **ScratchServerSwitchTests** (3 tests, env-gated `TEST_RUNNER_NUVIO_SCRATCH_DEVICE=1`, XCTSkip
+  otherwise): 90a full switch (destructive), 90b guest TMDB-filter editor round-trip via
+  `-debug.collectionsSeedJsonB64`, 90c Use Official Server — each self-establishing; all three
+  verified solo-green on fresh scratch clones 2026-08-19.
+- ⚠️ Scratch-clone lesson (cost the shared sim session): a real **Sign Out on a clone revokes the
+  server-side session shared with the source sim** — the signed-in 26.5 sim (FA87E9B6) was signed
+  out + locally wiped on 2026-08-19 and needs a one-time QR re-sign-in before the signed-in suite
+  (tests needing the "Chris" profile) can run again. Scratch recipe + sim-wide-prefs gotcha in the
+  `selfhost-server-discovery` memory.
+
 ## Device pass (2026-08-18 evening, Living Room Apple TV, build 109)
 - Items 9–15 all PASS on Christian's read + the console stream (details in the checklist Notes).
 - **One reversal:** BUG-38's refined logo gate (`28285016`) doubled the curated Services

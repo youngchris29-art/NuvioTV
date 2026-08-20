@@ -240,6 +240,115 @@ one Codex gate per wave, sim-verified where the sim can see it.
 - **Wave 10:** no new user-facing strings landed (grep-verified) → no l10n pass. Docs: this
   section, `docs/research/beta13-campaign-notes.md`, device checklist items 9–15, tracker rows.
   Full sim suite: see campaign notes.
+- **Wave 11 — Self-hosted server discovery (upstream `ddc28dc8`/`cc20e716`) — ✅ BUILT 2026-08-19**
+  (Christian: "implement both"). Domain ported into `shared/` (serves tvOS AND the fork's
+  composeApp): `ServerConfiguration`/`ServerConfigurationRepository`/`ServerConfigurationStorage`
+  (apple + android actuals, TV-lenient load guard), `ServerDiscovery` (+ `ServerAuthRequirement`
+  — tvOS accepts `email_password_auth` OR `tv_login`, like NuvioMedia/NuvioTV), cached
+  `SupabaseProvider.client` + `reset()`, `AuthRepository.prepareForServerSwitch()` (fork: runs
+  the FULL account-data wipe — nothing from server A may sync into server B) / `reinitialize()`
+  (cancels BOTH fork jobs, resets the restore watchdog), `ServerConnectionController` state
+  machine in shared `features/auth` (cancels TV-login + account sync, re-arms settings push),
+  `TvLoginRepository` now uses the active server's `tvLoginWebBaseUrl` (`<backend>/tv-login` for
+  custom servers) and reports `unsupportedByServer`; `FeaturePolicy.customServerConnectionsEnabled`
+  flipped on first thing in `installTvOsSharedProviders()`. tvOS UI: `ServerConnectionView`
+  (ENTER → REVIEW with the Android-TV trust copy → `.alert` confirm), Welcome 4th button +
+  email-primary layout when the server lacks `tv_login`, QR caption derived from the web URL,
+  Settings › Account & Services › **Server** section (info row, connect, Use Official Server
+  alert). composeApp parity: `ServerConnectionDialogs.kt` verbatim, AuthScreen hunks, 40
+  `server_*` strings, `AppFeaturePolicy` flag, MainActivity storage init. Tests: 27 new shared
+  tests (discovery policy, configuration), `test35ServerDiscoveryReview` (loopback stub server,
+  non-destructive), `ScratchServerSwitchTests` 90a/b/c (destructive, env-gated, scratch sim).
+  Pre-existing gap fixed on the way: tvOS never re-armed `ProfileSettingsSync` after a wipe.
+  - ✅ Codex gate 11 clean (2026-08-19, 6 rounds → round 6 "SHIP: no remaining correctness
+    defect"). Seeded by 3 untriaged P2s from the review run during the BUG-59 trailer wave, all
+    real and fixed: WelcomeView email actions gated on `supportsEmailPassword` (QR-only servers
+    offered email routes), AuthScreen entry sheet re-presented after a successful switch (now
+    dismissed on a durable `ServerConnectionUiState.switchGeneration` counter — conflated
+    collectors can miss the `isSwitching` edge), `SupabaseProvider.client` check-then-set race
+    (now a `SynchronizedObject` around getter + `reset()`). Rounds 2–5 surfaced and fixed 8 more:
+    Apple `httpRequestRaw` now streams ≤ `maxResponseBodyBytes` (pre-trust discovery endpoint
+    could force an unbounded buffer; Android truncation-marker semantics mirrored),
+    `connectDiscovered` pre-flights the feature-policy save precondition before the destructive
+    wipe, `switchServer` admission made atomic (flag before launch, released in `finally` — two
+    rapid confirms could race two wipes), TMDB filter validation tightened (votes 0–10, counts
+    ≥0, year 1874–2100, real calendar dates, positive-int id lists, two-letter codes),
+    persistence failures propagate (`PayloadFileStore`/`CollectionStorage` — Android `commit()`
+    not `apply()` — `persist()`/`updateCollection` return Boolean; editor raises `saveFailed`
+    instead of dismissing with the edit only in memory, and advances `editedSource` so a retry
+    after a failed write still relocates), `updateCollection` returns false when a concurrent
+    pull removed the target (silent no-op reported success), ALL `CollectionRepository` mutators
+    + `persist()` serialized under one reentrant `mutationLock` (stale-snapshot re-assign could
+    resurrect a just-removed collection), Apple server config re-shaped to ONE versioned JSON
+    blob `server_custom_config` (split defaults keys could tear mid-replace; version required +
+    validated; no migration — never shipped). Accepted trade-offs documented in-code:
+    wipe-before-save ordering (cross-server contamination beats rollback), Android `commit()`
+    sync I/O. New tests: `ServerConfigurationStorageTest` (6, appleTest),
+    `saveRejectsOutOfRangeAndMalformedValues`, `saveReportsFailureWhenPersistenceDoesNotLand`
+    (caught a real retry-forever bug pre-fix), `updateCollectionRejectsAMissingTarget`. Bonus fix
+    from the FA87 fixture triage: a RESTORED anonymous QR-scaffolding session now flips
+    Loading→Unauthenticated immediately (CAS + log) instead of burning the 10s watchdog.
+    Verified: `:shared:iosSimulatorArm64Test` full battery green ×3, composeApp iOS compile,
+    NuvioTV sim Xcode build ×3; consolidated post-gate battery (run by the Wave 11/12 session on
+    the final state): shared tvOS 431/431 + iOS 431/431, composeApp iOS test 412/412, both iOS
+    flavor compiles, tvOS framework link, NuvioTV build-for-testing — ALL GREEN. NOTE: the FA87 signed-in fixture itself is damaged (its real
+    session was overwritten by anonymous QR scaffolding at 21:24Z on 08-19) — needs a manual QR
+    re-sign-in from Christian's phone; not a code bug.
+- **Wave 12 — TMDB Discover exclusion-filter UI (upstream `0fc4616b`, UI half) — ✅ BUILT
+  2026-08-19.** Mobile hunks applied verbatim (+ the 12 strings, ar/hu translations). tvOS: new
+  shared `TmdbSourceFilterEditor` (string-field draft of an existing TMDB source's filters,
+  validation, save → `CollectionRepository.updateCollection` + push) + `TmdbFilterPresets`;
+  `FolderDetailView` gains **Edit Filters** for DISCOVER/COMPANY/NETWORK sources (and a focusable
+  Go Back in the empty state); `TmdbFilterEditorView` (sort, genres incl./excl. with live TMDB
+  genres, keywords, studios, networks, watch providers + region, dates/ratings, language/country,
+  quick chips, validation); `CollectionSyncService.startObserving()` now runs on tvOS so local
+  edits push; DEBUG `-debug.collectionsSeedJsonB64` seed knob. 18 new shared tests; scratch test
+  90b drives exclude-a-genre → save → reopen.
+  - ✅ Codex gate 12 clean (2026-08-19, shared with gate 11 — one 6-round campaign covered both
+    waves; round 6 verdict "SHIP"). Wave-12-specific findings fixed: filter validation tightened
+    (ranges/dates/id-lists/codes — malformed values used to persist and make the source
+    unloadable at TMDB), editor no longer reports `saved` when the collections payload write
+    fails or the collection was removed by a concurrent pull, retry-after-failed-persist
+    relocation fixed, `CollectionRepository` mutation lock. Full detail + test list under the
+    gate 11 entry above.
+- **Wave 13 — BUG-59/UX-9 reveal gate ("no barred frame ever") — BUILT 2026-08-19.** Wave 7
+  closed the measurement (early interim, per-title persisted zoom) but left a structural window:
+  the FIRST-ever play of a title revealed the video at the 1.08 floor and only zoomed ~0.5–1.5 s
+  later, so a letterboxed source *showed its bars, then cropped them* — once per title, i.e. on
+  nearly every fresh dwell of a browsing session, which is exactly what the reporter keeps
+  filming (the p4afwfo frame-by-frame read: "the first second of a dwell"). Three parts, all
+  Swift: **(a) reveal gate** (`TrailerLetterboxProbe`): a surface with no persisted entry for its
+  title starts at `alpha = 0` (static art / backdrop stays up) and is revealed only when its crop
+  is decided — persisted hit (immediate, match or mismatch), interim/final measurement, or a cap
+  of ~3 s of DELIVERED frames with no usable sample (dark opening/fade — dark frames have no
+  bars). The cap counts frame-bearing ticks, never wall clock (Codex round 2 P1: startup
+  routinely exceeds 3 s, and a wall-clock cap revealed before the first frame — bars until the
+  interim, the exact defect again); a frameless stream stays concealed until the 6 s startup
+  watchdog removes the surface. Render-only (`view.alpha`), so UX-4a morph + BUG-29 scroll
+  geometry untouched; every reveal logs `[TrailerZoom] reveal reason=… frameTicks=…`. The invariant is now structural: an unzoomed letterboxed
+  frame can never reach the screen. **(b) static-art scan** (`ArtworkLetterbox`, new;
+  `CachedAsyncImage(cropsBakedLetterboxBars:)`, inline tile only): TMDB backdrops are sometimes
+  trailer stills with bars baked in, and the art is on screen from morph to reveal — scanned once
+  per URL with the probe's exact thresholds plus a SYMMETRY guard (dark-content art like the
+  reporter's *Idaho Murders* night-sky frame is never cropped), memoized, off-main. **(c)**
+  `-debug.resetTrailerZoomStore` launch knob (probe-gated, same discipline as the smoke id) wipes
+  `trailerZoom.v1` for cold-store repros. Tests: `ArtworkLetterboxTests` (10, mirror-style per
+  `StreamBadgeColorTests` precedent) + `TrailerSoakTests.testColdStoreFirstDwellRevealProfile`
+  (2 launches: cold-store dwell bursts with a 12-shot screenshot oracle per card, then
+  persisted-hit revisits; log oracle in the test doc).
+  - **Gate status (2026-08-19):** build-for-testing green (app + UITests);
+    `ArtworkLetterboxTests` 10/10 on sim; Codex round 1 clean on Wave 13 files; round 2 (via the
+    Wave 11/12 whole-tree gate) found 2 real ones, both fixed: [P1] wall-clock reveal cap →
+    frame-bearing-tick cap, [P2] the guest scratch harness is now `XCTSkip`-gated on
+    `TEST_RUNNER_NUVIO_GUEST_REVEAL_SCRATCH=1` (unguarded it would have created a profile on a
+    signed-in account in ordinary suite runs). Knob wiring device-proven (`[TrailerZoom] store
+    reset` observed on sim). **Still owed: the end-to-end cold-dwell screenshot run** — blocked
+    2026-08-19 because the signed-in sim fixture FA87E9B6 lost its session to the Wave 11
+    scratch-clone Sign Out (Christian must re-sign-in via QR; the physical Apple TV is
+    unaffected), and the guest fallback path dead-ends at the Add Profile cover, which ignores
+    ALL synthetic input incl. XCUIRemote (known gotcha, now re-confirmed). Run
+    `testColdStoreFirstDwellRevealProfile` on FA87E9B6 right after the QR re-sign-in, before the
+    device pass; item 10b covers the same invariant on hardware.
 - **Decisions applied (defaults from the plan):** FEAT-17 stays declined-with-native-answer
   (now a fifth ask — weigh before the reply is written); FEAT-25 not built (answer with
   FEAT-15/17/18 as one design decision); `values-ar` WAS ported after all (Codex gate 6 argued,
@@ -249,15 +358,20 @@ one Codex gate per wave, sim-verified where the sim can see it.
 ## Verification
 
 - **Automated:** full suite (57 UITests + `GifDecodePlanTests` 14 + `StreamBadgeColorTests`
-  + `AccentFocusRingTests`) on tvOS 26.5, structural guard, `TrailerSoakTests`; new tests for
-  Waves 1–2. Check for concurrent sim sessions before runs (osascript sim input is dead while
+  + `AccentFocusRingTests` + `ArtworkLetterboxTests` 10 — Wave 13) on tvOS 26.5, structural
+  guard, `TrailerSoakTests` (incl. Wave 13's `testColdStoreFirstDwellRevealProfile`); new tests
+  for Waves 1–2. Check for concurrent sim sessions before runs (osascript sim input is dead while
   the Claude app is frontmost — drive via the XCUIRemote harness).
 - **Manual device pass** (one consolidated checklist, `docs/research/beta13-device-pass-checklist.md`):
   **new for Waves 6–9 — (9) BUG-63:** Metadata Language = Français, focus 10 titles that failed on
   108 → trailers play; `[TrailerPipeline] noTrailerListed` ≈0; flip language → no 20-min stale
   window (`[TrailerPipeline] cache purge reason=language`); **(10) BUG-59:** `debug.trailerProbe`
   → `[TrailerZoom] interim` within ~1 s of play, `final … persisted=1`, relaunch → `persisted-hit`;
-  the reporter's GIGN-vs-neighbours pair if identifiable; **(11) BUG-42:** `debug.homeHeroProbe`,
+  the reporter's GIGN-vs-neighbours pair if identifiable; **(10b) Wave 13 reveal gate:** add
+  `debug.resetTrailerZoomStore` for ONE launch, dwell 3 fresh letterboxed titles and watch the
+  tile the whole time — the video must appear already-cropped (art → cropped video, never
+  art → barred video → zoom); logs show `reveal reason=interim|cap` per cold play and NO `reveal`
+  lines on the re-dwell after relaunch (persisted-hit surfaces are never concealed); **(11) BUG-42:** `debug.homeHeroProbe`,
   reboot-cold launch ×5 → one `paint first=1`, zero `headChanged=1`; **(12) BUG-39:**
   `debug.gifDecodeProbe` on the collections row → `keptFrames=sourceFrames`, phone 60 fps clip for
   cadence; **(13) BUG-64:** ring ON + No Zoom ON, poster edge visible inside the ring; **(14)
@@ -294,8 +408,10 @@ one Codex gate per wave, sim-verified where the sim can see it.
   (u/mrStevenx3); state BUG-30/62 honestly; carry the retest asks; keep the native-feel line on
   focus motion (`p41ijt8`) — do not re-open "still cards". **Waves 6–9 additions:** name BUG-63
   as the trailer fix and credit u/mrStevenx3's repro; acknowledge BUG-31 closed on his word; state
-  BUG-38 honestly (needs his exported Collections JSON — ask for it); carry BUG-59 as "the zoom
-  now learns per title and survives relaunch — tell us if GIGN's neighbours still bar"; FEAT-24
+  BUG-38 honestly (needs his exported Collections JSON — ask for it); carry BUG-59 as "trailers
+  now never show letterbox bars — the video is only revealed once its crop is decided, including
+  the very first focus of a title" — and still ask him to name a title + a 3-second dwell if he
+  ever counts bars again on 109; FEAT-24
   shipped for him; FEAT-25/FEAT-17 answered as one design note (not toggles). Consider a short
   interim reply on `p4afwfo` before the cut ("found the trailer cause — Metadata Language gate").
 - Tracker: release entry, rows flipped, Now cell rolled; the beta.12 rows move to Resolved only
@@ -305,8 +421,8 @@ one Codex gate per wave, sim-verified where the sim can see it.
 
 - Removing/hiding the system tab bar (FEAT-17 as asked) and any "no focus motion at all" —
   design principle, see Scope decision 3.
-- TMDB Discover exclusion-filter UI, self-hosted discovery build, subtitle-size range — decisions
-  recorded, no build unless Christian says so.
+- Subtitle-size range — decision recorded, no build unless Christian says so. (TMDB exclusion-filter
+  UI and the self-hosted discovery build were pulled IN on 2026-08-19 — Waves 11/12.)
 - FEAT-3 TestFlight, FEAT-16 fonts, FEAT-22 (until the reporter answers), title hoisting.
 
 ## Open questions for Christian — ANSWERED 2026-08-16 (all four: yes / decline / later / agreed)

@@ -37,7 +37,8 @@ Rather than port the touch UI, this fork keeps only what travels well: the prove
 | ![Appearance settings](design/screenshots/appearance.png) <br/> **Appearance** — accent themes & poster styles, synced per profile | ![Localized UI](design/screenshots/localization.png) <br/> **Localized** — English, French, Spanish, German, Italian & Vietnamese |
 | ![Localized hero](design/screenshots/hero-localized.png) <br/> **Localized hero** — title logos, synopsis & genres in your language via TMDB | ![Wide catalog rows](design/screenshots/landscape-rows.png) <br/> **Wide rows** — 16:9 cards with titles; the focused card lifts clear |
 | ![Nuvio-Style Hero](design/screenshots/hero-nuvio.png) <br/> **Nuvio-Style Hero** (opt-in) — info on the left, artwork blending in from the right | ![Trailers on Focus](design/screenshots/trailer-morph.png) <br/> **Trailers on Focus** — the poster widens in the row and plays the trailer; with titles hidden, the logo rides the tile |
-| ![Pinned hero](design/screenshots/hero-pinned.png) <br/> **Pinned hero** — with Nuvio-Style on, the hero stays put and follows the focused title while only the rows scroll beneath it | |
+| ![Pinned hero](design/screenshots/hero-pinned.png) <br/> **Pinned hero** — with Nuvio-Style on, the hero stays put and follows the focused title while only the rows scroll beneath it | ![Self-hosted server review](design/screenshots/self-hosted-server.png) <br/> **Self-hosted servers** — point the app at your own backend; discovery, capabilities & a trust review before switching |
+| ![TMDB filter editor](design/screenshots/tmdb-filter-editor.png) <br/> **TMDB filters on the TV** — edit a Discover folder's filters (incl. exclusions) right on the Apple TV; edits sync to your account | |
 
 ## Features
 

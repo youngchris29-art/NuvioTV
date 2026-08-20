@@ -92,7 +92,83 @@ Open a multi-season series (Fallout, Breaking Bad).
 - [x] Left/Right across seasons switches the episode row; Down lands on the episodes; Up returns to the posters.
 - [x] A series with no TMDB season art still shows the text chips.
 
+## 16. Self-hosted server flow (Waves 11/12, `73dd423f`) — LAN stub at `http://192.168.1.127:8787`
+
+Claude runs the discovery stub on the Mac (it logs every hit) and watches the `devicectl
+--console` stream. Phases A and B are NON-destructive. Phase C is the full switch — it signs
+this Apple TV out and clears local data (account data re-syncs after the QR re-sign-in;
+**the AllDebrid key is device-local and must be re-entered**; everything else — profiles,
+library, watch progress, collections, Trakt/Simkl/debrid/TMDB keys — pulls back).
+
+### 16A. Entry + discovery + review (non-destructive)
+Settings › Account & Services — a new **Server** section under Account:
+- [x] Info row reads `Server — Official Nuvio (api.nuvio.tv)`.
+- [x] **Connect to a Self-Hosted Server** opens the full-screen flow; the URL field takes focus.
+- [x] Type `https://api.nuvio.tv` → **Check Server** → red error "api.nuvio.tv is the official
+      server and is already selected." (typed-refusal path; no network hit on the stub).
+- [x] Clear it, type **`http://192.168.1.127:8787`** (the scheme matters: a scheme-less entry
+      defaults to httpS — upstream/Android-TV parity — and the stub is plain HTTP; first pass
+      hit exactly this) → **Check Server** → the REVIEW step:
+      Backend `http://192.168.1.127:8787` (monospaced), "Publishable key discovered
+      automatically", Email & password **Available**, QR sign-in **Not available**, and the
+      orange trust box with the *private-network-but-HTTP* wording. Claude confirms the stub
+      logged exactly one `DISCOVERY HIT`.
+- [ ] **Back** returns to the URL step (focus lands somewhere usable); **Cancel** closes the
+      flow; Menu also closes it. Still signed in afterwards.
+- [ ] Swipe feel: URL field → buttons → back up (the sim can't test swipes; this can).
+
+### 16B. TMDB filter editor on the real account (non-destructive, cross-device e2e) — RUN 2026-08-19, ALL PASS
+On the phone (Nuvio mobile), add a folder with a **TMDB Discover** source to any collection
+(e.g. "Filter Test" / Discover Movies, popularity). Then on the TV:
+- [x] Foreground the app (or re-open) → the folder tile appears on Home after the pull.
+- [x] Open the folder → **Edit Filters** button sits in the grid header (only for the TMDB tab).
+- [x] The editor opens focused on Sort; genre chips show LOCALIZED names (TMDB key present);
+      Exclude → toggle a genre (e.g. Animation) → the "Excluded genre IDs" field shows `16`.
+- [x] Type garbage into "Minimum rating" (e.g. `abc`) → **Save Filters** → stays open, red
+      "Check the highlighted fields.", the field's helper turns red. Fix or clear it.
+- [x] **Save Filters** → editor closes, the grid REFETCHES (excluded genre visibly gone from
+      results). Re-open Edit Filters → the exclusion is still there.
+- [x] On the phone, open the same folder's TMDB source → the exclusion arrived (push worked —
+      this is the new tvOS→cloud direction). Delete the test folder from the phone afterwards.
+- [ ] Menu inside the editor = cancel without saving (make one change first, verify it's gone
+      on re-open).
+
+### 16C. Full switch round-trip (DESTRUCTIVE — optional but recommended once) — RUN 2026-08-19
+Findings: first Check Server failed because a scheme-less entry defaults to httpS (checklist
+fixed; possible copy polish noted). Avatar picker on the stub server requested the OFFICIAL
+catalog's filenames (cached catalog survives the switch — cosmetic, fail-soft, noted as a
+possible follow-up: wipe the avatar catalog cache on switch). Trakt/Simkl reconnects are
+EXPECTED (device-local tokens, see below). Everything else clean; three single discovery hits,
+no retry storms; post-switch /rest/v1/ probe observed against the stub.
+- [x] Connect flow → stub URL → review → **Connect to This Server** → alert ("Switch to
+      192.168.1.127:8787?") → **Connect**: lands on Welcome showing "Connected to
+      192.168.1.127:8787", **no QR primary** (stub has tv_login=false), **Sign In with Email**
+      as the big button, secondary row shows `Server: 192.168.1.127:8787`.
+- [x] **Continue as Guest** → create a profile → the app works offline-soft against the dead
+      stub (no crashes; Home renders empty-ish; Settings reachable).
+- [x] Settings › Account & Services › **Use Official Server** → alert → **Switch** → Welcome in
+      the OFFICIAL layout (QR primary back).
+- [x] QR re-sign-in with the phone → profiles return → Home repopulates on the pull. TMDB/
+      MDBList/debrid keys (minus AllDebrid) restored WITHOUT re-entry — credential-row sync
+      verified on hardware.
+- [x] Re-enter the AllDebrid key (device-local, cleared by the wipe). **Trakt and Simkl must be
+      reconnected too — EXPECTED**: their tokens never sync (upstream removed Trakt cross-device
+      credential sync; Simkl PIN is per-profile device-local), so any wipe (server switch OR plain
+      sign-out) costs those connections. Confirmed on this pass 2026-08-19 (Christian reconnected
+      both). The synced set that must come back on its own: TMDB, MDBList, and debrid keys except
+      AllDebrid (per-provider credential rows).
+
 ## Notes
+
+**2026-08-19 late — Christian ran section 16 (Waves 11/12) on the Living Room Apple TV (Debug
+`78e65ef9`), Claude running the LAN discovery stub + `devicectl --console`.** 16A PASS (one
+finding: scheme-less input defaults to httpS — checklist fixed, copy-polish noted). 16C PASS
+("welcome screen looks right"; switch sequence log-proven by the post-switch `/rest/v1/` probe
+against the stub; guest mode fail-soft; switch back + QR re-sign-in clean; **TMDB/MDBList/debrid
+keys restored WITHOUT re-entry — credential-row sync verified on hardware**; Trakt/Simkl
+reconnects EXPECTED, device-local tokens; avatar-catalog-cache cosmetic noted). 16B ALL PASS —
+"everything works, filters synced to the phone too": the tvOS→cloud collections push confirmed
+end-to-end (phone saw the TV's exclusion). Waves 11/12 are device-passed in full.
 
 **2026-08-18 evening — Christian ran items 9–15 on the Living Room Apple TV (Debug build 109, `f0ff367d` → `5cb2f8b9`), Claude reading the `devicectl --console` stream with all four probe knobs as launch args.** Item 9 BUG-63 PASS (Metadata Language = Français, 10/10 posters played, `noTrailerListed`=0). Item 10 BUG-59 PASS (11 plays → 11 `interim` + 11 `final … persisted=1`, per-title zooms 1.080–1.440; after relaunch `store loaded n=11` and `persisted-hit` before any sample on all 4 revisits — token=mismatch each time because the repack token is per launch, re-measured to the same values, one corrected 1.440→1.125). Item 11 BUG-42 PASS (launches 1/3/5 log-proven: one `paint first=1`, zero `headChanged`; launch 2 eye-verified — its console attachment collided with launch 1's). Item 12 BUG-39 PASS (`keptFrames=sourceFrames` at 303–402 px; "smooth, a bit softer, fine" — no budget follow-up). Item 13 BUG-64 PASS ("looks good"). Item 14 BUG-38: **the refined title-logo gate DOUBLED the Services wordmarks ("GIFs look doubled") → reverted `5cb2f8b9`, verified single after reinstall**; the probe paid for itself immediately — every service folder carries `unknownKeys=[focusVideoUrl,focusVideoWebmUrl]`. Item 15 FEAT-24 PASS ("season posters look good"). Incident: the free-team provisioning profiles expired mid-pass (00:08Z); Christian signed the Apple ID into Xcode, rebuilt with `-allowProvisioningUpdates` (now valid to 2026-08-26). Section 5 (BUG-30/62 residual) still carries no new data.
 

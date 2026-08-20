@@ -240,7 +240,7 @@ one Codex gate per wave, sim-verified where the sim can see it.
 - **Wave 10:** no new user-facing strings landed (grep-verified) → no l10n pass. Docs: this
   section, `docs/research/beta13-campaign-notes.md`, device checklist items 9–15, tracker rows.
   Full sim suite: see campaign notes.
-- **Wave 11 — Self-hosted server discovery (upstream `ddc28dc8`/`cc20e716`) — ✅ BUILT 2026-08-19**
+- **Wave 11 — Self-hosted server discovery (upstream `ddc28dc8`/`cc20e716`) — ✅ BUILT + DEVICE-PASSED 2026-08-19** (checklist §16A/16C)
   (Christian: "implement both"). Domain ported into `shared/` (serves tvOS AND the fork's
   composeApp): `ServerConfiguration`/`ServerConfigurationRepository`/`ServerConfigurationStorage`
   (apple + android actuals, TV-lenient load guard), `ServerDiscovery` (+ `ServerAuthRequirement`
@@ -294,8 +294,8 @@ one Codex gate per wave, sim-verified where the sim can see it.
     flavor compiles, tvOS framework link, NuvioTV build-for-testing — ALL GREEN. NOTE: the FA87 signed-in fixture itself is damaged (its real
     session was overwritten by anonymous QR scaffolding at 21:24Z on 08-19) — needs a manual QR
     re-sign-in from Christian's phone; not a code bug.
-- **Wave 12 — TMDB Discover exclusion-filter UI (upstream `0fc4616b`, UI half) — ✅ BUILT
-  2026-08-19.** Mobile hunks applied verbatim (+ the 12 strings, ar/hu translations). tvOS: new
+- **Wave 12 — TMDB Discover exclusion-filter UI (upstream `0fc4616b`, UI half) — ✅ BUILT +
+  DEVICE-PASSED 2026-08-19** (checklist §16B — phone saw the TV's exclusion). Mobile hunks applied verbatim (+ the 12 strings, ar/hu translations). tvOS: new
   shared `TmdbSourceFilterEditor` (string-field draft of an existing TMDB source's filters,
   validation, save → `CollectionRepository.updateCollection` + push) + `TmdbFilterPresets`;
   `FolderDetailView` gains **Edit Filters** for DISCOVER/COMPANY/NETWORK sources (and a focusable

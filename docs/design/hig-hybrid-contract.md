@@ -41,3 +41,20 @@ MUST below, it doesn't merge.
 - `Theme.Palette.textPrimary/.textSecondary` → `.primary`/`.secondary` (dark scheme pinned at root).
 - `Theme.Surface.panel/.overlay/.chrome` → `.thick`/`.regular`/`.thin` materials.
 - `Theme.Spacing`/`Theme.Radius` unchanged (60pt overscan margin per HIG).
+
+## New card surfaces — birth checklist (BUG-32, added 2026-08-20)
+
+Every new artwork card (poster, thumbnail, tile) MUST, at creation:
+
+1. Read its corner radius from the shared token — `@Environment(\.posterStyle)` →
+   `posterStyle.cornerRadius` — in **clip shape, strokes/overlays, depth overlay, and focus
+   treatment** alike. Never hardcode `Theme.Radius.card` on an artwork card: the user's
+   Poster Style → Corners setting must reach both rest and focused states.
+2. Attach `.posterButtonShape()` to its `.borderless` Button so the system focus lockup follows
+   the same radius (the BUG-25 class: the system radius silently overrides the card's clip).
+3. If its caption sits outside the focus-scaled subtree, give it `CardCaptionFocusDrop` (or
+   equivalent clearance) so the lifted artwork never grows over the label (the BUG-15/UX-5/UX-15
+   class).
+
+BUG-32's history is this checklist ignored three times: collection tiles (beta.10 fix), then
+services tiles, then FEAT-24's season posters + trailer/episode thumbs (beta.13.5 sweep).

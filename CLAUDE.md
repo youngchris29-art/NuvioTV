@@ -2,11 +2,17 @@
 
 ## Upstream sync status (auto-checked daily against NuvioMedia/NuvioMobile)
 
-A scheduled task diffs this fork's `NuvioMobile` submodule (`upstream` remote = `github.com/NuvioMedia/NuvioMobile`, branch `cmp-rewrite`) against upstream daily and logs actionable ports to `docs/upstream-port-plan-YYYY-MM-DD.md`. Latest run: **2026-08-19**, see `docs/upstream-port-plan-2026-08-19.md`.
+A scheduled task diffs this fork's `NuvioMobile` submodule (`upstream` remote = `github.com/NuvioMedia/NuvioMobile`, branch `cmp-rewrite`) against upstream daily and logs actionable ports to `docs/upstream-port-plan-YYYY-MM-DD.md`. Latest run: **2026-08-20**, see `docs/upstream-port-plan-2026-08-20.md`.
 
-**Current open action items** (one decision item left):
+**Current open action items:**
 
-- **[LOW, needs a product decision, not a mechanical port] Subtitle minimum font size** (upstream commit `d50f84fc`). Upstream lowers the iOS mobile subtitle-size floor from 12sp to 6sp. tvOS uses a different native subtitle renderer (`iosApp/NuvioTV/Screens/SubtitleVTT.swift`, not the KMP `PlayerEngine.ios.kt` this fix touches), and 10-foot UI arguably wants a *larger* minimum, not smaller. Don't port as-is — decide tvOS's own range next time player styling gets a pass.
+- **[MEDIUM, PARKED by product decision 2026-08-20] Supporter perks v1** (upstream `bd88760e`). Mobile monetization feature — membership tiers, theme accents, custom profile backgrounds, "Support Nuvio" entry point. Entirely in `composeApp/`, nothing in `shared/` — not a mechanical port. Christian decided to park it as a backlog item: build nothing until it's re-raised; zero drift risk by waiting.
+- **[LOW, DEFERRED by product decision 2026-08-20] Subtitle minimum font size** (upstream commit `d50f84fc`). Upstream lowers the iOS mobile subtitle-size floor from 12sp to 6sp. tvOS uses a different native subtitle renderer (`iosApp/NuvioTV/Screens/SubtitleVTT.swift`, not the KMP `PlayerEngine.ios.kt` this fix touches), and 10-foot UI arguably wants a *larger* minimum, not smaller. Don't port as-is — decide tvOS's own range next time player styling gets a pass.
+
+**Built 2026-08-20 (beta.13.5 batch, in progress):** **SDH subtitle stripping** (upstream `87585259`..`1cc1b768`, PR #1751) — ported end-to-end with full upstream parity: `SubtitleSdhFilter` into `shared/` commonMain (+ unit test), `stripSdh` through `SubtitleStyleState`/`PlayerSettingsStorage` (apple + android actuals, sync payload)/`PlayerSettingsRepository`, tvOS `MPVPlayerView.applySubtitleStyle()` `sub-filter-sdh(-harder)` properties, `PlaybackSettingsPane` toggle + xcstrings, and the composeApp mobile half (PlaybackSettingsPage toggle, strings.xml, `PlayerEngine.android.kt` cue filtering) applied from upstream. Also new (fork-own, GitHub issue #2): addon stream `proxyHeaders` threading into the tvOS players (upstream mobile had it via `MPVPlayerBridge` `http-header-fields`; tvOS dropped headers entirely).
+
+**Resolved earlier (kept for the daily check's diffing):**
+- **Self-hosted server discovery** and **TMDB Discover exclusion filters UI half** — both shipped in beta.13 (see "Built 2026-08-19" below); the daily check should no longer list them as open.
 
 **Built 2026-08-19 (beta.13 Waves 11/12; see `docs/beta13-release-plan.md`):** the other two decision items. **Self-hosted server discovery** (upstream `ddc28dc8`/`cc20e716`) — domain ported into `shared/` (ServerConfiguration/Discovery/Storage, cached SupabaseProvider + reset, AuthRepository prepareForServerSwitch/reinitialize, ServerConnectionController in shared `features/auth`), tvOS SwiftUI flow (ServerConnectionView, Welcome + Settings entry points, QR gating on `tv_login`, `<backend>/tv-login` redirect base like NuvioMedia/NuvioTV) and composeApp parity (upstream dialogs/AuthScreen/strings verbatim). **TMDB Discover exclusion filters — UI half** (upstream `0fc4616b`) — mobile editor hunks applied verbatim (+ar/hu translations), plus a tvOS-native filter editor (shared `TmdbSourceFilterEditor` + `TmdbFilterEditorView` behind Edit Filters on collection folder grids) and `CollectionSyncService.startObserving()` on tvOS so edits push.
 

@@ -336,6 +336,22 @@ one Codex gate per wave, sim-verified where the sim can see it.
   `StreamBadgeColorTests` precedent) + `TrailerSoakTests.testColdStoreFirstDwellRevealProfile`
   (2 launches: cold-store dwell bursts with a 12-shot screenshot oracle per card, then
   persisted-hit revisits; log oracle in the test doc).
+  - **🔴→🔧 THE ACTUAL ROOT CAUSE, found by this wave's pixel oracle (2026-08-19, evening):**
+    the measured zoom **never rendered at all** — on beta.12 and on every beta.13 build before
+    this. UX-9 applied the zoom to the hosted view's BACKING-layer transform
+    (`layerClass = AVPlayerLayer`), and SwiftUI owns a hosted view's transform/frame and
+    re-asserts them on layout, so the crop was silently neutralized: `[TrailerZoom]` logged
+    `applied=1.343` while the playing tile kept its 12.8 % bars (first cold-dwell screenshot
+    scan caught it — every prior gate, including Wave 7's sim soak and the 08-18 device-pass
+    item 10, read the LOG stream, not pixels; the measurement was fixed, the rendering never
+    was). This single mechanism explains the reporter's whole beta.12 "~90 % of titles still
+    letterbox" verdict — and why "GIGN OK, others not": natively-scope-coded encodes fill under
+    plain aspect-fill with no zoom needed, bars-baked-into-16:9 encodes need the zoom that
+    wasn't rendering. **Fix:** `AVPlayerLayer` is a managed SUBLAYER of `TrailerPlayerUIView`
+    now; `layoutSubviews` re-asserts bounds + position + crop zoom together (SwiftUI can't touch
+    a sublayer's transform), and `clipsToBounds` genuinely crops the overscale. Verified by
+    re-running the cold-dwell soak and re-scanning the tile rect per frame (scanner tool +
+    `cardFrame=` log rect).
   - **Gate status (2026-08-19):** build-for-testing green (app + UITests);
     `ArtworkLetterboxTests` 10/10 on sim; Codex round 1 clean on Wave 13 files; round 2 (via the
     Wave 11/12 whole-tree gate) found 2 real ones, both fixed: [P1] wall-clock reveal cap →

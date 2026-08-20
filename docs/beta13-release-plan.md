@@ -352,6 +352,10 @@ one Codex gate per wave, sim-verified where the sim can see it.
     a sublayer's transform), and `clipsToBounds` genuinely crops the overscale. Verified by
     re-running the cold-dwell soak and re-scanning the tile rect per frame (scanner tool +
     `cardFrame=` log rect).
+  - **🖥 DEVICE PASS (item 10b) — ✅ PASS 2026-08-19 (Christian, Living Room box, Debug
+    `78e65ef9`, UUID `718A4CDA-D964-377B-9479-696648E82678`, launched with `debug.trailerProbe`
+    + `debug.resetTrailerZoomStore` so every dwell was a cold first play):** "trailers fill the
+    cards now." The two-beta complaint is closed on hardware, on the reporter's exact surface.
   - **Gate status (2026-08-19):** build-for-testing green (app + UITests);
     `ArtworkLetterboxTests` 10/10 on sim; Codex round 1 clean on Wave 13 files; round 2 (via the
     Wave 11/12 whole-tree gate) found 2 real ones, both fixed: [P1] wall-clock reveal cap →

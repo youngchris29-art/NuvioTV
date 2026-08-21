@@ -167,6 +167,26 @@ card. Final solo run: green, zero mis-entries. UX-13 app behavior was never wron
 
 Branch is 6 commits ahead of the CI-built `bf17ab13`, unpushed pending Christian's word.
 
+### Device pass — batch 1 RESULTS (2026-08-21, Living Room ATV)
+
+**Round 1:** FEAT-25 plays without focus ✅ (the headline); carousel hold ✅ (waits out the full
+trailer); diagnostics protocol ✅ (`cycles=` read exactly 10; scroll counters moved; no tab-bar
+clipping on the full Home walk). **Item 2 FAILED**: trailer stayed audible under pushed Detail
+pages and across tab switches — `onDisappear` fires on neither (tabs keep their stacks alive; a
+push keeps the root mounted).
+
+**Fix campaign (same day):** four coverage doors found and closed — tab switch (shell-level
+`homeSurfaceCovered`), Home-stack pushes (bound `NavigationPath` depth; appearance counting was
+refuted twice by Codex rounds 8/9 before landing here), the CW stream-picker cover, Top Shelf
+deep-link covers. Each sim-verified by `[TrailerPipeline]` console-truth (release-on-cover,
+re-claim-on-return, zero claims while covered); test24 green as the path-binding regression
+gate; Codex round 10 clean (10 rounds total on the branch). Landed `082a6cdb..dcd84a69`, pushed.
+
+**Round 2 (retest): ✅ PASS — "the trailer stops everywhere now."** Batch 1 device pass is
+complete. Remaining before the cut: V1's on-device BUG-30/66 reproduction attempt (walk-up +
+push/pop with diagnostics photographed IF the bar ever glitches — counters proven live), V2
+reporter photo, release gates 1–7.
+
 ### Device-pass checklist for batch 1 (beyond the standing §8 gates)
 
 FEAT-25 (from the implementation's own risk flags):

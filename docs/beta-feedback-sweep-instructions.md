@@ -2,8 +2,12 @@
 
 This file is the single source of truth for the daily beta-feedback sweeps. Both runs follow it:
 
-- **Morning sweep** — local scheduled task on Christian's machine.
-- **Evening sweep** — remote Routine ("NuvioTV Reddit feedback sweep — 7pm ET", fires 23:00 UTC).
+- **Morning sweep** — cloud Routine ("NuvioTV morning feedback sweep — 8am ET", fires 12:00 UTC;
+  created 2026-08-21, replacing the old local scheduled task on Christian's machine).
+- **Evening sweep** — cloud Routine ("NuvioTV Reddit feedback sweep — 7pm ET", fires 23:00 UTC).
+
+The morning sweep is deliberately an hour after the Daily GitHub Issue Check Routine (11:00 UTC)
+so the two never race each other on the same GitHub state.
 
 Where a sweep's own prompt and this file differ, **this file wins**. As of 2026-08-21 the sweep
 covers **two sources**: the Reddit beta thread *and* the GitHub repo (issues + pull requests).

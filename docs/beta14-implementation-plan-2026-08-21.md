@@ -79,7 +79,10 @@ callbacks stop firing?" with data instead of an eighth blind fix.
   `claude/brave-cori-mvsdlv`).
 - **`docs/beta-feedback-sweep-instructions.md` created** — the canonical sweep procedure both
   daily sweeps read, now covering **Reddit + GitHub issues + pull requests** (closes triage
-  §6.3). Until this file reaches `main`, the evening Routine's own prompt carries the GitHub
-  step (updated the same day); the local morning task picks the file up once merged.
+  §6.3). Until this file reaches `main`, each Routine's own prompt carries the full GitHub
+  step, so no sweep depends on the merge.
 - Evening Routine ("NuvioTV Reddit feedback sweep — 7pm ET") prompt updated to include the
   GitHub issues/PR check and the mandatory GitHub digest line.
+- **Morning sweep moved to the cloud**: new Routine "NuvioTV morning feedback sweep — 8am ET"
+  (12:00 UTC, fresh session per fire) with the same Reddit+GitHub procedure, replacing the
+  local scheduled task on Christian's machine (Christian deletes the local one).

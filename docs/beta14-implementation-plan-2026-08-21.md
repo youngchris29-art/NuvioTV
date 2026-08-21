@@ -98,6 +98,24 @@ NSUserDefaults-bound appleTest files stay Apple-only. The shared suite is now ru
 future remote session or CI. Every remotely-buildable task in this plan is now done; what
 remains is Mac/device work (I4, V1–V3) and comms follow-through.
 
+### Security review (2026-08-21, both batches + CI workflow + dashboard JS)
+
+Full-diff review of `claude/beta14` (`36effd50..72a19c1`) plus the docs branch's dashboard
+HTML/JS, tracing untrusted inputs (addon responses, TMDB data, tracker strings, CI event
+context) to sensitive sinks. **No vulnerabilities found — zero HIGH/MEDIUM findings.**
+Verdicts: Swift batch clean (trailer path adds gating only, probe is in-memory with hardcoded
+labels); jvmMain actuals clean (0700 per-process temp dir, compile-time store names, no
+exec/TLS-weakening/secret-logging); CI workflow clean (no untrusted input reaches `run:`,
+write-access-gated triggers, no secrets); dashboard clean (all ITEMS strings render via
+`textContent`, no `innerHTML`-class sinks).
+
+Two sub-threshold notes, no action required: (1) `AddonPlatform.jvm.kt` passes headers to
+`HttpURLConnection.setRequestProperty` without the CR/LF rejection the OkHttp Android actual
+gets — unreachable today (JVM target ships nowhere, commonTest never calls the header path);
+adopt the Android validation if the JVM target ever gains a real consumer. (2)
+`ServerConfigurationStorage.jvm.kt` mirrors the fork's pre-existing lenient `tv_login` guard —
+not introduced by this branch.
+
 ### Device-pass checklist for batch 1 (beyond the standing §8 gates)
 
 FEAT-25 (from the implementation's own risk flags):

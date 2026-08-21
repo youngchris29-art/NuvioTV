@@ -2,7 +2,7 @@
 
 ## Upstream sync status (auto-checked daily against NuvioMedia/NuvioMobile)
 
-A scheduled task diffs this fork's `NuvioMobile` submodule (`upstream` remote = `github.com/NuvioMedia/NuvioMobile`, branch `cmp-rewrite`) against upstream daily and logs actionable ports to `docs/upstream-port-plan-YYYY-MM-DD.md`. Latest run: **2026-08-20**, see `docs/upstream-port-plan-2026-08-20.md`.
+A scheduled task diffs this fork's `NuvioMobile` submodule (`upstream` remote = `github.com/NuvioMedia/NuvioMobile`, branch `cmp-rewrite`) against upstream daily and logs actionable ports to `docs/upstream-port-plan-YYYY-MM-DD.md`. Latest run: **2026-08-21**, see `docs/upstream-port-plan-2026-08-21.md`. Upstream held flat at `291b09b7` (no new commits since 2026-08-20) — nothing new to port. SDH subtitle stripping (below) is now **verified landed** by reading actual file contents on `claude/beta14` HEAD; it's off the open-items list.
 
 **Current open action items:**
 

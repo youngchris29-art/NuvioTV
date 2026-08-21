@@ -129,6 +129,44 @@ adopt the Android validation if the JVM target ever gains a real consumer. (2)
 `ServerConfigurationStorage.jvm.kt` mirrors the fork's pre-existing lenient `tv_login` guard —
 not introduced by this branch.
 
+### Mac session (2026-08-21) — I4 done, Codex gate closed at 7 rounds
+
+**I4 root cause found and fixed:** the FA87 `test24` failure was the **sim-wide prefs mirage** —
+a 115 KB `com.nuvio.media.NuvioTV` plist in the simulator's device-global prefs layer, stamped
+08-19 09:58 (the server-switch scratch morning), carrying a stale expired session and a full
+stale app-state copy the app reads through. Backed up to scratchpad, domain deleted, cfprefsd
+kicked; the app container's own prefs (real signed-in session, verified by JWT decode) were
+untouched. `test24` solo: green immediately after.
+
+**Full sim UI suite:** 109 executed, 7 skipped, 2 failing test cases — both harness-class, not
+app defects. `test27CardDepthCoverageAB` failed in-suite on loud prerequisites (Appearance pane
+never reached — the known Settings focus-restore/lazy-pane class) and **passed solo**;
+`test30AppearanceBaselineRestore` passed in-suite, so no account-state drift. `test24` failed
+in-suite AND solo-after-suite on See All grid mis-entry: the existence-walk + blind Right
+strides cannot cross a long Search results row (the SeeAllCard is in the tree while focus is
+still 20 cards short). Harness fixed twice-over (`d3fb779c`): `selectIntoSeeAllGrid()` detects
+detail mis-entry via the `debug_ux6` probe and retries, and on tvOS 26.5 (which DOES report
+focus) entry now walks Right **by focus identity** until the focused element IS the SeeAll
+card. Final solo run: green, zero mis-entries. UX-13 app behavior was never wrong.
+
+**Codex gate (rounds 1–7, `--base 36effd50 --scope branch`, all findings fixed same-day):**
+- r1: CI workflow — unpinned executed outer-repo checkout (P1) + quickjs cache key missing the
+  build script (P2) → `fc44bc30`.
+- r2: FEAT-25 — carousel advanced during cold-cache trailer resolution (held only on
+  `playingKey`) → `a3225a89`: model hoisted to HomeView, tick holds on `phase != .idle`, and
+  `expand()`'s skip paths now land `.idle` (a parked `.dwelling` would have held forever).
+- r4: diagnostics — unmatched `popImmersive()` logged a phantom push/pop cycle → `c3555631`.
+- r5: FEAT-25 — stale `UIAccessibility.isVideoAutoplayEnabled` after background-flip →
+  `b48b03ee` (gate mirrored into `@State`, refreshed by the status-change notification and on
+  every return to `.active`).
+- r6: diagnostics — About probe readout had no invalidation source (would fake the exact
+  "callbacks stopped firing" signature on device) → 1 Hz `TimelineView` refresh (`0613dd45`).
+  The r6 play/pause finding is the **recorded v1 keep** (checklist item 3 below), not taken.
+- r3, r7: clean. **r7 verdict: no actionable defects in production, JVM-test, CI, or UI-test
+  code.**
+
+Branch is 6 commits ahead of the CI-built `bf17ab13`, unpushed pending Christian's word.
+
 ### Device-pass checklist for batch 1 (beyond the standing §8 gates)
 
 FEAT-25 (from the implementation's own risk flags):

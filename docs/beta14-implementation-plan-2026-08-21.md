@@ -64,14 +64,17 @@ Christian's device time and is the long pole — everything else exists to make 
 decisive: the diagnostics ship *so that* the device pass answers "do the scroll-geometry
 callbacks stop firing?" with data instead of an eighth blind fix.
 
-## Decisions still owed by Christian (carried from triage §9)
+## Decisions (answered by Christian 2026-08-21, except FEAT-3)
 
-1. **FEAT-22** — fallback tier; best-quality vs fastest-start (recommend deciding without the
-   silent reporter).
-2. **FEAT-25** — setting name + default (recommend default off). *Blocks Wave 2.*
-3. **BUG-37** — downgrade to P3 and park after one more repro ask?
-4. **§6.1 JVM target** — approve the build-graph change. *Blocks I1.*
-5. **FEAT-3 (TestFlight)** — set a decision date, or say publicly it's not this cycle.
+1. **FEAT-22** — ✅ **best quality, step down**: pick the highest quality the connection
+   sustains, fall back a tier on buffering. Buildable when scheduled.
+2. **FEAT-25** — ✅ **default off**, setting named consistently with neighboring toggles
+   ("Autoplay Hero Trailer" shape). Wave 2 unblocked and started same day.
+3. **BUG-37** — ✅ **downgrade to P3 and park** after one final screenshot ask.
+4. **§6.1 JVM target** — ✅ **approved**. I1 started same day, verified by running Gradle in
+   the remote session.
+5. **FEAT-3 (TestFlight)** — still open: set a decision date, or say publicly it's not this
+   cycle.
 
 ## Done alongside this plan (2026-08-21, this session)
 

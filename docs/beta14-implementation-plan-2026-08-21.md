@@ -98,6 +98,19 @@ NSUserDefaults-bound appleTest files stay Apple-only. The shared suite is now ru
 future remote session or CI. Every remotely-buildable task in this plan is now done; what
 remains is Mac/device work (I4, V1–V3) and comms follow-through.
 
+### Gate 2 (sim build) — ✅ GREEN in CI, 2026-08-21
+
+`tvos-sim-build.yml` on `claude/beta14` builds the full app for tvOS Simulator on a GitHub
+macOS runner (Xcode 26.6, tvOS 26.5 SDK) — the project's first build CI. Run 5
+(`bf17ab1`) succeeded end-to-end: MPVKit submodule + SPM resolve, quickjs-kt `1.0.5-tvos`
+built from the outer repo's scaffolding script into mavenLocal (cached on the patch hash),
+`:shared` Kotlin/Native framework link, full Swift compile of both batches, arm64 app link.
+Four failures were diagnosed and fixed to get there: missing MPVKit checkout, the buried
+Gradle error (isolated into its own step), the mavenLocal-only quickjs artifact, and the
+x86_64 slice having no Kotlin framework (pinned `ARCHS=arm64`, matching a dev Mac). Caches
+are warm — subsequent runs are much faster. Still Mac-only: the UI suite (FA87 fixture),
+device pass, release cut.
+
 ### Security review (2026-08-21, both batches + CI workflow + dashboard JS)
 
 Full-diff review of `claude/beta14` (`36effd50..72a19c1`) plus the docs branch's dashboard

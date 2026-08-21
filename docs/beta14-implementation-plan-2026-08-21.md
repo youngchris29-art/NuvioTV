@@ -76,6 +76,40 @@ callbacks stop firing?" with data instead of an eighth blind fix.
 5. **FEAT-3 (TestFlight)** — still open: set a decision date, or say publicly it's not this
    cycle.
 
+## Build progress (2026-08-21, remote session — NuvioMobile branch `claude/beta14`)
+
+Committed as **batch 1** (`1be3bef` on `claude/beta14`, based on the beta.13.5 pointer
+`36effd50`): D1+D2 (TabBar + BUG-64 diagnostics in Settings → About), F1 (FEAT-25 hero trailer
+autoplay, default off), K1 (BUG-33 chip fix + ChipButtonStyle hardening + ~45-site sweep).
+Written by delegated agents, reviewed here; one review fix applied (the probe's enable flag was
+a latched `static let`, now a live read so the same-session toggle protocol works). **Not
+compiled — no macOS in this environment.** K2 (BUG-40) concluded **no divergence**: the ring
+path is identical for all accents, the original luminance-fallback fix already shipped in
+beta.11 with a standing unit test; the reporter's grey is display-side (TV picture processing).
+Recommend replying with that and closing BUG-40. C1 posted (GitHub #1 + #2, links in
+`docs/comms-drafts-2026-08-21.md`); I2 shipped (tracker + dashboard + republish).
+
+### Device-pass checklist for batch 1 (beyond the standing §8 gates)
+
+FEAT-25 (from the implementation's own risk flags):
+1. **Stop-on-push:** hero trailer playing → Select into a Detail page → listen. Teardown rides
+   `HomeHeroBackdrop.onDisappear`; if that doesn't fire on a NavigationStack push, two trailers
+   can be audible at once. Same question for a tab switch.
+2. **Audio:** with `trailer_audio_default_on` on, Home now makes noise with zero user action —
+   first surface that does. Confirm that's acceptable before the cut.
+3. No play/pause handler on the hero (mute changes only via Settings) — accepted for v1, flag
+   in the release notes.
+4. One screenshot of the player under the nuvio-style gradient mask, both hero layouts.
+5. The headline check: trailer actually starts with focus far from the hero.
+
+Diagnostics: toggle Tab Bar Diagnostics ON, walk Home down/up, run 10 push/pop cycles, confirm
+counters move (no relaunch needed).
+
+Contrast: focused Recent Searches chip label is near-black on the platter; K1's three
+device-judgment sites — `PlayerTopPanel.swift:144` and `MPVPlaybackTab.swift:218/222`
+(`.secondary` detail text on default-styled buttons) and `ProfileSelectionView.swift:443/475`
+(fixed `.red` destructive labels on chips) — eyeball on device, fix only if they wash out.
+
 ## Done alongside this plan (2026-08-21, this session)
 
 - Triage plan doc merged onto this branch (fast-forward of the daily check's

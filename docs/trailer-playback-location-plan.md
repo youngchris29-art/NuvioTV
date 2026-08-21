@@ -1,8 +1,9 @@
 # Trailer Location: poster morph vs hero playback (FEAT-25 round one) — 2026-08-21
 
 **Status:** built + pushed on NuvioMobile branch `claude/trailer-playback-location`
-(commit `6b84fbe8`, based on the beta.14 head `dcd84a69`). **Not compiled locally**
-(remote Linux session); `tvos-sim-build.yml` on the push is the build gate.
+(commit `6b84fbe8`, based on the beta.14 head `dcd84a69`). **Sim-build CI GREEN** —
+`tvos-sim-build.yml` run 32531337429 succeeded end-to-end on that commit (2026-08-21,
+~19 min), so the branch compiles for tvOS Simulator including both test targets.
 **Codex gate still owed from the Mac** — the outer-repo submodule pointer stays at
 `dcd84a69` until that gate is clean.
 

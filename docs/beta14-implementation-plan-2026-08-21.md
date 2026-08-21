@@ -89,6 +89,15 @@ beta.11 with a standing unit test; the reporter's grey is display-side (TV pictu
 Recommend replying with that and closing BUG-40. C1 posted (GitHub #1 + #2, links in
 `docs/comms-drafts-2026-08-21.md`); I2 shipped (tracker + dashboard + republish).
 
+**Batch 2** (`4f7301a` on `claude/beta14`): I1 done — `jvm()` target on `:shared`, 55 jvmMain
+actuals (SharedPreferences-shaped Properties store backing the ~35 storage actuals ported from
+androidMain; clocks verbatim; functional HttpURLConnection network actuals). **Verified on
+Linux: `:shared:jvmTest` = 52 classes, 432 tests, 0 failures, 0 skipped** — twice by the
+implementation and once independently. Zero exclusions, zero weakened assertions; the two
+NSUserDefaults-bound appleTest files stay Apple-only. The shared suite is now runnable by any
+future remote session or CI. Every remotely-buildable task in this plan is now done; what
+remains is Mac/device work (I4, V1–V3) and comms follow-through.
+
 ### Device-pass checklist for batch 1 (beyond the standing §8 gates)
 
 FEAT-25 (from the implementation's own risk flags):

@@ -231,6 +231,16 @@ but had never been merged. Merged (`--no-ff`) into `claude/beta14` and fast-forw
 clean. Installed on the Living Room ATV as a Debug build for a look. Release-notes line:
 *"Season posters on the detail screen are now the same size as More Like This."*
 
+### BUG-38 (collection covers & logos) — SETTLED + FIXED, FOLDED INTO beta.14, 2026-08-21 (late)
+
+u/mrStevenx3's Collections JSON landed by DM. Seeded into a guest-mode sim (`debug.collectionsSeedJsonB64`)
+it proved the Home tiles were always right — the "flat gradient" tiles are his own Fusion cover images —
+and that the never-rendered assets were `heroBackdropUrl` + `titleLogoUrl` (Fusion's folder-page hero).
+`FolderDetailView` now renders them (`c747efd8` + Codex-round fixes `23304095`; `claude/beta14` =
+`tvos-shared-extraction`). Release-notes line: *"Collection folders now open with their configured
+backdrop and title logo."* Retest ask for beta.14: open a Genres folder. Full record in
+`docs/beta-feedback-tracker.md` (BUG-38) and `docs/research/bug38-collections-json-2026-08-21/`.
+
 ## Done alongside this plan (2026-08-21, this session)
 
 - Triage plan doc merged onto this branch (fast-forward of the daily check's

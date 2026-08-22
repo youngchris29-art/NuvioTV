@@ -1,5 +1,7 @@
 # beta.14 implementation plan — task & model delegation (2026-08-21)
 
+**RELEASED 2026-08-22: `tvos-v0.3.0-beta.14`, build 111, NuvioMobile `2e732534` (`tvos-shared-extraction` = `claude/beta14`).** Ships FEAT-25 (both halves), FEAT-26, BUG-38 folder-page hero, BUG-33 chip contrast, About diagnostics. Highlights: `scripts/release-notes/tvos-beta14-highlights.md`; Reddit block: `docs/comms-reddit-beta14-changelog.md`.
+
 **Source:** `docs/issue-triage-plan-2026-08-21.md` (the 08-21 daily GitHub check's consolidated
 triage). This document turns that triage into an execution plan: who does each task, **which
 model tier runs it**, where it runs, and in what order. Scope decisions (what's in beta.14 at

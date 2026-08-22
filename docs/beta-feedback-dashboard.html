@@ -766,7 +766,7 @@
       <span class="pill">Last checked <strong>2026-08-22 (second run)</strong> <span style="color:var(--text-3)">— re-checked, still nothing from a tester; morning sweep reconciled into the repo</span> · watermark <code>p55x8v2</code> <span style="color:var(--text-3)">held @ 04:48Z</span></span>
       <span class="pill">🤫 <strong>~41h of tester silence</strong> — the last non-maintainer comment is still <code>p4x0tky</code> (08-20 evening); nobody has reacted to beta.14 or 14.5 in-thread yet</span>
       <span class="pill">📤 <strong>Six questions outstanding in one comment</strong> — colour picker · description scrolling · no-trailer state · pinned row-title shot · Hero Paint photo · BUG-62 build number</span>
-      <span class="pill">🔗 <strong>No &#8220;latest&#8221; release</strong> — all 11 are prereleases, so <code>/releases/latest</code> lands on the list page, not the build; both announcements link it</span>
+      <span class="pill">🔗 <strong><code>/releases/latest</code> fixed</strong> — beta.14.5 un-prereleased, so the link both announcements use now lands on the build (was: all 15 prereleases &rarr; the list page). ⚠️ the release script still hardcodes <code>--prerelease</code></span>
       <span class="pill">⏰ <strong>BUG-69 closes 2026-08-28</strong> as fixed absent a reply — six days out, committed in writing</span>
       <span class="pill">🧾 <strong>Tracker + repo reconciled</strong> — the morning sweep had published here but written neither doc file; <code>beta-feedback-tracker.md</code> now carries the 08-22 entry and this page is back in git</span>
       <span class="pill">🚢 <strong>beta.14.5</strong> · build 112 · <code>386eabfd</code> · released 08-22 — BUG-38 round three (collection artwork in the Home hero), fast follow to beta.14 (111, same day)</span>
@@ -826,7 +826,7 @@
           <li><strong>BUG-42 (P1)</strong> — still doubling the hero on build 111 per DM; the diagnostics pane exists and the photo is the whole unblock.</li>
           <li><strong>BUG-30 (P1)</strong> — tab bar clipped scrolling back up; first external confirmation since it was filed in-house on 08-01.</li>
           <li><strong>BUG-55 (P1)</strong> — trace the one residual title (TMDB has zero videos for it), then close.</li>
-          <li><strong>Release links</strong> — decide whether to un-prerelease a build or link tags directly; <code>/releases/latest</code> currently resolves to the list page for every tester who clicks an announcement.</li>
+          <li><strong>Release script still hardcodes <code>--prerelease</code></strong> (<code>release-beta.sh:379</code>) &#8212; beta.14.5 was un-prereleased on 08-22 so <code>/releases/latest</code> finally resolves to a build, but the next beta publishes as a prerelease and <strong>14.5 keeps the Latest badge</strong>. Drop the flag, or flip each new release after publishing.</li>
         </ul>
       </div>
       <div class="lane later">
@@ -876,7 +876,7 @@
         flagged <code>prerelease</code>, so <code>GET /repos/&#8230;/releases/latest</code> <strong>404s</strong>, and the web
         <code>/releases/latest</code> link — used verbatim in <em>both</em> of last night&#8217;s announcements — 302s to the <code>/releases</code>
         list instead (HTTP 200, beta.14.5 on top). No tester is stranded; nobody gets a one-click build either, and it has quietly been this way for
-        every announcement of this beta. Either mark a release non-prerelease or link the tag directly next time. Not a hotfix.
+        every announcement of this beta. <strong>Fixed the same day:</strong> <code>tvos-v0.3.0-beta.14.5</code> was patched to <code>prerelease=false, make_latest=true</code> &#8212; the API now returns it from <code>releases/latest</code> with <code>NuvioTV.ipa</code> attached, and the web link 302s straight to the tag page. <strong>The script that publishes betas still passes <code>--prerelease</code> unconditionally</strong>, so unless that changes, beta.15 ships as a prerelease and 14.5 keeps the Latest badge &#8212; a stale pointer, which is worse than the 404 was.
       </p>
     </div>
     <div class="releases" aria-label="Release history">

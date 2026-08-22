@@ -23,7 +23,7 @@ beta thread.
 > confirm it's something else. No pressure — if I don't hear back in a week I'll close this as
 > fixed, and you can reopen anytime if it comes back.
 
-## Reddit (to post — beta thread)
+## Reddit (posted 2026-08-22 as one combined beta.14 comment, `p55f80n` — see `comms-reddit-beta14-comment.md`; #3 dropped as obsolete once the JSON landed by DM)
 
 ### 3. BUG-38 — collection covers, alternate delivery channel
 

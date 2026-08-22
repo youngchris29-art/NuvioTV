@@ -208,6 +208,19 @@ device-judgment sites — `PlayerTopPanel.swift:144` and `MPVPlaybackTab.swift:2
 (`.secondary` detail text on default-styled buttons) and `ProfileSelectionView.swift:443/475`
 (fixed `.red` destructive labels on chips) — eyeball on device, fix only if they wash out.
 
+### Trailer Location (FEAT-25 round one) — FOLDED INTO beta.14, 2026-08-21 (Christian's call)
+
+Built on `claude/trailer-playback-location` off the batch-1 head `dcd84a69`; gated on the Mac
+(Codex 5 rounds clean, test01 + test37 green on the sim, device pass items 3–8 passed, 8 with a
+note) — full record in `docs/trailer-playback-location-plan.md`. Merged by fast-forward:
+`claude/beta14` and `tvos-shared-extraction` are both at **`aa57a8d6`** (pushed). Ships in
+beta.14 as the `trailer_playback_location` Settings › Home Screen chip row ("Trailer Location:
+Poster / Hero" under Trailers on Focus). Release-notes line: *"Trailers on Focus can now play in
+the hero instead of morphing the poster (Settings › Home Screen › Trailer Location)."*
+Follow-ups (not beta.14): CW/Upcoming-focused hero-trailer mute, animate the cold-launch
+latch-flip collapse, refused-slot retry. README features/screenshots still owe this entry at
+release time (the release script enforces).
+
 ## Done alongside this plan (2026-08-21, this session)
 
 - Triage plan doc merged onto this branch (fast-forward of the daily check's

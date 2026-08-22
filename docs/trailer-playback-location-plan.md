@@ -1,7 +1,8 @@
 # Trailer Location: poster morph vs hero playback (FEAT-25 round one) — 2026-08-21
 
-**Status (2026-08-21, end of the Mac session): GATE CLEAN + DEVICE PASS DONE — pointer bumped
-on the outer branch `claude/trailer-playback-location-option-lwpsd0`, NOT merged.** NuvioMobile
+**Status (2026-08-21, final): MERGED — folded into beta.14 by Christian's call.** Fast-forwarded
+into NuvioMobile `claude/beta14` and `tvos-shared-extraction` (both `aa57a8d6`, pushed); outer
+`main` to be fast-forwarded onto `claude/trailer-playback-location-option-lwpsd0`. NuvioMobile
 `claude/trailer-playback-location` final head **`aa57a8d6`** (`6b84fbe8` feature → `2dd6bf81`
 test37 hardening → `cf306e09` location-aware summary → `aa57a8d6` fallback-aware summary), all
 pushed. Sim-build CI green on `6b84fbe8` (run 32531337429). **Codex gate: 5 rounds** (r1 clean,

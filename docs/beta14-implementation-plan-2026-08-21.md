@@ -221,6 +221,16 @@ Follow-ups (not beta.14): CW/Upcoming-focused hero-trailer mute, animate the col
 latch-flip collapse, refused-slot retry. README features/screenshots still owe this entry at
 release time (the release script enforces).
 
+### FEAT-26 (bigger season posters) — FOLDED INTO beta.14, 2026-08-21 (Christian's call)
+
+Christian's device photo showed the detail screen's season cards still at 120×180 — the fix
+existed (`f539eafd` on `claude/season-poster-sizing-7g8cm0`, cut off `dcd84a69`: 180×270 via
+`Theme.Size.miniPoster*`, card-depth treatment, 4pt selected border, bigger placeholder label)
+but had never been merged. Merged (`--no-ff`) into `claude/beta14` and fast-forwarded to
+`tvos-shared-extraction`: both at **`65c486f7`**, pushed. Codex pass on the one-file diff:
+clean. Installed on the Living Room ATV as a Debug build for a look. Release-notes line:
+*"Season posters on the detail screen are now the same size as More Like This."*
+
 ## Done alongside this plan (2026-08-21, this session)
 
 - Triage plan doc merged onto this branch (fast-forward of the daily check's

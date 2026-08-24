@@ -182,6 +182,14 @@ trailers (item 4); animated/withheld collapse at the cold-launch latch flip (ite
 mode's refused-slot exposure on CW cards — consider retrying the focused title's attempt
 when the extraction slot frees (item 3 / sim runs 1–8).
 
+**beta.15 update (2026-08-23):** the refused-slot *exposure* is resolved by SUPPRESSION, not
+retry — `beginExtraction` is now consulted before any visible morph, so a refusal never puts a
+landscape tile on screen to snap back (`311e4096` + `01f60618`, tester BUG-73). Retrying the
+focused title's attempt when the slot frees stays OPEN for beta.16 (a waiter list is the
+queueing BUG-46's skip-don't-queue design exists to prevent — decide deliberately, not as a
+patch). Item 8's snap-close also became much rarer as a side effect (the morph starts later and
+only with something to play) but its animated-collapse fix is NOT done.
+
 ## Device-pass checklist (Christian, before the pointer bump)
 
 1. Codex gate on the Mac (`--base dcd84a69 --scope branch`), rounds until clean.

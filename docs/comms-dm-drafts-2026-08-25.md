@@ -9,36 +9,47 @@ Both threads were read end-to-end on 2026-08-25; see the tracker's update-log en
 
 ## 1 — u/tiyeuedm
 
-**Why now:** he answered the config question this morning (Vietnamese + the Meteor addon), which is
-what let the bug be root-caused. Two questions are still needed to confirm his exact case is the one
-that was found, and he has been sitting on a shipped feature he asked for three weeks ago without
-knowing it exists.
+**Revised 2026-08-25 (afternoon), after the fix landed.** The first version of this draft was
+written before any code existed and hedged accordingly. `b117da3d` is now built and sim-verified, so
+the reply can say it is fixed — but the two questions still matter, because what was *proven* in the
+simulator is the mechanism, not that his particular title travels through it. Ask them as
+confirmation, not as a precondition for believing him.
 
-**Do not promise a date.** The fix is planned, not written.
+**Do not promise a date.** beta.15 is held for this plus the focus-ring work, and no build has
+reached him yet.
 
-> Thanks — that was exactly what I needed, and it cracked it.
+**Deliberately not in the reply:** the addon-count detail (11 installed, 1 matched, 10 dropped). It
+is the most interesting thing found today and it is the wrong thing to send a tester — it invites him
+to audit his addon list instead of answering the two questions.
+
+> Found it, and it's fixed. Your config answer was what cracked it.
 >
-> Meteor asks for streams by IMDb id (`tt…`). When you open a title from a TMDB-backed row — a
-> collection folder, a search result, or More Like This — the app carries that title's TMDB id
-> instead, and it never swaps it for the IMDb one before asking for streams. Meteor sees an id it
-> doesn't accept and answers with nothing. The page itself looks perfectly fine because the
-> *metadata* lookup does do the swap, which is what hid this for so long. Nothing to do with
-> Vietnamese as such — but setting a metadata language is what moves you onto those TMDB rows in the
-> first place, so your instinct that the two were connected was right.
+> It was never really about Vietnamese — though you were right that the two are connected. Stream
+> addons like Meteor look titles up by IMDb id (`tt…`). When you open something from a TMDB-backed
+> row — a collection folder, a search result, More Like This — the app was holding that title's TMDB
+> id instead, and it never swapped it for the IMDb one before asking for streams. Meteor got an id it
+> doesn't take and answered with nothing. The page itself looked perfect because the *metadata*
+> lookup does do the swap, which is exactly why this hid for so long. And setting a metadata language
+> is what moves you onto those TMDB rows in the first place — so localization was the passenger, not
+> the driver.
 >
-> Two things would help me be sure your case is the one I found:
+> Now each addon gets asked with the id it actually accepts. I tested it on a title that returned
+> nothing before and it comes back full.
 >
-> 1. On the empty stream list, which message do you see — "No streaming addons installed…" or
->    "No streams found"? They're different bugs and that tells them apart.
-> 2. For Tokyo Swindlers, did you press the big Play button at the top, or pick an episode from the
->    list? Episodes take a different path that should already work — if episodes fail too, I haven't
->    found the whole thing yet.
+> Two things would help me confirm your case is the same one:
 >
-> Separately, one you asked for a while back and I never circled back on: the default subtitle
-> language shipped in beta.12. Settings → Playback → Preferred Subtitle Language, and Vietnamese is
-> in the list. Same for the search Back problem and the collection scroll position you reported —
-> both fixed in beta.12. If any of those still misbehave for you, tell me, because that would mean
-> the fix didn't hold.
+> 1. On the empty list, which message did you see — "No streaming addons installed…" or "No streams
+>    found"? Those are different problems and that tells them apart.
+> 2. For Tokyo Swindlers, did you press the big Play button at the top, or pick an episode? Episodes
+>    take a different route that should already have worked. If episodes failed too, I haven't found
+>    all of it.
+>
+> Answer whenever — it's fixed either way, this just tells me whether to keep digging.
+>
+> Two others while I'm here. The default subtitle language you asked for shipped back in beta.12 —
+> Settings → Playback → Preferred Subtitle Language, Vietnamese is in the list. Sorry, I should have
+> told you at the time. Same for the search Back problem and the collection scroll position: both
+> fixed in beta.12. If any of those still misbehave, tell me, because that means a fix didn't hold.
 
 ---
 

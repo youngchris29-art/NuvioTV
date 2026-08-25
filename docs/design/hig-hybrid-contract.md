@@ -42,6 +42,27 @@ MUST below, it doesn't merge.
 - `Theme.Surface.panel/.overlay/.chrome` → `.thick`/`.regular`/`.thin` materials.
 - `Theme.Spacing`/`Theme.Radius` unchanged (60pt overscan margin per HIG).
 
+## Settings screen — native List conversion closed (beta.15 C1-C4, 2026-08-23)
+
+The Settings screen's "pending native List conversion" exemption from the Buttons/Focus rows
+above is **closed**. `Screens/SettingsView.swift` and every `Screens/Settings/*Pane.swift` now use
+stock `List`/`Toggle`/`Menu{Picker}`/`LabeledContent`/`NavigationLink` only — no custom
+`ButtonStyle`, no `hoverEffect`, no focus-derived colour (`SettingsRowViews.swift` is the
+component kit; see its header comment for the full primitive list).
+
+- **Sidebar rows must be `Button`s to be focusable** — a bare `Label`/`Text` inside
+  `List(selection:)` does not take focus on tvOS; every sidebar/category row wraps a `Button`.
+- **`Menu { Picker }` over a `LabeledContent` label is the dropdown pattern** — it pops the native
+  grey-pill radio-checkmark popover and replaces the old horizontal chip-row anti-pattern
+  (`SettingsPickerRow` in `SettingsRowViews.swift`).
+
+**Follow-up (not part of this closure):** `SettingsRowButtonStyle`/`.settingsRow`,
+`settingsRowIsFocused`, and `rowTextColor()` (now in `DesignSystem/FlatControlStyles.swift`) are
+still load-bearing for five screens outside Settings that have not had their own native-List
+pass: `StreamPickerView`, `DetailView`, `CloudLibraryUI`, `AddonsView`, `TmdbFilterEditorView`.
+They remain a documented exemption to the Buttons row until each gets converted (beta.16
+candidate) — do not extend `.settingsRow` to new call sites in the meantime.
+
 ## New card surfaces — birth checklist (BUG-32, added 2026-08-20)
 
 Every new artwork card (poster, thumbnail, tile) MUST, at creation:

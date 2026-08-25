@@ -1,13 +1,17 @@
 # DM reply drafts — 2026-08-25
 
-**Status: UNSENT. Both need Christian's explicit go-ahead before anything is posted.**
+**Status: draft 1 SENT 2026-08-25 15:05 (Reddit chat, verified in-thread after posting). Draft 2 UNSENT — needs Christian's explicit go-ahead.**
 
 Channel: Reddit chat (`chat.reddit.com`), from u/youngchris2989.
 Both threads were read end-to-end on 2026-08-25; see the tracker's update-log entry for the intake.
 
 ---
 
-## 1 — u/tiyeuedm
+## 1 — u/tiyeuedm — ✅ SENT 2026-08-25 15:05
+
+**Sent verbatim as drafted below**, on Christian's explicit go-ahead. Verified by re-reading the
+thread after posting: full 1802 characters landed as ONE message with em dashes, ellipses and the
+numbered list intact, composer cleared. Reply awaited on both questions.
 
 **Revised 2026-08-25 (afternoon), after the fix landed.** The first version of this draft was
 written before any code existed and hedged accordingly. `b117da3d` is now built and sim-verified, so

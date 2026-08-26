@@ -13,7 +13,7 @@ Parent: <https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_
 
 > Thank you, and welcome.
 >
-> No Discord. This thread is the place — I read every comment here, and it's where the beta gets
+> No Discord. This thread is the place: I read every comment here, and it's where the beta gets
 > announced. If something comes with a crash log, a screenshot or a repro worth attaching, GitHub
 > issues are the better home for it: <https://github.com/youngchris29-art/NuvioTV/issues>. Those
 > don't scroll away the way comments do.
@@ -22,7 +22,7 @@ Parent: <https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_
 > it's one setting.
 >
 > The Apple TV picks its watch-progress source **separately from your other devices**. It's in
-> Settings > Content Sources > Library & Watch Progress, and there are two of them there — Library
+> Settings > Content Sources > Library & Watch Progress, and there are two of them there: Library
 > Source and Watch Progress Source. Both default to Trakt. Switching to Simkl on your phone or on
 > the web does not carry over to the TV, because that preference is stored per platform. That's a
 > gap on my side rather than a deliberate choice, and it's worth fixing. Trakt and Simkl sign-ins
@@ -31,12 +31,12 @@ Parent: <https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_
 >
 > So the first thing worth trying, all on the Apple TV: check that Simkl shows as connected under
 > Account & Services, then set Library Source and Watch Progress Source to Simkl. Changing that
-> setting re-pulls straight away — you shouldn't need to sign out of anything.
+> setting re-pulls straight away, so you shouldn't need to sign out of anything.
 >
 > If both are already on Simkl and it still disagrees, could you tell me:
 >
 > * which option is selected for each of those two (a photo of that pane is ideal), and
-> * one or two specific titles that are wrong — on your phone but missing on the TV, or sitting at
+> * one or two specific titles that are wrong: on your phone but missing on the TV, or sitting at
 >   the wrong episode.
 >
 > One thing that isn't a bug, so you're not chasing it: the TV doesn't have mobile's Up Next row.

@@ -769,7 +769,7 @@
       <span class="pill">👋 <strong>The silence broke at ~139h</strong> — <strong>u/Powerful_Curiosity</strong>, a brand-new voice, posted <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/_/p61pnyh/"><code>p61pnyh</code></a> (17:23Z): “by far my favorite implementation of Nuvio on the AppleTV” — still nobody has answered beta.14 / 14.5 directly</span>
       <span class="pill">🆕 <strong>BUG-72 (P2)</strong> — Continue Watching + Up Next disagree with the other Nuvio clients after a <strong>Trakt → Simkl</strong> switch. No repro yet; two questions asked before any code (tvOS is pull-only — stale pull and bad projection are different fixes)</span>
       <span class="pill">📤 <strong>One reply owed, closing two rows</strong> — BUG-72’s repro questions and <strong>DOC-5</strong> (“is there a Discord, or is the thread the primary place for feedback?”). First thing the board has owed a reporter since 08-22</span>
-      <span class="pill">⛔️ <strong>Merge to <code>main</code> blocked again</strong> — the 12:28Z morning sweep was left orphaned on <code>claude/kind-hypatia-kq4b4m</code> (classifier refused <code>git merge</code>, as on 08-24); its two doc files were carried forward by content into this run so nothing is lost</span>
+      <span class="pill">⛔️ <strong><code>main</code> frozen since 08-25 — two blocked merges today</strong> — the 12:28Z morning sweep was orphaned on <code>claude/kind-hypatia-kq4b4m</code>, and <em>this</em> run’s push to <code>main</code> was refused too. Nothing is lost (all commits pushed); landing it needs one session that may write <code>main</code></span>
       <span class="pill">📤 <strong>Six questions outstanding in one comment</strong> — colour picker · description scrolling · no-trailer state · pinned row-title shot · Hero Paint photo · BUG-62 build number</span>
       <span class="pill">🔗 <strong><code>/releases/latest</code> fixed</strong> — beta.14.5 un-prereleased, so the link both announcements use now lands on the build (was: all 15 prereleases &rarr; the list page). ⚠️ the release script still hardcodes <code>--prerelease</code></span>
       <span class="pill">⏰ <strong>BUG-69 closes 2026-08-28</strong> as fixed absent a reply — <strong>two days out</strong>, committed in writing</span>
@@ -854,7 +854,7 @@
   </section>
 
   <section id="latest">
-    <h2>Latest sweep <span class="count">2026-08-26 (afternoon, off-cycle run) · watermark advanced to a <strong>tester</strong> after seven straight holds · +1 bug, +1 comms question · GitHub quiet · <code>main</code> merge blocked again</span></h2>
+    <h2>Latest sweep <span class="count">2026-08-26 (afternoon, off-cycle run) · watermark advanced to a <strong>tester</strong> after seven straight holds · +1 bug, +1 comms question · GitHub quiet · <code>main</code> frozen — two blocked merges</span></h2>
     <div class="notice">
       <div class="notice-title">👋 Six days of nothing, then a stranger walks in with a compliment and a bug</div>
       <p>
@@ -870,7 +870,7 @@
         <strong>GitHub: quiet — 2 open issues unchanged, 0 open PRs.</strong> <a href="https://github.com/youngchris29-art/NuvioTV/issues/1">#1</a> (BUG-69) and <a href="https://github.com/youngchris29-art/NuvioTV/issues/2">#2</a> (BUG-70) return byte-identical <code>updated_at</code> values for an <strong>eighth straight run</strong> (14:21:17Z and 14:20:49Z, both 08-21), and the newest comment on each is still our own 04:07Z retest ask — so nothing is owed by us there; we are the ones waiting. <strong>BUG-69&#8217;s committed close date is 2026-08-28, two days out.</strong>
       </p>
       <p>
-        <strong>⛔️ One bookkeeping finding, and it is the second time: the merge to <code>main</code> was blocked.</strong> This morning&#8217;s sweep ran at 12:28Z, correctly reported a quiet run, committed to <code>claude/kind-hypatia-kq4b4m</code> and pushed — and then <code>git merge</code> was refused by the session permission classifier, exactly as on 08-24. <code>main</code> therefore sat frozen at <code>26f20d8</code> for the whole day with an orphaned sweep branch next to it, which is precisely the failure the merge-on-landing rule (§6) exists to prevent. That branch passes §6&#8217;s two-part test and is <strong>not</strong> superseded, so its two doc files were carried forward <em>by content</em> into this run&#8217;s branch and committed, and this digest is written on top of the morning run&#8217;s text rather than around it. Nothing was lost — but a sweep that cannot merge is a standing hazard, not a one-off, and it now has two occurrences in three days.
+        <strong>⛔️ One bookkeeping finding, and it happened twice today: the merge to <code>main</code> was blocked — again.</strong> This morning&#8217;s sweep ran at 12:28Z, correctly reported a quiet run, committed to <code>claude/kind-hypatia-kq4b4m</code> and pushed — and then <code>git merge</code> was refused by the session permission classifier, exactly as on 08-24. <code>main</code> therefore sat frozen at <code>26f20d8</code> for the whole day with an orphaned sweep branch next to it, which is precisely the failure the merge-on-landing rule (§6) exists to prevent. That branch passes §6&#8217;s two-part test and is <strong>not</strong> superseded, so its two doc files were carried forward <em>by content</em> into this run&#8217;s branch and committed, and this digest is written on top of the morning run&#8217;s text rather than around it. <strong>Then this run hit the same wall.</strong> <code>git merge --no-ff</code> and <code>git push origin main</code> were both refused by the session permission classifier, while <code>git merge --ff-only</code> and the push to this run’s own branch were allowed — so the block is specifically on <em>writing</em> <code>main</code>. The merge was run locally and verified as a clean fast-forward (<code>26f20d8</code> → <code>5e41703</code>, two files, +143/−40), then reset so nothing implies it landed. <strong>Nothing is lost — every commit is pushed — but <code>main</code> stays frozen at the 08-25 evening merge with three days of sweep history on branches beside it.</strong> One <code>git merge --ff-only claude/kind-hypatia-4zo33e &amp;&amp; git push origin main</code> from a session that may write <code>main</code> clears the whole backlog. Three blocked merges in three days is a standing condition now, not an incident — and a frozen <code>main</code> is invisible until someone goes looking, which is exactly what §6 exists to prevent.
       </p>
     </div>
     <div class="releases" aria-label="Release history">
@@ -3502,7 +3502,13 @@
           <strong>⛔️ One bookkeeping finding:</strong> this morning&#8217;s 12:28Z sweep correctly reported a quiet run, committed to
           <code>claude/kind-hypatia-kq4b4m</code> and pushed &mdash; then <code>git merge</code> was refused by the session permission classifier,
           exactly as on 08-24, leaving <code>main</code> frozen at <code>26f20d8</code> all day beside an orphaned sweep branch. Its two doc files
-          were carried forward by content into this run so nothing is lost, but that is <strong>two occurrences in three days</strong>.
+          were carried forward by content into this run so nothing is lost. <strong>Then this run’s own merge was refused the same way:</strong>
+          <code>git merge --no-ff</code> and <code>git push origin main</code> both blocked, while <code>--ff-only</code> and the push to this
+          branch were allowed — so the block is on <em>writing</em> <code>main</code> specifically. The merge was verified locally as a clean
+          fast-forward (<code>26f20d8</code> → <code>5e41703</code>) and then reset. <strong><code>main</code> stays frozen at the 08-25 evening
+          merge</strong>, three days of sweep history beside it on <code>claude/kind-hypatia-kq4b4m</code> and
+          <code>claude/kind-hypatia-4zo33e</code> (the latter already contains the former). One <code>--ff-only</code> merge and push from a
+          session that may write <code>main</code> clears it.
         </p>
       </div>
       <div class="entry quiet">

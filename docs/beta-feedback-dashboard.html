@@ -973,7 +973,7 @@
     </div></div>
 
   <details class="arch">
-    <summary>⚪️ 2026-08-22 (morning, re-checked on the second run) — two builds in six hours, and nobody said a word</summary>
+    <summary>⚪️ 2026-08-22 → 08-23 — two builds in six hours, and nobody said a word</summary>
     <div class="arch-body">
     <div class="notice">
       <div class="notice-title">🌅 Two builds went out in six hours; nobody has said a word about either one yet</div>
@@ -1007,6 +1007,15 @@
         <code>/releases/latest</code> link — used verbatim in <em>both</em> of last night&#8217;s announcements — 302s to the <code>/releases</code>
         list instead (HTTP 200, beta.14.5 on top). No tester is stranded; nobody gets a one-click build either, and it has quietly been this way for
         every announcement of this beta. <strong>Fixed the same day:</strong> <code>tvos-v0.3.0-beta.14.5</code> was patched to <code>prerelease=false, make_latest=true</code> &#8212; the API now returns it from <code>releases/latest</code> with <code>NuvioTV.ipa</code> attached, and the web link 302s straight to the tag page. <strong>The script that publishes betas still passes <code>--prerelease</code> unconditionally</strong>, so unless that changes, beta.15 ships as a prerelease and 14.5 keeps the Latest badge &#8212; a stale pointer, which is worse than the 404 was.
+      </p>
+      <p>
+        <strong>📌 2026-08-23 &mdash; the silence held, and it is now the story.</strong> A full day later the feed returns
+        <strong>0 comments past the watermark</strong>; <code>p55x8v2</code> is still the newest thing in the thread, and it is ours. The last
+        tester comment is <strong>~2&frac12; days old</strong> &mdash; the longest quiet stretch since the beta.13 review wave &mdash; so
+        <em>both</em> builds shipped on 08-22 have now gone ~43 hours with no confirmations, no regressions and no complaints. GitHub matched it
+        exactly: 2 open issues, 0 PRs, both still carrying our own 08-21 04:07Z retest ask as the newest comment. The temptation is to read no news
+        as good news; the board should not. <strong>BUG-38 round three still has no independent confirmation</strong>, BUG-42 was last seen
+        <em>still reproducing</em> on build 111, and the six questions the beta.14 announcement asked the thread are all still unanswered.
       </p>
     </div>
     </div>
@@ -3474,6 +3483,60 @@
     <div class="arch-body">
     
     <div class="timeline">
+      <div class="entry hot">
+        <div class="when">2026-08-26 &middot; afternoon (off-cycle) &mdash; 🔴 <strong>the seven-run watermark hold ends, and a new voice breaks it</strong> &middot; <code>p55x8v2</code> &rarr; <code>p61pnyh</code> &middot; floor 173 &rarr; 174 &middot; +2 rows (BUG-72, DOC-5) &middot; GitHub unchanged &middot; <code>main</code> merge blocked</div>
+        <p class="what">
+          The feed took three attempts &mdash; two <code>HTTP 429</code>s (the 2026-08-04 throttle class, not the UA-403 class) before a
+          <code>--retry 5 --retry-delay 20</code> pass returned clean <strong>HTTP 200, 249,458 bytes, 171 entries</strong>: the first change in
+          either number across four runs. Exactly one entry newer than the watermark, and <strong>for the first time since 08-20 it is not
+          ours</strong> &mdash; <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/_/p61pnyh/"><code>p61pnyh</code></a> @ 17:23:40Z from <strong>u/Powerful_Curiosity</strong>,
+          a <strong>20th voice</strong>, closing a <strong>~139-hour</strong> tester-silent stretch, the longest of the beta.
+          The comment opens with praise (&#8220;by far my favorite implementation of Nuvio on the AppleTV&#8221;) and then files two things:
+          <strong>BUG-72 (P2)</strong> &mdash; Continue Watching and Up Next disagree with the other Nuvio platforms after a
+          <strong>Trakt &rarr; Simkl</strong> scrobbler switch &mdash; and <strong>DOC-5 (P3)</strong>, is there a Discord or is the thread the
+          primary channel. <strong>Both are comms-owed and one reply closes both</strong>, the first thing this board has owed a reporter since
+          08-22. BUG-72 was filed <em>without</em> a fix attempt on purpose: tvOS is pull-only with two sync triggers, so a stale pull and a bad
+          Simkl projection look identical from outside and need different fixes; two questions separate them for the cost of one sentence from the
+          reporter. <strong>GitHub quiet</strong> &mdash; 2 open issues, 0 PRs, <code>updated_at</code> byte-identical for an eighth straight run,
+          and <strong>BUG-69 closes 2026-08-28, two days out</strong>.
+          <strong>⛔️ One bookkeeping finding:</strong> this morning&#8217;s 12:28Z sweep correctly reported a quiet run, committed to
+          <code>claude/kind-hypatia-kq4b4m</code> and pushed &mdash; then <code>git merge</code> was refused by the session permission classifier,
+          exactly as on 08-24, leaving <code>main</code> frozen at <code>26f20d8</code> all day beside an orphaned sweep branch. Its two doc files
+          were carried forward by content into this run so nothing is lost, but that is <strong>two occurrences in three days</strong>.
+        </p>
+      </div>
+      <div class="entry quiet">
+        <div class="when">2026-08-24 → 08-26 (morning) &mdash; ⚪️ <strong>five consecutive quiet runs, both sources</strong> &middot; watermark <code>p55x8v2</code> held throughout &middot; floor stays 173 &middot; 0 rows touched</div>
+        <p class="what">
+          Recorded here after the fact: per the sweep procedure a quiet run updates the last-checked lines and <em>skips</em> the republish, so
+          none of these five reached this page at the time. 08-24 morning and evening, 08-25 morning and evening, 08-26 morning &mdash; every one
+          a clean <strong>HTTP 200 / 170 entries</strong> read of the full thread with <strong>0 comments past the watermark</strong>, and
+          <strong>GitHub byte-identical</strong> each time (2 open issues, 0 PRs, both still ending on our own 08-21 04:07Z retest ask).
+          <strong>0 new items, 0 priority changes, 0 rows edited across all five.</strong> The 08-24 morning run also found the failure the
+          merge-on-landing rule was written for: <code>main</code> frozen since 08-22 with four unmerged sweep branches beside it, one of which had
+          already caused the 08-23 evening run to re-derive the tracker header from stale state. That was reconciled, and
+          <strong>&#167;6 &mdash; merge to <code>main</code> on landing, quiet runs included &mdash; was added to
+          <code>docs/beta-feedback-sweep-instructions.md</code></strong> the same day.
+        </p>
+      </div>
+      <div class="entry quiet">
+        <div class="when">2026-08-23 &mdash; ⚪️ <strong>Nothing new, anywhere</strong> &middot; watermark <code>p55x8v2</code> held &middot; floor stays 173 &middot; 0 rows touched &middot; GitHub unchanged</div>
+        <p class="what">
+          The feed answered the first request with the unique UA &mdash; 87 items in window, no saturation warning &mdash; and emitted
+          <strong>0 comments past the watermark</strong>. <code>p55x8v2</code> holds for a second consecutive run, and the last comment from
+          anyone who is not the maintainer is still <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/_/p4x0tky/"><code>p4x0tky</code></a>
+          on the evening of 08-20 &mdash; <strong>~2½ days of tester silence, the longest stretch since the beta.13 review wave</strong>.
+          <strong>0 new items, 0 duplicates, 0 priority changes, 0 noise.</strong> <strong>GitHub is quiet in exactly the same way</strong>: 2 open
+          issues, 0 PRs, both threads re-read directly and both still sitting at <code>updated_at</code> 2026-08-21T14:2xZ with
+          <em>our own</em> 08-21 04:07Z retest ask as the newest comment &mdash; no reply from u/ozdek (#1 / BUG-69) or u/konrepo (#2 / BUG-70).
+          <strong>BUG-69 auto-closes 2026-08-28</strong>, five days out. The honest read of the day: the two builds shipped on 08-22 have drawn
+          <em>no</em> wild feedback of any kind in ~43 hours &mdash; no confirmations, no regressions, no complaints. That is a quiet post-release
+          window, not validation; <strong>BUG-38 round three still has no independent confirmation from the reporter</strong>, and the six
+          questions the beta.14 announcement put to the thread are all still unanswered. One process note: a redundant second fetch issued in the
+          same session came back <code>HTTP 429</code> after 4 attempts &mdash; rate-limiting on the repeat call, not a coverage gap. One clean
+          read of the whole window is the sweep. Guard green before and after: 114 item rows across 6 tables.
+        </p>
+      </div>
       <div class="entry quiet">
         <div class="when">2026-08-22 &middot; second run &mdash; 🟢 <strong>2 new comments, both ours; watermark <code>p4x0tky</code> &rarr; <code>p55x8v2</code></strong> &middot; floor 171 &rarr; 173 &middot; 0 rows changed &middot; morning sweep reconciled into the repo</div>
         <p class="what">

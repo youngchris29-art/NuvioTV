@@ -424,3 +424,44 @@ BUG-75/upstream new items):
 
 Sign-off → screenshots into `docs/device-pass-beta15/`, then the release wave (README /
 screenshots / highlights / cut) unblocks.
+
+### §J result — device pass RUN 2026-08-27 (Living Room Apple TV, Release build from `c77e9caa`, build 112)
+
+**VERDICT: PASSED.** Every owed item from §H, the batch-2 punch list and the new BUG-75 /
+upstream work was exercised. Deploy gate held: two earlier Release builds reported BUILD
+SUCCEEDED while silently serving the cached 08-20 binary (stamp `9a83122f`); the
+`dwarfdump --uuid` + `NuvioCommitSHA` check caught both. The real cause of the failed rebuild was
+Xcode having **no signed-in account** ("No Accounts"), fixed by Christian mid-pass. Console tap
+via `devicectl --console` died twice (already-running app, then a closed pipe) — the pass was
+completed on UI evidence, which was sufficient for every item.
+
+**Passed:** build identity · profile picker + entry + switching (Discover resets per profile) ·
+CW row matches the phone title-for-title · Top Shelf mirrors the row · Discover catalog choice
+survives force-quit · subtitle delay restores on replay, works under mpv, isolated per profile ·
+full Settings walk (focus/platter/swipes) · Simkl anime list-add projects as anime · trailer legs
+(no false morphs, natural morphs play) · detail scrolling · hero/folder pages show no stray
+labels · poster size flips clean.
+
+**Findings (4):**
+1. **BUG-66 REPRODUCED IN-HOUSE FOR THE FIRST TIME.** *"Tab bar stays persistent on screen when
+   scrolling down in the home screen. It hides in detail pages and reappears when returning."*
+   Filed 2026-08-20 from the wild and blocked ever since on being unreproducible here. The
+   discriminator is now clear: **declarative hiding on pushed screens works; the scroll-driven
+   minimize on the Home root does not.** Trace opened 08-27.
+2. **NEW — Upcoming row empties when Watch Progress Source = Simkl.** Library Source was still
+   Trakt, so the air-date calendar should not have been affected. (The CW row emptying in the
+   same flip is *correct*: his Simkl account has no scrobble history because his iPhone build
+   predates the Simkl integration.) Trace opened 08-27.
+3. **Accent-swatch focus jump — FIXED SAME SESSION.** Selecting a theme swatch threw focus to the
+   top bar. Root cause is architectural: the swatch press re-identifies the app root
+   (`.id(appTheme.themeName)`), and focus — unlike state — cannot survive a remount. Fixed by
+   hoisting a `pendingThemeSwatchFocus` hint to `ContentView`, above the boundary, exactly as
+   `selectedTab`/`settingsCategory` already solve the same class. Compiles clean; **on-device
+   confirm still owed** (the Apple TV dropped off the network before redeploy).
+4. **BUG-42 looks improved:** hero paints in ~1–2 s (was ~4–5 s) with **no double-load** on cold
+   launch. Not closed on one observation, but the shape did not reproduce.
+
+**Not verifiable tonight, carried:** the two-device tracking-source sync loop (BUG-75's
+cross-device half) — Christian's iPhone runs a pre-Simkl build and cannot be updated (the app was
+pulled from the App Store and TestFlight), and sim input injection is dead on this Mac. Covered by
+the 13-round Codex review; needs a second capable device whenever one exists.

@@ -176,3 +176,73 @@ the ~506pt budgeted — below the ~494pt reach-extended row focus frame, i.e. ex
 unsatisfiable-reveal condition documented at `Theme.swift:271-277`. That would make one
 mis-measured constant the shared root of BUG-30's rest-short residual **and** BUG-66's
 non-minimize. One capture tests both.
+
+---
+
+## Trace B — CONFIRMED 2026-08-27 by discrimination on the device
+
+Christian answered both discriminators:
+
+- **Nuvio-Style Hero is selected** ⇒ `heroContainerPinned == true` ⇒ the VStack split is live.
+- **Search's bar DOES minimize while scrolling results** ⇒ **H2 is dead.** The system minimize
+  works fine under `.automatic`; nothing needs opting in. It is specifically *Home in pinned mode*
+  that never minimizes.
+
+**H1 is therefore the confirmed root cause:** in pinned mode the rows `ScrollView` is the second
+child of a `VStack` (`HomeView.swift:544-556`) and never occupies the tab bar's band, so the
+system has no scroll-edge relationship to recede against. Search/Library/Add-ons are bare
+full-bleed `ScrollView`s under the bar and all minimize correctly.
+
+### Why the obvious fix is off the table
+
+Restoring the association means putting the rows `ScrollView` back under the bar with the hero
+overlaid — i.e. `.safeAreaInset(edge: .top)` or equivalent. That is a **known-bad pattern on this
+platform, not merely a past failure here**: the focus engine's scroll-to-reveal *ignores*
+`.safeAreaInset` and `.contentMargins`, so rows slide up through the inset region and focused
+cards rest behind the header. Apple-doc-derived guidance is explicit that a pinned header over
+scrolling content should be "a real `VStack` split: fixed header on top, rows in their own
+`ScrollView` whose frame is the remaining height" — which is exactly what this code does, and why
+the 2026-08-03 revert was correct. The VStack is load-bearing for focus correctness.
+
+So the two requirements are in direct conflict:
+- the **focus engine** needs the rows `ScrollView` to have honest bounds *below* the hero;
+- the **tab bar minimize** needs a scroll view that *occupies the bar's band*.
+
+In pinned mode the hero permanently owns the top band, so no single scroll view can satisfy both.
+This is a genuine layout conflict, not an oversight — and it explains why five rounds of
+scroll/visibility fiddling never touched it.
+
+### Recommended order (cheapest first, none of it blind)
+
+1. **Sim reproduction, now possible for the first time.** In-house always ran classic (the
+   default); the config that fails is Nuvio-Style Hero. Seed the setting into sim prefs rather
+   than walking Settings (the `poster_card_style_payload_2` precedent) and watch the bar while
+   scrolling. This gives the rig every later step needs, and costs no device time.
+2. **F1 — `.tabBarMinimizeBehavior(.onScrollDown)` on the `TabView`, tested in that rig.** One
+   line, shell level, touches no scroll position, no focus, and never toggles
+   `.toolbarVisibility`, so it is outside all six banned rounds. Its *stated* effect is the
+   behaviour we want; whether it can associate with a scroll view that is not under the bar is
+   genuinely unknown, which is why it is an experiment and not a fix. **Prediction: it will not
+   help**, because Search already minimizes without it — but it is minutes to falsify.
+3. **F3 — thread hero mode into the About-pane probe** (`Home[pinned-panel] … i=0`) and correct
+   the recipe from 157-vs-76 to 157-vs-0. Zero behavioural risk, and it makes every future report
+   from the reporter self-diagnosing.
+4. **Only then, the real decision — a product call, not a bug fix.** If the association cannot be
+   had while the hero stays pinned, the options are: (a) accept a permanently-expanded bar in
+   pinned mode and say so plainly on the thread (it is the mode's cost); (b) compact the pinned
+   hero enough that the lost band stops mattering; (c) give pinned mode its own top treatment that
+   does not reserve the bar's band. Each is a design change with focus-geometry blast radius, and
+   none should be written without the rig from step 1.
+
+**Do not** re-enter: scroll-driven `.toolbarVisibility` toggling (round 4, banned — it is BUG-30's
+clip), `.safeAreaInset` for the pinned hero (reverted 08-03, and contrary to platform guidance),
+or a hero-refocus completion scroll (rounds 5–6, wedged Down navigation).
+
+### Bonus finding stands and is now more interesting
+
+The pinned height budget assumes a **76pt** tab-bar band (`Theme.swift:263`); the only device
+measurement is **157** (`bug30-probe-capture-2026-08-02.log`). In pinned mode that band is
+consumed *above* the rows viewport — so if the real band is 157, the viewport is ~425pt against a
+~494pt reach-extended row focus frame, the documented unsatisfiable-reveal condition
+(`Theme.swift:271-277`). That is a plausible shared root for BUG-30's rest-short residual, and it
+is measured by the same sim rig as step 1.

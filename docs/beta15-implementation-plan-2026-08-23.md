@@ -448,7 +448,12 @@ labels · poster size flips clean.
    Filed 2026-08-20 from the wild and blocked ever since on being unreproducible here. The
    discriminator is now clear: **declarative hiding on pushed screens works; the scroll-driven
    minimize on the Home root does not.** Trace opened 08-27.
-2. **NEW — Upcoming row empties when Watch Progress Source = Simkl.** Library Source was still
+2. **NEW — Upcoming row empties when Watch Progress Source = Simkl. FIXED + DEVICE-CONFIRMED
+   2026-08-27** (BUG-76, `b7191d9c`, Codex 4 rounds; retest on build `b7191d9c`: CW empties,
+   Upcoming stays). Note the first cut would **not** have fixed it — it unioned local with the
+   *active* provider, but Trakt history lives in Trakt's snapshot and never locally, so the flip
+   still dropped it; Codex caught that, plus a P1 cross-profile leak and a disconnected-provider
+   leak. Original finding: Library Source was still
    Trakt, so the air-date calendar should not have been affected. (The CW row emptying in the
    same flip is *correct*: his Simkl account has no scrobble history because his iPhone build
    predates the Simkl integration.) Trace opened 08-27.

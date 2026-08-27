@@ -361,3 +361,66 @@ tab-bar recipe A–E (pane photos at top + deep; Home⇄Settings ×10 reading `i
 (5) labels gone on hero + folder page, folder-name fallback intact; (6) poster Size flips clean
 first frame. Ask Steven for his no-trailer repro title; his re-photos of both panes after
 updating are the wild confirm.
+
+## J. Consolidated device pass (2026-08-27) — everything owed, one sitting
+
+Build under test: `claude/beta15` @ `c77e9caa` (beta.15 batches 1+2 + sync-reliability + BUG-75
+batch + 08-26 upstream ports, Codex clean ×13). **Deploy blocked 2026-08-27: Xcode has no
+signed-in account ("No Accounts") — Christian signs into Xcode → Settings → Accounts, then
+rebuild Release with `-allowProvisioningUpdates` and gate on a FRESH `dwarfdump --uuid` +
+`NuvioCommitSHA = c77e9caa` before installing (two cached no-op builds shipped the 08-20
+binary with stamp `9a83122f` this morning — the UUID gate caught it).**
+
+Ordered for one walk (sources: §H owed items, device pass #1 follow-ups, §I batch-2 punch list,
+BUG-75/upstream new items):
+
+**Leg 1 — launch + profiles (5 min)**
+1. Cold launch → profile picker renders, pick Chris. (New: coordinator arms at launch — no
+   visible change expected; a hang/crash here is the regression signal.)
+2. Profile switch to KT and back — Discover state resets, no cross-profile leak (new
+   `SearchRepository.reset()` in the switch fan-out).
+
+**Leg 2 — BUG-75 / Continue Watching (10 min)**
+3. Home CW row: content should now match mobile's row for the same source (limit 300 parity,
+   dropped-show filter, days-cap window). Side-by-side with the phone: same titles, same order
+   (mobile's next-up entries excluded — tvOS has no Up Next by design).
+4. Settings → Content Sources: flip Watch Progress Source (e.g. Trakt→Simkl) → row swaps
+   without relaunch. Flip back.
+5. Cross-device: change the source on the PHONE → tvOS foreground-refresh → row follows within
+   one pull (the new shared-namespace sync; this is the BUG-75 reporter's exact scenario).
+6. Top Shelf: back out to the tvOS home screen — shelf mirrors the in-app row (capped ~20).
+
+**Leg 3 — Discover persistence (3 min)**
+7. Search tab → pick a NON-default Discover catalog → force-quit → relaunch → same catalog
+   selected (new persistence; pre-fix it always reset to first).
+
+**Leg 4 — subtitles follow-ups from device pass #1 (10 min)**
+8. Replay-persistence spot-check: set a delay, exit playback, replay same title → restore line
+   at launch, delay still applied.
+9. mpv-engine spot-check: same Timing row works under mpv.
+10. Profile isolation: delay set under Chris does not appear under KT.
+11. Watch for the duplicate re-apply blink (known, low priority — just note frequency).
+
+**Leg 5 — Settings pass (= owed device pass #2) (15 min)**
+12. Full Settings walk on the native List: platter/lift on hardware, swipes, focus lands sane
+    on entry per pane; check both glass and non-glass boxes if available.
+13. Appearance: FIRST flip the synced Accent Focus Ring OFF (fixture left it ON — syncs to
+    this device; local defaults-write cannot fix it). Then theme accent picker: category
+    survives, glyphs/picker values tint with accent (the 08-25 SettingsAccentTint fix).
+14. Simkl: add an ANIME to a list (watchlist/plan-to-watch) → verify it projects as anime, not
+    show (new list-mutation port + repair precedence: a pre-fix misclassified entry should
+    self-correct on the next list touch).
+
+**Leg 6 — batch-2 trailer/tab-bar items (§I list, 15 min)**
+15. Forced no-trailer leg (10 cards, nothing morphs) + natural + refused-slot legs; cold-meta
+    morph-delay feel check (revert `01f60618` alone if sluggish).
+16. Detail A/B legs 0–3 ranked blind → BUG-41 attribution.
+17. Tab-bar recipe A–E (pane photos top + deep; Home⇄Settings ×10 reading `i`; 5× push/pop →
+    `cycles=5`; FEAT-25 audio mute on tab switch).
+18. Hero probe photo after 60 s cold launch (one `vm start`, one `first=1`, no `theme →` after
+    start) + fast CW↔catalog focus-hop art check.
+19. Labels gone on hero + folder page, folder-name fallback intact; poster Size flips clean
+    first frame.
+
+Sign-off → screenshots into `docs/device-pass-beta15/`, then the release wave (README /
+screenshots / highlights / cut) unblocks.

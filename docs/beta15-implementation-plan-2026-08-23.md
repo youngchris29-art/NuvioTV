@@ -456,8 +456,11 @@ labels · poster size flips clean.
    top bar. Root cause is architectural: the swatch press re-identifies the app root
    (`.id(appTheme.themeName)`), and focus — unlike state — cannot survive a remount. Fixed by
    hoisting a `pendingThemeSwatchFocus` hint to `ContentView`, above the boundary, exactly as
-   `selectedTab`/`settingsCategory` already solve the same class. Compiles clean; **on-device
-   confirm still owed** (the Apple TV dropped off the network before redeploy).
+   `selectedTab`/`settingsCategory` already solve the same class. **CONFIRMED ON DEVICE
+   2026-08-27** (build `b7191d9c`): focus stays on the swatch after a pick, and returning to
+   Appearance from another category still lands normally on the sidebar — i.e. the hint does not
+   over-fire, which was the second Codex finding (re-picking the current theme publishes nothing,
+   so an unconditionally-armed hint would have sat waiting to steal focus on a later visit).
 4. **BUG-42 looks improved:** hero paints in ~1–2 s (was ~4–5 s) with **no double-load** on cold
    launch. Not closed on one observation, but the shape did not reproduce.
 

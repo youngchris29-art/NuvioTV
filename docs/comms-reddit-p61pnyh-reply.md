@@ -1,6 +1,6 @@
 # Reddit draft — reply to u/Powerful_Curiosity (`p61pnyh`)
 
-Covers **DOC-5** (where does feedback go / is there a Discord) and **BUG-72** (Continue Watching and
+Covers **DOC-5** (where does feedback go / is there a Discord) and **BUG-75** (Continue Watching and
 Up Next disagree with the other Nuvio platforms after switching Trakt → Simkl). One comment, both rows.
 
 Parent: <https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p61pnyh/>

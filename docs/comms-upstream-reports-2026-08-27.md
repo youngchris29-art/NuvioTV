@@ -1,8 +1,13 @@
 # Upstream issue drafts — NuvioMedia/NuvioMobile (2026-08-27)
 
 Three findings from the tvOS fork's 2026-08-26 port batch, drafted as GitHub issues for
-`NuvioMedia/NuvioMobile`. **Status: DRAFTS — nothing posted.** Christian reviews; post only
-what he approves (or he posts them himself). Written against upstream `cmp-rewrite` @ `582ae863`.
+`NuvioMedia/NuvioMobile`. **Status: ALL THREE POSTED 2026-08-27** to `NuvioMedia/NuvioMobile` from Christian's account
+on his explicit instruction:
+[#1804](https://github.com/NuvioMedia/NuvioMobile/issues/1804) (Simkl precedence),
+[#1805](https://github.com/NuvioMedia/NuvioMobile/issues/1805) (signature collection boundaries),
+[#1806](https://github.com/NuvioMedia/NuvioMobile/issues/1806) (stranded `isLoading` guard).
+Only edit made at post time: the `#` was dropped from the commit SHAs in titles 1 and 2, since
+GitHub parses `#<hex>` as an issue reference rather than a commit. Written against upstream `cmp-rewrite` @ `582ae863`.
 
 ---
 

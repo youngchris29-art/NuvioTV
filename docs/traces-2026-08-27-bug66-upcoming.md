@@ -246,3 +246,27 @@ consumed *above* the rows viewport — so if the real band is 157, the viewport 
 ~494pt reach-extended row focus frame, the documented unsatisfiable-reveal condition
 (`Theme.swift:271-277`). That is a plausible shared root for BUG-30's rest-short residual, and it
 is measured by the same sim rig as step 1.
+
+---
+
+## Step 1 DONE — the sim rig was built and run the same evening
+
+Rig + full results + gotchas: `docs/research/bug66-sim-rig-2026-08-27/` (README has the
+verdict table and frames). Four passes against Debug `e19fbfc8` on the 26.5 sim fixture, hero
+mode seeded into the app-container plist and every pass self-validated by the probe's own mode
+name. Two outcomes that reshape the plan:
+
+1. **The sim cannot show the failure.** The bar recedes on scroll-down and returns at top in
+   ALL four passes — Search control, classic, pinned-hero (the reporter's config) and
+   pinned-panel. The device's "never minimizes" does not reproduce on the sim runtime; bar
+   presentation is hardware-divergent, as it was through all six BUG-30 rounds. So the step-2
+   F1 experiment **cannot be decided in the sim** — its sim gate is regression-only and its
+   real test is a device pass.
+2. **H1's geometry is confirmed by measurement**, not just code reading: classic Home's rows
+   ScrollView reports `inset=157/302` (it owns the bar's band, rests `residual=0`), both
+   pinned modes report `inset=0` on every non-transient sample of full walks. The **F2 sim
+   gate is therefore structural**: an association fix is working when pinned Home's probe
+   reads `inset=157` at rest-at-top — this rig measures exactly that, so F2 spikes stay
+   sim-gated despite finding 1. F3's 157-vs-0 recipe correction is likewise now
+   measurement-backed on both instruments (sim + the 08-02 device capture), and the bonus
+   76pt-vs-157 budget question hardened: the sim's expanded band is 157 too.

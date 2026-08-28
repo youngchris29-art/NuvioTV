@@ -1,0 +1,844 @@
+[LaunchTrace] +0ms app_init
+2026-08-27 23:14:29.041 NuvioTV[84467:12596391] -canOpenURL: failed for URL: "infuse://" - error: "The operation couldn’t be completed. (OSStatus error -10814.)"
+[ExtPlayerProbe] canOpenURL(infuse://) = false
+2026-08-27 23:14:29.042 NuvioTV[84467:12596391] -canOpenURL: failed for URL: "vlc-x-callback://" - error: "The operation couldn’t be completed. (OSStatus error -10814.)"
+[ExtPlayerProbe] canOpenURL(vlc-x-callback://) = false
+2026-08-27 23:14:29.043 NuvioTV[84467:12596391] -canOpenURL: failed for URL: "outplayer://" - error: "The operation couldn’t be completed. (OSStatus error -10814.)"
+[ExtPlayerProbe] canOpenURL(outplayer://) = false
+2026-08-27 23:14:29.043 NuvioTV[84467:12596391] -canOpenURL: failed for URL: "open-vidhub://" - error: "The operation couldn’t be completed. (OSStatus error -10814.)"
+[ExtPlayerProbe] canOpenURL(open-vidhub://) = false
+2026-08-27 23:14:29.044 NuvioTV[84467:12596391] -canOpenURL: failed for URL: "vidhub://" - error: "The operation couldn’t be completed. (OSStatus error -10814.)"
+[ExtPlayerProbe] canOpenURL(vidhub://) = false
+2026-08-27 23:14:29.045 NuvioTV[84467:12596391] -canOpenURL: failed for URL: "infuse://" - error: "The operation couldn’t be completed. (OSStatus error -10814.)"
+2026-08-27 23:14:29.045 NuvioTV[84467:12596391] -canOpenURL: failed for URL: "vlc-x-callback://" - error: "The operation couldn’t be completed. (OSStatus error -10814.)"
+2026-08-27 23:14:29.046 NuvioTV[84467:12596391] -canOpenURL: failed for URL: "outplayer://" - error: "The operation couldn’t be completed. (OSStatus error -10814.)"
+2026-08-27 23:14:29.046 NuvioTV[84467:12596391] -canOpenURL: failed for URL: "open-vidhub://" - error: "The operation couldn’t be completed. (OSStatus error -10814.)"
+[ExtPlayerProbe] availablePlayers = []
+[LaunchTrace] +831ms artwork #1: mem=0 disk=1 net=0 fail=0
+[ProfileSelect] selecting profile 2
+[ProfileSelect] selectProfile returned — requesting full pull
+[ProfileSelect] full pull requested — tap complete
+2026-08-27 23:14:45.960 NuvioTV[84467:12596391] [HomeScrollProbe] classic y=0 inset=0 residual=0
+[LaunchTrace] +17223ms home_appear
+2026-08-27 23:14:45.969 NuvioTV[84467:12596391] [TrailerPipeline] trailerLocation heroMode=NO
+2026-08-27 23:14:45.995 NuvioTV[84467:12596391] [HomeScrollProbe] classic y=-302 inset=302 residual=0
+2026-08-27 23:14:45.995 NuvioTV[84467:12596391] [HomeScrollProbe] classic y=-157 inset=157 residual=0
+[LaunchTrace] +17283ms first_rows n=1 hero=0
+[TopShelf] wrote 10 items to /Users/christianturnbull/Library/Developer/CoreSimulator/Devices/FA87E9B6-F28D-4DF9-84E4-A5A4C5DBFC4E/data/Containers/Shared/AppGroup/E705B090-DA3F-472C-93BC-23BC3D1912B8/Library/Caches/top-shelf.json
+[TopShelf] wrote 10 items to /Users/christianturnbull/Library/Developer/CoreSimulator/Devices/FA87E9B6-F28D-4DF9-84E4-A5A4C5DBFC4E/data/Containers/Shared/AppGroup/E705B090-DA3F-472C-93BC-23BC3D1912B8/Library/Caches/top-shelf.json
+[TopShelf] wrote 10 items to /Users/christianturnbull/Library/Developer/CoreSimulator/Devices/FA87E9B6-F28D-4DF9-84E4-A5A4C5DBFC4E/data/Containers/Shared/AppGroup/E705B090-DA3F-472C-93BC-23BC3D1912B8/Library/Caches/top-shelf.json
+2026-08-27 23:14:46.414 NuvioTV[84467:12596391] [HomeScrollProbe] REST classic y=-157 inset=157 residual=0
+[LaunchTrace] +19365ms rows n=5
+2026-08-27 23:14:48.112 NuvioTV[84467:12596391] [TrailerPipeline] gates inlineTrailersEnabled=YES systemAutoplay=YES
+[LaunchTrace] +19416ms artwork #10: mem=0 disk=10 net=0 fail=0
+[LaunchTrace] +20421ms rows n=9
+[LaunchTrace] +22757ms rows n=17
+[LaunchTrace] +26072ms rows n=23
+[LaunchTrace] +26191ms first_hero n=8
+2026-08-27 23:14:54.961 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=802 slide=0 net=802
+2026-08-27 23:14:54.961 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=482 slide=0 net=482
+2026-08-27 23:14:54.961 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=56 slide=0 net=56
+2026-08-27 23:14:54.961 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=872 slide=0 net=872
+2026-08-27 23:14:54.970 NuvioTV[84467:12596391] [TrailerPipeline] trailerLocation heroMode=YES
+2026-08-27 23:14:54.984 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=0 inset=0 residual=0
+[LaunchTrace] +26259ms artwork #25: mem=0 disk=25 net=0 fail=0
+2026-08-27 23:14:55.405 NuvioTV[84467:12596391] [HomeScrollProbe] REST pinned-hero y=0 inset=0 residual=0
+[LaunchTrace] +32847ms artwork #50: mem=0 disk=50 net=0 fail=0
+2026-08-27 23:15:03.110 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=10 inset=0 residual=10
+2026-08-27 23:15:03.111 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=472 slide=0 net=472
+2026-08-27 23:15:03.111 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=46 slide=0 net=46
+2026-08-27 23:15:03.123 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=30 inset=0 residual=30
+2026-08-27 23:15:03.123 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=452 slide=0 net=452
+2026-08-27 23:15:03.123 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=26 slide=0 net=26
+2026-08-27 23:15:03.140 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=60 inset=0 residual=60
+2026-08-27 23:15:03.140 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=422 slide=0 net=422
+2026-08-27 23:15:03.140 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-4 slide=4 net=0
+2026-08-27 23:15:03.156 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=93 inset=0 residual=93
+2026-08-27 23:15:03.156 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=390 slide=0 net=390
+2026-08-27 23:15:03.156 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-38 slide=38 net=0
+2026-08-27 23:15:03.173 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=123 inset=0 residual=123
+2026-08-27 23:15:03.173 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=360 slide=0 net=360
+2026-08-27 23:15:03.173 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-68 slide=68 net=0
+2026-08-27 23:15:03.190 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=150 inset=0 residual=150
+2026-08-27 23:15:03.190 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=332 slide=0 net=332
+2026-08-27 23:15:03.190 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-94 slide=72 net=-22
+2026-08-27 23:15:03.206 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=174 inset=0 residual=174
+2026-08-27 23:15:03.206 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=308 slide=0 net=308
+2026-08-27 23:15:03.206 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-118 slide=72 net=-46
+2026-08-27 23:15:03.223 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=197 inset=0 residual=197
+2026-08-27 23:15:03.223 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=286 slide=0 net=286
+2026-08-27 23:15:03.223 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-142 slide=72 net=-70
+2026-08-27 23:15:03.240 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=218 inset=0 residual=218
+2026-08-27 23:15:03.240 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=266 slide=0 net=266
+2026-08-27 23:15:03.240 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-162 slide=72 net=-90
+2026-08-27 23:15:03.256 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=234 inset=0 residual=234
+2026-08-27 23:15:03.256 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=248 slide=0 net=248
+2026-08-27 23:15:03.256 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-178 slide=72 net=-106
+2026-08-27 23:15:03.272 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=249 inset=0 residual=249
+2026-08-27 23:15:03.272 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=234 slide=0 net=234
+2026-08-27 23:15:03.272 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-194 slide=72 net=-122
+2026-08-27 23:15:03.288 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=263 inset=0 residual=263
+2026-08-27 23:15:03.288 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=220 slide=0 net=220
+2026-08-27 23:15:03.288 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-208 slide=72 net=-136
+2026-08-27 23:15:03.305 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=276 inset=0 residual=276
+2026-08-27 23:15:03.305 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=206 slide=0 net=206
+2026-08-27 23:15:03.305 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-220 slide=72 net=-148
+2026-08-27 23:15:03.355 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=299 inset=0 residual=299
+2026-08-27 23:15:03.355 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=184 slide=0 net=184
+2026-08-27 23:15:03.355 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-242 slide=72 net=-170
+2026-08-27 23:15:03.371 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=308 inset=0 residual=308
+2026-08-27 23:15:03.371 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=174 slide=0 net=174
+2026-08-27 23:15:03.371 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-252 slide=72 net=-180
+2026-08-27 23:15:03.388 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=316 inset=0 residual=316
+2026-08-27 23:15:03.388 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=166 slide=0 net=166
+2026-08-27 23:15:03.388 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-260 slide=72 net=-188
+2026-08-27 23:15:03.405 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=324 inset=0 residual=324
+2026-08-27 23:15:03.405 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=160 slide=0 net=160
+2026-08-27 23:15:03.405 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-268 slide=72 net=-196
+2026-08-27 23:15:03.421 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=330 inset=0 residual=330
+2026-08-27 23:15:03.421 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=152 slide=0 net=152
+2026-08-27 23:15:03.421 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-274 slide=72 net=-202
+2026-08-27 23:15:03.438 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=337 inset=0 residual=337
+2026-08-27 23:15:03.438 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=146 slide=0 net=146
+2026-08-27 23:15:03.438 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-280 slide=72 net=-208
+2026-08-27 23:15:03.454 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=342 inset=0 residual=342
+2026-08-27 23:15:03.454 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=142 slide=0 net=142
+2026-08-27 23:15:03.454 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-286 slide=72 net=-214
+2026-08-27 23:15:03.472 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=347 inset=0 residual=347
+2026-08-27 23:15:03.472 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=562 slide=0 net=562
+2026-08-27 23:15:03.472 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=136 slide=0 net=136
+2026-08-27 23:15:03.472 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-290 slide=72 net=-218
+2026-08-27 23:15:03.488 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=351 inset=0 residual=351
+2026-08-27 23:15:03.488 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=558 slide=0 net=558
+2026-08-27 23:15:03.488 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=132 slide=0 net=132
+2026-08-27 23:15:03.488 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-296 slide=72 net=-224
+2026-08-27 23:15:03.505 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=355 inset=0 residual=355
+2026-08-27 23:15:03.505 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=554 slide=0 net=554
+2026-08-27 23:15:03.505 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=128 slide=0 net=128
+2026-08-27 23:15:03.505 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-300 slide=72 net=-228
+2026-08-27 23:15:03.521 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=359 inset=0 residual=359
+2026-08-27 23:15:03.521 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=550 slide=0 net=550
+2026-08-27 23:15:03.522 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=124 slide=0 net=124
+2026-08-27 23:15:03.522 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-302 slide=72 net=-230
+2026-08-27 23:15:03.538 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=362 inset=0 residual=362
+2026-08-27 23:15:03.538 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=548 slide=0 net=548
+2026-08-27 23:15:03.538 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=122 slide=0 net=122
+2026-08-27 23:15:03.538 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-306 slide=72 net=-234
+2026-08-27 23:15:03.555 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=365 inset=0 residual=365
+2026-08-27 23:15:03.555 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=544 slide=0 net=544
+2026-08-27 23:15:03.555 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=118 slide=0 net=118
+2026-08-27 23:15:03.555 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-308 slide=72 net=-236
+2026-08-27 23:15:03.572 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=367 inset=0 residual=367
+2026-08-27 23:15:03.572 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=542 slide=0 net=542
+2026-08-27 23:15:03.572 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=116 slide=0 net=116
+2026-08-27 23:15:03.572 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-312 slide=72 net=-240
+2026-08-27 23:15:03.588 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=370 inset=0 residual=370
+2026-08-27 23:15:03.589 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=540 slide=0 net=540
+2026-08-27 23:15:03.589 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=114 slide=0 net=114
+2026-08-27 23:15:03.589 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-314 slide=72 net=-242
+2026-08-27 23:15:03.605 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=372 inset=0 residual=372
+2026-08-27 23:15:03.605 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=538 slide=0 net=538
+2026-08-27 23:15:03.605 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=112 slide=0 net=112
+2026-08-27 23:15:03.605 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-316 slide=72 net=-244
+2026-08-27 23:15:03.622 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=374 inset=0 residual=374
+2026-08-27 23:15:03.622 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=536 slide=0 net=536
+2026-08-27 23:15:03.622 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=110 slide=0 net=110
+2026-08-27 23:15:03.622 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-318 slide=72 net=-246
+2026-08-27 23:15:03.638 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=375 inset=0 residual=375
+2026-08-27 23:15:03.638 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=534 slide=0 net=534
+2026-08-27 23:15:03.638 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=108 slide=0 net=108
+2026-08-27 23:15:03.638 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-320 slide=72 net=-248
+2026-08-27 23:15:03.655 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=377 inset=0 residual=377
+2026-08-27 23:15:03.655 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=532 slide=0 net=532
+2026-08-27 23:15:03.655 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=106 slide=0 net=106
+2026-08-27 23:15:03.671 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=378 inset=0 residual=378
+2026-08-27 23:15:03.671 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=104 slide=0 net=104
+2026-08-27 23:15:03.671 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-322 slide=72 net=-250
+2026-08-27 23:15:03.688 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=379 inset=0 residual=379
+2026-08-27 23:15:03.688 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=530 slide=0 net=530
+2026-08-27 23:15:03.688 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-324 slide=72 net=-252
+2026-08-27 23:15:03.705 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=381 inset=0 residual=381
+2026-08-27 23:15:03.705 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=528 slide=0 net=528
+2026-08-27 23:15:03.705 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=102 slide=0 net=102
+2026-08-27 23:15:03.722 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=382 inset=0 residual=382
+2026-08-27 23:15:03.722 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-326 slide=72 net=-254
+2026-08-27 23:15:03.738 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=100 slide=0 net=100
+2026-08-27 23:15:03.755 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=383 inset=0 residual=383
+2026-08-27 23:15:03.755 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=526 slide=0 net=526
+2026-08-27 23:15:03.755 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-328 slide=72 net=-256
+2026-08-27 23:15:03.772 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=384 inset=0 residual=384
+2026-08-27 23:15:03.772 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=98 slide=0 net=98
+2026-08-27 23:15:03.788 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=385 inset=0 residual=385
+2026-08-27 23:15:03.788 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=524 slide=0 net=524
+2026-08-27 23:15:03.805 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-330 slide=72 net=-258
+2026-08-27 23:15:03.822 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=386 inset=0 residual=386
+2026-08-27 23:15:03.839 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=96 slide=0 net=96
+2026-08-27 23:15:03.855 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=387 inset=0 residual=387
+2026-08-27 23:15:03.855 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=522 slide=0 net=522
+2026-08-27 23:15:03.872 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-332 slide=72 net=-260
+2026-08-27 23:15:03.906 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=388 inset=0 residual=388
+2026-08-27 23:15:03.922 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=94 slide=0 net=94
+2026-08-27 23:15:03.972 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=389 inset=0 residual=389
+2026-08-27 23:15:03.973 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=520 slide=0 net=520
+2026-08-27 23:15:04.006 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-334 slide=72 net=-262
+2026-08-27 23:15:04.071 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=390 inset=0 residual=390
+2026-08-27 23:15:04.188 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=92 slide=0 net=92
+2026-08-27 23:15:04.205 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=391 inset=0 residual=391
+2026-08-27 23:15:04.205 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=518 slide=0 net=518
+2026-08-27 23:15:04.213 NuvioTV[84467:12596782] [TrailerExtract] client=android_vr NO streamingData (playability=LOGIN_REQUIRED reason=Sign in to confirm you’re not a bot)
+2026-08-27 23:15:04.383 NuvioTV[84467:12596693] [TrailerExtract] client=android video=_ARTcQh2P8o hls=false formats=1 adaptive=31 sdKeys=expiresInSeconds,formats,adaptiveFormats,serverAbrStreamingUrl,metadataFormats
+2026-08-27 23:15:04.539 NuvioTV[84467:12596693] [TrailerExtract] client=ios video=_ARTcQh2P8o hls=false formats=0 adaptive=28 sdKeys=expiresInSeconds,adaptiveFormats,aspectRatio,serverAbrStreamingUrl,metadataFormats
+2026-08-27 23:15:04.542 NuvioTV[84467:12596693] [TrailerExtract] selection: manifest=none progressive=360 (manifests collected=0)
+2026-08-27 23:15:04.542 NuvioTV[84467:12596693] [TrailerExtract] repack candidates: avcVideo=1080p avc1.640028 (android) m4aAudio=mp4a.40.2 (android)
+2026-08-27 23:15:04.624 NuvioTV[84467:12596391] [HomeScrollProbe] REST pinned-hero y=391 inset=0 residual=391
+2026-08-27 23:15:05.140 NuvioTV[84467:12597035] [TrailerExtract] repack decision: avc=1080p vs progressive=360p -> ELIGIBLE
+2026-08-27 23:15:05.592 NuvioTV[84467:12596775] [TrailerRepack] serving 1920x1080 avc1+mp4a (30+15 segments) at http://127.0.0.1:8230/2f886d62e95c281145e18d2ac18a287a/master.m3u8
+2026-08-27 23:15:05.597 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=401 inset=0 residual=401
+2026-08-27 23:15:05.597 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=508 slide=0 net=508
+2026-08-27 23:15:05.597 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=82 slide=0 net=82
+2026-08-27 23:15:05.597 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-344 slide=72 net=-272
+2026-08-27 23:15:05.605 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=419 inset=0 residual=419
+2026-08-27 23:15:05.605 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=490 slide=0 net=490
+2026-08-27 23:15:05.605 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=64 slide=0 net=64
+2026-08-27 23:15:05.605 NuvioTV[84467:12596391] [HomeScrollProbe] title row=continue-watching margin=-364 slide=72 net=-292
+2026-08-27 23:15:05.622 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=447 inset=0 residual=447
+2026-08-27 23:15:05.622 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=36 slide=0 net=36
+2026-08-27 23:15:05.622 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=462 slide=0 net=462
+2026-08-27 23:15:05.638 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=483 inset=0 residual=483
+2026-08-27 23:15:05.639 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=0 slide=0 net=0
+2026-08-27 23:15:05.639 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=426 slide=0 net=426
+2026-08-27 23:15:05.655 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=515 inset=0 residual=515
+2026-08-27 23:15:05.655 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-32 slide=32 net=0
+2026-08-27 23:15:05.655 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=394 slide=0 net=394
+2026-08-27 23:15:05.672 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=546 inset=0 residual=546
+2026-08-27 23:15:05.672 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-64 slide=64 net=0
+2026-08-27 23:15:05.673 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=364 slide=0 net=364
+2026-08-27 23:15:05.688 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=572 inset=0 residual=572
+2026-08-27 23:15:05.688 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-90 slide=72 net=-18
+2026-08-27 23:15:05.688 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=338 slide=0 net=338
+2026-08-27 23:15:05.705 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=595 inset=0 residual=595
+2026-08-27 23:15:05.705 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-112 slide=72 net=-40
+2026-08-27 23:15:05.705 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=314 slide=0 net=314
+2026-08-27 23:15:05.721 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=616 inset=0 residual=616
+2026-08-27 23:15:05.721 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-134 slide=72 net=-62
+2026-08-27 23:15:05.721 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=294 slide=0 net=294
+2026-08-27 23:15:05.743 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=642 inset=0 residual=642
+2026-08-27 23:15:05.743 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-160 slide=72 net=-88
+2026-08-27 23:15:05.743 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=268 slide=0 net=268
+2026-08-27 23:15:05.755 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=653 inset=0 residual=653
+2026-08-27 23:15:05.755 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-170 slide=72 net=-98
+2026-08-27 23:15:05.755 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=256 slide=0 net=256
+2026-08-27 23:15:05.771 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=668 inset=0 residual=668
+2026-08-27 23:15:05.771 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-186 slide=72 net=-114
+2026-08-27 23:15:05.771 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=242 slide=0 net=242
+2026-08-27 23:15:05.788 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=682 inset=0 residual=682
+2026-08-27 23:15:05.788 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-200 slide=72 net=-128
+2026-08-27 23:15:05.788 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=228 slide=0 net=228
+2026-08-27 23:15:05.838 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=705 inset=0 residual=705
+2026-08-27 23:15:05.838 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-222 slide=72 net=-150
+2026-08-27 23:15:05.838 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=204 slide=0 net=204
+2026-08-27 23:15:05.854 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=715 inset=0 residual=715
+2026-08-27 23:15:05.854 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-232 slide=72 net=-160
+2026-08-27 23:15:05.855 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=194 slide=0 net=194
+2026-08-27 23:15:05.888 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=733 inset=0 residual=733
+2026-08-27 23:15:05.888 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-250 slide=72 net=-178
+2026-08-27 23:15:05.888 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=176 slide=0 net=176
+2026-08-27 23:15:05.906 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=740 inset=0 residual=740
+2026-08-27 23:15:05.906 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=558 slide=0 net=558
+2026-08-27 23:15:05.906 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-258 slide=72 net=-186
+2026-08-27 23:15:05.906 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=170 slide=0 net=170
+2026-08-27 23:15:05.922 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=747 inset=0 residual=747
+2026-08-27 23:15:05.922 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=550 slide=0 net=550
+2026-08-27 23:15:05.922 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-264 slide=72 net=-192
+2026-08-27 23:15:05.922 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=162 slide=0 net=162
+2026-08-27 23:15:05.939 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=752 inset=0 residual=752
+2026-08-27 23:15:05.939 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=546 slide=0 net=546
+2026-08-27 23:15:05.939 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-270 slide=72 net=-198
+2026-08-27 23:15:05.939 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=158 slide=0 net=158
+2026-08-27 23:15:05.955 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=757 inset=0 residual=757
+2026-08-27 23:15:05.955 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=540 slide=0 net=540
+2026-08-27 23:15:05.955 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-274 slide=72 net=-202
+2026-08-27 23:15:05.955 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=152 slide=0 net=152
+2026-08-27 23:15:05.972 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=762 inset=0 residual=762
+2026-08-27 23:15:05.972 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=536 slide=0 net=536
+2026-08-27 23:15:05.972 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-280 slide=72 net=-208
+2026-08-27 23:15:05.972 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=148 slide=0 net=148
+2026-08-27 23:15:05.989 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=766 inset=0 residual=766
+2026-08-27 23:15:05.989 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=532 slide=0 net=532
+2026-08-27 23:15:05.989 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-284 slide=72 net=-212
+2026-08-27 23:15:05.989 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=144 slide=0 net=144
+2026-08-27 23:15:06.005 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=770 inset=0 residual=770
+2026-08-27 23:15:06.005 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=528 slide=0 net=528
+2026-08-27 23:15:06.005 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-288 slide=72 net=-216
+2026-08-27 23:15:06.005 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=140 slide=0 net=140
+2026-08-27 23:15:06.022 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=773 inset=0 residual=773
+2026-08-27 23:15:06.022 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=524 slide=0 net=524
+2026-08-27 23:15:06.022 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-290 slide=72 net=-218
+2026-08-27 23:15:06.022 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=136 slide=0 net=136
+2026-08-27 23:15:06.038 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=776 inset=0 residual=776
+2026-08-27 23:15:06.038 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=522 slide=0 net=522
+2026-08-27 23:15:06.038 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-294 slide=72 net=-222
+2026-08-27 23:15:06.038 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=134 slide=0 net=134
+2026-08-27 23:15:06.055 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=779 inset=0 residual=779
+2026-08-27 23:15:06.055 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=518 slide=0 net=518
+2026-08-27 23:15:06.055 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-296 slide=72 net=-224
+2026-08-27 23:15:06.055 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=130 slide=0 net=130
+2026-08-27 23:15:06.071 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=782 inset=0 residual=782
+2026-08-27 23:15:06.071 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=516 slide=0 net=516
+2026-08-27 23:15:06.072 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-300 slide=72 net=-228
+2026-08-27 23:15:06.072 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=128 slide=0 net=128
+2026-08-27 23:15:06.089 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=784 inset=0 residual=784
+2026-08-27 23:15:06.089 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=514 slide=0 net=514
+2026-08-27 23:15:06.089 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-302 slide=72 net=-230
+2026-08-27 23:15:06.089 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=126 slide=0 net=126
+2026-08-27 23:15:06.105 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=786 inset=0 residual=786
+2026-08-27 23:15:06.105 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=512 slide=0 net=512
+2026-08-27 23:15:06.105 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-304 slide=72 net=-232
+2026-08-27 23:15:06.105 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=124 slide=0 net=124
+2026-08-27 23:15:06.121 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=788 inset=0 residual=788
+2026-08-27 23:15:06.121 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=510 slide=0 net=510
+2026-08-27 23:15:06.121 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-306 slide=72 net=-234
+2026-08-27 23:15:06.121 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=122 slide=0 net=122
+2026-08-27 23:15:06.138 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=789 inset=0 residual=789
+2026-08-27 23:15:06.138 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=508 slide=0 net=508
+2026-08-27 23:15:06.139 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=120 slide=0 net=120
+2026-08-27 23:15:06.155 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=791 inset=0 residual=791
+2026-08-27 23:15:06.155 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=506 slide=0 net=506
+2026-08-27 23:15:06.155 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-308 slide=72 net=-236
+2026-08-27 23:15:06.155 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=118 slide=0 net=118
+2026-08-27 23:15:06.172 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=792 inset=0 residual=792
+2026-08-27 23:15:06.172 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-310 slide=72 net=-238
+2026-08-27 23:15:06.188 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=793 inset=0 residual=793
+2026-08-27 23:15:06.188 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=504 slide=0 net=504
+2026-08-27 23:15:06.188 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=116 slide=0 net=116
+2026-08-27 23:15:06.205 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=794 inset=0 residual=794
+2026-08-27 23:15:06.205 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-312 slide=72 net=-240
+2026-08-27 23:15:06.222 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=795 inset=0 residual=795
+2026-08-27 23:15:06.222 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=502 slide=0 net=502
+2026-08-27 23:15:06.222 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=114 slide=0 net=114
+2026-08-27 23:15:06.238 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=796 inset=0 residual=796
+2026-08-27 23:15:06.238 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-314 slide=72 net=-242
+2026-08-27 23:15:06.255 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=797 inset=0 residual=797
+2026-08-27 23:15:06.255 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=500 slide=0 net=500
+2026-08-27 23:15:06.255 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=112 slide=0 net=112
+2026-08-27 23:15:06.271 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=798 inset=0 residual=798
+2026-08-27 23:15:06.272 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-316 slide=72 net=-244
+2026-08-27 23:15:06.305 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=799 inset=0 residual=799
+2026-08-27 23:15:06.305 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=498 slide=0 net=498
+2026-08-27 23:15:06.305 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=110 slide=0 net=110
+2026-08-27 23:15:06.338 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=800 inset=0 residual=800
+2026-08-27 23:15:06.338 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-318 slide=72 net=-246
+2026-08-27 23:15:06.388 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=801 inset=0 residual=801
+2026-08-27 23:15:06.388 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=496 slide=0 net=496
+2026-08-27 23:15:06.388 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=108 slide=0 net=108
+2026-08-27 23:15:06.438 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=802 inset=0 residual=802
+2026-08-27 23:15:06.438 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-320 slide=72 net=-248
+2026-08-27 23:15:06.538 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=803 inset=0 residual=803
+2026-08-27 23:15:06.539 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=494 slide=0 net=494
+2026-08-27 23:15:06.539 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=106 slide=0 net=106
+2026-08-27 23:15:06.691 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=804 inset=0 residual=804
+2026-08-27 23:15:06.691 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-322 slide=72 net=-250
+2026-08-27 23:15:07.110 NuvioTV[84467:12596391] [HomeScrollProbe] REST pinned-hero y=804 inset=0 residual=804
+2026-08-27 23:15:07.176 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=807 inset=0 residual=807
+2026-08-27 23:15:07.176 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=490 slide=0 net=490
+2026-08-27 23:15:07.176 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-324 slide=72 net=-252
+2026-08-27 23:15:07.176 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=102 slide=0 net=102
+2026-08-27 23:15:07.192 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=820 inset=0 residual=820
+2026-08-27 23:15:07.192 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=478 slide=0 net=478
+2026-08-27 23:15:07.192 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-338 slide=72 net=-266
+2026-08-27 23:15:07.192 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=90 slide=0 net=90
+2026-08-27 23:15:07.206 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=843 inset=0 residual=843
+2026-08-27 23:15:07.206 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=454 slide=0 net=454
+2026-08-27 23:15:07.206 NuvioTV[84467:12596391] [HomeScrollProbe] title row=upcoming margin=-360 slide=72 net=-288
+2026-08-27 23:15:07.206 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=66 slide=0 net=66
+2026-08-27 23:15:07.222 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=876 inset=0 residual=876
+2026-08-27 23:15:07.222 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=422 slide=0 net=422
+2026-08-27 23:15:07.222 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=34 slide=0 net=34
+2026-08-27 23:15:07.238 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=917 inset=0 residual=917
+2026-08-27 23:15:07.238 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=380 slide=0 net=380
+2026-08-27 23:15:07.238 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-8 slide=8 net=0
+2026-08-27 23:15:07.255 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=953 inset=0 residual=953
+2026-08-27 23:15:07.255 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=344 slide=0 net=344
+2026-08-27 23:15:07.255 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-44 slide=44 net=0
+2026-08-27 23:15:07.272 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=986 inset=0 residual=986
+2026-08-27 23:15:07.272 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=312 slide=0 net=312
+2026-08-27 23:15:07.272 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-76 slide=72 net=-4
+2026-08-27 23:15:07.288 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1015 inset=0 residual=1015
+2026-08-27 23:15:07.289 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=282 slide=0 net=282
+2026-08-27 23:15:07.289 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-106 slide=72 net=-34
+2026-08-27 23:15:07.305 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1041 inset=0 residual=1041
+2026-08-27 23:15:07.305 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=256 slide=0 net=256
+2026-08-27 23:15:07.305 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-132 slide=72 net=-60
+2026-08-27 23:15:07.322 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1065 inset=0 residual=1065
+2026-08-27 23:15:07.322 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=232 slide=0 net=232
+2026-08-27 23:15:07.322 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-156 slide=72 net=-84
+2026-08-27 23:15:07.338 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1087 inset=0 residual=1087
+2026-08-27 23:15:07.338 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=210 slide=0 net=210
+2026-08-27 23:15:07.338 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-178 slide=72 net=-106
+2026-08-27 23:15:07.355 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1106 inset=0 residual=1106
+2026-08-27 23:15:07.355 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=192 slide=0 net=192
+2026-08-27 23:15:07.355 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-196 slide=72 net=-124
+2026-08-27 23:15:07.372 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1123 inset=0 residual=1123
+2026-08-27 23:15:07.372 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=174 slide=0 net=174
+2026-08-27 23:15:07.372 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-214 slide=72 net=-142
+2026-08-27 23:15:07.388 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1139 inset=0 residual=1139
+2026-08-27 23:15:07.388 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=158 slide=0 net=158
+2026-08-27 23:15:07.388 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-230 slide=72 net=-158
+2026-08-27 23:15:07.455 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1164 inset=0 residual=1164
+2026-08-27 23:15:07.455 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=134 slide=0 net=134
+2026-08-27 23:15:07.455 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-256 slide=72 net=-184
+2026-08-27 23:15:07.471 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1176 inset=0 residual=1176
+2026-08-27 23:15:07.471 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=122 slide=0 net=122
+2026-08-27 23:15:07.472 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-266 slide=72 net=-194
+2026-08-27 23:15:07.488 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1186 inset=0 residual=1186
+2026-08-27 23:15:07.488 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=112 slide=0 net=112
+2026-08-27 23:15:07.488 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-278 slide=72 net=-206
+2026-08-27 23:15:07.505 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1195 inset=0 residual=1195
+2026-08-27 23:15:07.505 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=102 slide=0 net=102
+2026-08-27 23:15:07.505 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-286 slide=72 net=-214
+2026-08-27 23:15:07.521 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1204 inset=0 residual=1204
+2026-08-27 23:15:07.522 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=94 slide=0 net=94
+2026-08-27 23:15:07.522 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-294 slide=72 net=-222
+2026-08-27 23:15:07.538 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1211 inset=0 residual=1211
+2026-08-27 23:15:07.538 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=86 slide=0 net=86
+2026-08-27 23:15:07.538 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-302 slide=72 net=-230
+2026-08-27 23:15:07.555 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1218 inset=0 residual=1218
+2026-08-27 23:15:07.555 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=80 slide=0 net=80
+2026-08-27 23:15:07.555 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-308 slide=72 net=-236
+2026-08-27 23:15:07.571 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1224 inset=0 residual=1224
+2026-08-27 23:15:07.571 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=74 slide=0 net=74
+2026-08-27 23:15:07.571 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-314 slide=72 net=-242
+2026-08-27 23:15:07.588 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1229 inset=0 residual=1229
+2026-08-27 23:15:07.588 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=68 slide=0 net=68
+2026-08-27 23:15:07.588 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-320 slide=72 net=-248
+2026-08-27 23:15:07.605 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1234 inset=0 residual=1234
+2026-08-27 23:15:07.605 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=64 slide=0 net=64
+2026-08-27 23:15:07.605 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-326 slide=72 net=-254
+2026-08-27 23:15:07.621 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1239 inset=0 residual=1239
+2026-08-27 23:15:07.622 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=58 slide=0 net=58
+2026-08-27 23:15:07.622 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-330 slide=72 net=-258
+2026-08-27 23:15:07.639 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1243 inset=0 residual=1243
+2026-08-27 23:15:07.639 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=54 slide=0 net=54
+2026-08-27 23:15:07.639 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-334 slide=72 net=-262
+2026-08-27 23:15:07.654 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1246 inset=0 residual=1246
+2026-08-27 23:15:07.655 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=52 slide=0 net=52
+2026-08-27 23:15:07.655 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-338 slide=72 net=-266
+2026-08-27 23:15:07.671 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1249 inset=0 residual=1249
+2026-08-27 23:15:07.671 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=48 slide=0 net=48
+2026-08-27 23:15:07.671 NuvioTV[84467:12596391] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=-340 slide=72 net=-268
+2026-08-27 23:15:07.688 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1252 inset=0 residual=1252
+2026-08-27 23:15:07.688 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=46 slide=0 net=46
+2026-08-27 23:15:07.704 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1255 inset=0 residual=1255
+2026-08-27 23:15:07.704 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=42 slide=0 net=42
+2026-08-27 23:15:07.721 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1257 inset=0 residual=1257
+2026-08-27 23:15:07.721 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=40 slide=0 net=40
+2026-08-27 23:15:07.737 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1259 inset=0 residual=1259
+2026-08-27 23:15:07.737 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=38 slide=0 net=38
+2026-08-27 23:15:07.754 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1261 inset=0 residual=1261
+2026-08-27 23:15:07.754 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=36 slide=0 net=36
+2026-08-27 23:15:07.771 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1263 inset=0 residual=1263
+2026-08-27 23:15:07.771 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=34 slide=0 net=34
+2026-08-27 23:15:07.787 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1264 inset=0 residual=1264
+2026-08-27 23:15:07.804 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1266 inset=0 residual=1266
+2026-08-27 23:15:07.804 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=32 slide=0 net=32
+2026-08-27 23:15:07.821 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1267 inset=0 residual=1267
+2026-08-27 23:15:07.821 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=30 slide=0 net=30
+[LaunchTrace] +39088ms rows n=31
+2026-08-27 23:15:07.837 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1268 inset=0 residual=1268
+2026-08-27 23:15:07.854 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1269 inset=0 residual=1269
+2026-08-27 23:15:07.854 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=28 slide=0 net=28
+2026-08-27 23:15:07.871 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1270 inset=0 residual=1270
+2026-08-27 23:15:07.888 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1271 inset=0 residual=1271
+2026-08-27 23:15:07.888 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=26 slide=0 net=26
+2026-08-27 23:15:07.921 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1272 inset=0 residual=1272
+2026-08-27 23:15:07.938 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1273 inset=0 residual=1273
+2026-08-27 23:15:07.938 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=24 slide=0 net=24
+2026-08-27 23:15:07.971 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1274 inset=0 residual=1274
+2026-08-27 23:15:08.004 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1275 inset=0 residual=1275
+2026-08-27 23:15:08.004 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=22 slide=0 net=22
+2026-08-27 23:15:08.071 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1276 inset=0 residual=1276
+2026-08-27 23:15:08.138 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1277 inset=0 residual=1277
+2026-08-27 23:15:08.138 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=20 slide=0 net=20
+2026-08-27 23:15:08.321 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1278 inset=0 residual=1278
+2026-08-27 23:15:08.767 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1288 inset=0 residual=1288
+2026-08-27 23:15:08.767 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=562 slide=0 net=562
+2026-08-27 23:15:08.767 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=10 slide=0 net=10
+[LaunchTrace] +40059ms artwork #100: mem=0 disk=97 net=3 fail=0
+2026-08-27 23:15:08.805 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1308 inset=0 residual=1308
+2026-08-27 23:15:08.805 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=542 slide=0 net=542
+2026-08-27 23:15:08.805 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-12 slide=12 net=0
+2026-08-27 23:15:08.823 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1338 inset=0 residual=1338
+2026-08-27 23:15:08.823 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=512 slide=0 net=512
+2026-08-27 23:15:08.823 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-42 slide=42 net=0
+2026-08-27 23:15:08.838 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1378 inset=0 residual=1378
+2026-08-27 23:15:08.838 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=472 slide=0 net=472
+2026-08-27 23:15:08.838 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-82 slide=72 net=-10
+2026-08-27 23:15:08.855 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1424 inset=0 residual=1424
+2026-08-27 23:15:08.855 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=428 slide=0 net=428
+2026-08-27 23:15:08.855 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-126 slide=72 net=-54
+2026-08-27 23:15:08.888 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1479 inset=0 residual=1479
+2026-08-27 23:15:08.888 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=372 slide=0 net=372
+2026-08-27 23:15:08.888 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-182 slide=72 net=-110
+2026-08-27 23:15:08.905 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1515 inset=0 residual=1515
+2026-08-27 23:15:08.905 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=336 slide=0 net=336
+2026-08-27 23:15:08.905 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-218 slide=72 net=-146
+2026-08-27 23:15:08.923 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1548 inset=0 residual=1548
+2026-08-27 23:15:08.923 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=302 slide=0 net=302
+2026-08-27 23:15:08.923 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-252 slide=72 net=-180
+2026-08-27 23:15:08.939 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1575 inset=0 residual=1575
+2026-08-27 23:15:08.939 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=276 slide=0 net=276
+2026-08-27 23:15:08.939 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-278 slide=72 net=-206
+2026-08-27 23:15:08.955 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1601 inset=0 residual=1601
+2026-08-27 23:15:08.955 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=250 slide=0 net=250
+2026-08-27 23:15:08.955 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-304 slide=72 net=-232
+2026-08-27 23:15:08.972 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1624 inset=0 residual=1624
+2026-08-27 23:15:08.972 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=226 slide=0 net=226
+2026-08-27 23:15:08.972 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-328 slide=72 net=-256
+2026-08-27 23:15:08.988 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1645 inset=0 residual=1645
+2026-08-27 23:15:08.988 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=206 slide=0 net=206
+2026-08-27 23:15:08.988 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-348 slide=72 net=-276
+2026-08-27 23:15:09.005 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1664 inset=0 residual=1664
+2026-08-27 23:15:09.005 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=188 slide=0 net=188
+2026-08-27 23:15:09.005 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-366 slide=72 net=-294
+2026-08-27 23:15:09.022 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1681 inset=0 residual=1681
+2026-08-27 23:15:09.022 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=170 slide=0 net=170
+2026-08-27 23:15:09.022 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-384 slide=72 net=-312
+2026-08-27 23:15:09.038 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1696 inset=0 residual=1696
+2026-08-27 23:15:09.038 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=156 slide=0 net=156
+2026-08-27 23:15:09.038 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-398 slide=72 net=-326
+2026-08-27 23:15:09.059 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1713 inset=0 residual=1713
+2026-08-27 23:15:09.059 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=138 slide=0 net=138
+2026-08-27 23:15:09.059 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-416 slide=72 net=-344
+[LaunchTrace] +40328ms rows n=35
+2026-08-27 23:15:09.072 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1723 inset=0 residual=1723
+2026-08-27 23:15:09.072 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=128 slide=0 net=128
+2026-08-27 23:15:09.073 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-426 slide=72 net=-354
+2026-08-27 23:15:09.088 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1733 inset=0 residual=1733
+2026-08-27 23:15:09.088 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=118 slide=0 net=118
+2026-08-27 23:15:09.089 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-436 slide=72 net=-364
+2026-08-27 23:15:09.105 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1743 inset=0 residual=1743
+2026-08-27 23:15:09.105 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=108 slide=0 net=108
+2026-08-27 23:15:09.105 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-446 slide=72 net=-374
+2026-08-27 23:15:09.122 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1752 inset=0 residual=1752
+2026-08-27 23:15:09.122 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=98 slide=0 net=98
+2026-08-27 23:15:09.122 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-456 slide=72 net=-384
+2026-08-27 23:15:09.138 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1760 inset=0 residual=1760
+2026-08-27 23:15:09.138 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=90 slide=0 net=90
+2026-08-27 23:15:09.138 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-464 slide=72 net=-392
+2026-08-27 23:15:09.155 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1767 inset=0 residual=1767
+2026-08-27 23:15:09.155 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=84 slide=0 net=84
+2026-08-27 23:15:09.155 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-470 slide=72 net=-398
+2026-08-27 23:15:09.172 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1774 inset=0 residual=1774
+2026-08-27 23:15:09.172 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=78 slide=0 net=78
+2026-08-27 23:15:09.172 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-476 slide=72 net=-404
+2026-08-27 23:15:09.188 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1780 inset=0 residual=1780
+2026-08-27 23:15:09.188 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=72 slide=0 net=72
+2026-08-27 23:15:09.188 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-482 slide=72 net=-410
+2026-08-27 23:15:09.204 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1785 inset=0 residual=1785
+2026-08-27 23:15:09.204 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=66 slide=0 net=66
+2026-08-27 23:15:09.204 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-488 slide=72 net=-416
+2026-08-27 23:15:09.221 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1789 inset=0 residual=1789
+2026-08-27 23:15:09.221 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=62 slide=0 net=62
+2026-08-27 23:15:09.221 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-492 slide=72 net=-420
+2026-08-27 23:15:09.238 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1794 inset=0 residual=1794
+2026-08-27 23:15:09.238 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=58 slide=0 net=58
+2026-08-27 23:15:09.238 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-496 slide=72 net=-424
+2026-08-27 23:15:09.255 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1797 inset=0 residual=1797
+2026-08-27 23:15:09.255 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=54 slide=0 net=54
+2026-08-27 23:15:09.255 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-500 slide=72 net=-428
+2026-08-27 23:15:09.272 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1801 inset=0 residual=1801
+2026-08-27 23:15:09.272 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=50 slide=0 net=50
+2026-08-27 23:15:09.272 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=-504 slide=72 net=-432
+2026-08-27 23:15:09.288 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1804 inset=0 residual=1804
+2026-08-27 23:15:09.288 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=48 slide=0 net=48
+2026-08-27 23:15:09.304 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1807 inset=0 residual=1807
+2026-08-27 23:15:09.304 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=44 slide=0 net=44
+2026-08-27 23:15:09.321 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1809 inset=0 residual=1809
+2026-08-27 23:15:09.321 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=42 slide=0 net=42
+2026-08-27 23:15:09.337 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1811 inset=0 residual=1811
+2026-08-27 23:15:09.337 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=40 slide=0 net=40
+2026-08-27 23:15:09.355 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1813 inset=0 residual=1813
+2026-08-27 23:15:09.355 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=38 slide=0 net=38
+2026-08-27 23:15:09.371 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1815 inset=0 residual=1815
+2026-08-27 23:15:09.371 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=36 slide=0 net=36
+2026-08-27 23:15:09.388 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1817 inset=0 residual=1817
+2026-08-27 23:15:09.388 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=34 slide=0 net=34
+2026-08-27 23:15:09.404 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1818 inset=0 residual=1818
+2026-08-27 23:15:09.404 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=32 slide=0 net=32
+2026-08-27 23:15:09.421 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1820 inset=0 residual=1820
+2026-08-27 23:15:09.438 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1821 inset=0 residual=1821
+2026-08-27 23:15:09.438 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=30 slide=0 net=30
+2026-08-27 23:15:09.454 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1822 inset=0 residual=1822
+2026-08-27 23:15:09.470 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1823 inset=0 residual=1823
+2026-08-27 23:15:09.470 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=28 slide=0 net=28
+2026-08-27 23:15:09.487 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1824 inset=0 residual=1824
+2026-08-27 23:15:09.504 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1825 inset=0 residual=1825
+2026-08-27 23:15:09.504 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=26 slide=0 net=26
+2026-08-27 23:15:09.538 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1826 inset=0 residual=1826
+2026-08-27 23:15:09.556 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=24 slide=0 net=24
+2026-08-27 23:15:09.571 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1827 inset=0 residual=1827
+2026-08-27 23:15:09.621 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1828 inset=0 residual=1828
+2026-08-27 23:15:09.621 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=22 slide=0 net=22
+2026-08-27 23:15:09.638 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1829 inset=0 residual=1829
+2026-08-27 23:15:09.649 NuvioTV[84467:12596775] [TrailerExtract] client=android_vr NO streamingData (playability=LOGIN_REQUIRED reason=Sign in to confirm you’re not a bot)
+2026-08-27 23:15:09.704 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1830 inset=0 residual=1830
+2026-08-27 23:15:09.772 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=20 slide=0 net=20
+2026-08-27 23:15:09.803 NuvioTV[84467:12596776] [TrailerExtract] client=android video=sNMyooXZZTM hls=false formats=1 adaptive=25 sdKeys=expiresInSeconds,formats,adaptiveFormats,serverAbrStreamingUrl,metadataFormats
+2026-08-27 23:15:09.822 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1831 inset=0 residual=1831
+2026-08-27 23:15:09.937 NuvioTV[84467:12596405] [TrailerExtract] client=ios video=sNMyooXZZTM hls=false formats=0 adaptive=23 sdKeys=expiresInSeconds,adaptiveFormats,aspectRatio,serverAbrStreamingUrl,metadataFormats
+2026-08-27 23:15:09.939 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1832 inset=0 residual=1832
+2026-08-27 23:15:09.940 NuvioTV[84467:12596405] [TrailerExtract] selection: manifest=none progressive=360 (manifests collected=0)
+2026-08-27 23:15:09.940 NuvioTV[84467:12596405] [TrailerExtract] repack candidates: avcVideo=1080p avc1.640028 (android) m4aAudio=mp4a.40.2 (android)
+2026-08-27 23:15:10.340 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1842 inset=0 residual=1842
+2026-08-27 23:15:10.340 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=562 slide=0 net=562
+2026-08-27 23:15:10.340 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=10 slide=0 net=10
+2026-08-27 23:15:10.358 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1862 inset=0 residual=1862
+2026-08-27 23:15:10.358 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=542 slide=0 net=542
+2026-08-27 23:15:10.358 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-12 slide=12 net=0
+2026-08-27 23:15:10.377 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1892 inset=0 residual=1892
+2026-08-27 23:15:10.377 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=512 slide=0 net=512
+2026-08-27 23:15:10.377 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-42 slide=42 net=0
+2026-08-27 23:15:10.408 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1932 inset=0 residual=1932
+2026-08-27 23:15:10.408 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=472 slide=0 net=472
+2026-08-27 23:15:10.408 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-82 slide=72 net=-10
+2026-08-27 23:15:10.425 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=1980 inset=0 residual=1980
+2026-08-27 23:15:10.425 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=424 slide=0 net=424
+2026-08-27 23:15:10.425 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-130 slide=72 net=-58
+2026-08-27 23:15:10.441 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2021 inset=0 residual=2021
+2026-08-27 23:15:10.441 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=384 slide=0 net=384
+2026-08-27 23:15:10.441 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-170 slide=72 net=-98
+2026-08-27 23:15:10.457 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2057 inset=0 residual=2057
+2026-08-27 23:15:10.457 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=348 slide=0 net=348
+2026-08-27 23:15:10.457 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-206 slide=72 net=-134
+2026-08-27 23:15:10.474 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2090 inset=0 residual=2090
+2026-08-27 23:15:10.474 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=314 slide=0 net=314
+2026-08-27 23:15:10.474 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-240 slide=72 net=-168
+2026-08-27 23:15:10.490 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2120 inset=0 residual=2120
+2026-08-27 23:15:10.490 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=284 slide=0 net=284
+2026-08-27 23:15:10.490 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-270 slide=72 net=-198
+2026-08-27 23:15:10.507 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2147 inset=0 residual=2147
+2026-08-27 23:15:10.507 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=258 slide=0 net=258
+2026-08-27 23:15:10.507 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-296 slide=72 net=-224
+2026-08-27 23:15:10.524 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2171 inset=0 residual=2171
+2026-08-27 23:15:10.524 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=234 slide=0 net=234
+2026-08-27 23:15:10.524 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-320 slide=72 net=-248
+2026-08-27 23:15:10.541 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2193 inset=0 residual=2193
+2026-08-27 23:15:10.542 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=212 slide=0 net=212
+2026-08-27 23:15:10.542 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-342 slide=72 net=-270
+2026-08-27 23:15:10.558 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2213 inset=0 residual=2213
+2026-08-27 23:15:10.558 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=192 slide=0 net=192
+2026-08-27 23:15:10.558 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-362 slide=72 net=-290
+2026-08-27 23:15:10.575 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2230 inset=0 residual=2230
+2026-08-27 23:15:10.575 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=174 slide=0 net=174
+2026-08-27 23:15:10.575 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-380 slide=72 net=-308
+2026-08-27 23:15:10.591 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2246 inset=0 residual=2246
+2026-08-27 23:15:10.591 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=158 slide=0 net=158
+2026-08-27 23:15:10.591 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-396 slide=72 net=-324
+2026-08-27 23:15:10.612 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2263 inset=0 residual=2263
+2026-08-27 23:15:10.612 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=142 slide=0 net=142
+2026-08-27 23:15:10.612 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-412 slide=72 net=-340
+2026-08-27 23:15:10.625 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2272 inset=0 residual=2272
+2026-08-27 23:15:10.625 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=132 slide=0 net=132
+2026-08-27 23:15:10.625 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-422 slide=72 net=-350
+2026-08-27 23:15:10.646 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2287 inset=0 residual=2287
+2026-08-27 23:15:10.646 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=118 slide=0 net=118
+2026-08-27 23:15:10.646 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-436 slide=72 net=-364
+2026-08-27 23:15:10.656 NuvioTV[84467:12597156] [TrailerExtract] repack decision: avc=1080p vs progressive=360p -> ELIGIBLE
+2026-08-27 23:15:10.658 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2294 inset=0 residual=2294
+2026-08-27 23:15:10.658 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=110 slide=0 net=110
+2026-08-27 23:15:10.658 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-444 slide=72 net=-372
+2026-08-27 23:15:10.691 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2311 inset=0 residual=2311
+2026-08-27 23:15:10.691 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=94 slide=0 net=94
+2026-08-27 23:15:10.691 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-460 slide=72 net=-388
+2026-08-27 23:15:10.709 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2319 inset=0 residual=2319
+2026-08-27 23:15:10.709 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=86 slide=0 net=86
+2026-08-27 23:15:10.709 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-468 slide=72 net=-396
+2026-08-27 23:15:10.725 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2325 inset=0 residual=2325
+2026-08-27 23:15:10.725 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=80 slide=0 net=80
+2026-08-27 23:15:10.725 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-474 slide=72 net=-402
+2026-08-27 23:15:10.742 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2331 inset=0 residual=2331
+2026-08-27 23:15:10.742 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=74 slide=0 net=74
+2026-08-27 23:15:10.742 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-480 slide=72 net=-408
+2026-08-27 23:15:10.761 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2337 inset=0 residual=2337
+2026-08-27 23:15:10.761 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=68 slide=0 net=68
+2026-08-27 23:15:10.761 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-486 slide=72 net=-414
+2026-08-27 23:15:10.774 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2341 inset=0 residual=2341
+2026-08-27 23:15:10.775 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=64 slide=0 net=64
+2026-08-27 23:15:10.775 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-490 slide=72 net=-418
+2026-08-27 23:15:10.791 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2346 inset=0 residual=2346
+2026-08-27 23:15:10.791 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=58 slide=0 net=58
+2026-08-27 23:15:10.791 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-496 slide=72 net=-424
+2026-08-27 23:15:10.808 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2350 inset=0 residual=2350
+2026-08-27 23:15:10.808 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=54 slide=0 net=54
+2026-08-27 23:15:10.808 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-500 slide=72 net=-428
+2026-08-27 23:15:10.824 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2354 inset=0 residual=2354
+2026-08-27 23:15:10.824 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=50 slide=0 net=50
+2026-08-27 23:15:10.824 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you margin=-504 slide=72 net=-432
+2026-08-27 23:15:10.841 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2357 inset=0 residual=2357
+2026-08-27 23:15:10.841 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=48 slide=0 net=48
+2026-08-27 23:15:10.858 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2360 inset=0 residual=2360
+2026-08-27 23:15:10.858 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=44 slide=0 net=44
+2026-08-27 23:15:10.873 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2362 inset=0 residual=2362
+2026-08-27 23:15:10.873 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=42 slide=0 net=42
+2026-08-27 23:15:10.890 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2364 inset=0 residual=2364
+2026-08-27 23:15:10.890 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=40 slide=0 net=40
+2026-08-27 23:15:10.906 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2366 inset=0 residual=2366
+2026-08-27 23:15:10.906 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=38 slide=0 net=38
+2026-08-27 23:15:10.922 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2368 inset=0 residual=2368
+2026-08-27 23:15:10.923 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=36 slide=0 net=36
+2026-08-27 23:15:10.938 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2370 inset=0 residual=2370
+2026-08-27 23:15:10.938 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=34 slide=0 net=34
+2026-08-27 23:15:10.954 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2371 inset=0 residual=2371
+2026-08-27 23:15:10.972 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2373 inset=0 residual=2373
+2026-08-27 23:15:10.972 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=32 slide=0 net=32
+2026-08-27 23:15:10.988 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2374 inset=0 residual=2374
+2026-08-27 23:15:10.988 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=30 slide=0 net=30
+2026-08-27 23:15:11.004 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2375 inset=0 residual=2375
+2026-08-27 23:15:11.021 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2376 inset=0 residual=2376
+2026-08-27 23:15:11.021 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=28 slide=0 net=28
+2026-08-27 23:15:11.038 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2377 inset=0 residual=2377
+2026-08-27 23:15:11.054 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2378 inset=0 residual=2378
+2026-08-27 23:15:11.054 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=26 slide=0 net=26
+2026-08-27 23:15:11.071 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2379 inset=0 residual=2379
+2026-08-27 23:15:11.104 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2380 inset=0 residual=2380
+2026-08-27 23:15:11.104 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=24 slide=0 net=24
+2026-08-27 23:15:11.154 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2381 inset=0 residual=2381
+2026-08-27 23:15:11.171 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2382 inset=0 residual=2382
+2026-08-27 23:15:11.171 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=22 slide=0 net=22
+2026-08-27 23:15:11.221 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2383 inset=0 residual=2383
+2026-08-27 23:15:11.252 NuvioTV[84467:12596776] [TrailerRepack] serving 1920x1080 avc1+mp4a (32+17 segments) at http://127.0.0.1:8230/b355554c6b34dd63f6588eb61c7f6d46/master.m3u8
+2026-08-27 23:15:11.305 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2384 inset=0 residual=2384
+2026-08-27 23:15:11.305 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=20 slide=0 net=20
+2026-08-27 23:15:11.489 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2385 inset=0 residual=2385
+2026-08-27 23:15:11.862 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2389 inset=0 residual=2389
+2026-08-27 23:15:11.862 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=16 slide=0 net=16
+2026-08-27 23:15:11.873 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2403 inset=0 residual=2403
+2026-08-27 23:15:11.873 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=554 slide=0 net=554
+2026-08-27 23:15:11.873 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=2 slide=0 net=2
+2026-08-27 23:15:11.905 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2427 inset=0 residual=2427
+2026-08-27 23:15:11.905 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=532 slide=0 net=532
+2026-08-27 23:15:11.905 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-22 slide=22 net=0
+2026-08-27 23:15:11.922 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2461 inset=0 residual=2461
+2026-08-27 23:15:11.922 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=498 slide=0 net=498
+2026-08-27 23:15:11.922 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-56 slide=56 net=0
+2026-08-27 23:15:11.938 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2505 inset=0 residual=2505
+2026-08-27 23:15:11.938 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=454 slide=0 net=454
+2026-08-27 23:15:11.938 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-100 slide=72 net=-28
+2026-08-27 23:15:11.956 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2552 inset=0 residual=2552
+2026-08-27 23:15:11.956 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=406 slide=0 net=406
+2026-08-27 23:15:11.956 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-148 slide=72 net=-76
+2026-08-27 23:15:11.971 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2591 inset=0 residual=2591
+2026-08-27 23:15:11.971 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=368 slide=0 net=368
+2026-08-27 23:15:11.971 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-186 slide=72 net=-114
+2026-08-27 23:15:12.011 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2640 inset=0 residual=2640
+2026-08-27 23:15:12.011 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=318 slide=0 net=318
+2026-08-27 23:15:12.011 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-236 slide=72 net=-164
+2026-08-27 23:15:12.022 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2659 inset=0 residual=2659
+2026-08-27 23:15:12.022 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=300 slide=0 net=300
+2026-08-27 23:15:12.022 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-254 slide=72 net=-182
+2026-08-27 23:15:12.039 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2687 inset=0 residual=2687
+2026-08-27 23:15:12.039 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=272 slide=0 net=272
+2026-08-27 23:15:12.039 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-282 slide=72 net=-210
+2026-08-27 23:15:12.055 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2712 inset=0 residual=2712
+2026-08-27 23:15:12.055 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=246 slide=0 net=246
+2026-08-27 23:15:12.055 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-308 slide=72 net=-236
+2026-08-27 23:15:12.072 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2735 inset=0 residual=2735
+2026-08-27 23:15:12.072 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=224 slide=0 net=224
+2026-08-27 23:15:12.072 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-330 slide=72 net=-258
+2026-08-27 23:15:12.088 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2755 inset=0 residual=2755
+2026-08-27 23:15:12.088 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=202 slide=0 net=202
+2026-08-27 23:15:12.088 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-352 slide=72 net=-280
+2026-08-27 23:15:12.105 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2774 inset=0 residual=2774
+2026-08-27 23:15:12.105 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=184 slide=0 net=184
+2026-08-27 23:15:12.105 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-370 slide=72 net=-298
+2026-08-27 23:15:12.122 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2790 inset=0 residual=2790
+2026-08-27 23:15:12.122 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=168 slide=0 net=168
+2026-08-27 23:15:12.122 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-386 slide=72 net=-314
+2026-08-27 23:15:12.139 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2805 inset=0 residual=2805
+2026-08-27 23:15:12.139 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=152 slide=0 net=152
+2026-08-27 23:15:12.139 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-402 slide=72 net=-330
+2026-08-27 23:15:12.155 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2819 inset=0 residual=2819
+2026-08-27 23:15:12.155 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=140 slide=0 net=140
+2026-08-27 23:15:12.155 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-414 slide=72 net=-342
+2026-08-27 23:15:12.172 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2831 inset=0 residual=2831
+2026-08-27 23:15:12.172 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=128 slide=0 net=128
+2026-08-27 23:15:12.172 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-426 slide=72 net=-354
+2026-08-27 23:15:12.193 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2845 inset=0 residual=2845
+2026-08-27 23:15:12.193 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=112 slide=0 net=112
+2026-08-27 23:15:12.193 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-442 slide=72 net=-370
+2026-08-27 23:15:12.222 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2861 inset=0 residual=2861
+2026-08-27 23:15:12.222 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=98 slide=0 net=98
+2026-08-27 23:15:12.222 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-456 slide=72 net=-384
+2026-08-27 23:15:12.239 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2868 inset=0 residual=2868
+2026-08-27 23:15:12.239 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=90 slide=0 net=90
+2026-08-27 23:15:12.239 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-464 slide=72 net=-392
+2026-08-27 23:15:12.255 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2875 inset=0 residual=2875
+2026-08-27 23:15:12.255 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=82 slide=0 net=82
+2026-08-27 23:15:12.255 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-472 slide=72 net=-400
+2026-08-27 23:15:12.272 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2882 inset=0 residual=2882
+2026-08-27 23:15:12.272 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=76 slide=0 net=76
+2026-08-27 23:15:12.272 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-478 slide=72 net=-406
+2026-08-27 23:15:12.288 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2887 inset=0 residual=2887
+2026-08-27 23:15:12.288 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=70 slide=0 net=70
+2026-08-27 23:15:12.288 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-484 slide=72 net=-412
+2026-08-27 23:15:12.305 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2893 inset=0 residual=2893
+2026-08-27 23:15:12.305 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=66 slide=0 net=66
+2026-08-27 23:15:12.305 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-488 slide=72 net=-416
+2026-08-27 23:15:12.321 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2897 inset=0 residual=2897
+2026-08-27 23:15:12.321 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=60 slide=0 net=60
+2026-08-27 23:15:12.321 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-494 slide=72 net=-422
+2026-08-27 23:15:12.338 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2901 inset=0 residual=2901
+2026-08-27 23:15:12.338 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=56 slide=0 net=56
+2026-08-27 23:15:12.338 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-498 slide=72 net=-426
+2026-08-27 23:15:12.355 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2905 inset=0 residual=2905
+2026-08-27 23:15:12.355 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=52 slide=0 net=52
+2026-08-27 23:15:12.355 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-502 slide=72 net=-430
+2026-08-27 23:15:12.371 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2908 inset=0 residual=2908
+2026-08-27 23:15:12.371 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=50 slide=0 net=50
+2026-08-27 23:15:12.372 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies margin=-504 slide=72 net=-432
+2026-08-27 23:15:12.388 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2911 inset=0 residual=2911
+2026-08-27 23:15:12.388 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=46 slide=0 net=46
+2026-08-27 23:15:12.404 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2914 inset=0 residual=2914
+2026-08-27 23:15:12.404 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=44 slide=0 net=44
+2026-08-27 23:15:12.421 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2917 inset=0 residual=2917
+2026-08-27 23:15:12.421 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=42 slide=0 net=42
+2026-08-27 23:15:12.438 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2919 inset=0 residual=2919
+2026-08-27 23:15:12.438 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=40 slide=0 net=40
+2026-08-27 23:15:12.455 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2921 inset=0 residual=2921
+2026-08-27 23:15:12.455 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=38 slide=0 net=38
+2026-08-27 23:15:12.471 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2923 inset=0 residual=2923
+2026-08-27 23:15:12.472 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=36 slide=0 net=36
+2026-08-27 23:15:12.488 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2924 inset=0 residual=2924
+2026-08-27 23:15:12.488 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=34 slide=0 net=34
+2026-08-27 23:15:12.505 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2926 inset=0 residual=2926
+2026-08-27 23:15:12.505 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=32 slide=0 net=32
+2026-08-27 23:15:12.522 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2927 inset=0 residual=2927
+2026-08-27 23:15:12.538 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2928 inset=0 residual=2928
+2026-08-27 23:15:12.538 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=30 slide=0 net=30
+2026-08-27 23:15:12.554 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2929 inset=0 residual=2929
+2026-08-27 23:15:12.555 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=28 slide=0 net=28
+2026-08-27 23:15:12.571 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2930 inset=0 residual=2930
+2026-08-27 23:15:12.588 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2931 inset=0 residual=2931
+2026-08-27 23:15:12.604 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2932 inset=0 residual=2932
+2026-08-27 23:15:12.605 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=26 slide=0 net=26
+2026-08-27 23:15:12.638 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2933 inset=0 residual=2933
+2026-08-27 23:15:12.654 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2934 inset=0 residual=2934
+2026-08-27 23:15:12.655 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=24 slide=0 net=24
+2026-08-27 23:15:12.704 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2935 inset=0 residual=2935
+2026-08-27 23:15:12.737 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2936 inset=0 residual=2936
+2026-08-27 23:15:12.737 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=22 slide=0 net=22
+2026-08-27 23:15:12.804 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2937 inset=0 residual=2937
+2026-08-27 23:15:12.854 NuvioTV[84467:12596391] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_because_series margin=20 slide=0 net=20
+2026-08-27 23:15:12.922 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2938 inset=0 residual=2938
+2026-08-27 23:15:13.039 NuvioTV[84467:12596391] [HomeScrollProbe] pinned-hero y=2939 inset=0 residual=2939
+2026-08-27 23:15:13.458 NuvioTV[84467:12596391] [HomeScrollProbe] REST pinned-hero y=2939 inset=0 residual=2939
+2026-08-27 23:15:15.023 NuvioTV[84467:12597036] [TrailerExtract] client=android_vr NO streamingData (playability=LOGIN_REQUIRED reason=Sign in to confirm you’re not a bot)
+2026-08-27 23:15:15.189 NuvioTV[84467:12597036] [TrailerExtract] client=android video=cfTcNb104NI hls=false formats=1 adaptive=25 sdKeys=expiresInSeconds,formats,adaptiveFormats,serverAbrStreamingUrl,metadataFormats
+2026-08-27 23:15:15.354 NuvioTV[84467:12597157] [TrailerExtract] client=ios video=cfTcNb104NI hls=false formats=0 adaptive=23 sdKeys=expiresInSeconds,adaptiveFormats,aspectRatio,serverAbrStreamingUrl,metadataFormats
+2026-08-27 23:15:15.362 NuvioTV[84467:12597157] [TrailerExtract] selection: manifest=none progressive=360 (manifests collected=0)
+2026-08-27 23:15:15.362 NuvioTV[84467:12597157] [TrailerExtract] repack candidates: avcVideo=1080p avc1.640028 (android) m4aAudio=mp4a.40.2 (android)
+2026-08-27 23:15:15.971 NuvioTV[84467:12597156] [TrailerExtract] repack decision: avc=1080p vs progressive=360p -> ELIGIBLE
+2026-08-27 23:15:16.774 NuvioTV[84467:12597034] [TrailerRepack] serving 1920x1080 avc1+mp4a (22+13 segments) at http://127.0.0.1:8230/0f4c4adba461b83b5b9e31ee54a3f08f/master.m3u8
+2026-08-27 23:15:19.144 NuvioTV[84467:12596391] [TrailerQuality] presentationSize=1920x1080
+2026-08-27 23:15:20.856 NuvioTV[84467:12596391] [TrailerQuality] presentationSize=1920x1080
+com.nuvio.media.NuvioTV: 84467

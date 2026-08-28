@@ -1,0 +1,55 @@
+[LaunchTrace] +0ms app_init
+2026-08-27 23:19:14.679 NuvioTV[84687:12601023] -canOpenURL: failed for URL: "infuse://" - error: "The operation couldn’t be completed. (OSStatus error -10814.)"
+[ExtPlayerProbe] canOpenURL(infuse://) = false
+2026-08-27 23:19:14.680 NuvioTV[84687:12601023] -canOpenURL: failed for URL: "vlc-x-callback://" - error: "The operation couldn’t be completed. (OSStatus error -10814.)"
+[ExtPlayerProbe] canOpenURL(vlc-x-callback://) = false
+2026-08-27 23:19:14.681 NuvioTV[84687:12601023] -canOpenURL: failed for URL: "outplayer://" - error: "The operation couldn’t be completed. (OSStatus error -10814.)"
+[ExtPlayerProbe] canOpenURL(outplayer://) = false
+2026-08-27 23:19:14.681 NuvioTV[84687:12601023] -canOpenURL: failed for URL: "open-vidhub://" - error: "The operation couldn’t be completed. (OSStatus error -10814.)"
+[ExtPlayerProbe] canOpenURL(open-vidhub://) = false
+2026-08-27 23:19:14.681 NuvioTV[84687:12601023] -canOpenURL: failed for URL: "vidhub://" - error: "The operation couldn’t be completed. (OSStatus error -10814.)"
+[ExtPlayerProbe] canOpenURL(vidhub://) = false
+2026-08-27 23:19:14.682 NuvioTV[84687:12601023] -canOpenURL: failed for URL: "infuse://" - error: "The operation couldn’t be completed. (OSStatus error -10814.)"
+2026-08-27 23:19:14.683 NuvioTV[84687:12601023] -canOpenURL: failed for URL: "vlc-x-callback://" - error: "The operation couldn’t be completed. (OSStatus error -10814.)"
+2026-08-27 23:19:14.683 NuvioTV[84687:12601023] -canOpenURL: failed for URL: "outplayer://" - error: "The operation couldn’t be completed. (OSStatus error -10814.)"
+2026-08-27 23:19:14.683 NuvioTV[84687:12601023] -canOpenURL: failed for URL: "open-vidhub://" - error: "The operation couldn’t be completed. (OSStatus error -10814.)"
+[ExtPlayerProbe] availablePlayers = []
+[LaunchTrace] +912ms artwork #1: mem=0 disk=1 net=0 fail=0
+[ProfileSelect] selecting profile 2
+[ProfileSelect] selectProfile returned — requesting full pull
+[ProfileSelect] full pull requested — tap complete
+2026-08-27 23:19:32.729 NuvioTV[84687:12601023] [HomeScrollProbe] classic y=0 inset=0 residual=0
+[LaunchTrace] +18400ms home_appear
+2026-08-27 23:19:32.739 NuvioTV[84687:12601023] [TrailerPipeline] trailerLocation heroMode=NO
+2026-08-27 23:19:32.785 NuvioTV[84687:12601023] [HomeScrollProbe] classic y=-302 inset=302 residual=0
+2026-08-27 23:19:32.786 NuvioTV[84687:12601023] [HomeScrollProbe] classic y=-157 inset=157 residual=0
+[LaunchTrace] +18489ms first_rows n=1 hero=0
+[TopShelf] wrote 10 items to /Users/christianturnbull/Library/Developer/CoreSimulator/Devices/FA87E9B6-F28D-4DF9-84E4-A5A4C5DBFC4E/data/Containers/Shared/AppGroup/E705B090-DA3F-472C-93BC-23BC3D1912B8/Library/Caches/top-shelf.json
+[TopShelf] wrote 10 items to /Users/christianturnbull/Library/Developer/CoreSimulator/Devices/FA87E9B6-F28D-4DF9-84E4-A5A4C5DBFC4E/data/Containers/Shared/AppGroup/E705B090-DA3F-472C-93BC-23BC3D1912B8/Library/Caches/top-shelf.json
+[TopShelf] wrote 10 items to /Users/christianturnbull/Library/Developer/CoreSimulator/Devices/FA87E9B6-F28D-4DF9-84E4-A5A4C5DBFC4E/data/Containers/Shared/AppGroup/E705B090-DA3F-472C-93BC-23BC3D1912B8/Library/Caches/top-shelf.json
+[LaunchTrace] +18736ms rows n=5
+2026-08-27 23:19:33.073 NuvioTV[84687:12601023] [TrailerPipeline] gates inlineTrailersEnabled=YES systemAutoplay=YES
+[LaunchTrace] +18794ms artwork #10: mem=0 disk=10 net=0 fail=0
+2026-08-27 23:19:33.203 NuvioTV[84687:12601023] [HomeScrollProbe] REST classic y=-157 inset=157 residual=0
+[LaunchTrace] +18892ms rows n=9
+[LaunchTrace] +19163ms rows n=13
+[LaunchTrace] +19171ms rows n=17
+[LaunchTrace] +19520ms rows n=21
+[LaunchTrace] +19792ms first_hero n=8
+2026-08-27 23:19:34.156 NuvioTV[84687:12601023] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=758 slide=0 net=758
+2026-08-27 23:19:34.156 NuvioTV[84687:12601023] [HomeScrollProbe] title row=continue-watching margin=56 slide=0 net=56
+2026-08-27 23:19:34.156 NuvioTV[84687:12601023] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=482 slide=0 net=482
+2026-08-27 23:19:34.156 NuvioTV[84687:12601023] [HomeScrollProbe] title row=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you margin=834 slide=0 net=834
+2026-08-27 23:19:34.165 NuvioTV[84687:12601023] [TrailerPipeline] trailerLocation heroMode=YES
+2026-08-27 23:19:34.190 NuvioTV[84687:12601023] [HomeScrollProbe] pinned-hero y=0 inset=0 residual=0
+[LaunchTrace] +19882ms artwork #25: mem=0 disk=25 net=0 fail=0
+2026-08-27 23:19:34.610 NuvioTV[84687:12601023] [HomeScrollProbe] REST pinned-hero y=0 inset=0 residual=0
+2026-08-27 23:19:38.369 NuvioTV[84687:12601023] [HomeScrollProbe] title row=upcoming margin=482 slide=0 net=482
+2026-08-27 23:19:38.369 NuvioTV[84687:12601023] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=910 slide=0 net=910
+[LaunchTrace] +24487ms rows n=23
+[LaunchTrace] +24638ms artwork #50: mem=0 disk=47 net=3 fail=0
+[LaunchTrace] +27695ms rows n=31
+[LaunchTrace] +29285ms rows n=35
+2026-08-27 23:19:50.608 NuvioTV[84687:12601023] [HomeScrollProbe] title row=58eddeb3-875e-47be-b94c-9e71577dcc88 margin=482 slide=0 net=482
+[LaunchTrace] +53981ms artwork #100: mem=0 disk=97 net=3 fail=0
+com.nuvio.media.NuvioTV: 84687

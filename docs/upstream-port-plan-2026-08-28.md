@@ -90,8 +90,9 @@ legacy fixture (a suite batch 6's branch could never run — composeApp compile
 was pre-broken on its base). Declassifying short historical records on decode
 is the fix's intent, so the fixture moved to a realistic duration
 (`cb026e5e`). Merged-tip gates: jvm 532 / tvOS-native 544 / composeApp
-iosSim 420, NuvioTV sim build green. Both branch heads are ancestors of the
-merged tip (safe to delete from origin whenever). Device pass still owed.
+iosSim 420, NuvioTV sim build green. Both branch heads were verified
+ancestors of the merged tip and DELETED from origin + locally same day
+(delete-on-absorption). Device pass still owed.
 Original pre-merge record below:
 
 ### `claude/upstream-batch6` (tip `437a331f`, 5 commits) — all 6 items closed

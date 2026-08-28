@@ -81,9 +81,18 @@ session plan: trailer batch, TMDB name-fallback batch, small fixes).
 
 ## OUTCOME ADDENDUM — same-day evening session, 2026-08-28
 
-**Both batches PORTED.** Two independent submodule branches off
-`tvos-shared-extraction` @ `dc8281c2`, both pushed, zero file overlap,
-merge decision owed after device pass:
+**Both batches PORTED, then MERGED same day on Christian's call** — two
+`--no-ff` merges into `tvos-shared-extraction` (`aac28b3f` batch 6,
+`4511c313` subtitle engine), tip `cb026e5e` PUSHED, outer pointer bumped.
+The merged tip surfaced one cross-batch interaction: batch 6's
+short-placeholder guard vs `WatchProgressIdentityTest`'s synthetic 1s-duration
+legacy fixture (a suite batch 6's branch could never run — composeApp compile
+was pre-broken on its base). Declassifying short historical records on decode
+is the fix's intent, so the fixture moved to a realistic duration
+(`cb026e5e`). Merged-tip gates: jvm 532 / tvOS-native 544 / composeApp
+iosSim 420, NuvioTV sim build green. Both branch heads are ancestors of the
+merged tip (safe to delete from origin whenever). Device pass still owed.
+Original pre-merge record below:
 
 ### `claude/upstream-batch6` (tip `437a331f`, 5 commits) — all 6 items closed
 

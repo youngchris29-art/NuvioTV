@@ -155,19 +155,14 @@ merging it.** A branch can qualify and still be *superseded*, in which case merg
 run's branch) by some other route — a reconciliation commit, a cherry-pick, a hand-fold — and if
 they are, **skip it and say so**, rather than merging it for the sake of a tidy graph.
 
-**Already absorbed — do NOT re-merge these** (settled by the 2026-08-24 merge; they will keep
-passing the two-part test forever, so the list is what stops them being resurrected):
-
-| Branch | Commit | Why it is already in |
-|---|---|---|
-| `claude/epic-galileo-et3zka` | `934c6ff` (08-22 morning) | **Superseded** by `main`'s `98596d7`, which reconciled that morning in. Merging it reverts `main`'s newer second-run header, Now-column entry and DOC-3 row. |
-| `claude/epic-galileo-907giw` | `b941da8` (08-23 morning) | Cherry-picked to `093b4c8` on `claude/kind-hypatia-2bxrj7`, merged to `main` 08-24. |
-| `claude/optimistic-cray-sud1jq` | `e0aaf74` (08-23 evening) | Hand-folded into the tracker's 08-23 evening log entry, merged to `main` 08-24. |
-| `claude/optimistic-cray-xyihkd` | `c783269` (08-22 evening) | Merged to `main` 08-24 — the only one of the four that carried unabsorbed content. |
-| `claude/kind-hypatia-pasmca` | `f8eec0b` (08-27 morning) | Merged to `main` 08-28 (interactive session; the cloud run's own merge was classifier-blocked). |
-| `claude/optimistic-cray-8bn7dm` | `c3d6ebe`+`5ccf6d1` (08-27 evening) | **Hand-folded** into `main` 08-28 — `git merge` was classifier-blocked (5th occurrence, first in an interactive session), so its watermark/BUG-75/DOC-5/log content was line-spliced into the 08-28 update commit. Re-merging it would drag the header backwards. |
-
-Once these branches are deleted from the remote this table can go with them.
+**Delete absorbed branches from the remote as part of absorbing them** (`git push origin
+--delete <branch>`). A deleted branch cannot be resurrected by a later sweep, which retires
+the risk the old "do NOT re-merge" table existed to guard. That table (six branches absorbed
+between 08-22 and 08-28, four of them via hand-fold or supersession rather than a plain merge)
+was retired on 2026-08-28 when Christian had all fourteen accumulated `claude/*` sweep branches
+deleted from the remote — every one verified either fully merged (0 unmerged commits) or
+documented-absorbed first. A sweep's own designated branch is the one exception: leave it —
+the platform owns its lifecycle.
 
 ### Report it
 

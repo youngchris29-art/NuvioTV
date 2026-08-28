@@ -1,0 +1,11 @@
+## Highlights
+
+- **Subtitle Timing** — a new row in the player's Subtitles tab (both engines) nudges subtitles earlier or later in 100 ms steps until they sit on the audio. Remembered **per title** across replays, kept separate per profile, with a Reset that also sticks.
+- **Settings, rebuilt native** — the whole Settings area now runs on tvOS's own List, Toggle and dropdown-picker controls, the way the Apple TV's built-in Settings app does. Your accent color threads through the glyphs, values and sidebar, and focus stays where you put it — picking a theme swatch no longer bounces you to the top.
+- **Continue Watching, reconciled with mobile** — the row is built with the same rules as Nuvio mobile (same titles, same order, up to 300 entries, hidden shows filtered, the same recency window), and the Top Shelf mirrors it. The Upcoming row keeps its footing when you switch watch-progress sources instead of vanishing.
+- **Your tracking sources follow your account** — Library and Watch Progress source choices now sync across devices: switch your scrobbler from Trakt to Simkl anywhere and every Apple TV follows, Continue Watching window included. The app also refreshes account data periodically while open and on every foreground, so changes made elsewhere arrive without a relaunch.
+- **Streams resolve from TMDB-backed rows** — addons are now asked with an id they actually accept, fixing the "streams never load for titles opened from some rows" class outright.
+- **Discover remembers your catalog** — the Search page's Discover section restores your last-picked catalog across launches instead of resetting to the first one.
+- **Simkl anime, classified as anime** — titles added to a Simkl list now carry Simkl's own anime classification, and an entry misfiled before this build corrects itself the next time you touch it.
+- **Sync reliability under the hood** — rate-limit handling with proper backoff, deduplicated watch-progress pushes, debounced addon pushes, and pull-first credential seeding.
+- Plus: addon removal asks for confirmation first, episode cards can fall back to the addon's own per-episode rating, and dozens of smaller fixes from a 13-round adversarial review of this batch.

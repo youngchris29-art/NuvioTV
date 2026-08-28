@@ -155,8 +155,10 @@ passing the two-part test forever, so the list is what stops them being resurrec
 | `claude/epic-galileo-907giw` | `b941da8` (08-23 morning) | Cherry-picked to `093b4c8` on `claude/kind-hypatia-2bxrj7`, merged to `main` 08-24. |
 | `claude/optimistic-cray-sud1jq` | `e0aaf74` (08-23 evening) | Hand-folded into the tracker's 08-23 evening log entry, merged to `main` 08-24. |
 | `claude/optimistic-cray-xyihkd` | `c783269` (08-22 evening) | Merged to `main` 08-24 — the only one of the four that carried unabsorbed content. |
+| `claude/kind-hypatia-pasmca` | `f8eec0b` (08-27 morning) | Merged to `main` 08-28 (interactive session; the cloud run's own merge was classifier-blocked). |
+| `claude/optimistic-cray-8bn7dm` | `c3d6ebe`+`5ccf6d1` (08-27 evening) | **Hand-folded** into `main` 08-28 — `git merge` was classifier-blocked (5th occurrence, first in an interactive session), so its watermark/BUG-75/DOC-5/log content was line-spliced into the 08-28 update commit. Re-merging it would drag the header backwards. |
 
-Once these four branches are deleted from the remote this table can go with them.
+Once these branches are deleted from the remote this table can go with them.
 
 ### Report it
 

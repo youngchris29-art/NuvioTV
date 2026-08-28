@@ -111,6 +111,15 @@ git checkout main && git merge --no-ff <designated-branch> && git push origin ma
 git checkout <designated-branch>
 ```
 
+**Classifier fix (2026-08-28):** every one of these commands is now explicitly
+allowlisted in the checked-in `.claude/settings.json` (Christian approved and
+created it by hand after five classifier-blocked merges, 08-24 → 08-28). Cloud
+clones inherit it, so the merge should no longer be blocked. If a merge is
+*still* refused despite the allowlist, that is a new finding — name it in the
+digest, and fall back to the documented hand-fold route (file-level three-way
+fold committed as a normal commit + a row in the do-not-re-merge table below)
+rather than leaving the branch stranded.
+
 Use `--no-ff` so each sweep stays one identifiable commit range in `main`'s history.
 
 **On conflict** (only possible if `main` moved while the sweep ran) the two files conflict

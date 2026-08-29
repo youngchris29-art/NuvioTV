@@ -1,0 +1,162 @@
+# Steven's beta.15 feedback batch — investigation + fix plan (2026-08-29)
+
+Source: u/mrStevenx3's 10-item DM list (2026-08-28) + his 5m08s video (`~/Downloads/IMG_8428.mp4`).
+Beta.16 already fixed: the account addon wipe, Settings sidebar icon spacing, header platter
+clearance. This plan covers the rest. Model delegation per the agent-delegation playbook: Sonnet
+executes exact specs, Explore for read-only sweeps, specs + verification + Codex loops stay in
+the main session, waves by file ownership, no concurrent builds.
+
+## Diagnosed: the "blank catalog selection" cluster (video + code trace, 2026-08-29)
+
+Two independent defects compound:
+
+**(a) Data clobber — `definitions` wiped by an unguarded writer.** `HomeCatalogSettingsUiState.items`
+derives ONLY from in-memory `definitions` (never from disk; `ensureLoaded()` restores preferences
+only). `SettingsViewModel.swift:172-179` calls `syncCatalogs(enabledAddons)` with NO manifest
+filter and NO empty guard — any empty/pending-manifest `AddonRepository` emission (initialize()
+pre-refresh, pullFromServer's never-seen-URL pending rows, profile change, wipe, removeAddon)
+zeroes the singleton's definitions → pane blank. `HomeViewModel.onAddonsChanged` has all three
+guards — which is why Home keeps working while the pane blanks (the reported asymmetry).
+Permanent because SettingsViewModel never calls `AddonRepository.initialize()` (H2), and our
+beta.16 seed gate WIDENS the window for signed-in fresh installs (H5: no early Cinemeta seed to
+repopulate definitions).
+
+**(b) Render/focus death — white-on-white + stranded focus.** Video frames 3:35/3:49: the
+expanded catalog group renders as a giant white platter with no legible rows, and a focused
+toggle row's label is near-invisible on the platter. Two mechanisms: the BUG-65 device-only
+class (`\.isFocused`-driven label colors die inside custom containers ON HARDWARE ONLY — sim
+renders fine, which is how every sim gate missed it), and H4: `HeroSourcesGroup`/
+`HomeCatalogsGroup` are animated `ForEach`s inside ONE List row — a shrinking `items` vanishes
+every focusable child under focus (BUG-47 class) → dead white screen (his "removing a catalog →
+big white screen").
+
+**(c) Sync wedge (H3, beta.15 regression):** `HomeCatalogSettingsSyncService.pullFromServer`
+now throws on fetch/parse failure and skips `markInitialPullComplete` → `triggerPush` wedged for
+the session (silently — runStep swallows). Legacy-platform fallback + newest-wins merge were
+also dropped. Plus the audit's #2: `completedInitialPull` never cleared on account wipe.
+
+## Wave 1 — catalog-pane cluster (specs ready; 4 Sonnet agents, disjoint files)
+
+- **A. SettingsViewModel.swift** — mirror HomeViewModel's three guards before `syncCatalogs`
+  (manifest != nil filter, empty-skip); call `AddonRepository.shared.initialize()` in `start()`.
+- **B. HomeCatalogSettingsRepository.kt** (+ commonTest) — `syncCatalogs` refuses to replace a
+  non-empty `definitions` with an empty list (last-known-good retained; log). Closes the class
+  for every present/future caller.
+- **C. HomeCatalogSettingsSyncService.kt** (+ test) — wire `clearAccountState()` (null
+  `completedInitialPull` + cached blob) into the wipe cascade via `ProfileSettingsSync.clearAccountState()`;
+  port the ProfileSettingsSync deferred-push (`pendingGatedPushSignature`) so a pre-settle edit
+  pushes after settle instead of wedging. ⚠️ This is the race-dense settle-gate pattern — budget
+  Codex rounds (5 races found last time); mirror the settled/not-settled path mapping exactly
+  (decode failure ≠ settled). Legacy-platform read fallback: DEFERRED, product call (one-release
+  bridge vs. dead namespace).
+- **D. HomeScreenSettingsPane.swift** — empty state gains a focusable row (BUG-47 rule);
+  flatten/de-animate the two groups so shrinking items can't strand focus.
+
+Gates in main: jvm + tvOS-native tests, sim build, Codex loop, then device eyeball (the
+white-on-white half is only verifiable on hardware).
+
+## Wave 2 — device-only white-on-white legibility (after Wave 1 lands)
+
+Apply the documented BUG-65 recipe (row-published `@FocusState` via `settingsRowIsFocused` env
+key instead of `\.isFocused` inside custom labels) to `SettingsRowViews` rows and the two pane
+groups. Spec from main session after re-reading the beta.13.5 fix; Sonnet executes; verification
+is irreducibly a Christian device pass (sim provably renders these correctly).
+
+## Wave 3 — remaining list (investigate → spec → delegate)
+
+| Item | First step | Owner |
+|---|---|---|
+| Trailer zoomed in description + only "Behind the Scenes" visible | Explore agent on DetailView trailer surface + video frames ~2:10 (washed-out frame) | investigate |
+| Doubled hero + collection background resize | Needs his Hero Paint Diagnostics photo on beta.16 (probe shipped in .15); re-ask in DM | blocked on reporter |
+| Poster text overlay overlap (worse; hits "Services de Streaming") | Explore agent (BUG-73 fix landed in .15 — regression or new surface?) | investigate |
+| Focus ring border on titles + Card Depth thick on Subtle | Explore agent on TileFocusLift/CardDepth style paths | investigate |
+| Ratings hide toggle (MetaVideo.rating port) | Small feature: settings toggle + render gate — direct Sonnet spec | spec ready-ish |
+| Home collection title size (bigger; NOT inside collections) | Trivial UI tweak — fold into whichever wave touches Home rows | spec ready |
+| Top bar (BUG-66), focus-ring zoom (BUG-64), choppy scroll (BUG-41) | Already tracked, hardware-only; unchanged | existing tracks |
+
+## Status 2026-08-29 (later the same day)
+
+- **Wave 1 DONE + MERGED (`0d707629`)** — Codex settled r4 (per-token push debts; two documented
+  declines). **Wave 2 DONE + MERGED (`571c2129`)** — Codex clean r1; NOTE the agent's frame pulls
+  corrected the synthesis: the VIDEO's blank pane was Wave 2's bug (rows present, invisible —
+  header read "6 sur 14 actives"; tvOS label-inversion never reaches free-standing cell content,
+  and ChipButtonStyle forced .dark, erasing the chevrons), while Wave 1's data clobber is a real
+  but distinct reachable state. New `settingsRowPlatterActive` env key; 7-point device checklist
+  in the Wave 2 commit + agent report. Both waves are DEVICE-PASS OWED together.
+
+## Wave 3 investigation outcomes → Wave 4 specs (all file:line refs in the agent reports)
+
+1. **Trailers: French rank bug (HIGH, 1-line)** — `TmdbMetadataService.kt:1419-1430` compares
+   TMDB's always-English `type` ("Trailer") against `resourceString(generic_trailer)`
+   ("Bande-annonce") → Trailer group ranks last alphabetically → `prefix(10)` = all Behind the
+   Scenes for non-English users. Fix: literal compare + first-ever `fetchTrailers` ordering test.
+2. **Trailer zoom collision (HIGH)** — zoom cache is TITLE-keyed and `TrailerHeroPlayerView.swift:808-826`
+   applies the cached zoom BEFORE the token check with no conceal on mismatch → row clips inherit
+   the hero's ~1.34 crop visibly. Fix: apply only on tokenMatches + conceal on mismatch (or
+   per-video zoomKey at `DetailView.swift:337`). No-build diagnostic exists (`debug.trailerProbe`,
+   `debug.resetTrailerZoomStore`).
+3. **HDR-variant washout risk (beta.16+, MEDIUM)** — `InAppYouTubeExtractor.kt:483-494` HLS
+   variant picker has no VIDEO-RANGE filter; the 08-28 visionos client swap changed the offered
+   set; PQ on the bare non-EDR AVPlayerLayer renders milky-white. Fix: skip non-SDR variants.
+   (Steven's beta.15 white frame is more likely the French-tier hero picking a bright BTS clip.)
+4. **"No Zoom on Focus" never disabled the system lift (HIGH, explains multi-beta BUG-64)** —
+   zero `focusEffectDisabled()` in the codebase; `.borderless` lifts the whole lockup at ~20 card
+   sites regardless of the setting; no test ever asserted still-mode rise ≈ 0. Fix: shared
+   `cardFocusButtonStyle()` modifier + call-site sweep + rise test at `-no_zoom_on_focus YES`.
+   Related: beta.15 doubled `cardSystemLiftScale` 1.06→1.12 sim-derived (device-validate or
+   scope to caption-drop only); `.manualScale` scales the LOCKUP (title included) unlike
+   `.systemLift` (artwork only); false comment at `NuvioTVUITests.swift:3283` claims
+   `accent_focus_ring` is synced — it is plain @AppStorage, correct it.
+5. **Card Depth "thick on Subtle" (MEDIUM, pre-beta.15)** — `CardDepthStyle.swift:188-203` keys
+   lineWidth on COVERAGE (<1 → 2pt boosted rail), so Subtle+Top (the default) is thicker than
+   Bold+Full; still-mode border is a fixed 4pt unrelated to depth; beta.15's new black platter
+   amplifies the rail. Fix: derive width from edgeStrength (update CardDepthRailTests in step).
+6. **Poster/tile title overlap (MEDIUM)** — beta.15's fix addressed only a one-frame flash; the
+   steady-state intrusion is a FIXED 72pt slide cap (~46pt onto artwork) vs SCALED cards, worst
+   on folder tiles (`CollectionsUI.swift:221-227` collapses square/landscape height to
+   style.width → up to 25% intrusion). Fix: clamp slide against actual artwork height
+   (`BrowseComponents.swift:166-169`) + reconsider tileHeight. Steven's Size/ring answers
+   (asked in DM) decide whether the 1.12 lift revert joins this item.
+7. Reporter asks outstanding: Size + ring settings (asked); About-pane Focus Mode readout photo
+   (worth adding); doubled hero needs his beta.16 Hero Paint Diagnostics photo.
+
+## Status update 2 (2026-08-29, evening)
+
+**Wave 4 DONE + MERGED (`c705c7aa`)** — all six items; Codex settled ROUND 7 (r1: cross-manifest
+SDR + localized blank-type rank + cast/chip sweep gaps; r2: slide cap visibility P1 → the
+proportional cap is PROBE-ONLY, binding stays absolute (visibility beats bounded intrusion; the
+deep rests are the settle bug); r3-r5: still-ring design converged to artwork-hugging rings drawn
+INSIDE FolderTile/CastCard fed by site FocusState; r6: expanded inline-trailer neutral ring).
+Steven CONFIRMED the beta.16 Settings-icons fix in DM.
+
+**Two specced follow-up slices remain before beta.17:**
+A. **beta.16 trailer regression (HIGH — investigation definitive):** visionos returns
+   hlsManifestUrl → repack path disabled by a `>` tie-loss (`repackWorthwhile`,
+   TrailerExtractionPlatform.apple.kt:145) → raw VIDEO-ONLY variant playlist (extractor parses no
+   EXT-X-MEDIA audio groups) → silence + fragile playback = both reported symptoms; android_vr
+   was ALREADY dead (LOGIN_REQUIRED in the 08-27 rig logs) so beta.15's "working" trailers were
+   the repack path all along. Fixes: F1 `>`→`>=` (1 char, do first), F2 master-URL when the
+   picked variant carries an AUDIO group, F3 ordered client chain (android_vr, visionos) instead
+   of a single preferred client. F4 only if device logs show sidx 403 (UA plumbing). Zero-build
+   diagnostic: [TrailerExtract] `manifests collected=` and `repack decision:` lines are
+   unconditional NSLog — Steven's own log answers H3.
+B. **Scroll-repro settle fix (Steven's right-then-up overlap, Large):** mechanism = mixed-shape
+   collection row height collapses ~134pt during horizontal scroll (LazyHStack sizes to REALIZED
+   tiles; square tile = width, poster = 1.5×width) → the up-reveal computes against a layout
+   that no longer exists → wrong settled rest → title correctly parks on artwork. Why Large:
+   proportional focus lift vs constant 16pt cushion (1.12 eats it at Large, not Medium),
+   viewport slack 121pt vs 194pt, biggest collapse delta. Fix list (scroll-repro report):
+   (1) re-reveal on settle via onScrollGeometryChange, (2) `.frame(minHeight:)` on the
+   collection shelf from max folder artworkHeight — one line, kills the displacement at source,
+   (3) lift-aware clearance / device-validate the 1.12 constant, (4) rowKey into styleKey
+   (CW/Upcoming sibling re-match hazard), (5) real artworkHeight for CW/Upcoming probe values,
+   (6) nil-measure no longer snaps slide to 0.
+
+## Sequencing
+
+1. Wave 1 now (it also neutralizes the H5 widening our beta.16 gate introduced — do not ship
+   another beta before this).
+2. Wave 2 next (device-verify with Wave 1's pass).
+3. Wave 3 investigations can run as Explore agents in parallel with Wave 1 implementation
+   (read-only, disjoint); their specs become Wave 4 implementers.
+4. One beta.17 at the end of Waves 1+2 (+ whatever Wave 4 items are ready), single release wave.

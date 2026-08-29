@@ -120,6 +120,38 @@ is irreducibly a Christian device pass (sim provably renders these correctly).
 7. Reporter asks outstanding: Size + ring settings (asked); About-pane Focus Mode readout photo
    (worth adding); doubled hero needs his beta.16 Hero Paint Diagnostics photo.
 
+## Status update 2 (2026-08-29, evening)
+
+**Wave 4 DONE + MERGED (`c705c7aa`)** — all six items; Codex settled ROUND 7 (r1: cross-manifest
+SDR + localized blank-type rank + cast/chip sweep gaps; r2: slide cap visibility P1 → the
+proportional cap is PROBE-ONLY, binding stays absolute (visibility beats bounded intrusion; the
+deep rests are the settle bug); r3-r5: still-ring design converged to artwork-hugging rings drawn
+INSIDE FolderTile/CastCard fed by site FocusState; r6: expanded inline-trailer neutral ring).
+Steven CONFIRMED the beta.16 Settings-icons fix in DM.
+
+**Two specced follow-up slices remain before beta.17:**
+A. **beta.16 trailer regression (HIGH — investigation definitive):** visionos returns
+   hlsManifestUrl → repack path disabled by a `>` tie-loss (`repackWorthwhile`,
+   TrailerExtractionPlatform.apple.kt:145) → raw VIDEO-ONLY variant playlist (extractor parses no
+   EXT-X-MEDIA audio groups) → silence + fragile playback = both reported symptoms; android_vr
+   was ALREADY dead (LOGIN_REQUIRED in the 08-27 rig logs) so beta.15's "working" trailers were
+   the repack path all along. Fixes: F1 `>`→`>=` (1 char, do first), F2 master-URL when the
+   picked variant carries an AUDIO group, F3 ordered client chain (android_vr, visionos) instead
+   of a single preferred client. F4 only if device logs show sidx 403 (UA plumbing). Zero-build
+   diagnostic: [TrailerExtract] `manifests collected=` and `repack decision:` lines are
+   unconditional NSLog — Steven's own log answers H3.
+B. **Scroll-repro settle fix (Steven's right-then-up overlap, Large):** mechanism = mixed-shape
+   collection row height collapses ~134pt during horizontal scroll (LazyHStack sizes to REALIZED
+   tiles; square tile = width, poster = 1.5×width) → the up-reveal computes against a layout
+   that no longer exists → wrong settled rest → title correctly parks on artwork. Why Large:
+   proportional focus lift vs constant 16pt cushion (1.12 eats it at Large, not Medium),
+   viewport slack 121pt vs 194pt, biggest collapse delta. Fix list (scroll-repro report):
+   (1) re-reveal on settle via onScrollGeometryChange, (2) `.frame(minHeight:)` on the
+   collection shelf from max folder artworkHeight — one line, kills the displacement at source,
+   (3) lift-aware clearance / device-validate the 1.12 constant, (4) rowKey into styleKey
+   (CW/Upcoming sibling re-match hazard), (5) real artworkHeight for CW/Upcoming probe values,
+   (6) nil-measure no longer snaps slide to 0.
+
 ## Sequencing
 
 1. Wave 1 now (it also neutralizes the H5 widening our beta.16 gate introduced — do not ship

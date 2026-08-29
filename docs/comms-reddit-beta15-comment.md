@@ -1,4 +1,18 @@
-# Reddit beta.15 announcement comment — POSTED, then EDITED (addon-wipe caution)
+# Reddit beta.15 announcement comment — POSTED, EDITED (caution), then RESOLVED (beta.16)
+
+**RESOLVED 2026-08-28 (beta.16 comms wave, same session as the release):** three sends after
+`tvos-v0.3.0-beta.16` (build 114) went live: (1) DM ping to u/mrStevenx3 — the promised one —
+crediting his report, linking releases/latest, apologizing for the cross-device loss;
+(2) this comment's caution EDIT replaced with "fixed in beta 16, safe to install fresh again"
++ the stay-on-14.5 advice lifted for Steven (old.reddit edit form again); (3) the pinned post's
+"Latest build" block swapped beta 15 → beta 16 with the wipe fix as the lead bullet. ⚠️ The
+post-body swap worked via the NEW-reddit markdown composer (programmatic setSelectionRange +
+real typeText + Save) — the silent-discard failure is apparently COMMENT-edit-specific; a full
+pre-edit markdown backup of the post body is the required first step (kept that session at
+scratchpad/post-body-backup.md). Steven's beta.15 feedback video: `~/Downloads/IMG_8428.mp4`.
+His 10-item feedback list (2 fixed in beta.16, several new regressions incl. blank
+catalog-selection section) is the next batch — see the DM thread and
+`docs/addon-wipe-investigation-2026-08-28.md`.
 
 **EDITED 2026-08-28 (same day, later session):** appended the addon-wipe caution below after
 the clean-install account addon-wipe was diagnosed and fixed

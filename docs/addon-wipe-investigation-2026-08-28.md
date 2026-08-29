@@ -64,7 +64,15 @@ which no gate covers.
 - Same race on any first sign-in on a new device, and after any local-storage wipe.
 - tvOS-only (the seed lives in native `HomeViewModel.swift`); mobile Compose has its own flow.
 
-## FIX BUILT 2026-08-28 — submodule branch `claude/addon-wipe-fix`, commit `8f4e92e4` (unpushed, merge decision owed)
+## DEVICE PASS PASSED 2026-08-28 (Living Room ATV, clean-install protocol)
+
+Fixed build (local RC at `2f425b52`, still numbered 113) deployed via devicectl after a full
+uninstall: clean install → QR sign-in → addons pulled and visible → force-quit + relaunch ×2 —
+**all addons survived both relaunches** (the exact sequence that wiped the reporter's account
+on released beta.15). Confirmed by Christian on hardware. Remaining before close: cut beta.16
+(bump build number) and ping u/mrStevenx3 per the DM promise + the public comment's caution.
+
+## FIX BUILT 2026-08-28 — submodule branch `claude/addon-wipe-fix`, commit `8f4e92e4` (since merged as `2f425b52`)
 
 Implements directions 1+2 below exactly (direction 3 not taken — the guard makes the order
 irrelevant for this bug): `serverPullSettled` StateFlow + `seedingAllowed()` +

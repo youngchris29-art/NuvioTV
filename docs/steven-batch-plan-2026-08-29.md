@@ -74,6 +74,52 @@ is irreducibly a Christian device pass (sim provably renders these correctly).
 | Home collection title size (bigger; NOT inside collections) | Trivial UI tweak — fold into whichever wave touches Home rows | spec ready |
 | Top bar (BUG-66), focus-ring zoom (BUG-64), choppy scroll (BUG-41) | Already tracked, hardware-only; unchanged | existing tracks |
 
+## Status 2026-08-29 (later the same day)
+
+- **Wave 1 DONE + MERGED (`0d707629`)** — Codex settled r4 (per-token push debts; two documented
+  declines). **Wave 2 DONE + MERGED (`571c2129`)** — Codex clean r1; NOTE the agent's frame pulls
+  corrected the synthesis: the VIDEO's blank pane was Wave 2's bug (rows present, invisible —
+  header read "6 sur 14 actives"; tvOS label-inversion never reaches free-standing cell content,
+  and ChipButtonStyle forced .dark, erasing the chevrons), while Wave 1's data clobber is a real
+  but distinct reachable state. New `settingsRowPlatterActive` env key; 7-point device checklist
+  in the Wave 2 commit + agent report. Both waves are DEVICE-PASS OWED together.
+
+## Wave 3 investigation outcomes → Wave 4 specs (all file:line refs in the agent reports)
+
+1. **Trailers: French rank bug (HIGH, 1-line)** — `TmdbMetadataService.kt:1419-1430` compares
+   TMDB's always-English `type` ("Trailer") against `resourceString(generic_trailer)`
+   ("Bande-annonce") → Trailer group ranks last alphabetically → `prefix(10)` = all Behind the
+   Scenes for non-English users. Fix: literal compare + first-ever `fetchTrailers` ordering test.
+2. **Trailer zoom collision (HIGH)** — zoom cache is TITLE-keyed and `TrailerHeroPlayerView.swift:808-826`
+   applies the cached zoom BEFORE the token check with no conceal on mismatch → row clips inherit
+   the hero's ~1.34 crop visibly. Fix: apply only on tokenMatches + conceal on mismatch (or
+   per-video zoomKey at `DetailView.swift:337`). No-build diagnostic exists (`debug.trailerProbe`,
+   `debug.resetTrailerZoomStore`).
+3. **HDR-variant washout risk (beta.16+, MEDIUM)** — `InAppYouTubeExtractor.kt:483-494` HLS
+   variant picker has no VIDEO-RANGE filter; the 08-28 visionos client swap changed the offered
+   set; PQ on the bare non-EDR AVPlayerLayer renders milky-white. Fix: skip non-SDR variants.
+   (Steven's beta.15 white frame is more likely the French-tier hero picking a bright BTS clip.)
+4. **"No Zoom on Focus" never disabled the system lift (HIGH, explains multi-beta BUG-64)** —
+   zero `focusEffectDisabled()` in the codebase; `.borderless` lifts the whole lockup at ~20 card
+   sites regardless of the setting; no test ever asserted still-mode rise ≈ 0. Fix: shared
+   `cardFocusButtonStyle()` modifier + call-site sweep + rise test at `-no_zoom_on_focus YES`.
+   Related: beta.15 doubled `cardSystemLiftScale` 1.06→1.12 sim-derived (device-validate or
+   scope to caption-drop only); `.manualScale` scales the LOCKUP (title included) unlike
+   `.systemLift` (artwork only); false comment at `NuvioTVUITests.swift:3283` claims
+   `accent_focus_ring` is synced — it is plain @AppStorage, correct it.
+5. **Card Depth "thick on Subtle" (MEDIUM, pre-beta.15)** — `CardDepthStyle.swift:188-203` keys
+   lineWidth on COVERAGE (<1 → 2pt boosted rail), so Subtle+Top (the default) is thicker than
+   Bold+Full; still-mode border is a fixed 4pt unrelated to depth; beta.15's new black platter
+   amplifies the rail. Fix: derive width from edgeStrength (update CardDepthRailTests in step).
+6. **Poster/tile title overlap (MEDIUM)** — beta.15's fix addressed only a one-frame flash; the
+   steady-state intrusion is a FIXED 72pt slide cap (~46pt onto artwork) vs SCALED cards, worst
+   on folder tiles (`CollectionsUI.swift:221-227` collapses square/landscape height to
+   style.width → up to 25% intrusion). Fix: clamp slide against actual artwork height
+   (`BrowseComponents.swift:166-169`) + reconsider tileHeight. Steven's Size/ring answers
+   (asked in DM) decide whether the 1.12 lift revert joins this item.
+7. Reporter asks outstanding: Size + ring settings (asked); About-pane Focus Mode readout photo
+   (worth adding); doubled hero needs his beta.16 Hero Paint Diagnostics photo.
+
 ## Sequencing
 
 1. Wave 1 now (it also neutralizes the H5 widening our beta.16 gate introduced — do not ship

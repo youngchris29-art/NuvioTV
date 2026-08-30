@@ -177,6 +177,48 @@ regression gate test45CatalogsGroupFocusReachesExpandedRows green (walks focus I
 group — the gap that let this ship), interactive sim pass incl. context menu. Device pass owed
 with the rest of the batch; a beta.17-rc2 needs cutting for Steven.
 
+## Status update 4 (2026-08-30, overnight) — Waves 6/7/8: the rest of the rc1 list
+
+All three remaining rc1 items fixed, committed, PUSHED (submodule tip `218a700c`):
+
+**Wave 6 — description trailer zoom (`6c330e69`, Codex clean r1).** Three compounding defects:
+token-matched cache entries were terminal (a bad crop from betas ≤16 reapplied for 30 days —
+repack tokens are release-stable), the hero loop + every Trailers & Extras clip thrashed ONE
+title-keyed entry, and finish() persisted maxZoom-clamped logo-window measurements. Fixes: store
+v1→v2 (upgraders' stale entries die on first launch), per-clip zoomKeys, VERIFY mode (a match
+applies instantly but re-measures and corrects/confirms — probe-verified live: persisted-hit →
+verify-confirmed), clamp guard, smoke-knob for the full-screen path.
+
+**Wave 7 — "No Zoom on Focus" (`4dce574d`, Codex r1 declined-documented).** The entire no-zoom
+mechanism was ONE unverified focusEffectDisabled; still mode now uses a custom StillCardButtonStyle
+(cannot receive the system lift, hardware-independent). The still-ring band reservation (BUG-64's
+accent-ring inset) was never applied to the neutral ring Wave 4 made universal — that WAS "Ring
+Focus even when off cuts off the posters"; all five ring sites now reserve the band. New
+test46StillModeRiseIsZero (ring-aware luma measurement) — the rise gate Wave 4 specced but never
+wrote. Its first run measured rise=4.0pt = exactly ringWidth: independent proof the lift is gone
+and the band reserved.
+
+**Wave 8 — Large title overlap (`218a700c`, Codex 10 rounds, r11 re-review OWED — quota reset
+06:07).** Sim-reproduced: focused Large rows settle at margin≈-90 with slide saturated at 72 →
+net NEGATIVE + 46pt intrusion (66 against the focused card); the lift is a FIXED ~20pt at both
+sizes (pixel-measured — the proportional-lift theory is dead), so the cause was the size-dependent
+settled rest 954d62a9's deferred settle re-reveal never fixed. Shipped: the settle re-reveal
+(monotone/bounded/self-disarming ScrollPosition nudge), lift/mode/row-aware clearances (0 in
+Wave 7 still mode, 20 native incl. folder tiles, scale-derived for ring mode), a visibility fade
+belt for uncorrectable rests, lift-honest probe fields (device logs were under-reporting by
+exactly the lift), and gate test47 (settle-probe oracle; AX frames + pixels are both documented
+vacuous-green traps here). Before/after verified live: margin -90/net -28 → margin +24..42/net ≥ 24.
+
+**⚠️ Fixture state: FA87 deliberately left at Size=Large + No Zoom ON (+ ring off) — Steven-parity
+for the beta.17 device pass. Restore Medium + No Zoom off afterward.** Trailer zoom store was
+reset during Wave 6 verification (v2, one healthy entry). Device-pass extras: grep
+`[HomeScrollProbe] settle` for MISS/DISARMED (the one device-falsifiable assumption is
+contentInsets.top==0 in pinned mode — disarm leaves beta.15 behavior + fade belt), and
+`[TrailerZoom] verify-` lines on a title played under beta.15/16.
+
+Remaining before beta.17-rc2: Codex r11 pass on Wave 8 (quota), Christian's device pass, rc2 cut
++ DM to Steven.
+
 ## Sequencing
 
 1. Wave 1 now (it also neutralizes the H5 widening our beta.16 gate introduced — do not ship

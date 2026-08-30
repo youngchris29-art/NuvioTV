@@ -152,6 +152,31 @@ B. **Scroll-repro settle fix (Steven's right-then-up overlap, Large):** mechanis
    (CW/Upcoming sibling re-match hazard), (5) real artworkHeight for CW/Upcoming probe values,
    (6) nil-measure no longer snaps slide to 0.
 
+## Status update 3 (2026-08-30) — rc1 verdict + Wave 5
+
+Steven's rc1 verdict (DM 08-29 20:09): PARTIAL — trailers+sound and card depth FIXED; still
+broken: catalog selection (functional), description-trailer zoom, "No zoom on selection"
+lift, Large-poster title overlap.
+
+**Catalog selection ROOT CAUSE + Wave 5 MERGED (`468d7aff`, PUSHED).** Sim-reproduced, not
+device-only: since the beta.15 Settings List revamp the Hero Sources / Catalogs groups were ONE
+native List row each (header + all expanded rows), and a tvOS List row exposes exactly one focus
+target — no expanded row was EVER focusable. "Impossible to select" was literal for three betas;
+Waves 1-2 fixed data + legibility but selection was never reachable. Wave 5: every expanded row
+hoisted to its own List row (expansion state pane-level, reset on branch disappearance);
+CatalogSettingRow reshaped to row-Select-toggles + long-press context menu for reorder (three
+chips in one row = the same trap one level down); hero-source DRIFT-REFILL in the repository (a
+selection stranded on keys vanished from a still-present addon refills first-in-order instead of
+staying 0-of-2 forever — the live fixture healed on launch) with an exact per-preference addonId
+stamp (new stored field, "" fails closed) so incremental manifest loading and colon-containing
+addon ids can never misread an unloaded addon's selection as drift. Codex settled ROUND 7
+(orphan consumption, partial-load P1, expansion-state P3, two colon-id prefix escalations →
+exact-id stamp, remote stamp preservation, UI-test abort + teardown-restore hygiene; r7 clean).
+Gates: jvm suite + 7-scenario HomeCatalogSettingsHeroDriftTest green, sim build green, NEW UI
+regression gate test45CatalogsGroupFocusReachesExpandedRows green (walks focus INTO an expanded
+group — the gap that let this ship), interactive sim pass incl. context menu. Device pass owed
+with the rest of the batch; a beta.17-rc2 needs cutting for Steven.
+
 ## Sequencing
 
 1. Wave 1 now (it also neutralizes the H5 widening our beta.16 gate introduced — do not ship

@@ -4736,7 +4736,7 @@
   var nDecl = count(function (i) { return i[3] === "declined"; });
   tiles.appendChild(tile(nOpen, "Open", "needs work, ours to move", "alert"));
   tiles.appendChild(tile(nWait, "Waiting", "blocked on a reporter"));
-  tiles.appendChild(tile(nUnrel, "Fixed · unreleased", "empty — everything built has shipped"));
+  tiles.appendChild(tile(nUnrel, "Fixed · unreleased", "built, waiting on the rc2 cut"));
   tiles.appendChild(tile(nShip, "Shipped", "in a released beta", "ship"));
   tiles.appendChild(tile(nClosed + nDecl, "Closed", nClosed + " confirmed · " + nDecl + " declined / not a bug"));
 

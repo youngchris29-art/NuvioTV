@@ -231,7 +231,20 @@ carries the identical race), `3a0b3640` AES-GCM oneshot (GCM never used the IV a
 verified tags — latent while pluginsEnabled=false), `082a0935` CI trigger for
 tvos-shared-extraction. Gates: test45/46/47 + full jvm green on the merged state.
 
-Remaining before beta.17-rc2: Christian's device pass (checklist above), rc2 cut + DM to Steven.
+**Status update 6 (2026-08-31): DEVICE PASS RUN + Wave 9.** Living Room ATV (fresh dev-signed
+install over the sideloaded 114 — devicectl needed a reboot for wedged DDI services, and
+signature-mismatched upgrades fail with opaque IX errors): B (trailer zoom) and C (no-zoom/ring)
+CONFIRMED on hardware; catalog toggles + context-menu reorder confirmed. Two failures, both
+root-caused from the device probe log and fixed in Wave 9 (`2c256ff7`, PUSHED, Codex settled r4,
+gates test45-48 green): (1) hero-source limit rows were a focus trap (.disabled → eject to tab
+bar) → focusable-but-inert; (2) the Large title overlap persisted because hardware parks rows
+~75pt deeper (BUG-66 tab-bar family), Large frames become unsatisfiable (bound=19..0), and the
+visibility belt livelocked (nil-measurement epoch resets + corrector motion stamps starved its
+rest gate) → unmeasured-holds + stand-down handoff + monotonic 2.6s fade ceiling; test48
+reproduces the device rest shape (margin=-80/intr=45/bound=0) in sim and gates both directions.
+Also: cinterop tasks now track the shim header (stale-klib footgun hit twice). Remaining:
+short device RE-CHECK of A+D on this build, the BUG-66 deep-park decision (fixing the tab-bar
+tuck would let the corrector fully succeed on device instead of belting), rc2 cut + Steven DM.
 
 ## Sequencing
 

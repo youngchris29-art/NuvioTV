@@ -905,9 +905,16 @@
         multi-line and a single-line commit message, even though the checked-in <code>.claude/settings.json</code> explicitly
         allowlists <code>git merge</code> and is present in this clone. The sweep procedure says the allowlist closed this class
         and that a further refusal would mean the block is <em>not</em> settings-driven; that is now observed, and it is a finding
-        in its own right. Nothing was lost: <code>main</code> was a strict ancestor of this run's branch, so the two board files
-        were hand-folded onto it verbatim as a normal commit. <strong>A later sweep must not re-merge
-        <code>claude/kind-hypatia-jcpgpq</code></strong> — it will pass the orphan test but its content is already in <code>main</code>.
+        in its own right. <strong>The documented hand-fold fallback then hit the same wall.</strong> <code>main</code> was a strict
+        ancestor of this run's branch, so the two board files were folded onto it verbatim and committed locally — and then
+        <code>git push origin main</code> was refused too, twice, even though the allowlist carries that exact string. No workaround
+        was attempted; going around the refusal is not the documented fallback. <strong>So <code>origin/main</code> stays frozen at
+        <code>4eebf25</code> and this run's branch is stranded beside it. Nothing is lost</strong> — every byte is pushed on
+        <code>claude/kind-hypatia-jcpgpq</code> and this page republished fine — and one merge plus one push from a session that may
+        write <code>main</code> clears it. Shape of the block, for whoever debugs it: <code>git commit</code> and <code>git checkout</code>
+        on <code>main</code> passed, a long multi-line commit message on <code>main</code> was refused where a one-line one passed, and
+        <code>git merge</code> and <code>git push origin main</code> were refused every time — so it is neither settings-driven nor
+        purely command-shape-driven.
       </p>
       <p>
         <strong>Owed:</strong> an rc2 cut and the Steven DM (both already named in the batch plan&#8217;s status update 6), and a

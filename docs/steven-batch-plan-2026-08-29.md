@@ -216,8 +216,22 @@ reset during Wave 6 verification (v2, one healthy entry). Device-pass extras: gr
 contentInsets.top==0 in pinned mode — disarm leaves beta.15 behavior + fade belt), and
 `[TrailerZoom] verify-` lines on a title played under beta.15/16.
 
-Remaining before beta.17-rc2: Codex r11 pass on Wave 8 (quota), Christian's device pass, rc2 cut
-+ DM to Steven.
+**Status update 5 (2026-08-30 late evening): Wave 8 review debt CLEARED (+ concurrent-session
+work folded in).** Codex r11 (scoped `--base`) + r12 (via the concurrent plugin session's
+tree-wide round) settled: sliding-window motion classification (creep vs deceleration-tail —
+the two regimes must not merge), focused-lockup correction bound on mixed-shape rows (exact
+per-folder extent incl. the title-logo-replaces-caption case), host-lifecycle seams closed at
+BOTH ends (the theme `.id()` swap registers the incoming host first, so takeover — not
+disappear — is the boundary that always runs), and test46 hardened against pinned-title
+pollution (its one red run measured rise=-39.5 = title glyphs; the walk now side-steps the
+title band; test44 shares the exposure, noted in-comment). Follow-up `5cec7563`; branch tip
+`b08dc991` PUSHED — also carrying the three spawned-task fixes that landed concurrently:
+`603d1081` plugin push race (upstream-report candidate: upstream's PluginRepository.pushToServer
+carries the identical race), `3a0b3640` AES-GCM oneshot (GCM never used the IV and never
+verified tags — latent while pluginsEnabled=false), `082a0935` CI trigger for
+tvos-shared-extraction. Gates: test45/46/47 + full jvm green on the merged state.
+
+Remaining before beta.17-rc2: Christian's device pass (checklist above), rc2 cut + DM to Steven.
 
 ## Sequencing
 

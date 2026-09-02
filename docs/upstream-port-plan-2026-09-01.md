@@ -329,7 +329,21 @@ takes `results[0]` and the computed `tvdbSeason` is never used, so later seasons
 IMDb anime query AniSkip/Anime-Skip with season 1's ids. No report from the K/N regex probe (it
 passed). Now 7 unfiled in total (4 carried from prior runs).
 
-### Device-pass checklist (owed, irreducibly manual)
+### Device pass — PASSED 2026-09-02 (Living Room ATV, build `a87ab03f`/115, dev-signed via devicectl)
+Christian walked all four items on hardware after the merge: (1) anime skip chip on a `kitsu:`/`mal:`
+episode AND IntroDB segments on a plain `tt` series — PASS; (2) addon season posters with TMDB season
+posters off (specials = season 0, no shift) and TMDB art winning when on, age-rating chip — PASS;
+(3) cold start with Wi-Fi off: Home "Couldn't load your add-ons." + focusable Retry, Search error +
+Retry (not "No results."), Discover error + Retry (not "Install and enable…"), Retry after Wi-Fi back
+fills everything without retyping — PASS; (4) Menu dismisses the up-next chip on BOTH engines (mpv:
+chip gone → post-play at EOF → second Menu exits; native: bar-hide → chip-dismiss → exit, "Dismiss"
+contextual action present, panel Menu still closes only the panel) — PASS. Install went over the
+existing dev-signed 115 with no IX error; signed-in state preserved. Device console (devicectl
+`--console`) corroborates: `[NativePlayer] skip segments: 3` ×3 and `: 2` across the played episodes,
+no `arm.haglund.dev` traffic, and a full `[UpNext] search begin → selected → resolved — playing next
+episode` cycle (tt0388629 s1e2). Original checklist follows for the record.
+
+### Device-pass checklist (as run)
 - Anime skip chip: play a `kitsu:`/`mal:` episode with Skip Intro ON → chip appears; a plain `tt`
   series still gets IntroDB segments; no `arm.haglund.dev` traffic.
 - Season posters on an AIOMetadata-style title with TMDB season posters OFF → addon art per season,

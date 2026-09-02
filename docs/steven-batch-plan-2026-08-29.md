@@ -246,6 +246,16 @@ Also: cinterop tasks now track the shim header (stale-klib footgun hit twice). R
 short device RE-CHECK of A+D on this build, the BUG-66 deep-park decision (fixing the tab-bar
 tuck would let the corrector fully succeed on device instead of belting), rc2 cut + Steven DM.
 
+## Status update 7 (2026-09-01): Wave 10 DEVICE-CONFIRMED — batch complete.
+
+Waves 9b (immediate belt handoff, `9f1923bf`) and 10 (canonical rests + static hero compression,
+`3c39c677`, Codex 6 rounds incl. a DEBUG-scope Release-compile P1 — Release compile now in the
+gate sequence) shipped 08-31/09-01; pointer `08e53a8`. Christian's Wave-10 walk on the Living
+Room ATV PASSED: every row lands in the same place, no posters cut off, titles visible and
+clear. The full rc1 verdict list is now fixed AND hardware-verified end to end. BUG-66 (tab-bar
+tuck) remains open as its own item but no longer drives any geometry defect. NEXT: beta.17-rc2
+cut + Steven DM.
+
 ## Sequencing
 
 1. Wave 1 now (it also neutralizes the H5 widening our beta.16 gate introduced — do not ship

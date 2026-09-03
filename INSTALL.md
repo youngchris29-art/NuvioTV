@@ -1,15 +1,15 @@
 # Sideloading NuvioTV
 
-This guide walks you through installing NuvioTV on your Apple TV using a free Apple ID. No paid developer account needed — just a computer, your Apple TV, and about 10 minutes.
+This guide walks you through installing NuvioTV on your Apple TV using a free Apple ID. No paid developer account needed, just a computer, your Apple TV, and about 10 minutes.
 
 ## What You Need
 
 - An **Apple TV HD or Apple TV 4K** running **tvOS 26+**
 - A **Mac or Windows** computer
-- A **free Apple ID** (your normal one works; some people prefer a separate one just for sideloading — create one at [account.apple.com](https://account.apple.com))
-- **Sideloadly** — the tool that installs the app ([download here](https://sideloadly.io/))
-- **NuvioTV.ipa** — download from the [latest release](https://github.com/youngchris29-art/NuvioTV/releases/latest)
-- **WiFi** — your computer and Apple TV on the same network
+- A **free Apple ID** (your normal one works; some people prefer a separate one just for sideloading. Create one at [account.apple.com](https://account.apple.com))
+- **Sideloadly**, the tool that installs the app ([download here](https://sideloadly.io/))
+- **NuvioTV.ipa**, downloaded from the [latest release](https://github.com/youngchris29-art/NuvioTV/releases/latest)
+- **WiFi**, with your computer and Apple TV on the same network
 
 ## Quick Start with Sideloadly
 
@@ -29,7 +29,7 @@ Download and install Sideloadly from [sideloadly.io](https://sideloadly.io/) on 
 4. Enter your **free Apple ID email** and password when prompted.
 5. Click **Start**.
 
-Sideloadly handles signing and installation — just wait for the green checkmark.
+Sideloadly handles signing and installation. Just wait for the green checkmark.
 
 **Don't have your Apple TV in the device list?** Make sure it's on the same WiFi network, and click the refresh button. If you still don't see it, restart Sideloadly and try again.
 
@@ -57,7 +57,7 @@ When the app stops launching after 7 days, just repeat the Quick Start steps abo
 
 ## Apple TV Without USB?
 
-**That's totally normal.** Apple TV 4K has no USB port. Everything here is **wireless** — Sideloadly talks to your Apple TV over WiFi.
+**That's totally normal.** Apple TV 4K has no USB port. Everything here is **wireless**: Sideloadly talks to your Apple TV over WiFi.
 
 If you have an older USB-equipped model, you can still use WiFi; USB is optional and slower anyway.
 
@@ -65,7 +65,7 @@ If you have an older USB-equipped model, you can still use WiFi; USB is optional
 
 ### Signulous (~$20/year)
 
-Signs apps with a real distribution certificate — no 7-day refresh needed, and the signature lasts a year.
+Signs apps with a real distribution certificate, so there's no 7-day refresh and the signature lasts a year.
 - [signulous.com](https://signulous.com/)
 - Easier for "set it and forget it" users.
 - Worth it if you sideload many apps.
@@ -83,7 +83,7 @@ A web-based sideloader running on Docker. Install once, sideload from your brows
 
 You can only sideload 3 apps per free Apple ID at a time.
 
-**Fix:** Remove an old sideloaded app and try again. (Since v0.3.0-beta.8 the IPA ships without app extensions — free-Apple-ID re-signing breaks their signatures anyway — so the "Remove App Extensions" option is no longer needed.)
+**Fix:** Remove an old sideloaded app and try again. (Since v0.3.0-beta.8 the IPA ships without app extensions, because free-Apple-ID re-signing breaks their signatures anyway, so the "Remove App Extensions" option is no longer needed.)
 
 ### App Stops Opening After 7 Days
 
@@ -108,7 +108,7 @@ On your **Apple TV**, go to **Settings → General → Privacy & Security**, fin
 | **Certificate lifespan** | **7 days**. Re-sideload to refresh; your data stays. |
 | **Multiple users** | Each Apple ID gets its own 3-app limit. |
 
-These aren't bugs — they're Apple's free tier. Signulous or Paid Developer ($99/year) bypass them.
+These aren't bugs, they're Apple's free tier. Signulous or Paid Developer ($99/year) bypass them.
 
 ## FAQ
 

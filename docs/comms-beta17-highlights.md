@@ -1,0 +1,10 @@
+## Highlights
+
+- **Large poster size, fixed for good** — with Poster Size set to Large, Home rows now land in the same place every time: no posters cut off at the edge, no row title overlapping the row above, and the hero makes room instead of the rows fighting it. No Zoom on Focus is deterministic on every tile too. This was the beta.16 reporter's batch (thank you) — every item they raised is in this build, device-verified.
+- **Add-ons still loading no longer look empty** — Home, Search and Discover show a loading state while an add-on's manifest is fetched instead of "No results" or "Install an add-on", and if a manifest fails to load you get the error and a **Retry** button. No more relaunch to recover from a slow start.
+- **Anime skip segments via Simkl** — intro/outro detection for anime now resolves IDs through Simkl (the retired ARM service is gone) and maps each episode to the right season, so multi-season anime stop getting season 1's timings.
+- **Menu dismisses the up-next countdown** — press Menu once to dismiss "Play Next Episode" and keep watching to the credits; press again to leave the player. The native player also gets a **Dismiss** action next to Play Next Episode.
+- **Season posters from your addon** — when TMDB has no season art, the season row uses the addon's own posters (specials included, mapped to the right season), and addons that publish a localized age rating get it in the rating chip.
+- **Next-episode auto-play honors your source scope** — with "installed add-ons only" or "enabled plugins only", the next episode is picked as soon as the sources you chose have answered instead of waiting on the rest.
+- **Trailers** — the silent-trailer regression from beta.16 is fixed, the detail page's trailer zoom is stable across clip changes, and the catalog list under Home Rows is selectable with the remote again.
+- Plus: the plugin store encrypts correctly (a latent bug in the AES-GCM path, fixed before plugins ship), a handful of settings rows got platter-safe colors on every theme, and dozens of smaller fixes from the adversarial review passes on each batch.

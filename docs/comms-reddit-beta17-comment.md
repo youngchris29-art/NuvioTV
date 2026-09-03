@@ -1,4 +1,14 @@
-# Reddit beta.17 announcement comment — DRAFTED 2026-09-02, NOT POSTED
+# Reddit beta.17 announcement comment — POSTED 2026-09-02 as top-level comment [`p7nbyk8`](https://www.reddit.com/r/Nuvio/comments/1v26ebw/comment/p7nbyk8/)
+
+Posted via the logged-in web session's classic write endpoint (`/api/comment` with the page modhash,
+from an ego-browser task space on old.reddit) right after the pinned "Latest build" block was swapped
+to beta 17 the same way (`/api/editusertext`; stored markdown verified byte-equal to the release
+script's own `replace_block` output — the API-credential path was unavailable in the shell). Mechanics
+worth keeping: old.reddit shows NO edit control for this post (authored in the new editor), and the
+new-reddit composer is fragile, so the session endpoints are the reliable route. **Sweeps: our own
+comment, log-don't-file; watermark passes over `p7nbyk8`.** Watch for u/mrStevenx3's verdict on 116.
+
+Original draft header follows.
 
 Covers beta 16 too: beta 16 (build 114, 2026-08-28) never got its own top-level comment (the
 beta.15 comment `p6fempv` was edited to say "fixed in beta 16" and the pinned Latest-build block

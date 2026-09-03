@@ -1,3 +1,4 @@
+<!-- APPLIED 2026-09-02 to post 1v26ebw via the session /api/editusertext route (stored body verified). -->
 **Latest build: beta 17 (build 116)**
 
 What's new in beta 17:

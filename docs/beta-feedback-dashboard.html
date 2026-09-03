@@ -780,8 +780,8 @@
       <strong>BUG-66</strong> as the only open bug.
     </p>
     <div class="meta">
-      <span class="pill"><strong>178</strong> comments <span style="color:var(--text-3)">(floor)</span> · <strong>20</strong> voices <span style="color:var(--text-3)">(newest is our own announcement reply)</span></span>
-      <span class="pill">Last checked <strong>2026-09-02 (evening sweep)</strong> <span style="color:var(--text-3)">— quiet run, 9th consecutive hold; GitHub 0 open, 0 PRs. Feed clean on first try; owed items (BUG-77/BUG-85) still unannounced, four days on</span> · watermark <code>p6fempv</code> <span style="color:var(--text-3)">@ 08-28T14:48Z</span></span>
+      <span class="pill"><strong>182</strong> comments <span style="color:var(--text-3)">(floor)</span> · <strong>21</strong> voices <span style="color:var(--text-3)">(the 4 newest are one spammer, not a tester)</span></span>
+      <span class="pill">Last checked <strong>2026-09-03 (morning sweep)</strong> <span style="color:var(--text-3)">— normal run: watermark moved after 9 holds, but all 4 new comments are one user&#8217;s self-promo for a rival app; 0 rows filed. GitHub 0 open, 0 PRs</span> · watermark <code>p7hjva6</code> <span style="color:var(--text-3)">@ 09-03T00:45Z</span></span>
       <span class="pill">✅ <strong>Corrected 09-02 (late, manual board update):</strong> rc2 was cut <em>and</em> the Steven DM was sent on 09-01; Wave 10 device pass PASSED 09-01; upstream batches 7 (device-passed) + 8 merged 09-02. Of the two “owed” items the sweeps repeat, only the thread announcement remains.</span>
       <span class="pill">🧹 <strong>Open-item sweep 09-02 (Christian&#8217;s rule):</strong> fixes shipped with no tester re-report → shipped. BUG-30/33/40/41/55 + FEAT-15 flipped; BUG-42 folded into BUG-86; FEAT-22 closed as unanswered. <strong>BUG-66 is the only open bug left</strong>; the rest of “open” is FEAT-3/16/28/29 + DOC-3.</span>
       <span class="pill">🚨 <strong>BUG-77 (P0) fixed in beta.16 — and beta.16 was never announced</strong> — beta.15 could overwrite a user’s <em>account</em> add-on list with just Cinemeta on a clean install; 34 people found the IPA unaided. A thread post + the recovery step (toggle any add-on off/on) are owed.</span>
@@ -885,64 +885,43 @@
   </section>
 
   <section id="latest">
-    <h2>Latest sweep <span class="count">2026-09-02 (late evening) · manual board update + open-item sweep · rc2 out · Wave 10 device-passed · upstream 7 + 8 merged · 7 rows cleared</span></h2>
+    <h2>Latest sweep <span class="count">2026-09-03 (morning sweep) · watermark moved after nine holds · 4 new comments, all spam · 0 rows filed · GitHub 0 open, 0 PRs</span></h2>
     <div class="notice">
-      <div class="notice-title">🟢 The board catches up with three days of dev work — one thing is still owed to the thread</div>
+      <div class="notice-title">🟠 The thread moved for the first time in six days &#8212; and none of it was feedback</div>
       <p>
-        <strong>No sources were read this run.</strong> The board was reconciled against the batch plan&#8217;s status update 7,
-        the <code>NuvioMobile</code> submodule (<code>tvos-shared-extraction</code> = <code>3b140cc7</code>), the rc2 build artifact
-        (<code>iosApp/build/rc2/…/NuvioTV.ipa</code>, 25.2 MB, built 09-01 22:42 ET) and the upstream section of <code>CLAUDE.md</code>.
-        The 09-01/09-02 sweeps were all genuinely quiet — watermark <code>p6fempv</code> held nine times, GitHub 0 open — and all four of
-        them kept repeating &#8220;rc2 cut + Steven DM owed.&#8221; Half of that was stale from the first repetition.
+        <strong>Reddit finally changed, and it changed by exactly four spam comments.</strong> The Atom feed came back
+        HTTP&nbsp;200 on the first attempt at <strong>262,396 bytes / 179 entries</strong> &#8212; the first time it has not
+        been byte-identical <code>258,806 / 175</code> since the 08-29 evening sweep. All four new entries are
+        <strong>u/Any_Task7788</strong>, posted between <code>00:43:18Z</code> and <code>00:45:07Z</code> &#8212;
+        <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/_/p7hjjkq/"><code>p7hjjkq</code></a>,
+        <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/_/p7hjr6x/"><code>p7hjr6x</code></a>,
+        <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/_/p7hjss5/"><code>p7hjss5</code></a> and
+        <a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/_/p7hjva6/"><code>p7hjva6</code></a> &#8212; and all four
+        carry the <em>same one-line body</em>: a GitHub releases link to a competing Apple&nbsp;TV app
+        (<code>prehakanson-art/OrivioTVAppleTV</code>) plus &#8220;try mine! It&#8217;s optimized for the ATV 4k one. My latest
+        post has pictures of the new redesign which should be released in a day or 2 after some bug checks.&#8221; The first of
+        the four opens with an extra &#8220;Try mine!&#8221;; otherwise they are identical, 109 seconds apart.
       </p>
       <p>
-        <strong>What the sweeps kept calling owed is done.</strong> <strong>beta.17-rc2 was cut 09-01</strong> from <code>3c39c677</code>
-        and the <strong>Steven DM went out the same night</strong> — it covers his four rc1 fails (catalog selection, description-trailer
-        zoom, no-zoom lift, Large title overlap), the Limit-reached caption and verify-by-commit. His verdict gates the public beta.17.
-        <strong>Wave 9b</strong> (<code>9f1923bf</code>, immediate belt handoff) and <strong>Wave 10</strong> (<code>3c39c677</code>,
-        canonical rests + static hero compression keyed to poster size; Codex 6 rounds including a Release-compile P1, so Release compile
-        now sits in the gate sequence) shipped 08-31/09-01, and Christian&#8217;s Wave-10 walk on the Living Room ATV <strong>passed
-        09-01</strong>: every row lands in the same place, no posters cut off, titles visible and clear. <strong>BUG-84</strong> moves from
-        &#8220;re-check owed&#8221; to device-confirmed; every one of BUG-78/80/81/82/83/84/85 is now fixed <em>and</em> hardware-verified.
-        <strong>BUG-66</strong> is confirmed to no longer drive any geometry defect and stays open on its own.
+        <strong>So the watermark advances and nothing else does.</strong> There is no bug, no feature request and no question
+        addressed to us in any of the four, so this run filed <strong>0 rows</strong>, updated <strong>0 rows</strong> and
+        changed <strong>0 priorities</strong>; the watermark moves to <code>p7hjva6</code> purely so tomorrow&#8217;s sweep
+        does not re-surface them. What the sweep deliberately did <em>not</em> do: reply in the thread, file a Reddit spam
+        report, or open the linked repository (this session&#8217;s GitHub scope is <code>youngchris29-art/nuviotv</code> only).
+        <strong>Whether to report the four to r/Nuvio&#8217;s moderators or simply ignore them is Christian&#8217;s call.</strong>
+        On the measure that matters the thread is still quiet: the newest <em>substantive</em> comment remains our own
+        <code>p6fempv</code> (08-28) and the newest <strong>tester</strong> comment remains <code>p6ausa5</code> (08-27).
       </p>
       <p>
-        <strong>Upstream moved too, without touching the board.</strong> <strong>Batch 7</strong> (<code>a87ab03f</code>) merged into
-        <code>tvos-shared-extraction</code> on 09-02 and <strong>device-passed the same day</strong>: ARM→Simkl skip-intro ID resolution
-        (anime skip chip + IMDb IntroDB), addon season posters incl. specials + the certification fallback chain, TTML regex parity (the
-        Kotlin/Native probe came back negative, so the 08-31 &#8220;possible live subtitle bug&#8221; is retired), delayed-addon-manifest
-        error + Retry states on Home/Search/Discover, and Menu dismissing the up-next chip on both engines. <strong>Batch 8</strong>
-        (<code>3b140cc7</code>, auto-play source loading scope #1825) merged 09-02 — the real tvOS fix is in
-        <code>NextEpisodeAutoPlay.swift</code>; its device pass is owed only under a non-default auto-play source synced from mobile.
-        The 08-24 sync-reliability branch (<code>9221cc5d</code>) is verified an ancestor of the tip, retiring its stale
-        &#8220;merge decision owed&#8221; note.
+        <strong>GitHub: quiet &#8212; 0 open issues, 0 open PRs</strong>, re-checked directly with <code>list_issues</code> and
+        <code>list_pull_requests</code> and unchanged since the 09-02 evening sweep.
       </p>
       <p>
-        <strong>Rows touched:</strong> BUG-66, BUG-77, BUG-78, BUG-80–86, FEAT-28/29 (statuses only; no bucket changes — the seven rc2
-        rows stay <em>unreleased</em> until beta.17 is public).
-      </p>
-      <p>
-        <strong>Still owed, in priority order:</strong> (1) the <strong>beta.16 thread announcement</strong> — BUG-77 (P0) has been
-        unannounced for five days; standalone now, or inside the beta.17 post if Steven answers quickly, but not later; (2) Steven&#8217;s
-        rc2 verdict → the beta.17 release wave; (3) the 08-28 upstream device passes (batch 6 + subtitle-engine), riding the beta.17 pass;
-        (4) BUG-66/BUG-30 on hardware; (5) the reporter asks unchanged since 08-28.
-      </p>
-      <p>
-        <strong>Open-item sweep, same evening (Christian&#8217;s rule).</strong> Any open item whose fix is in code and shipped, with no
-        new tester report against it since, is marked fixed; anything waiting more than a week on a reporter for a shipped fix likewise.
-        Flipped to shipped: <strong>BUG-30</strong> (beta.15 hysteresis reframe; the scroll-up clip unreported since 08-27),
-        <strong>BUG-33</strong> (beta.11 chip contrast), <strong>BUG-40</strong> (beta.11 white ring), <strong>BUG-41</strong> (beta.11 +
-        beta.15 dim fix; last re-confirm 08-22 on beta.14), <strong>BUG-55</strong> (residual title has no TMDB videos),
-        <strong>FEAT-15</strong> (beta.11 hero-off focus-follow). <strong>BUG-42</strong> folded into <strong>BUG-86</strong>, the 08-28
-        re-report of the same symptom. Kept open on purpose: BUG-66 (no fix shipped), BUG-37/BUG-62 (no fix ever shipped — waiting on a
-        repro, not a retest), BUG-86 (new report, photo asked 08-29), DOC-2 (a question, not a fix), and the unbuilt
-        FEAT-3/16/28/29 + DOC-3. <strong>FEAT-22</strong> closed as unanswered on Christian&#8217;s call — three weeks, no fallback-rule reply,
-        no second requester. Buckets: open 12 → 6, waiting 6 → 4, shipped 81 → 88, closed 22 → 23.
-      </p>
-      <p>
-        <strong>Procedure note for the sweep.</strong> <code>iosApp/build/rc*/</code> and the batch plan&#8217;s status updates are the
-        &#8220;did the release-side work happen?&#8221; sources — read them before repeating an owed item. A quiet watermark says nothing
-        about what the dev sessions shipped.
+        <strong>Nothing on the board below was re-verified today.</strong> Its substance is still the 09-02 late-evening manual
+        update: <strong>BUG-66 is the only open bug</strong>, the seven rc2 rows stay <em>unreleased</em> pending
+        u/mrStevenx3&#8217;s verdict, and the <strong>beta.16 thread announcement is the one thing still owed to the thread</strong>
+        &#8212; BUG-77 is a P0 that has now been unannounced for five days. A moved watermark makes this a normal run under
+        &#167;5, which is why the dashboard was republished; it does not mean the board changed.
       </p>
     </div>
   </section>
@@ -1030,6 +1009,71 @@
       <button class="tbtn" id="xall" type="button">Expand all</button>
       <button class="tbtn" id="call" type="button">Collapse all</button>
     </div></div>
+
+  <details class="arch">
+    <summary>🟢 2026-09-02 (late evening) · manual board update + open-item sweep · rc2 out · Wave 10 device-passed · upstream 7 + 8 merged · 7 rows cleared</summary>
+    <div class="arch-body">
+    <div class="notice">
+      <div class="notice-title">🟢 The board catches up with three days of dev work — one thing is still owed to the thread</div>
+      <p>
+        <strong>No sources were read this run.</strong> The board was reconciled against the batch plan&#8217;s status update 7,
+        the <code>NuvioMobile</code> submodule (<code>tvos-shared-extraction</code> = <code>3b140cc7</code>), the rc2 build artifact
+        (<code>iosApp/build/rc2/…/NuvioTV.ipa</code>, 25.2 MB, built 09-01 22:42 ET) and the upstream section of <code>CLAUDE.md</code>.
+        The 09-01/09-02 sweeps were all genuinely quiet — watermark <code>p6fempv</code> held nine times, GitHub 0 open — and all four of
+        them kept repeating &#8220;rc2 cut + Steven DM owed.&#8221; Half of that was stale from the first repetition.
+      </p>
+      <p>
+        <strong>What the sweeps kept calling owed is done.</strong> <strong>beta.17-rc2 was cut 09-01</strong> from <code>3c39c677</code>
+        and the <strong>Steven DM went out the same night</strong> — it covers his four rc1 fails (catalog selection, description-trailer
+        zoom, no-zoom lift, Large title overlap), the Limit-reached caption and verify-by-commit. His verdict gates the public beta.17.
+        <strong>Wave 9b</strong> (<code>9f1923bf</code>, immediate belt handoff) and <strong>Wave 10</strong> (<code>3c39c677</code>,
+        canonical rests + static hero compression keyed to poster size; Codex 6 rounds including a Release-compile P1, so Release compile
+        now sits in the gate sequence) shipped 08-31/09-01, and Christian&#8217;s Wave-10 walk on the Living Room ATV <strong>passed
+        09-01</strong>: every row lands in the same place, no posters cut off, titles visible and clear. <strong>BUG-84</strong> moves from
+        &#8220;re-check owed&#8221; to device-confirmed; every one of BUG-78/80/81/82/83/84/85 is now fixed <em>and</em> hardware-verified.
+        <strong>BUG-66</strong> is confirmed to no longer drive any geometry defect and stays open on its own.
+      </p>
+      <p>
+        <strong>Upstream moved too, without touching the board.</strong> <strong>Batch 7</strong> (<code>a87ab03f</code>) merged into
+        <code>tvos-shared-extraction</code> on 09-02 and <strong>device-passed the same day</strong>: ARM→Simkl skip-intro ID resolution
+        (anime skip chip + IMDb IntroDB), addon season posters incl. specials + the certification fallback chain, TTML regex parity (the
+        Kotlin/Native probe came back negative, so the 08-31 &#8220;possible live subtitle bug&#8221; is retired), delayed-addon-manifest
+        error + Retry states on Home/Search/Discover, and Menu dismissing the up-next chip on both engines. <strong>Batch 8</strong>
+        (<code>3b140cc7</code>, auto-play source loading scope #1825) merged 09-02 — the real tvOS fix is in
+        <code>NextEpisodeAutoPlay.swift</code>; its device pass is owed only under a non-default auto-play source synced from mobile.
+        The 08-24 sync-reliability branch (<code>9221cc5d</code>) is verified an ancestor of the tip, retiring its stale
+        &#8220;merge decision owed&#8221; note.
+      </p>
+      <p>
+        <strong>Rows touched:</strong> BUG-66, BUG-77, BUG-78, BUG-80–86, FEAT-28/29 (statuses only; no bucket changes — the seven rc2
+        rows stay <em>unreleased</em> until beta.17 is public).
+      </p>
+      <p>
+        <strong>Still owed, in priority order:</strong> (1) the <strong>beta.16 thread announcement</strong> — BUG-77 (P0) has been
+        unannounced for five days; standalone now, or inside the beta.17 post if Steven answers quickly, but not later; (2) Steven&#8217;s
+        rc2 verdict → the beta.17 release wave; (3) the 08-28 upstream device passes (batch 6 + subtitle-engine), riding the beta.17 pass;
+        (4) BUG-66/BUG-30 on hardware; (5) the reporter asks unchanged since 08-28.
+      </p>
+      <p>
+        <strong>Open-item sweep, same evening (Christian&#8217;s rule).</strong> Any open item whose fix is in code and shipped, with no
+        new tester report against it since, is marked fixed; anything waiting more than a week on a reporter for a shipped fix likewise.
+        Flipped to shipped: <strong>BUG-30</strong> (beta.15 hysteresis reframe; the scroll-up clip unreported since 08-27),
+        <strong>BUG-33</strong> (beta.11 chip contrast), <strong>BUG-40</strong> (beta.11 white ring), <strong>BUG-41</strong> (beta.11 +
+        beta.15 dim fix; last re-confirm 08-22 on beta.14), <strong>BUG-55</strong> (residual title has no TMDB videos),
+        <strong>FEAT-15</strong> (beta.11 hero-off focus-follow). <strong>BUG-42</strong> folded into <strong>BUG-86</strong>, the 08-28
+        re-report of the same symptom. Kept open on purpose: BUG-66 (no fix shipped), BUG-37/BUG-62 (no fix ever shipped — waiting on a
+        repro, not a retest), BUG-86 (new report, photo asked 08-29), DOC-2 (a question, not a fix), and the unbuilt
+        FEAT-3/16/28/29 + DOC-3. <strong>FEAT-22</strong> closed as unanswered on Christian&#8217;s call — three weeks, no fallback-rule reply,
+        no second requester. Buckets: open 12 → 6, waiting 6 → 4, shipped 81 → 88, closed 22 → 23.
+      </p>
+      <p>
+        <strong>Procedure note for the sweep.</strong> <code>iosApp/build/rc*/</code> and the batch plan&#8217;s status updates are the
+        &#8220;did the release-side work happen?&#8221; sources — read them before repeating an owed item. A quiet watermark says nothing
+        about what the dev sessions shipped.
+      </p>
+    </div>
+    </div>
+  </details>
 
   <details class="arch">
     <summary>🟠 2026-08-31 (morning sweep) · sources quiet, board corrected · 12 rows filed · GitHub 0 open</summary>

@@ -14,7 +14,9 @@
       "Bash(git commit *)",
       "Bash(git merge *)",
       "Bash(git push -u origin claude/*)",
-      "Bash(git push origin main)"
+      "Bash(git push origin main)",
+      "Bash(python3 scripts/deslop/deslop.py *)",
+      "Bash(python3 scripts/deslop/test_deslop.py)"
     ]
   }
 }

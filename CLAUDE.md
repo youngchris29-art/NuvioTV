@@ -62,7 +62,7 @@ For full day-by-day history of what's been checked and what landed, see `docs/up
 
 Every draft of user-facing prose presented to Christian for posting or publishing (Reddit comments and thread blocks, DMs to testers, README/INSTALL edits, release-notes highlights, GitHub issue/PR text, upstream reports, any `docs/comms-*.md`) goes through the SlopMonster loop before it is shown to him:
 
-1. **Lint**: `python3 scripts/deslop/deslop.py <file>` (or `--text "…"`). The vendored copy in `scripts/deslop/` is the same scorer as the `~/.claude/skills/slopmonster` skill; either works.
+1. **Lint**: `python3 scripts/deslop/deslop.py <file>` (or `--text "…"`). The vendored copy in `scripts/deslop/` is the same scorer as the `slopmonster` skill, which is checked in at `.claude/skills/slopmonster/` so cloud sessions can invoke `/slopmonster` too; either works.
 2. **Rewrite** until it scores 5/5: kill the flagged vocabulary and shapes, keep every fact, keep the register.
 3. **Cleanse** with the rival model (`~/.claude/skills/slopmonster/tools/cleanse.sh`, needs the `codex` CLI) when it is available. Treat its output as a rewrite, not an edit: diff every hunk and restore any dropped fact, changed claim, invented opinion or edited boilerplate. Skip the cleanse where `codex` is absent (cloud sessions) or the piece is short with a single hit, and say so.
 4. **Re-lint**. Present the draft only at 5/5, and state the score with the draft.

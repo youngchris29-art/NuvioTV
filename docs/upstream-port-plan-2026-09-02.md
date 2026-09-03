@@ -121,7 +121,7 @@ brightness modifiers, unrelated. Confirmed no port needed.
 
 ## OUTCOME ADDENDUM — same-day session, 2026-09-02 (upstream batch 8)
 
-Submodule branch `claude/upstream-batch8` off `tvos-shared-extraction` @ `a87ab03f`, two commits, tip `3b140cc7`, pushed. Merge into `tvos-shared-extraction` + pointer bump: Christian's call.
+Submodule branch `claude/upstream-batch8` off `tvos-shared-extraction` @ `a87ab03f`, two commits, tip `3b140cc7`, pushed. **MERGED 2026-09-02 (Christian's call): `tvos-shared-extraction` fast-forwarded `a87ab03f` → `3b140cc7`, pushed; outer pointer bumped.**
 The one action item (`58864ec1`, auto-play source loading scope, #1825) — PORTED, plus the tvOS-side
 half the daily check did not see.
 

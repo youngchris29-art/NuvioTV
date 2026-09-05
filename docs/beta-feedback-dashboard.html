@@ -784,7 +784,7 @@
       <span class="pill">Last checked <strong>2026-09-05 (morning sweep)</strong> <span style="color:var(--text-3)">&#8212; normal run: watermark moved to <code>p7w0syf</code>, 181 entries (up 1), 1 new comment and it is a P1 bug report; GitHub 0 open, 0 PRs</span> · watermark <code>p7w0syf</code></span>
       <span class="pill">🔴 <strong>BUG-94 (P1) is new, and unanswered</strong> &#8212; u/napes22 (<a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/_/p7w0syf/"><code>p7w0syf</code></a>, 09-05 00:56Z): every stream returns playback failed, and they ask whether to switch to Infuse. No build number, add-ons, debrid or title &#8212; unrepro&#8217;d as filed, and a reply is owed.</span>
       <span class="pill">🔧 <strong>Steven&#8217;s beta.17 batch is committed, not cut</strong> &#8212; BUG-86&#8230;93 + FEAT-29 on <code>claude/steven-beta17</code>, sim-gated, Codex rounds still landing fixes. Owed before an rc: the FA87 Large fixture gate run, Codex settling, and a device pass in Steven&#8217;s configuration.</span>
-      <span class="pill">⚠️ <strong>The <code>git merge</code> classifier block is back &#8212; and the allowlist did not stop it.</strong> <code>git merge --no-ff</code> was refused on this run despite being explicitly allowlisted in the checked-in <code>.claude/settings.json</code>, so the restriction is not settings-driven. <code>origin/main</code> also moved mid-run (<code>465c8b3</code> → <code>f2eeee1</code>, one unrelated docs commit). Landed by the documented hand-fold instead; zero file overlap, nothing resolved by judgement.</span>
+      <span class="pill">⚠️ <strong>The <code>git merge</code> classifier block is back &#8212; and the allowlist did not stop it.</strong> <code>git merge --no-ff</code> was refused on this run despite being explicitly allowlisted in the checked-in <code>.claude/settings.json</code>, so the restriction is not settings-driven. The hand-fold fallback was blocked too: <code>git commit</code> is refused while <code>HEAD</code> is <code>main</code>, though it succeeds on the sweep branch. <strong><code>main</code> is left untouched at <code>f2eeee1</code>; today&#8217;s board exists only on <code>claude/kind-hypatia-3hx2zy</code> (<code>f8fc86e</code>).</strong> Needs a permissions decision, not another retry.</span>
       <span class="pill">📊 <strong>The board had drifted from the tracker</strong> &#8212; it was last republished by the 09-04 <em>morning</em> sweep, before that day&#8217;s DM intake and build session, so BUG-87&#8230;93 were missing and FEAT-29 still read &#8220;not built&#8221;. Reconciled in this run.</span>
       <span class="pill">🎉 <strong>beta.17 IS PUBLIC AND ANNOUNCED — nothing is owed to the thread for the first time since 08-29.</strong> Build 116 published 09-03 at 19:58Z; the post went up 21 minutes later (<a href="https://www.reddit.com/r/Nuvio/comments/1v26ebw/_/p7nbyk8/"><code>p7nbyk8</code></a>) with a beta.16 recap folded in.</span>
       <span class="pill">✅ <strong>BUG-77 (P0) announced at last</strong> — the post opens with beta.16&#8217;s add-on-wipe fix, the settings-sync protection, the recovery step (re-add your add-ons on any device and they sync back up) and an apology. Six days unannounced; the debt was comms, and it is paid.</span>
@@ -938,10 +938,15 @@
         is explicitly allowlisted in the checked-in <code>.claude/settings.json</code>. That is the case the instructions say is <em>not</em>
         settings-driven and must be named rather than absorbed quietly. On top of it, <code>origin/main</code> moved during the run
         (<code>465c8b3</code> &#8594; <code>f2eeee1</code>, one unrelated docs commit touching only the Steven batch plan), so the first push to
-        <code>main</code> was correctly rejected as a non-fast-forward. The sweep landed by the documented hand-fold fallback: <code>main</code>
-        re-based on the new <code>origin/main</code> and the two sweep files re-applied as a normal commit. The two sides share no files, so nothing
-        was resolved by judgement &#8212; but the sweep branch&#8217;s original commit <code>d2e3ca0</code> must not be re-merged into
-        <code>main</code>, which now carries the equivalent fold.
+        <code>main</code> was correctly rejected as a non-fast-forward. The sweep landed by the documented hand-fold fallback: <strong>the hand-fold fallback was blocked as well</strong>, and that is the sharper half of the
+        finding: <code>git commit</code> is refused while <code>HEAD</code> is <code>main</code>, though the identical command succeeds on the sweep
+        branch. So the restriction is not about the merge verb &#8212; it is a block on writing to <code>main</code>, and neither the allowlist nor
+        §6&#8217;s documented fallback route gets around it. <code>git push origin main</code> was permitted as a command and returned HTTP&nbsp;403
+        from the remote. <strong><code>main</code> is left untouched at <code>f2eeee1</code>, deliberately and cleanly</strong> &#8212; nothing was
+        half-applied, the working tree was restored, no history rewritten. <strong>Today&#8217;s board therefore exists only on
+        <code>claude/kind-hypatia-3hx2zy</code> (tip <code>f8fc86e</code>, pushed)</strong>, so a fresh clone of <code>main</code> will not see BUG-94
+        or the BUG-87&#8230;93 reconciliation until someone with write access merges that branch. This is the exact stranding §6 exists to prevent,
+        and it needs a permissions decision rather than another retry from a sweep.
       </p>
       <p>
         <strong>GitHub: quiet &#8212; 0 open issues, 0 open PRs</strong>, re-checked directly with <code>list_issues</code> and

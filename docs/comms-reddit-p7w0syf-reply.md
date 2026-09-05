@@ -4,9 +4,12 @@ Covers **BUG-94**: playback failing on every stream, plus a question about switc
 
 Parent: <https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p7w0syf/>
 
-**Status: DRAFT — APPROVED TO POST BY CHRISTIAN 2026-09-05, NOT YET POSTED.** SlopMonster **5/5
-CLEAN** (`python3 scripts/deslop/deslop.py`, 208 words in the final paste-ready form). The
-rival-model cleanse was **skipped**: the `codex` CLI is not installed in this cloud session.
+**Status: POSTED 2026-09-05T20:49:09Z** as
+[`p81ihg4`](https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p81ihg4/),
+u/youngchris2989 — verbatim, from a logged-in machine, confirmed by the 2026-09-05 evening sweep's
+Reddit feed read. SlopMonster **5/5 CLEAN** (`python3 scripts/deslop/deslop.py`, 208 words in the
+final paste-ready form). The rival-model cleanse was **skipped**: the `codex` CLI is not installed
+in this cloud session.
 
 **Why it is still unposted: this session cannot post it.** Posting on this thread goes through the
 logged-in web session's classic write endpoint (`/api/comment` with the page modhash) driven from an

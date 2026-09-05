@@ -4,34 +4,37 @@ Covers **BUG-94**: playback failing on every stream, plus a question about switc
 
 Parent: <https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/p7w0syf/>
 
-**Status: DRAFT — not posted.** SlopMonster **5/5 CLEAN** on the first lint
-(`python3 scripts/deslop/deslop.py`, 217 words). The rival-model cleanse was **skipped**: the `codex`
-CLI is not installed in this cloud session.
+**Status: DRAFT — APPROVED TO POST BY CHRISTIAN 2026-09-05, NOT YET POSTED.** SlopMonster **5/5
+CLEAN** (`python3 scripts/deslop/deslop.py`, 208 words in the final paste-ready form). The
+rival-model cleanse was **skipped**: the `codex` CLI is not installed in this cloud session.
+
+**Why it is still unposted: this session cannot post it.** Posting on this thread goes through the
+logged-in web session's classic write endpoint (`/api/comment` with the page modhash) driven from an
+ego-browser task space, which is how `p7nbyk8` and `p6fempv` were posted. That runs on Christian's
+machine. This is a cloud container: no Reddit credentials in the environment, no ego-browser, and no
+logged-in session to borrow a modhash from. The API-credential path was already recorded as
+unavailable in the shell when the beta.17 comment went up. So the reply is finished and paste-ready,
+and it needs one action on a logged-in machine.
 
 ---
 
 ## The draft
 
-> Sorry about that — that's not normal, and I'd rather find the cause than route you around it.
+**Paste-ready as written**: no em dashes, straight quotes, per the house Reddit posting style used
+for the beta.15 and beta.17 comments. 1,197 characters.
+
+> Sorry about that. That's not normal, and I'd rather find the cause than route you around it.
 >
-> On Infuse: you can already use it. Settings → Playback → Default Player lists Infuse, VLC,
-> Outplayer and VidHub. But if *every* stream fails, handing the same stream to Infuse will usually
-> fail there too. The app has to resolve a playable link before any player is involved, and "all
-> streams" normally means the failure is happening before playback rather than in the player, so
-> switching would hide it rather than fix it.
+> On Infuse: you can already use it. Settings > Playback > Default Player lists Infuse, VLC, Outplayer and VidHub. But if every stream fails, handing the same stream to Infuse will usually fail there too. The app has to resolve a playable link before any player is involved, and "all streams" normally means the failure is happening before playback rather than in the player, so switching would hide it rather than fix it.
 >
 > Four things and I can narrow this down:
 >
-> * **Build number** — Settings → About. A photo of that screen is ideal. Latest is 0.3.0 (116).
-> * **Add-ons** — which ones you have installed and enabled, under Settings → Content Sources.
-> * **Debrid** — do you have Real-Debrid, TorBox or AllDebrid linked, and does it still show as
->   connected? An expired or signed-out debrid account is the most common reason everything fails at
->   once.
-> * **How it fails** — instantly, or after a spinner? And do you get a list of sources at all, or is
->   the list empty?
+> * **Build number.** Settings > About. A photo of that screen is ideal. Latest is 0.3.0 (116).
+> * **Add-ons.** Which ones you have installed and enabled, under Settings > Content Sources.
+> * **Debrid.** Do you have Real-Debrid, TorBox or AllDebrid linked, and does it still show as connected? An expired or signed-out debrid account is the most common reason everything fails at once.
+> * **How it fails.** Instantly, or after a spinner? And do you get a list of sources at all, or is the list empty?
 >
-> That last one splits the problem in half: sources listed but none of them play is a different bug
-> from no sources arriving in the first place.
+> That last one splits the problem in half: sources listed but none of them play is a different bug from no sources arriving in the first place.
 
 ---
 

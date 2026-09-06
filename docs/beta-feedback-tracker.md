@@ -228,6 +228,8 @@ Statuses: `New` → `Investigating` → `In progress` → `Fixed (unreleased)` �
 
 ## Update log
 
+- **2026-09-06 (~16:55 ET, implementation session) — 📨 ACK DM SENT to u/mrStevenx3 for his rc2 feedback: rc3 covers only the description page; rc4 (being built in a separate session) restores the 3-line Home description by trimming the focus reaches, with a hardware ask (focus hesitation); Large title-hiding / Medium bounce / second-to-last row acknowledged as hardware-only with his video in hand; the smaller items (bar flicker/position, bridge title/logo, saga titles, Settings font) named for the batch after rc4; hero photo still asked. `docs/comms-dm-drafts-2026-09-06-ack.md`.**
+
 - **2026-09-06 (16:05 ET, implementation session) — 📨 STEVEN'S rc2 FEEDBACK READ (DM 08:34 AM ET + video https://fromsmash.com/OstKtGR5AA-ct).** Fixed per him: BUG-97 full-screen crop, BUG-41 description scroll, FEAT-30 bar hides on Home, FEAT-31 Open Sans (not on Settings categories). Not fixed: BUG-89 second-to-last row at Large; BUG-87/88 bounce (Medium bounces, Large hides titles on rows after the first, hero on or off); the Home panel synopsis at Large = one line (W4 trade-off, he objects). New: FEAT-30 bar flicker on Up-while-scrolling + wants it higher/left; FEAT-32 bridge title resizes + logo missing; saga titles missing on the detail page. No hero photo yet. Full record in `docs/steven-beta18-batch-plan-2026-09-05.md`; triage owed.
 
 - **2026-09-06 (~16:00 ET, implementation session) — 📨 rc3 follow-up DM SENT to u/mrStevenx3 (link, About check `9ddc4104`, the detail-page row fix, the hero photo still asked). The send surfaced his unread rc2 feedback (~10:00 ET) — to be read and triaged.**

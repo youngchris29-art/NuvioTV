@@ -1,6 +1,6 @@
 # DM draft: u/mrStevenx3, acknowledging the rc2 feedback (2026-09-06)
 
-**Status: DRAFT, not sent.** Reply to his 08:34 AM ET rc2 feedback (read after the rc3 follow-up went out at 2:31 PM).
+**Status: SENT 2026-09-06 ~16:55 ET (Reddit chat), on Christian's explicit go. Verified by re-reading the thread: one message from u/youngchris2989, 1,251 characters, composer empty after send; it follows the rc3 follow-up by 23 minutes.** Reply to his 08:34 AM ET rc2 feedback (read after the rc3 follow-up went out at 2:31 PM).
 Nothing posts without Christian's explicit go. rc4 is being built in a separate session; this message promises the
 description-lines fix and a row-fit change in rc4, and the rest as a following batch.
 

@@ -1,7 +1,9 @@
 # DM draft: u/mrStevenx3, beta.18 release candidate 2 (2026-09-06)
 
-**Status: DRAFT, not sent.** Placeholders `https://litter.catbox.moe/js7mfl.ipa` and `<commit>` are filled when rc2 (build 118) is cut. Christian
-decides the bracketed optional paragraph (the one-line synopsis trade-off) before sending.
+**Status: DRAFT, ready to send, not sent.** rc2 = build 118 from `25e07e08` (tag `tvos-v0.3.0-beta.18-rc2`, unsigned
+Release IPA 25.8 MB, https://litter.catbox.moe/js7mfl.ipa, litterbox 72 h ≈ 2026-09-09 01:30 ET, size verified by
+`content-length`; local copy `~/Downloads/NuvioTV-beta18-rc2.ipa`). Christian decides the bracketed optional paragraph
+(the one-line synopsis trade-off) before sending.
 
 Channel: Reddit chat, from u/youngchris2989. Follows the 2026-09-05 rc1 DM (`docs/comms-dm-drafts-2026-09-05.md`) and
 Steven's 5:48 PM verdict with two photos.

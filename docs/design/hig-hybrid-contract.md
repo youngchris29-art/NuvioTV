@@ -10,10 +10,10 @@ MUST below, it doesn't merge.
 | Surface | Rule |
 |---|---|
 | **Focus indication** | System treatment only: `.buttonStyle(.card)` platter/lift/parallax for artwork tiles, system brighten/scale for other controls. **No accent focus rings, no custom `scaleEffect` focus chains, no fake parallax tilt.** *Carve-out (FEAT-14):* an **opt-in** accent focus ring (Appearance setting `accent_focus_ring`, default **OFF**) MAY draw a single `strokeBorder` in `Palette.accentFocus` over artwork tiles, aligned to the card's Corners radius and routed through the contrast decision table (`Theme.Palette.focusRingHex`, White-theme fallback required). With the setting off — the default — focus indication remains system-only. In ring mode the card swaps the system lift for an equivalent manual scale (hardware cannot composite SwiftUI overlays into the `hoverEffect` lift layer — framebuffer-verified 2026-08-02); this scale exists solely to carry the ring and is part of this carve-out, not a licence for custom focus chains elsewhere. **"Equivalent" is an obligation, and it is now measured, not asserted (BUG-64, 2026-08-25):** the constant sat at 1.06 against a system lift of **1.1212** — barely half — for two betas while the reporter kept saying the ring changed how focus behaves. `cardSystemLiftScale` in `PosterCard.swift` carries the measurement and its provenance; **test44** re-measures both treatments and fails if they drift apart, using ring mode's own known constant as the edge finder's known-answer check. Re-measure rather than re-guess if the tvOS focus lift ever changes. |
-| **Typography** | `Theme.Font` tokens only (semantic `Font.TextStyle` under the hood). No `Font.system(size:)` at call sites. |
+| **Typography** | `Theme.Font` tokens only (semantic `Font.TextStyle` under the hood). No `Font.system(size:)` at call sites. *Carve-out (FEAT-31):* `Theme.Font` tokens MAY resolve to `Font.custom("Open Sans", size:relativeTo:)` when the opt-in Appearance setting "Typeface" is set to Open Sans (device-local `ui_font` key, default **System**). The base size fed to `.custom` is DERIVED — `UIFontDescriptor.preferredFontDescriptor(withTextStyle:compatibleWith: .large)`, never a literal — and `relativeTo:` keeps Larger Text scaling working under the custom face. Default System mode is unit-tested byte-identical to the pre-FEAT-31 tokens (`AppFontResolverTests`). Call sites still reference tokens only; nothing outside `Theme.Font` ever names a font family directly. |
 | **Text color** | `Theme.Palette.textPrimary/.textSecondary` (semantic `.primary`/`.secondary`). Never hex text colors. |
 | **Overlay surfaces** | `Theme.Surface` materials (or `.glass`/`.glassProminent` buttons, `glassEffect()`) for anything floating over content. Opaque `Palette.surface*` only for in-content fills. |
-| **Buttons** | System styles: `.card` (artwork), `.glass`/`.glassProminent` (actions over media), `.borderless`/`.bordered`/`.borderedProminent` (everything else). Custom `ButtonStyle`s exist only where a system style demonstrably can't express the shape (document why in the style file). |
+| **Buttons** | System styles: `.card` (artwork), `.glass`/`.glassProminent` (actions over media), `.borderless`/`.bordered`/`.borderedProminent` (everything else). Custom `ButtonStyle`s exist only where a system style demonstrably can't express the shape (document why in the style file). *Carve-out (FEAT-30):* `SidebarItemButtonStyle` in `DesignSystem/SidebarOverlay.swift` draws a per-row white capsule for the focused item inside a `.glassEffect` panel — opt-in via the Appearance setting "Navigation: Sidebar" (device-local `sidebar_style` key, default **Top Tabs**). Neither system style can express this shape: `.borderless` is platter-free on tvOS (lift only, no fill), and `.glass`/`.glassProminent` render at the panel level, not a per-row pill inside one. System focus motion (lift/brighten) is otherwise unchanged. Default Top Tabs mode is byte-identical to today — this style has no call sites until the setting is on. |
 | **Alerts/confirms** | `.alert` / `.confirmationDialog`. No bespoke confirm overlays. |
 | **Remote grammar** | Menu = back, Play/Pause = media, swipe = focus/scrub. Never repurposed. |
 | **Motion** | System focus motion. Any remaining custom animation gates on Reduce Motion. |
@@ -31,7 +31,7 @@ MUST below, it doesn't merge.
 
 - Accent-colored focus rings (deleted in P1; reintroduced ONLY via the FEAT-14 opt-in carve-out under Focus indication — default OFF, single ring, contrast-guarded).
 - `posterFocusTilt` fake parallax (system `.card` provides the real thing).
-- Hard-coded text hex colors, fixed font point sizes.
+- Hard-coded text hex colors, fixed font point sizes at call sites (the FEAT-31 Open Sans carve-out's internal base size is DERIVED from the system's own preferred-font descriptor, never a literal — see Typography above).
 - `.searchable` (known tvOS keyboard-bleed bug inside TabView — keep TextField, restyled).
 
 ## Token cheat-sheet (post-P0 Theme.swift)
@@ -41,6 +41,8 @@ MUST below, it doesn't merge.
 - `Theme.Palette.textPrimary/.textSecondary` → `.primary`/`.secondary` (dark scheme pinned at root).
 - `Theme.Surface.panel/.overlay/.chrome` → `.thick`/`.regular`/`.thin` materials.
 - `Theme.Spacing`/`Theme.Radius` unchanged (60pt overscan margin per HIG).
+- 2026-09-05 (FEAT-31): `Theme.Font.family` / `Theme.AppFontFamily` — the selected UI typeface
+  (`.system`/`.openSans`), read by every `Theme.Font` token resolver; see the Typography carve-out.
 
 ## Settings screen — native List conversion closed (beta.15 C1-C4, 2026-08-23)
 

@@ -48,6 +48,20 @@ Here is the Omni + Nuvio video: https://fromsmash.com/UhxvT4wFoW-ct
 
 I spend quite a bit of time testing everything and providing detailed feedback. I really hope that my feedback is genuinely helpful to you and makes it easier to identify and fix these issues.
 
+## 2026-09-04 4:25 PM and 4:27 PM — reply to the 09-04 DM (verbatim)
+
+> It's nice to know that my detailed feedback is helpful to you :-) Here's a photo of the Hero's diagnostic report; unfortunately, it's too big, so I can't show you everything, because when I tap the bottom screen, the Apple TV skips parts of it. As for your second question about titles bouncing, that happens even in "medium" mode. However, in "medium" mode, the line above the last line of the catalog doesn't stay on the screen. Regarding the Hero image that automatically crops to the collections, my photos might also help you. Et de rien 😉
+
+> I had already sent you a photo of my diagnosis, but this one was much shorter!
+
+Two Hero Paint Diagnostics photos attached in chat (images, not pulled). Medium question ANSWERED: bounce at Medium too. New Medium-only symptom: the row above the last does not stay on screen.
+
+## 2026-09-05 4:18 AM — new suggestion (verbatim)
+
+> Another suggestion (I think I mentioned this to you a while back): when the trailer plays in full screen from the description, there's no animation to bridge the two. I recorded what happens on Orivio—a fork of Nuvio for Apple TV—as well as what happens on the official Nuvio app (I prefer the Nuvio version). I'm also showing you the animation of my collections on Nuvio, which runs at 60 fps compared to 30 fps on your app. The video: https://fromsmash.com/.8WE-Btmp0-ct
+
+Acknowledged in the 09-05 rc DM as "on the list", no promise. Video pulled 2026-09-05 17:03 ET via the Smash recipe to `~/Downloads/IMG_8468.mov` (172 MB, 54s; Smash page said 6 days left). Tracker rows: FEAT-32 (trailer full-screen bridge animation), FEAT-33 (collection animation frame rate).
+
 ## Not done in this intake
 - Videos NOT downloaded (fromsmash links; download needs an explicit go-ahead).
 - No reply drafted or sent.

@@ -1,6 +1,8 @@
 # DM draft: u/mrStevenx3, beta.18 release candidate 4 (2026-09-06)
 
-**Status: DRAFT, not sent.** Follows the rc3 follow-up (`docs/comms-dm-drafts-2026-09-06-rc3.md`, sent ~16:00 ET) and
+**Status: SUPERSEDED, never sent.** Christian held this message (2026-09-06 ~17:00 ET) to work through the rest of Steven's rc2 list first; the replacement is `docs/comms-dm-drafts-2026-09-06-rc5.md` (rc5, build 121). Kept for the record. Original header follows.
+
+**Status at drafting: DRAFT, not sent.** Follows the rc3 follow-up (`docs/comms-dm-drafts-2026-09-06-rc3.md`, sent ~16:00 ET) and
 the acknowledgement of his rc2 feedback (`docs/comms-dm-drafts-2026-09-06-ack.md`, sent ~16:55 ET), which already
 explained the three-line fix, the trimmed cushions, the focus caveat and the next batch. This message is therefore
 short: the link, what to check, the reminders. Placeholders `https://litter.catbox.moe/77tezp.ipa` and `a4dbb976` are filled when rc4 (build 120)

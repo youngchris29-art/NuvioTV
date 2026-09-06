@@ -228,6 +228,8 @@ Statuses: `New` → `Investigating` → `In progress` → `Fixed (unreleased)` �
 
 ## Update log
 
+- **2026-09-06 (16:05 ET, implementation session) — 📨 STEVEN'S rc2 FEEDBACK READ (DM 08:34 AM ET + video https://fromsmash.com/OstKtGR5AA-ct).** Fixed per him: BUG-97 full-screen crop, BUG-41 description scroll, FEAT-30 bar hides on Home, FEAT-31 Open Sans (not on Settings categories). Not fixed: BUG-89 second-to-last row at Large; BUG-87/88 bounce (Medium bounces, Large hides titles on rows after the first, hero on or off); the Home panel synopsis at Large = one line (W4 trade-off, he objects). New: FEAT-30 bar flicker on Up-while-scrolling + wants it higher/left; FEAT-32 bridge title resizes + logo missing; saga titles missing on the detail page. No hero photo yet. Full record in `docs/steven-beta18-batch-plan-2026-09-05.md`; triage owed.
+
 - **2026-09-06 (~16:00 ET, implementation session) — 📨 rc3 follow-up DM SENT to u/mrStevenx3 (link, About check `9ddc4104`, the detail-page row fix, the hero photo still asked). The send surfaced his unread rc2 feedback (~10:00 ET) — to be read and triaged.**
 
 - **2026-09-06 (~15:50 ET, implementation session) — 🏗️ beta.18-rc3 CUT (build 119, `9ddc4104`, tag `tvos-v0.3.0-beta.18-rc3`, https://litter.catbox.moe/2cljii.ipa, 72 h) = rc2 + BUG-96 (detail-page row rest anchor + top scrim). Follow-up DM draft 5/5 ready (`docs/comms-dm-drafts-2026-09-06-rc3.md`), not sent.**

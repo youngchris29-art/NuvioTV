@@ -1,6 +1,6 @@
 # DM draft: u/mrStevenx3, beta.18 release candidate 5 (2026-09-06)
 
-**Status: DRAFT, not sent.** Supersedes the rc4 draft (`docs/comms-dm-drafts-2026-09-06-rc4.md`, never sent):
+**Status: SENT 2026-09-06 6:35 PM ET (Reddit chat), on Christian's explicit go. Verified by re-reading the thread: one new message from u/youngchris2989, 1,817 characters, composer empty after send; no reply from Steven had arrived since the 16:55 acknowledgement.** Supersedes the rc4 draft (`docs/comms-dm-drafts-2026-09-06-rc4.md`, never sent):
 Christian chose to fold the rest of the rc2 list into the next build before writing to Steven again. Follows the
 rc3 follow-up (sent ~16:00 ET) and the rc2-feedback acknowledgement (sent ~16:55 ET), which already explained the
 three-line description fix and the trimmed focus cushions. Placeholders `https://litter.catbox.moe/dm1noh.ipa` and `9b02bb16` are filled when

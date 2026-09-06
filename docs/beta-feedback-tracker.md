@@ -227,6 +227,8 @@ Statuses: `New` → `Investigating` → `In progress` → `Fixed (unreleased)` �
 
 ## Update log
 
+- **2026-09-06 (~01:45 ET, implementation session) — 📨 rc2 DM SENT to u/mrStevenx3 (Reddit chat, Christian's go-ahead): link + About check `25e07e08`, hero-off photo contract, per-item list, sidebar/Open Sans opt-in with an early-stage navigation ask. The send surfaced his unread ~23:45 ET edit: the second-to-last collections row (BUG-89) "doesn't work" after further testing on rc1 — triage owed.**
+
 - **2026-09-06 (~01:30 ET, implementation session) — 🏗️ beta.18-rc2 CUT (build 118, `25e07e08`, tag `tvos-v0.3.0-beta.18-rc2`, https://litter.catbox.moe/js7mfl.ipa, 72 h) after Codex round 5 via `codex exec` (2 P2 fixed). Includes the other session's opt-in FEAT-30 sidebar + FEAT-31 Open Sans. DM draft 5/5 ready (`docs/comms-dm-drafts-2026-09-06.md`), not sent; device pass with Show Hero OFF owed.**
 
 - **2026-09-06 (~01:15 ET, implementation session) — ✅ STEVEN'S beta.18 FIX BATCH MERGED into `tvos-shared-extraction` (`8560d305`).** Six waves + Codex rounds 1–4 (8 findings fixed, 2 of them P1 on the hero-off bootstrap route) + a second hero-off gap found by the new test31 leg D (the focus panel seeded from Continue Watching while the rows were held) — all on `claude/steven-beta18` in the separate clone, merged on top of the other session's FEAT-30/31/33 landing with no conflicts. Gates green on the merge commit (Debug/Release/unit; UI test31 A–D, test37, regime leg B, RowLeadingEdge ×2 on the spare fixture). Owed: device pass with Show Hero OFF, BUG-41 evidence run, one Codex round when the CLI can reach the account's model, rc2 + DM. Record: `docs/steven-beta18-batch-plan-2026-09-05.md`.

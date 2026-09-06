@@ -1,6 +1,6 @@
 # DM draft: u/mrStevenx3, beta.18 release candidate 2 (2026-09-06)
 
-**Status: DRAFT, ready to send, not sent.** rc2 = build 118 from `25e07e08` (tag `tvos-v0.3.0-beta.18-rc2`, unsigned
+**Status: SENT 2026-09-06 ~01:45 ET (Reddit chat), on Christian's explicit go-ahead, WITHOUT the bracketed optional paragraph. Verified by re-reading the thread: one message from u/youngchris2989, 2,944 characters, composer empty after send.** rc2 = build 118 from `25e07e08` (tag `tvos-v0.3.0-beta.18-rc2`, unsigned
 Release IPA 25.8 MB, https://litter.catbox.moe/js7mfl.ipa, litterbox 72 h ≈ 2026-09-09 01:30 ET, size verified by
 `content-length`; local copy `~/Downloads/NuvioTV-beta18-rc2.ipa`). Christian decides the bracketed optional paragraph
 (the one-line synopsis trade-off) before sending.

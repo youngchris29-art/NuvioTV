@@ -1,22 +1,32 @@
-# DM draft: u/mrStevenx3, beta.18-rc9 (build 125)
+# DM draft: u/mrStevenx3, beta.18-rc9 (build 126)
 
-**Status: NOT SENT (2026-09-10). Waiting for Christian's go.** rc9 = build 125, tag `tvos-v0.3.0-beta.18-rc9`, `fde6136e` on `tvos-shared-extraction`, IPA 26,308,584 bytes at https://litter.catbox.moe/5cth6p.ipa (litterbox 72 h; copy `~/Downloads/NuvioTV-beta18-rc9.ipa`). Carries FEAT-34 saga cards 500×281 (measured from his 09-08 official-app photo) and BUG-102 (accent ring on collection folder tiles + cast avatars with zoom on). Asks: the ring under the lift on hardware (the sim cannot prove it), and which screen BUG-103 is about + a photo.
+**Status: NOT SENT (2026-09-10, final ~15:10 ET after the re-cut). Waiting for Christian's go.** rc9 = build 126, tag `tvos-v0.3.0-beta.18-rc9` (moved from build 125, which never reached him), `665fc031` on `tvos-shared-extraction`, IPA 26,311,195 bytes at https://litter.catbox.moe/sxpipj.ipa (litterbox 72 h ≈ 09-13 15:00 ET, `content-length` verified after seven HTTP 500s; copy `~/Downloads/NuvioTV-beta18-rc9.ipa`). Carries FEAT-34 saga cards 500×281 (measured from his 09-08 photo), BUG-102 (accent ring on collection folder tiles + cast avatars with zoom on), and his three afternoon reports folded in on Christian's call: BUG-103 collection rows bleed to the screen edges, BUG-105 depth rail on collection tiles, BUG-106 saga focus-lift overlap (told as a zoom problem fixed by a wider gap). FEAT-37 live search and FEAT-38 OLED black acknowledged; his full-list reconciliation ask accepted. One ask back: the ring under the lift on hardware (the sim cannot prove it).
 
-SlopMonster loop: lint 5/5 on the first draft; Codex cleanse diffed hunk by hunk — three phrasing hunks taken, the "Last time, I guessed." split declined, trailing notes stripped; final lint 5/5 (136 words).
+SlopMonster loop: lint 5/5 on the draft; Codex cleanse diffed hunk by hunk — five phrasing hunks taken (split opener, explicit card comparison, "Fixed those too.", "reach the screen edges", the reordered zoom sentence), trailing notes stripped; final lint 5/5 (221 words).
 
 ---
 
-Hey! rc9 is up: https://litter.catbox.moe/5cth6p.ipa
-Settings → About → Commit should start with fde6136e.
+Hey! Thanks for the photos and the video. They answered my question, and I’ve put the fixes into rc9.
 
-1. Saga cards: this time I measured them against your photo of the official app instead of guessing. They should now match its size.
+rc9 is up: https://litter.catbox.moe/sxpipj.ipa
+Settings → About → Commit should start with 665fc031.
 
-2. Focus ring in collections with zoom on: fixed in rc9. The cast photos on the description page had the same gap and got the same fix.
+In rc9:
 
-Two things I'd like from you on this build:
+1. Saga cards: I measured them against your photo of the official app instead of guessing. They should now match the size of the cards in that app.
 
-- With zoom on and the ring on, does the ring on a collection folder look right when the tile lifts? It shows up in my simulator, but only the Apple TV can confirm it.
+2. Focus ring in collections with zoom on: fixed. The cast photos on the description page had the same gap. Fixed those too.
 
-- For the carousel edges, did you mean the collection row on Home or the page that opens from a collection? A photo would settle it.
+3. Collection rows now reach the screen edges like the other rows. Your photos showed exactly where they stopped.
+
+4. The depth effect now applies to collection tiles.
+
+5. The focused saga card no longer sits on its neighbour. The focus zoom caused that, so I widened the gap between cards. Their size wasn’t the problem.
+
+One check for you: with zoom and the ring on, does the ring around a collection folder look right when the tile lifts? I can see it in my simulator, but it needs checking on the Apple TV.
+
+Live search and the OLED black option are on the list. And yes, I'll go back through your full lists before the final beta and tell you what's still open.
+
+Say things as you see them. That's what makes this work.
 
 Merci!

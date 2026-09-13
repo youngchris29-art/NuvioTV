@@ -1,6 +1,6 @@
 # DM draft — rc12 (build 129) to Steven (2026-09-12)
 
-Base: the rc12 batch session's template (`dm-rc12-template.txt`, 5/5) plus the BUG-112 paragraph. Link: https://filebin.net/nuviotv-rc12-c3597933e81b/NuvioTV-beta18-rc12.ipa (filebin, expires 2026-09-20 00:25 UTC; gofile backup page https://gofile.io/d/6IvQQKaJ); the commit prefix is `243da21b`. **Status: NOT SENT.** His country/age question (11:58 PM) is deliberately not answered in this draft — Christian's call; add a line if he wants one.
+Base: the rc12 batch session's template (`dm-rc12-template.txt`, 5/5) plus the BUG-112 paragraph. Link: https://filebin.net/nuviotv-rc12-c3597933e81b/NuvioTV-beta18-rc12.ipa (filebin, expires 2026-09-20 00:25 UTC; gofile backup page https://gofile.io/d/6IvQQKaJ); the commit prefix is `243da21b`. **Status: SENT 2026-09-12 8:30 PM ET (one copy verified from a fresh process; composer 1911 → 0).** His country/age question (11:58 PM) is deliberately not answered in this draft — Christian's call; add a line if he wants one.
 
 ---
 

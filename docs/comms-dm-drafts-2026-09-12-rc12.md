@@ -1,10 +1,10 @@
 # DM draft — rc12 (build 129) to Steven (2026-09-12)
 
-Base: the rc12 batch session's template (`dm-rc12-template.txt`, 5/5) plus the BUG-112 paragraph. LINK is filled in after the cut; the commit prefix is `243da21b`. **Status: NOT SENT.** His country/age question (11:58 PM) is deliberately not answered in this draft — Christian's call; add a line if he wants one.
+Base: the rc12 batch session's template (`dm-rc12-template.txt`, 5/5) plus the BUG-112 paragraph. Link: https://filebin.net/nuviotv-rc12-c3597933e81b/NuvioTV-beta18-rc12.ipa (filebin, expires 2026-09-20 00:25 UTC; gofile backup page https://gofile.io/d/6IvQQKaJ); the commit prefix is `243da21b`. **Status: NOT SENT.** His country/age question (11:58 PM) is deliberately not answered in this draft — Christian's call; add a line if he wants one.
 
 ---
 
-Hey! Thanks for the video, the notes and the photos. rc12 is up: LINK
+Hey! Thanks for the video, the notes and the photos. rc12 is up: https://filebin.net/nuviotv-rc12-c3597933e81b/NuvioTV-beta18-rc12.ipa
 Settings → About → Commit should start with 243da21b.
 
 In rc12:

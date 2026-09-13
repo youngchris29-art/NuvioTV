@@ -1,0 +1,1 @@
+debug_pinned row=upcoming margin=44 net=44 vh=492 rowB=356 protB=288 y=372 inset=0 beltFaded=0 beltFadeReason=- rowH=360 last=0 lastRowShaped=0 prevHidden=1 corrN=1 pull=0 pbDisarm=0 seq=8 armSrc=scroll regime=P351c0p0r0z0t37 fits=1 clearance=24 clearanceLift=4 clearanceLiftRaw=4 lift=20 intr=-24 intrLifted=-4 err=0 deficit=0 bandLo=-4 bandHi=48 inBand=1 nudge=0

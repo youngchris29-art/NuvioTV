@@ -122,6 +122,13 @@ rather than leaving the branch stranded.
 
 Use `--no-ff` so each sweep stays one identifiable commit range in `main`'s history.
 
+**The cloud checkout arrives shallow (2026-09-13).** In a shallow clone
+`git rev-list --count origin/main..<branch>` over-reports unmerged commits and
+`git diff origin/main...<branch>` fails with `no merge base`, which makes
+already-merged branches look stranded. Run `git fetch --deepen=500 origin` before
+trusting those counts in the orphaned-sweep-branch audit below. A fresh clone may
+also sit behind `origin/main`, so catch it up before merging.
+
 **On conflict** (only possible if `main` moved while the sweep ran) the two files conflict
 predictably, and the resolution is mechanical:
 

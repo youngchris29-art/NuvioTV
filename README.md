@@ -107,6 +107,15 @@ Beta builds are published as an **unsigned tvOS IPA** on the [**Releases page**]
 
 Each beta is a clean build without an account or addons included. Sign in and configure your own sources on first launch. To build it yourself, continue to [Development](#development).
 
+## Feedback
+
+Report bugs and request features in either place:
+
+- [**GitHub issues**](https://github.com/youngchris29-art/NuvioTV/issues) suit anything with a crash log, a screenshot or steps to reproduce.
+- The [**beta thread on r/NuvioForks**](https://www.reddit.com/r/NuvioForks/comments/1wtmutc/tvos_nuviotv_a_native_apple_tv_app_built_on/) is where new builds are announced.
+
+Include the build number from **Settings → About**. NuvioTV is an unofficial fork, so please keep its bug reports out of r/Nuvio and the official Nuvio repositories.
+
 ## Development
 
 ```bash

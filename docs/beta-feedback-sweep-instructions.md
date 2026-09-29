@@ -20,7 +20,9 @@ attention (see `docs/issue-triage-plan-2026-08-21.md` §6.3).
 ## 1. Reddit thread check
 
 1. Fetch the thread's public Atom feed:
-   `https://www.reddit.com/r/Nuvio/comments/1v26ebw/i_built_a_native_apple_tv_app_for_nuvio_beta/.rss`
+   `https://www.reddit.com/r/NuvioForks/comments/1wtmutc/tvos_nuviotv_a_native_apple_tv_app_built_on/.rss`
+   (r/NuvioForks, post `1wtmutc`, live since 2026-09-29. The old r/Nuvio thread `1v26ebw` was removed by
+   that sub's moderators on 2026-09-27 and is archived; do not fetch it.)
    using a unique descriptive User-Agent such as `nuviotv-beta-feedback-tracker/1.0` (a generic
    Mozilla UA gets 403'd).
 2. If reddit.com is unreachable from the environment (network policy), **do not guess or

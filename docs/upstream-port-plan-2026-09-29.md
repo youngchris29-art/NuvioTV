@@ -221,14 +221,14 @@ Run by Christian on the TV; numbering follows the checklist handed over in chat.
 | 4 | Personal TMDB key row present, blank → bundled key, Detail shows TMDB data | PASS |
 | 5 | MDBList ratings via the connected account, no key entered | PASS |
 | 6 | Four auto-skip toggles + Episode Shuffle toggle present | PASS |
-| 7 | IntroDB movie: Skip Credits chip, auto-skip on/off | pending |
-| 8 | Percentage-only CW row: bar + resume on both engines | pending |
-| 9 | Scrobble: quick exit leaves no stuck session; >1 min shows on simkl.com + mdblist.com | pending |
-| 10 | Mark episode watched: poster kept, no whole-series push | pending |
-| 11 | Fully watched series offers S1E1 | pending |
-| 12 | Shuffle sheet, random pick, shuffle autoplay | pending |
-| 13 | Anime second season skip-intro chip | pending |
-| 14 | String addon runtime badge | pending |
+| 7 | IntroDB movie: Skip Credits chip, auto-skip on/off | PASS |
+| 8 | Percentage-only CW row: bar + resume on both engines | PASS |
+| 9 | Scrobble: quick exit leaves no stuck session; >1 min shows on simkl.com + mdblist.com | PASS |
+| 10 | Mark episode watched: poster kept, no whole-series push | PASS |
+| 11 | Fully watched series offers S1E1 | PASS |
+| 12 | Shuffle sheet, random pick, shuffle autoplay | PASS |
+| 13 | Anime second season skip-intro chip | PASS |
+| 14 | String addon runtime badge | PASS |
 | 15 | Library source MDBList: watchlist, sort, add/remove round-trips | pending |
 | 16 | Home cold start Wi-Fi off/on: Retry recovers | pending |
 | 17 | Custom posters: six screens, per-screen toggle, bad pattern falls back | pending |

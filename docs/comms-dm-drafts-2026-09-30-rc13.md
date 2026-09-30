@@ -1,10 +1,10 @@
 # DM draft — rc13 (2026-09-30)
 
-Replaces the unsent 09-15 draft. Answers Steven's rc12 verdict (09-13) and his point-4 question, and covers everything since rc12: the rc13 batch, upstream batch 10, and the 09-30 device fixes. **Status: NOT SENT.** IPA link filled in after the upload.
+Replaces the unsent 09-15 draft. Answers Steven's rc12 verdict (09-13) and his point-4 question, and covers everything since rc12: the rc13 batch, upstream batch 10, and the 09-30 device fixes. **Status: NOT SENT (waiting on Christian's go).** IPA https://litter.catbox.moe/r886zc.ipa (litterbox 72 h ≈ 2026-10-03 evening ET; 27,243,597 bytes, content-length verified; copy `~/Downloads/NuvioTV-beta18-rc13.ipa`). Lint 5/5 first pass; Codex cleanse could not run (model setting), so no cleanse.
 
 ---
 
-Hi Steven, rc13 is up: <IPA_LINK> (build 130, commit a9dba967). Same install as before. It has been a while since rc12, so this one is big.
+Hi Steven, rc13 is up: https://litter.catbox.moe/r886zc.ipa (build 130, commit a9dba967). Same install as before. It has been a while since rc12, so this one is big.
 
 The title bounce and the vanishing titles first. I measured the rows on my own Apple TV this time instead of working from photos, and found the cause: the app was leaving spare room under each row and the TV parked the row half that distance too high, so the title slid onto the poster and then hid. The rows now leave almost no spare room and the TV parks them where the title fits. On my TV it holds at Large and Medium+, zoom on or off, and with Show Hero on or off. Two side effects you should notice: at Medium+ the hero logo is back to full height, and with Show Hero off the description has three lines at Large.
 

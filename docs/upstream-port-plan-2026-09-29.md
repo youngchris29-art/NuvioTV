@@ -194,7 +194,7 @@ Baseline (rc13): jvm 801 / tvOS-native 821 / composeApp 425 / NuvioTVTests 328. 
 - Keys: both landed 2026-09-30 in `NuvioMobile/local.properties`. `TMDB_API_KEY` (TMDB `/3/configuration` answered 200; `TmdbConfig.API_KEY` generated, 32 chars) and `MDBLIST_CLIENT_ID` (Device Code app registered at mdblist.com/developer; `/oauth/device-authorization/` answered 200 with it). Release rebuild with both keys green on 2026-09-30 (generated `TmdbConfig.API_KEY` 32 chars, `MdbListConfig.CLIENT_ID` 40 chars); Debug install and a 50 s cold launch on the fixture simulator ran clean (no 401, no fatal lines). Still owed: the device pass, which is where the TMDB-backed Detail page and the MDBList connect card get exercised.
 - Codex model setting for the account; fixture simulator reset.
 - Cherry-pick `81da5470` (Reddit repoint, branch `claude/reddit-thread-repoint`) onto the next cut before the build bump, per CLAUDE.md.
-- Device pass (Apple TV 4K):
+- Device pass (Apple TV 4K): PASSED 2026-09-30, see the results table below. Original checklist:
   - Simkl and Trakt percentage resume in both engines, plus the Continue Watching bar.
   - Simkl posters retained on watched; whole-series mark not pushed; a fresh pause survives a lagging fetch.
   - Anime sibling-season skip and episode remap; TVDB anime-ID option; personal TMDB key syncs across devices.
@@ -211,7 +211,7 @@ Baseline (rc13): jvm 801 / tvOS-native 821 / composeApp 425 / NuvioTVTests 328. 
 
 ### Device pass results (2026-09-30, Living Room Apple TV 4K, Debug device build 129 of `d694f65a` under `com.youngchris29.NuvioTV`)
 
-Run by Christian on the TV; numbering follows the checklist handed over in chat.
+Run by Christian on the TV; numbering follows the checklist handed over in chat. **Result: 19/19 PASS — batch 10 (and the rc13 batch it sits on) is device-passed; only the cut remains.**
 
 | # | Item | Result |
 |---|---|---|
@@ -229,8 +229,8 @@ Run by Christian on the TV; numbering follows the checklist handed over in chat.
 | 12 | Shuffle sheet, random pick, shuffle autoplay | PASS |
 | 13 | Anime second season skip-intro chip | PASS |
 | 14 | String addon runtime badge | PASS |
-| 15 | Library source MDBList: watchlist, sort, add/remove round-trips | pending |
-| 16 | Home cold start Wi-Fi off/on: Retry recovers | pending |
-| 17 | Custom posters: six screens, per-screen toggle, bad pattern falls back | pending |
-| 18 | Debrid season pack picks the requested episode | pending |
-| 19 | Infuse opens at the resume position | pending |
+| 15 | Library source MDBList: watchlist, sort, add/remove round-trips | PASS |
+| 16 | Home cold start Wi-Fi off/on: Retry recovers | PASS |
+| 17 | Custom posters: six screens, per-screen toggle, bad pattern falls back | PASS |
+| 18 | Debrid season pack picks the requested episode | PASS |
+| 19 | Infuse opens at the resume position | PASS |

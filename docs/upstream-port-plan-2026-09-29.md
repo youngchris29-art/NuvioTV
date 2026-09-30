@@ -103,7 +103,7 @@ Do items 1–3 first (Simkl playback/history bugfixes) — small, mechanical, ea
 
 ## OUTCOME ADDENDUM (2026-09-29/30, upstream batch 10)
 
-Submodule branch `claude/upstream-batch10` (43 commits `dd85a154`..`d694f65a`, off rc13-batch tip `3449db86`), built model-delegated per plan `~/.claude/plans/lets-make-a-plan-dynamic-moth.md` (inventory IDs A1-A4, B1-B8, C1-C11, F1-F5). Not merged into `tvos-shared-extraction` and not cut at the time of writing. Android actuals mirror upstream and were never compiled (no Android SDK).
+Submodule branch `claude/upstream-batch10` (43 commits `dd85a154`..`d694f65a`, off rc13-batch tip `3449db86`), built model-delegated per plan `~/.claude/plans/lets-make-a-plan-dynamic-moth.md` (inventory IDs A1-A4, B1-B8, C1-C11, F1-F5). MERGED 2026-09-30 on Christian's go: `tvos-shared-extraction` fast-forwarded `243da21b` → `3449db86` (rc13) → `d694f65a` (batch 10) and pushed; outer pointer bumped (`188d240`); not cut yet (the cut carries rc13 + batch 10 together, with the `81da5470` cherry-pick before the build bump). Android actuals mirror upstream and were never compiled (no Android SDK).
 
 ### Corrections to the 09-29 note
 

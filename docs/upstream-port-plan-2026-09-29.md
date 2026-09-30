@@ -208,3 +208,29 @@ Baseline (rc13): jvm 801 / tvOS-native 821 / composeApp 425 / NuvioTVTests 328. 
   - Simkl now scrobbling from tvOS.
   - AVPlayer skip-chip delay after resume.
   - Home hero backdrop not covered by the poster fallback (known limit).
+
+### Device pass results (2026-09-30, Living Room Apple TV 4K, Debug device build 129 of `d694f65a` under `com.youngchris29.NuvioTV`)
+
+Run by Christian on the TV; numbering follows the checklist handed over in chat.
+
+| # | Item | Result |
+|---|---|---|
+| 1 | MDBList connect: code + URL, approve on phone, survives relaunch | PASS |
+| 2 | Simkl anime ID preference offers TVDB | PASS |
+| 3 | More Like This picker Trakt / Simkl / TMDB | PASS |
+| 4 | Personal TMDB key row present, blank → bundled key, Detail shows TMDB data | PASS |
+| 5 | MDBList ratings via the connected account, no key entered | PASS |
+| 6 | Four auto-skip toggles + Episode Shuffle toggle present | PASS |
+| 7 | IntroDB movie: Skip Credits chip, auto-skip on/off | pending |
+| 8 | Percentage-only CW row: bar + resume on both engines | pending |
+| 9 | Scrobble: quick exit leaves no stuck session; >1 min shows on simkl.com + mdblist.com | pending |
+| 10 | Mark episode watched: poster kept, no whole-series push | pending |
+| 11 | Fully watched series offers S1E1 | pending |
+| 12 | Shuffle sheet, random pick, shuffle autoplay | pending |
+| 13 | Anime second season skip-intro chip | pending |
+| 14 | String addon runtime badge | pending |
+| 15 | Library source MDBList: watchlist, sort, add/remove round-trips | pending |
+| 16 | Home cold start Wi-Fi off/on: Retry recovers | pending |
+| 17 | Custom posters: six screens, per-screen toggle, bad pattern falls back | pending |
+| 18 | Debrid season pack picks the requested episode | pending |
+| 19 | Infuse opens at the resume position | pending |

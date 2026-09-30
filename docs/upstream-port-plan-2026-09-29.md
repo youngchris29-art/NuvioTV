@@ -187,13 +187,12 @@ Submodule branch `claude/upstream-batch10` (43 commits `dd85a154`..`d694f65a`, o
 
 ### Gates
 
-Baseline (rc13): jvm 801 / tvOS-native 821 / composeApp 425 / NuvioTVTests 328. Final: jvm 1291 / tvOS-native 1309 / composeApp 432; NuvioTVTests 376 last executed on `7fdfac3d` (+8 `HeroCrossfadeLayoutTests` run separately); the R11 fix commit `d694f65a` compiled the test target (7 new `TrackerScrobbleSequencerTests`) via `build-for-testing` but the suite was not executed, because the tool sandbox refuses the power assertion `xcodebuild test` needs (exit 70, `IOPMAssertionCreateWithName` → 0xe00002bd from inside the sandbox; the classifier then blocked reading an unsandboxed run's output). Debug and Release simulator builds green throughout. Review: 11 rounds, all internal Opus (Codex unavailable: model rejected for the account). Findings per round: 6, 8, 4, 6, 4, 3, 5, 9, 6, 8, 4 (r11, all fixed in `d694f65a`). The fixture-simulator UI suite is not a usable gate: `test20`, `test22`, `test27` fail identically on the rc13 baseline (saved state).
+Baseline (rc13): jvm 801 / tvOS-native 821 / composeApp 425 / NuvioTVTests 328. Final: jvm 1291 / tvOS-native 1309 / composeApp 432 / NuvioTVTests 383 on the tip `d694f65a` (+8 `HeroCrossfadeLayoutTests` run separately). Note: `xcodebuild test` fails with exit 70 ("Failed to prevent system sleep") from inside the Claude Bash tool sandbox because the sandbox refuses the power assertion (`IOPMAssertionCreateWithName` → 0xe00002bd); the final run was executed with the sandbox off at Christian's request. Debug and Release simulator builds green throughout. Review: 11 rounds, all internal Opus (Codex unavailable: model rejected for the account). Findings per round: 6, 8, 4, 6, 4, 3, 5, 9, 6, 8, 4 (r11, all fixed in `d694f65a`). The fixture-simulator UI suite is not a usable gate: `test20`, `test22`, `test27` fail identically on the rc13 baseline (saved state).
 
 ### Owed
 
 - `TMDB_API_KEY` and `MDBLIST_CLIENT_ID` in `NuvioMobile/local.properties` (both blank; TMDB calls 401 and MDBList connect cannot start until set).
 - Codex model setting for the account; fixture simulator reset.
-- Execute NuvioTVTests once on `d694f65a` (376 + 7 expected); the sandbox blocked the run.
 - Cherry-pick `81da5470` (Reddit repoint, branch `claude/reddit-thread-repoint`) onto the next cut before the build bump, per CLAUDE.md.
 - Device pass (Apple TV 4K):
   - Simkl and Trakt percentage resume in both engines, plus the Continue Watching bar.

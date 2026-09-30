@@ -100,3 +100,112 @@ Most of the touched files are `PlayerScreenRuntimeEffects/State/Ui.kt` and `Play
 ## Suggested execution order
 
 Do items 1–3 first (Simkl playback/history bugfixes) — small, mechanical, each independently verified as a live correctness/data-loss bug, and they're isolated enough to land as one batch without touching the fragile `ProviderCredentialSync.kt`. Item 4 needs one more read before it's shovel-ready. Items 5–9 are feature-sized or need more scoping — pick these up in a dedicated (non-routine) session, starting with whichever Christian wants product-wise (MDBList account integration is the biggest lift; custom poster URLs and Simkl More-Like-This are the most self-contained). Re-verify carried items 4–6 with a fresh `git show` before batching, since they weren't independently re-checked this run.
+
+## OUTCOME ADDENDUM (2026-09-29/30, upstream batch 10)
+
+Submodule branch `claude/upstream-batch10` (43 commits `dd85a154`..`d694f65a`, off rc13-batch tip `3449db86`), built model-delegated per plan `~/.claude/plans/lets-make-a-plan-dynamic-moth.md` (inventory IDs A1-A4, B1-B8, C1-C11, F1-F5). Not merged into `tvos-shared-extraction` and not cut at the time of writing. Android actuals mirror upstream and were never compiled (no Android SDK).
+
+### Corrections to the 09-29 note
+
+- The outer repo's committed submodule pointer was `243da21b` (rc12), not `3449db86`; `3449db86` is the local rc13-batch tip the branch is based on.
+- IntroDB (F1) had a real shared slice, not "no shared target": movie segments, auto-skip segment types and the post-credits hold landed in `shared/` (`01834285`), with the tvOS half in both engines (`dfceeb6a`).
+- Simkl More Like This (F2) extended existing fork code (the shared More Like This source enum and enrichment path), not a new subsystem.
+- Plugins are enabled on tvOS (`installTvOsPlugins()`), so `2e244028` (plugin runtime perf) was live-relevant, not a "investigate first" item.
+
+### Upstream commits ported
+
+| ID | Upstream | Subject | Fork commit | Kind | Deviation |
+|---|---|---|---|---|---|
+| A1 | `542aa570` | retain posters when marking watched | `dd85a154` | mechanical | none |
+| A2 | `ba786215` | never push a whole-series mark to Simkl history | `dd85a154` | mechanical | guard later moved to `tracking/TrackingHistoryGuards`, shared with MDBList (`cee9314d`) |
+| A3 | `077a264a` | keep a just-recorded pause over a lagging fetch | `dd85a154` | mechanical | adds `SimklPlaybackMergeTest` (upstream shipped none) |
+| A4 | `b7657dbe` + `a298f2d7` | no episode position invented from show runtime | `dd85a154` | mechanical | episode rows carry `durationMs` 0; Swift resume-from-percentage added separately (`f59024c0`) |
+| B1 | `aa748fa8` | IMDB to MAL mapping, sibling-season resolution | `9fcc75d6`, `fa68c24e`, `8f681e72` | hand port | fork's season-aware `resolveIds` kept as first pass, `resolveIdsForImdbEpisode` second; episode map fetched for anime only; split-cour sibling chosen by episode-map hit, base entry replaced only on a positive hit |
+| B2 | `8aad52d8` + `8ac70e59` | TVDB Simkl anime-ID preference, anime-only | `dd85a154`, `3e4e3b7b` | mechanical | tvOS Settings option in `3e4e3b7b`; related cache key and meta-screen fingerprint carry the preference (`fa68c24e`) |
+| B3 | `d95b4f9b` | Indonesian/Malay subtitle disambiguation | `8ba0101e` | mechanical | none |
+| B4 | `df589078` | personal TMDB API key override with credential sync | `4dea1820`, `3e4e3b7b` | hand port | onto rc13's bundled-key work using the fork's MDBList credential convention; reverses rc13's purge of stored personal keys; tvOS rows in `3e4e3b7b` |
+| B5 | `48bf5ed3` | parse addon episode runtimes | `f416e248` | mechanical | none |
+| B6 | `90054b7b` | addon `imdb_id` fallback for enrichment | `f416e248` | mechanical + Swift | tvOS episode-ratings and parental-guide call sites use the fallback |
+| B7 | `2e244028` + `2d03b258` | plugin runtime perf, no-op runtime config | `b1c75269` | hand port (tvosMain) | skipped `evaluationTimeoutMillis` (absent in quickjs-kt 1.0.5-tvos) and the search-pause code of `5cacbe6e`; response bytes decode lazily in `arrayBuffer()` |
+| B8 | `50d39823` | StreamBackgroundMode | `3d99a651` | mechanical, shared-only | no tvOS renderer (reverses the rc13 "not ported" call only so synced mobile settings round-trip); key joins the wipe registry (`01834285`) |
+| - | `80910185` + `17424fe3` | Russian + Urdu AppLanguage | `8ba0101e` | mechanical | none |
+| C1 | `6aa42153` | debrid selects the requested episode file | `989f9961`, `062f1130`, `8f681e72`, `dd13202c`, `06430a24` | hand merge | TorBox/Real-Debrid/Premiumize use the shared selector; AllDebrid uses it with `hasStableFileIndex=false` and keeps the largest-file fallback for movies; standalone `sample` files dropped before a match is called ambiguous; the interim fileIdx fallback was removed in `dd13202c`, so the final rule is upstream's strict one |
+| C2 | `2b8be69c` | replay watched series (`allowRewatch`) | `3d99a651` | mechanical | tvOS and mobile Detail pass `true` |
+| C3 | `99ced26a` | Infuse resume position | `8ba0101e` | reduced | position parameter only |
+| C4 | `09c80301` | keyed season posters | `f416e248` | mechanical | none |
+| C5 | `a255680b` | atomic folder tab update (collections race) | `3d99a651` | mechanical | none |
+| C6 | `4178d5cd` | blank collection dates sort last | `f416e248` | mechanical | none |
+| C7 | `12621c65` | plugin binary request/response bodies | `b1c75269` | hand port | see B7 |
+| C8 | `c3920d40` | age-rating regions | `f416e248` | reduced | age-rating half only |
+| C9 | `6fb46976` | rating visibility | `3d99a651` | mechanical, shared-only | none |
+| C11 | `0b7ab892` | addon landscape posters | `0d5aa6fb` | mechanical | none |
+| F1 | `cbe4dc0a`, `199c5882`, `0e4f503f`, `11483dc0`, `a72e536c`, `77ce8a73` | IntroDB movie segments, auto-skip segment types, post-credits hold | `01834285` (shared), `dfceeb6a` (tvOS), `fa68c24e`, `1b85b955`, `37876562`, `75c59ece`, `e3ccfdad` | hand port + fork deviation | no legacy-boolean migration (fork never shipped those keys); `77ce8a73` rule is fork-local `PostCreditsHold`, restricted to an explicit post-credits segment so episodes keep the user's threshold |
+| F2 | `af1298eb` + `1b2f7a99` | Simkl as a More Like This source | `3e951af2`, `3e4e3b7b` | mechanical + fork fix | `shouldApplyMoreLikeThisSource` extended to SIMKL; Simkl-active flag joins the settings fingerprint |
+| F3 | `23b048c3`, `da92f36c`, `6776ee7b` | episode shuffle | `4847e752`, `310fe6fd`, `976bbe7f`, `53caff5c` | hand port + fork deviation | `WatchingState` not ported (`ShuffleEpisodeState` rebuilds it from `watchedItemKeys` + `SimklAnimeWatchedFallback`); pick stable across a Detail round trip (upstream re-rolls per visit); fork-local `ShuffleNextEpisode` for up-next with no sequential fallback when caught up; `episode_shuffle` profile-scoped, in wipe registry |
+| F4 | `cf59d255`, `3501b7dd`, `6b8e79f9`, `72355628`, `f985340d`, `13adcdd4`, `c7d23c04`, `319fb564`, `38ba71e2`, `5fd4d6b8`, `92968510`, `db6c3128`, `30e24b2d`, `75296263` (+ `0b7ab892` landscape posters, listed as C11; `b04013f7`/`fc5912de` are a rename and its revert, net no-op, excluded) | custom poster URL pattern, per-screen toggles, CW/library landscape fallbacks | `0d5aa6fb`, `7286667b`, `9639861a`, `74b26103`, `5b16983c`, `bc3cd3d1` | hand port + fork deviation | end state ported; Coil fallback interceptor not ported (tvOS falls back in Swift `CachedAsyncImage`); profile settings blob v4 (v3 blob leaves local values untouched); Home hero backdrop pipeline not covered by the fallback (known limit); tvOS Settings screen + Remote Setup field (`5b16983c`) |
+| F5 | `8fe994bd`, `0a654ac4`, `425e4d8a` | MDBList device-code auth, HTTP, account controller | `b1b5cb95` | verbatim | tokens in Keychain (`com.nuvio.media.mdblist`) with new `AppleKeySpec.Keychain` wipe-registry entry; `MdbListConfig.CLIENT_ID` from `MDBLIST_CLIENT_ID` (blank default) |
+| F5 | `53c441c0`, `db85d968`, `0b427905` | MDBList sync engine, watched/progress/scrobble adapters, library layer | `151996d7`, `cee9314d`, `973e017a` | verbatim + fork deviation | `TrackingRefreshGate` shared with Simkl; sync snapshot in a per-profile `PayloadFileStore` (wipe-registered); resource-free `MdbListMessages`; Library re-pull only when the active provider (re)connects; whole-series guard added (`cee9314d`) |
+| F5 | `647e4c09`, `3f0d07be`, `177f4b5c` | MDBList ratings via account; `isCertified` | `615550c5` | verbatim + fork deviation | `177f4b5c` field only; personal API key is an override; setters publish synchronously; `accountScope` excluded from `toString`; account token never enters the credential snapshot; TMDB-independent enable toggle |
+
+### Reduced or skipped by decision
+
+- `5cacbe6e` (pause scraper search during playback): deferred by decision (2026-09-29). It lives in Compose's `PlayerScreenRuntimeEffects`; on tvOS it would need enter/exit hooks in both Swift engines plus `NextEpisodeAutoPlay`, and no scraper jank has been reported on tvOS (09-12 note). `b1c75269` carries none of its code.
+- Infuse x-callback half of `99ced26a`: tvOS registers only the `nuviotv` scheme.
+- Episode-label and date-format halves of `c3920d40`: tvOS builds its own labels.
+- `c9d6f5f6` (restore subtitles per episode): dropped by decision — the new `findPersistedAddonSubtitle` is `internal` and only Compose track actions use it; tvOS persists only subtitle delay. Logged as a tvOS feature gap, not a port.
+- `3555bd07` (remove TMDB release-dates enrichment): SKIPPED by Christian's decision (2026-09-29) — the tvOS Settings toggle stays; deliberate fork divergence, not drift.
+- Home Up Next shuffle projection (part of `23b048c3`): tvOS has no such row.
+- MDBList list-management UI (F5.4): shared `TrackingListManager` landed in `151996d7`, no tvOS UI, deferred by decision.
+- `LibraryCatalogState` provider-order flow (part of `0b427905`): not ported.
+- composeApp MDBList UI and strings, and the `MdbListMessages` Compose resources (replaced by resource-free `MdbListMessages`).
+- Android verification: no Android SDK; every Android actual is unbuilt and untested. `MainActivity` initialize wiring for shuffle was added blind (`976bbe7f`), MDBList Android init hook likewise.
+
+### Fork-only fixes found along the way (not upstream ports)
+
+- Resume-from-percentage in both tvOS engines (`f59024c0`): Simkl rows (after `b7657dbe`) and Trakt rows carry `durationMs` 0 and only a percentage; Trakt rows were already broken. mpv falls back to an absolute-percent seek, AVPlayer applies a pending percentage on the first finite-duration tick under 30 s; Continue Watching bar reads `progressFraction`.
+- tvOS scrobble fan-out (`973e017a`): both engines scrobbled to Trakt directly and the shared `TrackingScrobbleCoordinator` had no caller, so Simkl (and MDBList) never received start/stop from tvOS. New `TrackerScrobbleSession` fans out to connected scrobblers minus Trakt.
+- Profile deletion now removes stored tracker data (`151996d7`); a pre-existing gap for Trakt and Simkl.
+- Fresh-install Keychain wipe sentinel (`151996d7`).
+- Skip planner rewritten as an engine-confirmed seek state machine (`75c59ece`, `e3ccfdad`), replacing four rounds of position heuristics (`1b85b955`, `37876562`).
+- `poster_transition_enabled` carried in the meta-screen payload, which tvOS dropped on re-persist (`3d99a651`).
+- Library republishes on a poster-pattern change (`9639861a`).
+- `none` sentinel for "all screens off" (`9639861a`).
+- `MetaPreview.toLibraryItem` keeps raw poster URLs, plus `customPosterApplied` marker and raw landscape recorded on `LibraryItem` (`9639861a`, `bc3cd3d1`).
+- R11 (`d694f65a`): an MDBList ratings fetch cancelled by an account change or cache clear no longer strands Detail in its loading state; the settings account collector runs on Main; a tracker scrobble stop can no longer overtake its start (`TrackerScrobbleSequencer`).
+
+### Upstream-report candidates (new this batch)
+
+- `db6c3128`'s Library collector compares Unit to Unit and never fires.
+- `fromKeys` maps an empty set to all screens.
+- `toLibraryItem` persists the custom poster URL (with the RPDB key) into synced library rows.
+- `withCustomPosterUrl` cannot restore a null original.
+- MDBList watched adapter has no whole-series guard (same class as `ba786215`).
+- `6aa42153` breaks absolute-numbered packs (season > 1 on such a pack returns null).
+- `77ce8a73`'s tail heuristic holds up-next on most anime episodes.
+- `shouldApplyMoreLikeThisSource` ignores SIMKL.
+- `MdbListSettingsRepository`'s eager `combine` publishes asynchronously.
+
+### Gates
+
+Baseline (rc13): jvm 801 / tvOS-native 821 / composeApp 425 / NuvioTVTests 328. Final: jvm 1291 / tvOS-native 1309 / composeApp 432; NuvioTVTests 376 last executed on `7fdfac3d` (+8 `HeroCrossfadeLayoutTests` run separately); the R11 fix commit `d694f65a` compiled the test target (7 new `TrackerScrobbleSequencerTests`) via `build-for-testing` but the suite was not executed, because the tool sandbox refuses the power assertion `xcodebuild test` needs (exit 70, `IOPMAssertionCreateWithName` → 0xe00002bd from inside the sandbox; the classifier then blocked reading an unsandboxed run's output). Debug and Release simulator builds green throughout. Review: 11 rounds, all internal Opus (Codex unavailable: model rejected for the account). Findings per round: 6, 8, 4, 6, 4, 3, 5, 9, 6, 8, 4 (r11, all fixed in `d694f65a`). The fixture-simulator UI suite is not a usable gate: `test20`, `test22`, `test27` fail identically on the rc13 baseline (saved state).
+
+### Owed
+
+- `TMDB_API_KEY` and `MDBLIST_CLIENT_ID` in `NuvioMobile/local.properties` (both blank; TMDB calls 401 and MDBList connect cannot start until set).
+- Codex model setting for the account; fixture simulator reset.
+- Execute NuvioTVTests once on `d694f65a` (376 + 7 expected); the sandbox blocked the run.
+- Cherry-pick `81da5470` (Reddit repoint, branch `claude/reddit-thread-repoint`) onto the next cut before the build bump, per CLAUDE.md.
+- Device pass (Apple TV 4K):
+  - Simkl and Trakt percentage resume in both engines, plus the Continue Watching bar.
+  - Simkl posters retained on watched; whole-series mark not pushed; a fresh pause survives a lagging fetch.
+  - Anime sibling-season skip and episode remap; TVDB anime-ID option; personal TMDB key syncs across devices.
+  - Movie skip chip; the four auto-skip types; up-next hold only for an explicit post-credits segment.
+  - Plugin scrapers including a binary-body scraper.
+  - Debrid season packs (absolute-numbered packs now fail by decision).
+  - Infuse resume position; replay of S1E1.
+  - Shuffle sheet, badge and autoplay.
+  - Custom posters on six screens, 404 fallback to the raw URL, Remote Setup round trip, masked pattern display.
+  - MDBList connect, disconnect, reinstall (Keychain), profile delete, watchlist, scrobble, ratings.
+  - Simkl now scrobbling from tvOS.
+  - AVPlayer skip-chip delay after resume.
+  - Home hero backdrop not covered by the poster fallback (known limit).

@@ -211,7 +211,7 @@ Baseline (rc13): jvm 801 / tvOS-native 821 / composeApp 425 / NuvioTVTests 328. 
 
 ### Device pass results (2026-09-30, Living Room Apple TV 4K, Debug device build 129 of `d694f65a` under `com.youngchris29.NuvioTV`)
 
-Run by Christian on the TV; numbering follows the checklist handed over in chat. **Result: 19/19 PASS — batch 10 (and the rc13 batch it sits on) is device-passed; only the cut remains.**
+Run by Christian on the TV; numbering follows the checklist handed over in chat. **Result: 19/19 PASS for the batch 10 items. Correction (same day): this list covered batch 10 only; the rc13 batch's Steven items (BUG-110/112/114/117/118, FEAT-38/40/42/44) were NOT exercised here and still owe their own device pass.**
 
 | # | Item | Result |
 |---|---|---|

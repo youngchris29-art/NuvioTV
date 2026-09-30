@@ -191,7 +191,7 @@ Baseline (rc13): jvm 801 / tvOS-native 821 / composeApp 425 / NuvioTVTests 328. 
 
 ### Owed
 
-- `TMDB_API_KEY` and `MDBLIST_CLIENT_ID` in `NuvioMobile/local.properties` (both blank; TMDB calls 401 and MDBList connect cannot start until set).
+- `MDBLIST_CLIENT_ID` in `NuvioMobile/local.properties` (register a Device Code app at mdblist.com/developer; blank → MDBList connect cannot start). `TMDB_API_KEY` landed 2026-09-30 (TMDB `/3/configuration` answered 200; `TmdbConfig.API_KEY` generated). Redo the Release build once both are in.
 - Codex model setting for the account; fixture simulator reset.
 - Cherry-pick `81da5470` (Reddit repoint, branch `claude/reddit-thread-repoint`) onto the next cut before the build bump, per CLAUDE.md.
 - Device pass (Apple TV 4K):

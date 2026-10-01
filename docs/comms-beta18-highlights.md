@@ -1,3 +1,4 @@
+<!-- RELEASED 2026-10-01 evening as tvos-v0.3.0-beta.18 (build 132, NuvioMobile 1973d411) on both repos, marked Latest. The generated commit list was stripped from the published notes (gh release edit) because the sanitizer leaves review-round and batch-code lines; notes = this file + compare link + install steps. -->
 ## Highlights
 
 beta 18 is the first public build since beta 17 on September 2. Fourteen release candidates went through one tester's Apple TV in between, and this build carries all of that work plus a month of fixes ported from upstream Nuvio. Every new setting is off by default, so nothing changes until you turn it on.

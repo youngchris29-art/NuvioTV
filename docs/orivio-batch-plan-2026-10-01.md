@@ -102,3 +102,8 @@ Christian's observations (no console trace by design): **blocks A, B and C all g
 ## Cut
 
 _pending Steven's rc14 verdict_
+
+## Codex round attempt (2026-10-01 evening)
+
+After the Codex model gate was fixed (config pinned `gpt-6-luna`, now `gpt-5.6-terra`), a real Codex review of `4f26c0d4..ef44510c` was started through the new `codex-review` skill at `xhigh`. Codex listed the 77-file diff and then the account hit its usage limit ("try again at Oct 29th, 2026"). No findings were produced. Review record for this batch stays the two internal Opus rounds (r1 0 P1 / 3 P2 / 10 P3, r2 0 P1 / 0 P2 / 8 P3). Transcript kept in the session scratchpad only.
+

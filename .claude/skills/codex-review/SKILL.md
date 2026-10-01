@@ -56,6 +56,10 @@ a round takes 2–8 minutes at `xhigh` and Codex runs its own greps and git prob
 
 ## When Codex is down
 
-A usage-limit message names the reset time (hourly). "Reviewer failed to output a response"
+The script exits 2 and prints the server's own line. Seen so far: the hourly limit ("try again
+at <time>" the same day), and on 2026-10-01 a plan limit that named 2026-10-29 as the reset
+("Upgrade to Plus to continue using Codex") after one 151k-token review. A review at `xhigh`
+over a 6,800-line batch would have cost several hundred thousand tokens; check `--models`
+and the remaining quota before starting a large one. "Reviewer failed to output a response"
 was the usage limit, not a model fault. The stand-in that worked: an Opus read-only review
 agent over the same `--base` range, recorded as "internal round" in the batch doc.

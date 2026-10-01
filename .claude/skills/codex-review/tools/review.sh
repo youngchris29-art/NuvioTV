@@ -137,14 +137,23 @@ RC=$?
 
 # The transcript wraps the answer in banners; the final answer is the last block that starts
 # after a bare `codex` line and ends at `tokens used`.
+# The transcript wraps the answer in banners; the final answer is the last block that starts
+# after a bare `codex` line and ends at `tokens used`. A run the server cut off (usage limit,
+# unsupported model) still prints a token count, so the ERROR line decides, not the banner.
+ERRLINE="$(grep -m1 -E '^ERROR:' "$OUT" | sed 's/^ERROR: //')"
 BODY="$(awk '$0=="codex"{buf="";on=1;next} $0=="tokens used"{on=0;next} on{buf=buf $0 "\n"} END{printf "%s", buf}' "$OUT")"
+VERDICT="$(printf '%s\n' "$BODY" | grep -E '^VERDICT:' | tail -n 1)"
+if [ -n "$ERRLINE" ] && [ -z "$VERDICT" ]; then
+  echo "review: Codex did not finish (exit $RC): $ERRLINE" >&2
+  echo "review: full transcript at $OUT" >&2
+  exit 2
+fi
 if [ -z "$(printf '%s' "$BODY" | tr -d '[:space:]')" ]; then
   echo "review: no answer block in the transcript (codex exit $RC); tail of the log:" >&2
   tail -n 20 "$OUT" >&2
   exit 2
 fi
 printf '%s\n' "$BODY"
-VERDICT="$(printf '%s\n' "$BODY" | grep -E '^VERDICT:' | tail -n 1)"
 case "$VERDICT" in
   "VERDICT: CLEAN") exit 0 ;;
   VERDICT:*)        exit 3 ;;

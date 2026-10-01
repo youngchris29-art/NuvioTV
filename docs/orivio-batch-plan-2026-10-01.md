@@ -85,7 +85,18 @@ Fix round 1 landed 04:35–04:55 (F1 Opus, F2/F3/F4 Sonnet). Extra decisions fro
 
 ## Device checklist
 
-See the plan file's "Device pass" section; results recorded here.
+See the plan file's "Device pass" section. **Device pass run 2026-10-01 10:50–11:20 on the Living Room Apple TV 4K (3rd gen), dev build `com.youngchris29.NuvioTV` build 131 from tip `83cc5996`, console streamed over `devicectl --console` (`scratchpad/device-console.log`), Christian driving in three blocks.**
+
+Console-proven (timestamps from the stream):
+- Start Over from the Continue Watching menu: `[Failover] start over: ignoring saved progress`.
+- Auto-Play Best Source, movie `tt33071426`: armed 11:05:17 → 22 candidates, all eligible, 0 rejected at the 3 s settle → pick #1 resolved in 1.2 s → playing. Series `tt27444205:1:1`: 34 candidates → playing in 4 s.
+- Menu on the overlay: `cancelled (Menu on the overlay) in searching after 0 attempt(s)` (twice, 11:06:54 and 11:09:40).
+- Continue Watching card with auto-play on: re-armed and played the same episode from the resolve cache in 3 s.
+- Default external player + auto-play: `tt29485142:1:1` → 1 candidate → `attempt #1 to external player infuse`; the Infuse `x-success` callback came back on the per-install scheme and was consumed at 11:11:57 (`[ExtReturn] consumed /infuse/<id>/success`); a second hand-off (manual pick via Choose Source…) consumed at 11:13:24.
+- mpv leg (native player off): `mpv start watchdog armed: 25 s`, no failure fired, and the Menu exit printed `viewWillDisappear isLeavingPlayer=true` (round-2 #3 probe: true on a real exit).
+- No `[HoldMenu]` guard skips, no failover reports, no crash or fatal lines across ~1,500 console lines.
+
+Christian's observations (no console trace by design): **blocks A, B and C all good** — hold menu opens in ring, No Zoom and Small-poster styles; the empty hold on Play with auto-play off is inert; Try Next Source, the Sources filters, Choose Source…, Cached Sources Only → list, and the Continue Watching card after the Infuse return all behaved. Block D (Steven-config smoke walk) skipped at his call. **One finding (BUG-124):** with Trailers on Focus ON, the hold menu works on a poster until it morphs into the landscape trailer card; once the inline trailer is playing, the long press no longer brings up the menu. Trailers on Focus is off by default, and a hold before the 1 s dwell still works.
 
 ## Cut
 

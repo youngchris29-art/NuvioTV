@@ -1,4 +1,4 @@
-# GitHub issue #3 FOLLOW-UP draft (2026-09-30 night) — NOT POSTED
+# GitHub issue #3 FOLLOW-UP (2026-09-30 night) — POSTED https://github.com/youngchris29-art/NuvioTV/issues/3#issuecomment-5924177146 (no footer, on Christian's go)
 
 Follow-up to the first reply posted from Christian's account on 2026-09-29 17:13Z (by the cloud sweep session; it acknowledged BUG-114, asked for the PR against `NuvioMobile`/`tvos-shared-extraction` and whether Menu recovers the stuck state). `dotjarden` has not answered. This says the fix landed in rc13/rc14, where it differs from their patch, how to verify before beta.18, that the PR is optional now, and re-asks the Menu question. Two-draft judge workflow, lint 5/5, 159 words. Supersedes `docs/comms-github-issue3-reply-2026-09-15.md`.
 

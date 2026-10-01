@@ -1,4 +1,4 @@
-# GitHub issue #4 reply draft (2026-09-30 night) — NOT POSTED
+# GitHub issue #4 reply (2026-09-30 night) — POSTED https://github.com/youngchris29-art/NuvioTV/issues/4#issuecomment-5924177304 (no footer, on Christian's go)
 
 First reply on youngchris29-art/NuvioTV #4 (`mikeyunk`, 2026-09-29, "The Xperience addon does not work. I'm not sure how to fix it." — BUG-120). Asks for the five things needed to act; no guess at the cause. Two-draft judge workflow, lint 5/5, 106 words.
 

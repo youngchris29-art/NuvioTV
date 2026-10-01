@@ -235,6 +235,16 @@ accepts the 9-digit fraction the fallback builds; the Swift 3-arg selector
 `CatalogRepository.fetchInternalLibrary` also calls the listKey overload and
 picks the new MDBList order up untested.
 
+**Codex round, 2026-10-01 evening (after the model gate was fixed):** the
+rejection was `~/.codex/config.toml` pinning `gpt-6-luna`, which the server
+refuses for a ChatGPT account; repointed to `gpt-5.6-terra`, the highest
+model the account lists. First run of the new `codex-review` skill
+(`.claude/skills/codex-review/tools/review.sh --repo NuvioMobile --base
+ef44510c`, `xhigh`, ~5 min, 151k tokens) over the three commits on the tip
+`e4b57595`: `VERDICT: CLEAN` ("No qualifying defects found"; Gradle tests
+could not start inside Codex's read-only sandbox, the jvm/K/N gates above
+already cover that).
+
 ### Gates
 
 - Pre-fix tip: `:shared:jvmTest` 1357 / 0, `:composeApp:iosSimulatorArm64Test`

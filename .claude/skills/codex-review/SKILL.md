@@ -12,6 +12,7 @@ runs Codex read-only, and prints the answer with a `VERDICT:` line.
 
 ```bash
 .claude/skills/codex-review/tools/review.sh --repo NuvioMobile --base <prior-sha>   # landed commits <sha>..HEAD
+.claude/skills/codex-review/tools/review.sh --repo NuvioMobile --base <sha> --head <tip>  # a batch sitting under later commits
 .claude/skills/codex-review/tools/review.sh --repo NuvioMobile                      # working tree
 .claude/skills/codex-review/tools/review.sh --commit <sha> --focus "<what to look hardest at>"
 .claude/skills/codex-review/tools/review.sh --models                                # what the account can use, best first

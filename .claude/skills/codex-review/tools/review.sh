@@ -2,6 +2,7 @@
 # Codex code review on the highest model this account can use.
 #
 #   tools/review.sh --base <sha>            # review <sha>..HEAD (landed commits)
+#   tools/review.sh --base <sha> --head <sha2>  # review <sha>..<sha2> (a batch under later work)
 #   tools/review.sh --commit <sha>          # review one commit
 #   tools/review.sh                         # review the working tree (staged + unstaged + untracked)
 #   tools/review.sh --models                # print the models the account lists, best first
@@ -28,7 +29,7 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 CACHE="${CODEX_HOME:-$HOME/.codex}/models_cache.json"
 FALLBACK_MODEL="gpt-5.6-terra"
 
-MODE="uncommitted"; RANGE=""; COMMIT=""; REPO="."; FOCUS=""; NATIVE=0; DRY=0; OUT=""
+MODE="uncommitted"; RANGE=""; HEADREF="HEAD"; COMMIT=""; REPO="."; FOCUS=""; NATIVE=0; DRY=0; OUT=""
 MODEL="${CODEX_REVIEW_MODEL:-}"; EFFORT="${CODEX_REVIEW_EFFORT:-xhigh}"
 
 list_models() {
@@ -63,6 +64,7 @@ PY
 while [ $# -gt 0 ]; do
   case "$1" in
     --base)    MODE="range";  RANGE="$2"; shift 2 ;;
+    --head)    HEADREF="$2"; shift 2 ;;
     --commit)  MODE="commit"; COMMIT="$2"; shift 2 ;;
     --uncommitted) MODE="uncommitted"; shift ;;
     --repo)    REPO="$2"; shift 2 ;;
@@ -89,7 +91,8 @@ git rev-parse --is-inside-work-tree >/dev/null 2>&1 || { echo "review: $REPO is 
 case "$MODE" in
   range)
     git rev-parse --verify "$RANGE^{commit}" >/dev/null 2>&1 || { echo "review: unknown base $RANGE" >&2; exit 66; }
-    SCOPE="the commits in \`git log --oneline $RANGE..HEAD\`; the full change is \`git diff $RANGE..HEAD\`" ;;
+    git rev-parse --verify "$HEADREF^{commit}" >/dev/null 2>&1 || { echo "review: unknown head $HEADREF" >&2; exit 66; }
+    SCOPE="the commits in \`git log --oneline $RANGE..$HEADREF\`; the full change is \`git diff $RANGE..$HEADREF\`" ;;
   commit)
     git rev-parse --verify "$COMMIT^{commit}" >/dev/null 2>&1 || { echo "review: unknown commit $COMMIT" >&2; exit 66; }
     SCOPE="the single commit \`git show $COMMIT\`" ;;
@@ -116,7 +119,7 @@ Focus: $FOCUS"
 if [ "$NATIVE" -eq 1 ]; then
   CMD=(codex review -c "model=\"$MODEL\"" -c "model_reasoning_effort=\"$EFFORT\"")
   case "$MODE" in
-    range)  CMD+=(--base "$RANGE") ;;
+    range)  CMD+=(--base "$RANGE") ;;  # --head is ignored by codex review
     commit) CMD+=(--commit "$COMMIT") ;;
     *)      CMD+=(--uncommitted) ;;
   esac
@@ -125,7 +128,7 @@ else
   CMD=(codex exec -s read-only -m "$MODEL" -c "model_reasoning_effort=\"$EFFORT\"" "$BRIEF")
 fi
 
-echo "review: model=$MODEL effort=$EFFORT mode=$MODE repo=$(pwd)"
+echo "review: model=$MODEL effort=$EFFORT mode=$MODE${RANGE:+ range=$RANGE..$HEADREF} repo=$(pwd)"
 echo "review: log=$OUT"
 if [ "$DRY" -eq 1 ]; then printf '  %q' "${CMD[@]}"; echo; exit 0; fi
 

@@ -1,3 +1,4 @@
+<!-- POSTED 2026-10-01 ~17:28 ET as comment pdafer2 (t1_pdafer2) via the session's old.reddit /api/comment. -->
 <!-- beta 18 announcement comment for post 1wtmutc. Post as a top-level comment after the block swap. -->
 beta 18 is up: https://github.com/youngchris29-art/NuvioTV/releases/latest (build 132).
 

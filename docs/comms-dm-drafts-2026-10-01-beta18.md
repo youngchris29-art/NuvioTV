@@ -1,5 +1,7 @@
 # DM draft, beta 18 public release (2026-10-01)
 
+**Status: SENT 2026-10-01 5:24 PM ET via the ego-browser chat session (one bubble, real GitHub link verified in the bubble text, composer empty).**
+
 Context: the rc14 DM sent 09-30 23:19 ET went out with a literal `<IPA_LINK>` placeholder where the litterbox URL should have been (verified in the room 10-01 ~16:40 ET: the stored bubble reads "rc14 is up: <IPA_LINK> (build 131 ...)"). Steven replied 10-01 4:38 PM ET: "Hi chris , look your message i dont have the link ^^". So he never had rc14. This DM answers that, points him at beta 18 instead (public GitHub link, includes everything rc14 had), and explains why the public release is going out now.
 
 ---

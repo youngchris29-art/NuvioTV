@@ -1,3 +1,4 @@
+<!-- APPLIED 2026-10-01 ~17:30 ET to post 1wtmutc via the session's old.reddit /api/editusertext. The first edit (text=markdown) turned the four inline screenshots into bare links; fixed by re-sending the whole body as richtext_json (scripts/reddit/md-to-rtjson.py) with img nodes for the four media ids: all four render inline again, verified by screenshot. Stored body verified: block swapped, beta 17 text gone, four preview lines kept. -->
 <!-- beta 18 "Latest build" block for post 1wtmutc. Replaces the beta 17 block. Keep the four preview.redd.it image lines at the end of the body. -->
 **Latest build: beta 18 (build 132)**
 

@@ -154,3 +154,104 @@ not an upstream-sync relationship. Don't conflate the two when triaging.
    until tvOS actually grows the relevant UI.
 4. After merging, bump the submodule pointer on `main` and update the
    `CLAUDE.md` upstream-sync paragraph to record the new pin (`d667f432`).
+
+## OUTCOME ADDENDUM (2026-10-01, upstream batch 11)
+
+Built the same day on submodule branch `claude/upstream-batch11`, stacked on
+the Orivio batch tip `ef44510c` (no file overlap, keeps the fast-forward
+chain `tvos-shared-extraction` → `claude/orivio-batch` → this branch
+linear). Not merged, not cut; it rides into rc15 with the Orivio batch once
+Steven's rc14 verdict is in.
+
+### What landed
+
+1. **MDBList newest-first + timestamp fallback (`0e8b51bb`) — PORTED
+   verbatim.** The fork's `shared/` copies of `MdbListLibraryDecoder.kt`,
+   `MdbListLibrarySorter.kt` and `MdbListResponseValues.kt` were
+   byte-identical to upstream's parent, so the upstream patch applied with
+   paths rewritten to `shared/src/`; the `LibraryDisplaySettings.kt` hunk
+   (MDBLIST DEFAULT = newest added, then highest rank, then title) applied
+   on the fork's listKey overload with its visibility comments intact. The
+   three shared tests took upstream's assertion flips; upstream's three new
+   `LibraryDisplaySettingsTest` cases (plus the SIMKL/MDBLIST
+   `effectiveLibrarySortOption` assertions) went into the fork's composeApp
+   copy of that test. `LibraryCatalogStateTest` has no fork counterpart
+   (no `LibraryCatalogState` in the fork) — skipped.
+   **tvOS impact, confirmed by reading `LibraryViewModel.swift`:** the TV
+   already calls the listKey overload for MDBList with `providerOrder: nil`,
+   so the newest-first DEFAULT comparator and the `watchlist_at` /
+   local-format timestamp decoding both reach the Library tab; the sorter
+   direction flip only matters to mobile's added-order cache. Reviewer
+   note: snapshots persisted before this build keep `listedAt = 0` for
+   `watchlist_at`-only rows until the next library refresh re-decodes them
+   (rank-only order until then).
+2. **Simkl `contentTypeHint` (`317bf2dc` partial) — PORTED by hand.**
+   `SimklIdResolver.resolveIds(source, id, season, contentTypeHint)` — the
+   hint is a FOURTH parameter so the fork's `season` call sites
+   (`resolveIdsForImdbEpisode`, `resolveEpisodeTvdb`, `SkipIntroRepository`
+   ×3) are untouched; candidates are narrowed by Simkl `type` first
+   (`selectCandidatesForTypeHint`, pure) and the fork's season scan then
+   runs over the narrowed list; no match or no hint = the full list, so the
+   first result still wins as before. Cache key = source:id:season:
+   resolved-type-set (review r1: "series"/"tv"/"show" share an entry, an
+   unknown hint shares the no-hint entry). `SimklRelatedRepository.getRelated`
+   passes `meta.type.takeIf(isNotBlank) ?: fallbackItemType` like upstream.
+   Fork deviation on top: `resolveDetails` maps a `"tv"`-typed search entry
+   to `/tv/` (upstream maps only `"show"`, so a `"tv"` entry — which the
+   series hint accepts — would have been fetched from `/anime/`). New
+   `SimklIdResolverTypeHintTest` (4 cases, pure halves only — `httpGetText`
+   has no test seam).
+3. **`alwaysShowLandscapeClearlogo` (`317bf2dc` remainder) — PORTED after
+   all**, upgraded from "backlog" because `PosterCardStyleStorage`'s payload
+   is part of profile settings sync (`ProfileSettingsSync.kt`
+   `posterCardStyleSettingsPayload`): before the port a tvOS-side edit
+   would re-encode the blob without the phone's key. Purely additive
+   (field + setter + load/persist), `ignoreUnknownKeys` keeps old payloads
+   decoding, no tvOS UI reads it, no Swift constructs `PosterCardStyleUiState`.
+
+### Deliberately not ported (reasoning confirmed by the review round)
+
+- `317bf2dc`'s `TmdbMetadataService.applyEnrichment` "TMDB source
+  priority" hunk: in the fork `MetaDetailsRepository.applyMoreLikeThisSource`
+  runs AFTER TMDB enrichment and replaces the list outright on the Simkl
+  and Trakt paths, so the guard is inert; and when the preferred service is
+  not connected it would keep an addon-provided list that the fall-through
+  then labels TMDB. `applyEnrichment` has one caller (`enrichMeta`, on the
+  freshly parsed addon meta).
+- `DetailsDestinations.kt` / `PosterCustomizationSettingsPage.kt` /
+  strings: composeApp-only, no fork file.
+
+### Review
+
+Codex rejected the account's model again (`gpt-6-luna … not supported`,
+same as the batch 10 session) → one internal Opus round: 0 P1 / 0 P2 /
+4 P3, all taken (stale `LibraryViewModel.swift` comment describing the old
+rank-first order; cache-key fragmentation on synonym/unknown hints; a
+`"tv"`-typed entry test case; the `"tv"` → `/tv/` mapping). The reviewer
+also verified: cached `addedOrders` stay valid after the direction flip
+(keyed by the `order=` value actually sent); `kotlin.time.Instant.parse`
+accepts the 9-digit fraction the fallback builds; the Swift 3-arg selector
+`sortLibraryItems(items:selected:sourceMode:)` is unchanged;
+`CatalogRepository.fetchInternalLibrary` also calls the listKey overload and
+picks the new MDBList order up untested.
+
+### Gates
+
+- Pre-fix tip: `:shared:jvmTest` 1357 / 0, `:composeApp:iosSimulatorArm64Test`
+  435 / 0 (new tests confirmed in the XML reports),
+  `:shared:tvosSimulatorArm64Test` 1375 / 0.
+- Final gates on the tip `e4b57595` (3 commits on `ef44510c`, review fixes
+  folded in): `:shared:jvmTest` 1357 / 0, `:shared:tvosSimulatorArm64Test`
+  1375 / 0, `:composeApp:iosSimulatorArm64Test` 435 / 0 (pre-fix run; the
+  fixes touch only the resolver, its test and a Swift comment), tvOS Debug
+  simulator build (FA87) BUILD SUCCEEDED.
+
+### Owed
+
+- Merge: fast-forward `tvos-shared-extraction` → `claude/orivio-batch` →
+  `claude/upstream-batch11` on Christian's go after Steven's rc14 verdict,
+  then the rc15 / build 132 cut (with the `81da5470` cherry-pick first).
+- Device pass at that cut: MDBList Library tab newest-first after a
+  library refresh; Simkl More Like This on a title whose external id is
+  shared by a movie and a show.
+- The submodule pointer stays at `4f26c0d4` until the merge.

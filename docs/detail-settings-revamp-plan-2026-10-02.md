@@ -1,6 +1,6 @@
 # Detail page + Settings revamp: implementation plan (2026-10-02)
 
-**Status: DRAFT, waiting for Christian's approval. No code has been written.**
+**Status: APPROVED 2026-10-02, implementation in progress (local session), submodule branch `claude/detail-settings-revamp` off `5f2d5cd3`. Progress in OUTCOME at the end.**
 
 Source: the options board `docs/research/detail-settings-revamp-2026-10-02.html` (artifact https://claude.ai/artifact/Rm6gGagVfNg71Q6emRaK7p). Christian picked **Detail option A, "Cinematic Clean"** and **Settings option 1, "Native Split + Explainer"**, then answered eight spec questions (recorded under Decisions). Paths are relative to `NuvioMobile/iosApp/NuvioTV/` unless stated otherwise.
 
@@ -19,6 +19,8 @@ Source: the options board `docs/research/detail-settings-revamp-2026-10-02.html`
 | D5 | Setting descriptions | **English plus de/es/fr/it/vi**, through the existing xcstrings scripts. |
 | D6 | Category navigation | **The explainer replaces the sidebar.** The Settings root is a grouped list of categories with a large icon and summary on the left. Selecting a category pushes its pane. Inside a pane, the left side explains the focused row. |
 | D7 | Diagnostics | **An always-visible "Developer" category** at the bottom of the root list. Nothing is hidden behind an unlock. |
+| D9 | Cinematic action row (asked 10-02 after P1 measured six labelled buttons at ~1500 pt) | **Icon-only secondary buttons in Cinematic.** Play/Resume keeps its label; Start Over, Watch Trailer, Watched, Library and Shuffle are round icon buttons with their existing accessibility labels, so the row fits the text column and the credits stay beside it. The Icon-Only Buttons setting keeps applying to Classic. |
+| D10 | IMDb ★ when the Ratings toggle is off (asked 10-02) | **Hidden too.** Ratings OFF hides the strip, the ★ on the meta line and the About ratings row. The ★ shows only with Ratings ON and the MDBList strip off or empty. |
 | D8 | Re-sort | **9 panes in 4 groups, plus Developer = 10 categories.** Advanced (Remote Setup only) folds into Account & Profiles. |
 
 ### Defaults I chose (override any of them when approving)
@@ -421,4 +423,10 @@ Debug build launched with `-debug.detailScrollProbe YES --console`, logged to `~
 
 ## OUTCOME
 
-_(filled in by the local session as waves land)_
+### Wave 0 (2026-10-02)
+
+- Release order: beta.19-rc1 was already cut (build 133 `5f2d5cd3`, sweep-1002 batch on top of `3f377cd8`) before this session started, so the branch was cut from that tip. Outer `main` got this plan via `--no-ff` merge `5a9cdbd`; the plan branch was deleted.
+- Baseline on `5f2d5cd3`: `NuvioTVTests` 650 / 0; Debug + Release simulator builds green. UI legs test17/33/40/51/68/72: all 6 FAIL at launch ("profile picker never appeared"). The FA87 fixture came back from a shutdown signed in but with zero profiles and no network requests from the app (relaunch did not help). That is the fixture, not code (nothing on the branch yet). Fixture repair owed before Gate 1. FixtureSetupTests not run as a baseline: it writes the synced Poster Size / Hide Titles settings through the UI.
+- Tracker: FEAT-35 and FEAT-28 marked in progress; new FEAT-50 (Settings re-sort + explainer) and FEAT-51 (spoiler-safe episodes). **FEAT-45 left as is:** it asks for an icon rail for the app's FEAT-30 navigation sidebar, not the Settings sidebar, so D6 does not answer it; the plan's "declined (D6)" reply text is wrong and needs Christian's call before any reply.
+- Design: P1 spec `docs/research/detail-settings-revamp-spec-p1-detail.md`, P2 spec `docs/research/detail-settings-revamp-spec-p2-settings.md`; P3 critique pending. Spec-level resolutions taken by the main session: P1 key names (`DetailSettingsKeys`: `detail_layout`, `detail_section_*`, `detail_hide_episode_spoilers`) are canonical; P2 Q14 keeps "Account & Profiles" (D8); P2 Q15 Minimal root rows are title + subtitle, no icon, no explainer; P2 Q16 Detail row labels unchanged in this batch. D9/D10 asked and answered.
+

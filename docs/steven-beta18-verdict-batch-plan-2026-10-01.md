@@ -205,3 +205,7 @@ Steven's configuration for the walk: carousel hero ON, Medium+ then Large, zoom 
 ### Final state 2026-10-02 ~03:10 ET
 
 Branch `claude/steven-beta18-verdict` = `f2827b7b` + 7 commits (`6bd71e89` wave 1, `ef3b0a6f` wave 2, `bd6453fe` wave 3, `c821aefa` review r1 fixes, `0c1b3e20` review r2, `3f377cd8` review r3), tip **`3f377cd8`**, local only. Gates on the tip: Debug + Release simulator builds green, `NuvioTVTests` **620 / 0** (565 → 620), UI legs test17/33/53/58/63/65/69/70/74/75/76 PASS on FA87 (test64 + RowLeadingEdgeTests skipped on fixture state). Debug device build (bundle-ID override `com.youngchris29.NuvioTV`) **INSTALLED on the Living Room ATV** at 03:08 ET, not launched (Christian's pass, launch command above). **Owed:** Christian's device pass (the nine blocks above, BUG-66 block 9 decides the A/B), then on his go: fast-forward into `tvos-shared-extraction`, build 133, tag `tvos-v0.3.0-beta.19-rc1`, IPA, Steven's DM via SlopMonster (every new setting + default; ask for the labelled Tab Bar panes).
+
+### DEVICE PASS PASSED + MERGED 2026-10-02 (Christian's go)
+
+Christian's device pass on the Living Room ATV: PASSED (his word, no findings reported). `tvos-shared-extraction` fast-forwarded `f2827b7b` → `3f377cd8` and pushed; feature branch deleted; outer pointer `83199bf` pushed on `main`. NOT cut: beta.19-rc1 (build 133) is the next step on his go, then Steven's DM.

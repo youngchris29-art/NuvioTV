@@ -1,7 +1,7 @@
 # DM draft, beta.19-rc1 (2026-10-02)
 
 To: u/mrStevenx3 (Reddit chat)
-Status: DRAFT, NOT SENT (2026-10-02)
+Status: SENT 2026-10-02 1:30 PM ET via the ego-browser chat session (one bubble, 1,687 chars, filebin link + commit 5f2d5cd3 verified in the bubble text).
 Lint: 5/5 CLEAN (deslop.py, first pass, 245 words of copy)
 Cleanse skipped: Codex usage limit.
 Build 133, commit `5f2d5cd3`, tag `tvos-v0.3.0-beta.19-rc1`. IPA 27,601,572 B (sha256 2f47c7f0f6ad8535…), copy `~/Downloads/NuvioTV-beta19-rc1.ipa`; litterbox 500ed on six attempts and catbox stored a 0-byte object, so filebin (expires 2026-10-09T17:01Z) is primary and gofile the backup, both verified at the full size.

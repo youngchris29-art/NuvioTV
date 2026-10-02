@@ -43,11 +43,13 @@ Facts established on the way (worth more than the diff):
 | `:shared:jvmTest` / `:shared:tvosSimulatorArm64Test` | 1368 / 1386, 0 failures (baseline 1357 / 1375) |
 | `NuvioTVTests` (Debug, FA87) | 645 / 0 (baseline 620) |
 | Debug + Release simulator builds | green |
-| UI legs test51 + `TrailerSoakTests.testColdStoreFirstDwellRevealProfile` | (pending) |
-| Review | (pending) |
+| UI legs on FA87 | `TrailerSoakTests.testColdStoreFirstDwellRevealProfile` PASS (131 s, screenshot-scan oracle); `test51TrailerBridgeAutoPlay` failed its fixture precondition ("hero CTA not on screen", the known fixture state noted on 10-02: the hero-CTA path stays on Home, test33 is the leg that opens a Detail) and then soft-skipped on no resolvable trailer; environmental, not a branch regression |
+| Review (Opus read-only, Codex on its limit) | r1 over `3f377cd8..932a42e2`: 0 P1 / 1 P2 / 10 P3. Fixed: P2 looper-copy access-log fold, #2 `!resolvingNext` re-arm guard, #3 only a live card's dismissal counts, #5 `preloaded` reset in `tearDownSearch`, #7 monitor `nonisolated`, #8 hitch snapshot reset, #9 non-finite knob values, #10 next-launch subtitles, #11 `Hooks.searchBegan` seam + 2 engine tests. Declined: #4 (device item 8 below), #6 preload staleness (matches upstream's dedupe; follow-up). r2 over the fix diff: 0 P1 / 1 P2 / 4 P3, all fixed: per-item access-log baseline (the looper recycles replica items whose logs keep old events), pause discards an open wait, deferred hitch reset, negative knob values, test-comment honesty. Post-fix: NuvioTVTests 650 / 0, Release green |
 
 ## Owed
 
-- Christian: device pass per the plan (FEAT-49 list items 1–10; BUG-128 legs L0–L3 with the probes armed), then merge on his go, beta.19-rc1 / build 133 cut, Steven's DM naming every new setting and its default (Preload Next Episode Sources OFF, Prepare Links OFF, trailer A/B knobs Auto/off).
+- Christian: device pass per the plan (FEAT-49 list items 1–10, plus review item #4: when the episode ends with the post-play cover already up and a dismissed card re-arms, confirm a second Menu does not leave a frozen last frame; BUG-128 legs L0–L3 with the probes armed; note the per-event health lines print under `[TrailerZoom]`, only the end summary under `[TrailerHealth]`), then merge on his go, beta.19-rc1 / build 133 cut, Steven's DM naming every new setting and its default (Preload Next Episode Sources OFF, Prepare Links OFF, trailer A/B knobs Auto/off).
 - Post the two Reddit drafts.
+- Follow-up (review r1 #6): a preload that ended empty or sat through a long pause is replayed by the dedupe at the threshold; consider `forceRefresh` when the preload ended empty or is older than N minutes.
+- Pre-existing, out of this batch (review r1): opening the mpv Sources tab while the up-next card says "Finding source…" clears the shared streams flow while `beginSearch`'s watcher is still subscribed, so autoplay can pick a current-episode stream as "next"; log as a tracker row.
 - Held until BUG-128 data: multi-rung HLS master (B4), off-main letterbox scan (B5). Tier 2 warmup after the FEAT-49 measurement.

@@ -2,7 +2,7 @@
 
 Parent comment: https://www.reddit.com/r/NuvioForks/comments/1wtmutc/tvos_nuviotv_a_native_apple_tv_app_built_on/pdbtv5r/
 
-Status: DRAFT, NOT POSTED (2026-10-02)
+Status: POSTED 2026-10-02 1:35 PM ET as comment [`pdgb1ip`](https://www.reddit.com/r/NuvioForks/comments/1wtmutc/tvos_nuviotv_a_native_apple_tv_app_built_on/pdgb1ip/) via the logged-in old.reddit `/api/comment` endpoint (api_type=json, no errors). Sweeps: our own comment, log-don't-file.
 
 Lint: 5/5 CLEAN (scripts/deslop/deslop.py); cleanse skipped: Codex usage limit.
 

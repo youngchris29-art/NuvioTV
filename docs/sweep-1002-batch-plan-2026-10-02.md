@@ -18,7 +18,7 @@ Plan: `~/.claude/plans/give-me-a-plan-vivid-dove.md` (approved 2026-10-02). Sour
 | `90f505b` | `docs/comms-reddit-1wbmlhe-reply.md` archived (NOT POSTED, r/Nuvio bars fork promotion since 09-27); `origin/claude/reddit-thread-response-sb07px` deleted |
 | `65b57e8` | `docs/comms-reddit-chat3-reply-2026-10-02.md` + `docs/comms-reddit-bug128-followup-2026-10-02.md` (both 5/5, cleanse skipped: Codex limit); `INSTALL.md` line 7 no longer claims Apple TV HD; tracker rows BUG-128 / FEAT-49 / CHAT-3 and the §6 branch line |
 
-Both Reddit drafts await Christian's post.
+Both Reddit drafts POSTED 2026-10-02 1:35 PM ET on his go: CHAT-3 reply `pdgb11n`, BUG-128 follow-up `pdgb1ip`.
 
 ## Submodule branch `claude/sweep-1002-batch` (off `tvos-shared-extraction` @ `3f377cd8`)
 
@@ -53,7 +53,6 @@ Facts established on the way (worth more than the diff):
 ## Owed
 
 - Device pass PASSED 2026-10-02 (Christian). Still worth a look on his next session: review item #4: when the episode ends with the post-play cover already up and a dismissed card re-arms, confirm a second Menu does not leave a frozen last frame; BUG-128 legs L0–L3 with the probes armed; note the per-event health lines print under `[TrailerZoom]`, only the end summary under `[TrailerHealth]`), Merge + cut + DM DONE (above); Steven's beta.19-rc1 verdict owed (labelled Tab Bar panes).
-- Post the two Reddit drafts.
 - Follow-up (review r1 #6): a preload that ended empty or sat through a long pause is replayed by the dedupe at the threshold; consider `forceRefresh` when the preload ended empty or is older than N minutes.
 - Pre-existing, out of this batch (review r1): opening the mpv Sources tab while the up-next card says "Finding source…" clears the shared streams flow while `beginSearch`'s watcher is still subscribed, so autoplay can pick a current-episode stream as "next"; log as a tracker row.
 - Held until BUG-128 data: multi-rung HLS master (B4), off-main letterbox scan (B5). Tier 2 warmup after the FEAT-49 measurement.

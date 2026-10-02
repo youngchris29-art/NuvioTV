@@ -1,0 +1,480 @@
+<title>NuvioTV Home Revamp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a long-form board. Each option = a 16:9 "screen" mockup beside its notes; screens use container units so they scale like a TV. */
+:root{
+  --bg:#0d1016; --panel:#151a23; --panel-2:#1c2330; --line:#2a3242;
+  --fg:#e9edf3; --muted:#9aa5b6; --faint:#6b7588;
+  --accent:#f0b35c; --accent-ink:#1a1206; --good:#7fd1a8; --warn:#f08a6c;
+  --display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body:"IBM Plex Sans", "Helvetica Neue", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme:dark;
+}
+html,body{background:var(--bg);color:var(--fg)}
+body{font-family:var(--body);font-size:16px;line-height:1.55;padding-inline:20px;padding-block:0 64px}
+.wrap{max-width:1180px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.1;margin:0}
+h1{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:700;letter-spacing:-.02em}
+h2{font-size:clamp(1.6rem,3.2vw,2.2rem);font-weight:700;letter-spacing:-.01em}
+h3{font-size:1.3rem;font-weight:700}
+p{margin:0}
+.lede{max-width:68ch;color:var(--muted);font-size:1.08rem}
+.eyebrow{font-family:var(--mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+header.top{padding-block:56px 32px;display:grid;gap:16px;border-bottom:1px solid var(--line)}
+.meta-strip{display:flex;flex-wrap:wrap;gap:8px 20px;font-family:var(--mono);font-size:.8rem;color:var(--faint)}
+nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+nav.toc a{font-family:var(--mono);font-size:.8rem;color:var(--fg);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+nav.toc a:hover,nav.toc a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+section{padding-block:48px 8px;display:grid;gap:24px}
+.sec-head{display:grid;gap:10px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;min-width:0}
+.box h3{font-size:1.1rem}
+ul{margin:0;padding-left:1.1em;display:grid;gap:6px}
+li{min-width:0}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+code,.mono{font-family:var(--mono);font-size:.85em}
+.tag{display:inline-block;font-family:var(--mono);font-size:.72rem;padding:2px 8px;border-radius:6px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.tag.fix{border-color:#3c5a4b;color:var(--good)}
+.tag.cost{border-color:#5a4a33;color:var(--accent)}
+.tag.risk{border-color:#5a3a33;color:var(--warn)}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+
+/* comparison table */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;min-width:820px;font-size:.9rem}
+th,td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--line)}
+th{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);background:var(--panel)}
+td:first-child{font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.src{font-family:var(--mono);font-size:.7rem;color:var(--faint)}
+
+/* option layout */
+.option{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:24px;align-items:start;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px}
+@media (max-width:860px){.option{grid-template-columns:1fr}}
+.option .notes{display:grid;gap:12px;min-width:0}
+.opt-id{font-family:var(--display);font-weight:700;color:var(--accent);font-size:1rem;letter-spacing:.02em}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){.pc{grid-template-columns:1fr}}
+.pc h4{margin:0 0 4px;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.pick{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.pick-badge{justify-self:start;background:var(--accent);color:var(--accent-ink);font-family:var(--mono);font-size:.72rem;font-weight:500;padding:3px 10px;border-radius:999px}
+
+/* ---------- TV mockups ---------- */
+.tv{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:10px;overflow:hidden;container-type:inline-size;background:#05070a;box-shadow:0 0 0 1px #2a3242,0 18px 40px -20px #000;font-family:var(--body);color:#fff}
+.tv *{box-sizing:border-box}
+.cap{font-family:var(--mono);font-size:.72rem;color:var(--faint);margin-top:8px}
+.bd{position:absolute;inset:0}
+.bd.warm{background:radial-gradient(60% 70% at 72% 38%,#7a4a2c 0%,#3a2318 40%,transparent 70%),radial-gradient(40% 50% at 88% 70%,#5b3b2a,transparent 70%),linear-gradient(120deg,#1b120d,#2a1a12 60%,#120c09)}
+.bd.cool{background:radial-gradient(55% 65% at 70% 40%,#2c5a7a 0%,#173148 45%,transparent 72%),radial-gradient(35% 45% at 90% 75%,#36506b,transparent 70%),linear-gradient(120deg,#0b1219,#122233 60%,#081018)}
+.bd.green{background:radial-gradient(55% 65% at 72% 40%,#3d5b3a 0%,#1f3220 45%,transparent 72%),linear-gradient(120deg,#0c120c,#162418 60%,#0a0f0a)}
+.bd.ambient{background:radial-gradient(70% 90% at 30% 40%,#6b2f4a 0%,#3a1a2c 45%,#15090f 80%)}
+.scrimL{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.85) 0%,rgba(0,0,0,.55) 38%,rgba(0,0,0,.05) 70%)}
+.scrimB{position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.85) 100%)}
+.blurred{filter:blur(2px) brightness(.55)}
+.logo{font-family:var(--display);font-weight:700;letter-spacing:-.02em;line-height:.9;text-transform:uppercase}
+.mline{font-size:1.25cqw;color:rgba(255,255,255,.82);display:flex;gap:.6cqw;align-items:center;flex-wrap:wrap}
+.chip{border:1px solid rgba(255,255,255,.45);border-radius:.3cqw;padding:0 .35cqw;font-size:.9cqw;font-family:var(--mono)}
+.syn{font-size:1.15cqw;line-height:1.4;color:rgba(255,255,255,.86)}
+.btns{display:flex;gap:.8cqw;align-items:center}
+.play{background:#fff;color:#111;border-radius:99px;padding:.7cqw 1.8cqw;font-size:1.25cqw;font-weight:600;white-space:nowrap}
+.rb{width:3.1cqw;height:3.1cqw;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;font-size:1.3cqw}
+.rowlbl{font-size:1.15cqw;font-weight:600}
+.row{display:flex;gap:.9cqw}
+.card{border-radius:.5cqw;background:linear-gradient(160deg,#3b4a5e,#1d2531)}
+.card.land{width:13cqw;aspect-ratio:16/9}
+.card.post{width:7cqw;aspect-ratio:2/3}
+.card.focus{outline:.25cqw solid #fff;outline-offset:.2cqw;transform:scale(1.06)}
+.ava{width:5cqw;height:5cqw;border-radius:50%;background:linear-gradient(160deg,#9b8a7a,#4a3f36)}
+.credits{font-size:1cqw;line-height:1.45;color:rgba(255,255,255,.7);text-align:right}
+.credits b{color:#fff;font-weight:600}
+.glass{background:rgba(255,255,255,.08);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14);border-radius:1.2cqw}
+.tabs{display:flex;gap:2.2cqw;font-size:1.1cqw;font-weight:600;color:rgba(255,255,255,.55)}
+.tabs .on{color:#fff;position:relative}
+.tabs .on::after{content:"";position:absolute;left:0;right:0;bottom:-.6cqw;height:.25cqw;border-radius:.2cqw;background:#fff}
+.hint{position:absolute;font-family:var(--mono);font-size:.85cqw;color:rgba(255,255,255,.55)}
+.badge-row{display:flex;gap:.4cqw}
+.rate{display:flex;gap:1.2cqw;font-size:1cqw;color:rgba(255,255,255,.8)}
+.rate b{color:#fff}
+
+/* settings mockups */
+.set{position:absolute;inset:0;background:linear-gradient(160deg,#121722,#0b0e14)}
+.s-title{position:absolute;top:4cqw;left:6cqw;font-family:var(--display);font-weight:700;font-size:2.4cqw}
+.s-list{display:grid;gap:.6cqw}
+.s-row{display:flex;justify-content:space-between;align-items:center;padding:.9cqw 1.3cqw;border-radius:.8cqw;background:rgba(255,255,255,.06);font-size:1.15cqw;color:rgba(255,255,255,.9)}
+.s-row .v{color:rgba(255,255,255,.55);font-size:1.05cqw}
+.s-row.f{background:#fff;color:#111;transform:scale(1.03)}
+.s-row.f .v{color:#555}
+.s-row.hd{background:none;padding:.4cqw .2cqw 0;font-size:.85cqw;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.s-cat{display:flex;gap:.8cqw;align-items:center;padding:.8cqw 1.1cqw;border-radius:.8cqw;font-size:1.15cqw;color:rgba(255,255,255,.75)}
+.s-cat.on{background:rgba(255,255,255,.14);color:#fff}
+.s-cat .ic{width:1.6cqw;height:1.6cqw;border-radius:.4cqw;background:var(--accent)}
+.s-grp{font-family:var(--mono);font-size:.8cqw;letter-spacing:.12em;color:rgba(255,255,255,.4);padding:.6cqw 1.1cqw 0}
+.toggle{width:2.8cqw;height:1.6cqw;border-radius:99px;background:#34c759;position:relative}
+.toggle::after{content:"";position:absolute;right:.2cqw;top:.2cqw;width:1.2cqw;height:1.2cqw;border-radius:50%;background:#fff}
+.preview{border-radius:1cqw;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+.tile{border-radius:1.2cqw;padding:1.4cqw;background:rgba(255,255,255,.07);display:grid;gap:.5cqw;align-content:start}
+.tile .t{font-family:var(--display);font-weight:700;font-size:1.5cqw}
+.tile .st{font-size:.95cqw;color:rgba(255,255,255,.6)}
+.tile.f{background:#fff;color:#111;transform:scale(1.04)}
+.tile.f .st{color:#555}
+.dot{display:inline-block;width:.8cqw;height:.8cqw;border-radius:50%;background:#34c759;margin-right:.4cqw;vertical-align:middle}
+
+/* IA table */
+.ia{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:760px){.ia{grid-template-columns:1fr}}
+.ia ol{margin:0;padding-left:1.3em;display:grid;gap:8px}
+.ia li span{color:var(--muted);font-size:.9rem}
+
+.reco{background:linear-gradient(135deg,#221a10,#151a23 60%);border:1px solid #5a4a33;border-radius:18px;padding:24px;display:grid;gap:14px}
+.q{display:grid;gap:10px;counter-reset:q}
+.q div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+a{color:var(--accent)}
+.sources{columns:2 320px;column-gap:24px;font-size:.85rem}
+.sources li{break-inside:avoid;margin-bottom:6px}
+@media (prefers-reduced-motion:no-preference){.card.focus,.s-row.f,.tile.f{transition:transform .2s}}
+</style>
+<style>
+/* Home-board additions */
+.tabbar{position:absolute;top:2.4cqw;left:50%;transform:translateX(-50%);display:flex;gap:.3cqw;padding:.35cqw;border-radius:99px;background:rgba(255,255,255,.1);font-size:.95cqw;color:rgba(255,255,255,.75)}
+.tabbar span{padding:.35cqw 1cqw;border-radius:99px}
+.tabbar .on{background:rgba(255,255,255,.9);color:#111}
+.dots{display:flex;gap:.4cqw}
+.dots i{width:.6cqw;height:.6cqw;border-radius:50%;background:rgba(255,255,255,.4);display:block}
+.dots i.on{background:#fff;width:1.6cqw;border-radius:.3cqw}
+.strip{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.75) 18%)}
+.cw{width:15cqw;aspect-ratio:16/9;border-radius:.6cqw;background:linear-gradient(160deg,#4a5a6e,#222b38);position:relative;overflow:hidden}
+.cw::after{content:"";position:absolute;left:0;bottom:0;height:.35cqw;width:40%;background:#f0b35c}
+.cw.focus{outline:.25cqw solid #fff;outline-offset:.2cqw;transform:scale(1.05)}
+.exp{width:24cqw;aspect-ratio:16/9;border-radius:.7cqw;background:radial-gradient(70% 90% at 70% 40%,#7a4a2c,#2a1a12);outline:.25cqw solid #fff;outline-offset:.2cqw;position:relative;display:flex;align-items:flex-end;padding:1cqw}
+.pill-rail{position:absolute;left:1.6cqw;top:50%;transform:translateY(-50%);display:grid;gap:1.1cqw;padding:1cqw .8cqw;border-radius:99px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18)}
+.pill-rail i{width:1.6cqw;height:1.6cqw;border-radius:.4cqw;background:rgba(255,255,255,.7);display:block}
+.pill-rail i.on{background:#fff;box-shadow:0 0 0 .3cqw rgba(255,255,255,.25)}
+.feat{width:88cqw;height:14cqw;border-radius:1.2cqw;background:radial-gradient(60% 120% at 75% 50%,#2c5a7a,#0e1a26 70%);position:relative;padding:1.6cqw;display:grid;align-content:center;gap:.6cqw}
+.chart{display:grid;gap:8px}
+.bar{display:grid;grid-template-columns:minmax(0,15ch) 1fr auto;gap:10px;align-items:center;font-size:.85rem}
+.bar .track{height:12px;border-radius:6px;background:var(--panel-2);overflow:hidden}
+.bar .fill{height:100%;background:var(--accent);border-radius:6px}
+.bar .fill.alt{background:#6d7c95}
+.bar .n{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--muted);font-size:.8rem}
+.twin{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:520px){.twin{grid-template-columns:1fr}}
+.posterrow{display:flex;gap:.9cqw}
+.posterrow .card.post{width:9.5cqw}
+.num{font-family:var(--display);font-weight:700;font-size:4cqw;color:rgba(255,255,255,.85);line-height:1;margin-right:-1.4cqw;align-self:flex-end;-webkit-text-stroke:.1cqw rgba(0,0,0,.4)}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <span class="eyebrow">Brainstorm · 2 October 2026 · no code</span>
+  <h1>NuvioTV Home Revamp</h1>
+  <p class="lede">This board compares NuvioTV's Home screen with the official Nuvio apps, the other Apple TV ports of Nuvio, VortX, and the big tvOS apps (Apple TV app, Netflix, Prime, Disney+, Infuse, Plex, Swiftfin, Arctic Fuse). It sets out four directions for the Home screen and a set of smaller pieces you can mix in, ending with a recommendation. Each direction has a rough mockup, what it fixes, and what it costs.</p>
+  <div class="meta-strip"><span>7 Nuvio/Stremio clients</span><span>12 tvOS apps</span><span>5 read from source code</span><span>Apple HIG tab bars, layout, lockups, Top Shelf</span></div>
+  <nav class="toc" aria-label="Sections">
+    <a href="#today">Today</a><a href="#cost">The hidden cost</a><a href="#landscape">What others do</a><a href="#options">Four directions</a><a href="#modules">Add-ons</a><a href="#nav">Navigation</a><a href="#reco">Recommendation</a><a href="#sources">Sources</a>
+  </nav>
+</header>
+
+<section id="today">
+  <div class="sec-head"><span class="eyebrow">Starting point</span><h2>NuvioTV Home today</h2></div>
+  <div class="grid2">
+    <div class="box"><h3>Two Home layouts behind one switch</h3><ul class="small">
+      <li><b>Classic</b> (default): a full-bleed hero carousel (up to 8 titles, 8 s timer, page dots, CTA) that scrolls away with the rows. Section titles sit above the rows.</li>
+      <li><b>Pinned</b> (Nuvio-Style Hero ON, or Show Hero OFF): the hero is fixed at the top and shows the focused card after 0.2 s. Rows scroll underneath, with their titles drawn inside an extended focus band.</li>
+      <li>Continue Watching (16:9 cards) comes first, then Upcoming, then the catalog and collection rows in your order. Rows show 18 items and end with See All.</li>
+      <li>Posters come in Small, Medium, Medium+ and Large, with three corner styles, Hide Titles, Landscape Rows, Card Depth, an accent ring, No Zoom, poster-colour options, Row Edge Fade and OLED black.</li>
+      <li>Navigation is the system top tab bar or a sidebar revealed with Menu.</li>
+    </ul></div>
+    <div class="box"><h3>What testers keep reporting</h3><ul class="small">
+      <li>Row titles bounce, settle late or hide under posters (BUG-87, 88, 89). The fix merged 10-02 and Steven hasn't confirmed it yet.</li>
+      <li>Short top rows park low and jump; late-loading rows jump (BUG-121, 122).</li>
+      <li>Stutter between rows. The whole Home body re-renders about twice per row hop (BUG-126).</li>
+      <li>Up from row 1 doesn't bring the hero back (BUG-112, 114). The tab bar never scrolls away (BUG-66).</li>
+      <li>Cards clipped by zoom, and depth effects too subtle to see (BUG-92, 93, 110).</li>
+      <li>Asks: browse collections like the Apple TV app (FEAT-36), Home-style collection pages (FEAT-43), a size between Medium and Large (FEAT-39, shipped as Medium+).</li>
+    </ul>
+    <div class="tags"><span class="tag risk">8 Home bugs since August</span><span class="tag risk">mostly pinned layout</span></div></div>
+  </div>
+</section>
+
+<section id="cost">
+  <div class="sec-head"><span class="eyebrow">Worth knowing before choosing</span><h2>Most of the Home code fights the focus engine</h2>
+  <p class="lede small">On tvOS the focus engine decides where a row lands when focus moves. NuvioTV's pinned layout keeps a title above a row that the engine is free to park anywhere, so it measures where the row ended up and nudges it back. Nearly all of the bugs above live in that loop.</p></div>
+  <div class="grid2">
+    <div class="box">
+      <h3>Lines of code, Home-related files</h3>
+      <div class="chart" role="img" aria-label="Bar chart of line counts">
+        <div class="bar"><span>Row title tracking + settle</span><div class="track"><div class="fill" style="width:77%"></div></div><span class="n">≈4,570</span></div>
+        <div class="bar"><span>HomeView, everything else</span><div class="track"><div class="fill alt" style="width:100%"></div></div><span class="n">5,915</span></div>
+        <div class="bar"><span>Trailer views (hero + inline)</span><div class="track"><div class="fill alt" style="width:52%"></div></div><span class="n">3,103</span></div>
+        <div class="bar"><span>Tab bar link, probes, visibility</span><div class="track"><div class="fill alt" style="width:18%"></div></div><span class="n">1,046</span></div>
+        <div class="bar"><span>PinnedRowGeometry</span><div class="track"><div class="fill" style="width:13%"></div></div><span class="n">779</span></div>
+        <div class="bar"><span>Up-press / swipe / fallback gates</span><div class="track"><div class="fill" style="width:11%"></div></div><span class="n">649</span></div>
+      </div>
+      <p class="small muted">Amber = code that exists only to keep pinned rows and their titles in place. About 22k lines across all Home-adjacent files.</p>
+    </div>
+    <div class="box">
+      <h3>Tuning knobs</h3>
+      <ul class="small">
+        <li>45 hero size constants in the theme, 20 of them for pinned-row rests, reaches and slack (e.g. <code>heroPinnedRowSettleMaxNudge 220</code>, <code>heroPinnedRowsDeviceParkSlack 96</code>).</li>
+        <li>About 28 Home <code>debug.*</code> switches, 5 live A/B toggles in About and 11 probes.</li>
+        <li>Every one of these exists because a tester's photo showed a row landing in the wrong place on his TV and not in the simulator.</li>
+      </ul>
+      <p class="small"><b>Why it matters for the revamp:</b> the forks that avoided this (VortX and official NuvioTV's Modern layout) put the rows in a <b>fixed-height strip</b> at the bottom of the screen, so a row can only ever land in one place. Directions B and C below take that route, which would let most of the amber code go.</p>
+    </div>
+  </div>
+</section>
+
+<section id="landscape">
+  <div class="sec-head"><span class="eyebrow">Research</span><h2>What the others do</h2>
+  <p class="lede small"><span class="mono">src</span> = read from source code. The rest comes from screenshots, Steven's reference videos, reviews or release notes.</p></div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>App</th><th>Home layout</th><th>Focus and cards</th><th>Worth taking</th></tr></thead>
+    <tbody>
+      <tr><td>Official NuvioTV<br><span class="src">Android TV · src</span></td><td>Three layouts, picked on first launch with animated previews. <b>Modern</b>: a fixed hero that follows focus (art on the right 72%) with the rows in a <b>bottom viewport of 52% height</b>, and the focused row pinned 40 dp from its top. <b>Grid</b>: carousel plus sticky-header grids. <b>Classic</b>: stacked rows with an optional colour wash from the focused poster.</td><td><b>Focused poster widens to a 16:9 backdrop card with logo</b> after a pause, and can play its trailer there. Three Continue Watching card styles (Card / Wide / Poster). Card Depth with edge, sheen and coverage per surface.</td><td>Rows strip, layout picker with previews, expanding card</td></tr>
+      <tr><td>VortX (StremioX)<br><span class="src">Apple TV · src</span></td><td>"Living backdrop": the focused poster fills the screen with its art and details. The stage can't take focus, and the rows live in a <b>bottom strip</b> so they "can't ride up over the hero".</td><td>A muted trailer fades in <b>under</b> the text after about 3 s of rest and stops on any move. Accent glow, ratings strip printed on posters, "18% watched" in the meta line.</td><td>Non-focusable stage, settle-delayed trailer</td></tr>
+      <tr><td>Orivio<br><span class="src">Apple TV · src + photo</span></td><td><b>Hybrid hero</b> (default): rolls the top 10 while you're at the top, turns into a focus-following hero once you're in the rows, and hands back on Up. A wide <b>Featured</b> panel between rows, fed from another catalog. Continue Watching directly under the hero.</td><td>Native platter, captions under each card, a "poster banners" switch that removes "#2 Today" art. Performance switches (shadows, zoom, wiggle).</td><td>Hybrid hero, Featured panel, glass pill rail</td></tr>
+      <tr><td>bobsupra NuvioTVOS<br><span class="src">Apple TV · src</span></td><td>Modern / Compact / Grid. <b>The focused row's title is drawn inside the fixed hero</b>, so the rows need no room for titles. A live mini-Home preview in Settings.</td><td>Trailers play inside the focused poster after 7 s, with no black flash. Liquid Glass badges on cards. Named spring curves for left/right, up/down and held keys.</td><td>Row title in the hero, CW-aware hero copy</td></tr>
+      <tr><td>Cb541 NuvioTVOS<br><span class="src">Apple TV · screenshot</span></td><td>Ports official NuvioTV's Modern layout token for token (1 dp = 2 pt). Row header "Popular" with the add-on name in grey beside it.</td><td>Expanding focused poster; a round glass Home pill that opens into the sidebar on Left.</td><td>Add-on name next to the row title</td></tr>
+      <tr><td>Apple TV app<br><span class="src">tvOS 26</span></td><td>A full-bleed featured carousel with trailers, then Up Next (16:9) and rows of <b>tall "cinematic" posters</b> with the text printed on them (six per row). Navigation moved to a <b>sidebar</b>. tvOS 26.4 added mood rows ("Genius Browse").</td><td>System focus and parallax, Liquid Glass on chrome only.</td><td>Billboard, Up Next first, poster art</td></tr>
+      <tr><td>Netflix (2025)</td><td>Top navigation replaced the sidebar. Billboard hero.</td><td><b>The focused tile expands in place</b> with synopsis and labels ("#1 in TV Shows") and pushes its neighbours aside. Criticised for encouraging passive scrolling.</td><td>Labels on tiles, expanding tile</td></tr>
+      <tr><td>Prime / Disney+ / Max</td><td>Top nav (Prime, Disney+) or left bar (Max). Hero carousel with video. Disney+ adopted Apple's poster art. Tabs only for services you have.</td><td>Preview after a short pause; badges like "Season Finale", "New Series".</td><td>Badges</td></tr>
+      <tr><td>Swiftfin<br><span class="src">Jellyfin · src</span></td><td>Opens on a <b>cinematic Resume strip</b>: the focused card's backdrop (0.5 s debounce), its logo, and a 400 pt landscape row. Plain rows below. A blurred backdrop of the focused poster behind every tab.</td><td>System focus, debounced backdrop swap.</td><td>Resume as the hero</td></tr>
+      <tr><td>Infuse 8.4 / Plex</td><td>Infuse: Up Next, a reorderable Favorites strip, library rows. Plex: pinnable, reorderable hubs. <b>Plex moved to top tabs and then had to bring back a side panel</b> after users complained it added steps.</td><td>Fixed thumbnail sizes are Infuse's top complaint.</td><td>Pinned sources, a warning about top tabs</td></tr>
+      <tr><td>Arctic Fuse 2 / 3<br><span class="src">Kodi</span></td><td>Three home layouts. Focus drives a full-screen backdrop and a top-left info block (logo, meta, plot) over widget rows; each menu item can have its own widgets.</td><td>Spotlight hero per menu item.</td><td>Widgets per section</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid2">
+    <div class="box"><h3>Patterns that keep coming up</h3><ul class="small">
+      <li>Resume first: Continue Watching is the first row or is the hero itself.</li>
+      <li>A clearlogo, meta line and short synopsis bottom-left over a scrim.</li>
+      <li>The backdrop follows focus with a debounce (0.45–0.5 s), never on every press.</li>
+      <li>Trailers only after the viewer stops moving (2–7 s), muted, and torn down on any move.</li>
+      <li>Different card shapes per row type: 16:9 for resume and episodes, posters for catalogs.</li>
+      <li>Labels on tiles: New, Season Finale, #1, progress.</li>
+      <li>Users choose the layout, often on first launch with a preview.</li>
+    </ul></div>
+    <div class="box"><h3>Anti-patterns</h3><ul class="small">
+      <li>Rows that move after the viewer has stopped. Nobody else re-centres a row after it has landed.</li>
+      <li>A hero whose timer changes the backdrop while you're in a row.</li>
+      <li>Decoding a full-size backdrop on every focus change, and several previews playing at once.</li>
+      <li>Deep navigation behind a top bar (Plex rolled it back).</li>
+      <li>Home changing under the viewer because a late sync reorders rows.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section id="options">
+  <div class="sec-head"><span class="eyebrow">Home screen</span><h2>Four directions</h2>
+  <p class="lede small">Each mockup shows Home with focus in the first catalog row. They go from the most native to the most custom.</p></div>
+
+  <article class="option">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: billboard hero with dots on top, continue watching and poster rows below">
+        <div class="bd cool"></div><div class="scrimL"></div><div class="scrimB"></div>
+        <div class="tabbar"><span class="on">Home</span><span>Search</span><span>Library</span><span>Add-ons</span><span>Settings</span></div>
+        <div style="position:absolute;left:6cqw;top:12cqw;display:grid;gap:.9cqw;width:40cqw">
+          <div class="logo" style="font-size:4.6cqw">Not a Stranger</div>
+          <div class="mline">2026 · Drama · ★ 7.0</div>
+          <div class="syn">Torn between motherhood and her career, Funda welcomes a nanny's help. But her mysterious new helper has an agenda of her own.</div>
+          <div class="btns"><span class="play">▶ Play</span><span class="rb">ⓘ</span></div>
+        </div>
+        <div style="position:absolute;left:50%;transform:translateX(-50%);top:31cqw" class="dots"><i></i><i class="on"></i><i></i><i></i><i></i></div>
+        <div style="position:absolute;left:6cqw;top:35cqw;display:grid;gap:.8cqw">
+          <div class="rowlbl">Continue Watching</div>
+          <div class="row"><div class="cw focus"></div><div class="cw"></div><div class="cw"></div><div class="cw"></div><div class="cw"></div></div>
+          <div class="rowlbl" style="margin-top:.6cqw">Popular · Cinemeta</div>
+        </div>
+      </div>
+      <p class="cap">A · Home at launch. Down scrolls the hero away and the rows take the screen.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">A · Native Billboard</span>
+      <p class="small">The Apple TV app and Disney+ layout. A full-bleed carousel at the top that scrolls away, then Continue Watching and plain rows with titles above them, and system focus doing all the scrolling. The hero no longer follows focus, so the backdrop changes only from the carousel. This is today's Classic layout with the focus-following, the pinned mode and their tuning removed.</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>The most stable option: rows land where tvOS puts them, with no correction.</li><li>Removes most of the amber code and its A/B switches.</li><li>Matches Apple's own app, and the tab bar scrolls off as designed.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>No information about the focused title until you open it. Steven's favourite part of Nuvio, the info panel, is gone.</li><li>Feels like the Apple TV app, not like Nuvio.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">ends BUG-87/89/121/122 class</span><span class="tag cost">effort: medium (mostly deletion)</span><span class="tag risk">loses the focus info panel</span></div>
+    </div>
+  </article>
+
+  <article class="option pick">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: fixed stage showing focused title in the top half, one row of posters in a strip at the bottom">
+        <div class="bd warm" style="clip-path:inset(0 0 44% 0)"></div>
+        <div style="position:absolute;inset:0 0 44% 0;background:linear-gradient(90deg,rgba(0,0,0,.9) 0%,rgba(0,0,0,.6) 30%,rgba(0,0,0,0) 60%),linear-gradient(180deg,transparent 60%,#05070a 100%)"></div>
+        <div class="tabbar"><span class="on">Home</span><span>Search</span><span>Library</span><span>Add-ons</span><span>Settings</span></div>
+        <div style="position:absolute;left:6cqw;top:8.5cqw;display:grid;gap:.8cqw;width:40cqw">
+          <div class="logo" style="font-size:4.2cqw">GIGN</div>
+          <div class="mline">Series · Action · 48m · 2026 <span class="chip">16</span><span class="chip">ENDED</span> IMDb 6.4</div>
+          <div class="syn">After an unprecedented attack on the GIGN, an officer about to leave the field must lead one last mission that forces him to face his past.</div>
+        </div>
+        <div class="strip" style="height:46%"></div>
+        <div style="position:absolute;left:6cqw;top:56.5%;display:grid;gap:1cqw">
+          <div class="rowlbl">Top 10 Series <span style="color:rgba(255,255,255,.45);font-weight:400">· TMDB</span></div>
+          <div class="posterrow" style="align-items:flex-end"><div class="card post focus"></div><span class="num">2</span><div class="card post"></div><span class="num">3</span><div class="card post"></div><span class="num">4</span><div class="card post"></div><span class="num">5</span><div class="card post"></div><div class="card post"></div></div>
+        </div>
+        <div style="position:absolute;left:6cqw;bottom:1.2cqw;font-size:1.1cqw;font-weight:600;color:rgba(255,255,255,.45)">Genres</div>
+      </div>
+      <p class="cap">B · the top half never moves. Up and Down page whole rows through the bottom strip.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">B · Stage &amp; Strip</span>
+      <span class="pick-badge">Recommended</span>
+      <p class="small">Official NuvioTV's Modern layout and VortX's living backdrop. The top ~54% is a <b>stage</b> that can't take focus. It shows the focused title (art on the right, logo, meta and synopsis on the left) and swaps after a 0.45 s pause. The bottom ~46% is a <b>strip</b> that shows one row at a time, with the next row's title peeking below. Up and Down page whole rows, so each row lands in exactly one place. The row title sits at the top of the strip, outside the focus band.</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>It's what Steven keeps holding up as the reference (his official-Nuvio video frame looks like this).</li><li>A row can only land in one place, so the bounce, late-settle, short-row and title-clearance bugs can't happen. Most of the amber code and 20 constants can go.</li><li>Keeps the info panel people like.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>Only one row is visible at a time, so browsing many catalogs means more presses. Grid layout or Landscape Rows help.</li><li>A rewrite of the row container: HomeView's body and scrolling, not the cards.</li><li>Steven has spent a month tuning the current pinned layout with you, so it needs a careful explanation and a way back.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">ends the pinned-row bug class</span><span class="tag fix">FEAT-15 info panel kept</span><span class="tag cost">effort: high</span><span class="tag risk">fewer rows on screen</span></div>
+    </div>
+  </article>
+
+  <article class="option">
+    <div>
+      <div class="twin">
+        <div class="tv" role="img" aria-label="Mockup: hybrid hero at top, rolling carousel">
+          <div class="bd green"></div><div class="scrimL"></div><div class="scrimB"></div>
+          <div style="position:absolute;left:6cqw;top:16cqw;display:grid;gap:1cqw;width:50cqw">
+            <div class="mline" style="color:#f0b35c;font-family:var(--mono)">TOP 10 · #3</div>
+            <div class="logo" style="font-size:6cqw">The Runner</div>
+            <div class="btns"><span class="play">▶ Play</span><span class="rb">ⓘ</span></div>
+          </div>
+          <div style="position:absolute;left:6cqw;top:42cqw" class="dots"><i></i><i></i><i class="on"></i><i></i><i></i></div>
+          <div style="position:absolute;left:6cqw;bottom:2cqw" class="row"><div class="cw"></div><div class="cw"></div><div class="cw"></div><div class="cw"></div><div class="cw"></div></div>
+        </div>
+        <div class="tv" role="img" aria-label="Mockup: hybrid hero after moving into rows, becomes the stage">
+          <div class="bd warm" style="clip-path:inset(0 0 44% 0)"></div>
+          <div style="position:absolute;inset:0 0 44% 0;background:linear-gradient(90deg,rgba(0,0,0,.9),rgba(0,0,0,.3) 60%,transparent),linear-gradient(180deg,transparent 60%,#05070a)"></div>
+          <div style="position:absolute;left:6cqw;top:8cqw;display:grid;gap:.9cqw;width:50cqw">
+            <div class="logo" style="font-size:4.6cqw">Lanterns</div>
+            <div class="mline">S1 E3 · OutKast · 45m left</div>
+            <div class="syn">The episode's own synopsis appears here when you're partway through a series.</div>
+          </div>
+          <div class="strip" style="height:46%"></div>
+          <div style="position:absolute;left:6cqw;top:57%;display:grid;gap:1cqw">
+            <div class="rowlbl">Continue Watching</div>
+            <div class="row"><div class="cw"></div><div class="cw focus"></div><div class="cw"></div><div class="cw"></div></div>
+          </div>
+        </div>
+      </div>
+      <p class="cap">C · left: at the top the hero rolls. Right: one press down it becomes the stage.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">C · Hybrid Hero</span>
+      <p class="small">Orivio's default. At the top of Home, a big rolling carousel (the Top 10 or your hero sources) owns the screen. Press Down and it shrinks into B's stage, which follows focus, with the rows in the strip. Up from the first row brings the carousel back.</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>You get a showpiece on launch and an info panel while browsing, with no setting to choose between them.</li><li>Keeps the carousel and hero sources people set up.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>Everything B costs, plus the hand-over animation and the Up-from-row-1 rule, which is the same transition that BUG-112/114 have been about.</li><li>Two moving parts where B has one.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">replaces Show Hero + Nuvio-Style switches</span><span class="tag cost">effort: high+</span><span class="tag risk">hero hand-over</span></div>
+    </div>
+  </article>
+
+  <article class="option">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: rows of posters where the focused one has expanded to a wide backdrop card with logo">
+        <div class="bd" style="background:linear-gradient(180deg,#10141c,#07090d)"></div>
+        <div class="tabbar"><span class="on">Home</span><span>Search</span><span>Library</span><span>Add-ons</span><span>Settings</span></div>
+        <div style="position:absolute;left:6cqw;top:9cqw;display:grid;gap:1cqw">
+          <div class="rowlbl">Continue Watching</div>
+          <div class="row"><div class="cw"></div><div class="cw"></div><div class="cw"></div><div class="cw"></div><div class="cw"></div></div>
+          <div class="rowlbl" style="margin-top:1cqw">Top 10 Series</div>
+          <div class="row" style="align-items:flex-start">
+            <div class="exp"><span class="logo" style="font-size:2.4cqw">GIGN</span></div>
+            <div class="card post" style="width:9cqw"></div><div class="card post" style="width:9cqw"></div><div class="card post" style="width:9cqw"></div><div class="card post" style="width:9cqw"></div>
+          </div>
+          <div class="mline" style="width:24cqw">Series · Action · 2026 · IMDb 6.4</div>
+          <div class="rowlbl" style="margin-top:.6cqw;color:rgba(255,255,255,.5)">Genres</div>
+        </div>
+      </div>
+      <p class="cap">D · no hero. The focused poster widens into a backdrop card after a pause.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">D · Expanding Tiles</span>
+      <p class="small">Netflix 2025 and official NuvioTV's "Expand Focused Poster to Backdrop". No hero at all. Rows stack like a feed, and the focused poster widens into a 16:9 backdrop card with its logo after a short pause, with one meta line under it. A trailer can play inside the card (today's "Trailers on Focus").</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>The most titles on screen. Fast for people who browse many add-on catalogs.</li><li>Builds on the inline trailer morph already in the app.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>The row reflows as the card widens. This is the "row that moves after you stop" anti-pattern, and the riskiest for stutter (BUG-126).</li><li>No big artwork moment; the screen looks busier.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag cost">effort: medium–high</span><span class="tag risk">reflow and jank</span></div>
+    </div>
+  </article>
+</section>
+
+<section id="modules">
+  <div class="sec-head"><span class="eyebrow">Mix and match</span><h2>Home add-ons that work with any direction</h2></div>
+  <div class="grid2">
+    <div class="box"><h3>Continue Watching-aware hero</h3><p class="small muted">When the focused title is in progress, the hero shows "S1 E3 · Episode title", time left, and the <b>episode's</b> synopsis instead of the series blurb.</p><div class="tags"><span class="tag">bobsupra</span><span class="tag">VortX</span><span class="tag cost">low</span></div></div>
+    <div class="box"><h3>Trailer under the text, after a pause</h3><p class="small muted">After about 3 s on one title, a muted trailer fades in behind the hero text and stops on any move. Replaces the current four trailer settings with one "Hero trailer after a pause" switch plus a delay.</p><div class="tags"><span class="tag">VortX</span><span class="tag">official NuvioTV</span><span class="tag cost">medium</span></div></div>
+    <div class="box"><h3>Continue Watching card styles</h3><p class="small muted">Card (16:9 with episode art), Wide (2.5:1 with a poster strip) or Poster. These are shared settings in NuvioMobile, so they could sync with the phone.</p><div class="tags"><span class="tag">official NuvioTV</span><span class="tag">NuvioMobile</span><span class="tag cost">medium</span></div></div>
+    <div class="box"><h3>Featured panel between rows</h3><p class="small muted">A wide panel (logo, meta, 2-line synopsis, Play) between rows, fed from a different catalog from the hero. It breaks up long stacks of identical rows.</p>
+      <div class="tv" style="aspect-ratio:auto;padding:2cqw;background:#07090d" role="img" aria-label="Mockup of a featured panel"><div class="feat"><span class="mline" style="font-family:var(--mono);color:#f0b35c">FEATURED · TRAKT TRENDING</span><span class="logo" style="font-size:3cqw">Severance</span><span class="btns"><span class="play" style="font-size:1cqw">▶ Play</span></span></div></div>
+      <div class="tags"><span class="tag">Orivio</span><span class="tag cost">medium</span></div></div>
+    <div class="box"><h3>Badges on posters</h3><p class="small muted">"New episode", "Season finale", "Top 10" numerals (as in Steven's official-Nuvio photo), and "Leaving soon" where an add-on provides it. Small glass badges in a corner, never on the title art.</p><div class="tags"><span class="tag">Apple TV app</span><span class="tag">Disney+</span><span class="tag cost">low–medium</span></div></div>
+    <div class="box"><h3>Add-on name next to the row title</h3><p class="small muted">"Popular · Cinemeta" in a secondary tone, so people with several add-ons know where a row comes from. Replaces "Show Catalog Type in Titles".</p><div class="tags"><span class="tag">Cb541</span><span class="tag">official NuvioTV</span><span class="tag cost">low</span></div></div>
+    <div class="box"><h3>Layout picker with live previews</h3><p class="small muted">On first launch, and in Settings › Home Screen: an animated mini-Home for each layout. It ties in with the Settings explainer pane already planned.</p><div class="tags"><span class="tag">official NuvioTV</span><span class="tag">bobsupra</span><span class="tag cost">medium</span></div></div>
+    <div class="box"><h3>Richer Top Shelf</h3><p class="small muted">Top Shelf already shows Continue Watching. Add a "carousel details" shelf from the hero catalog (backdrop, logo, synopsis, Play / More Info) for when there's nothing to resume.</p><div class="tags"><span class="tag">Apple HIG</span><span class="tag cost">medium</span></div></div>
+    <div class="box"><h3>Collections hub</h3><p class="small muted">FEAT-36: a Collections destination with service logos, genres and your folders as large tiles, like the Apple TV app's channel strip. Folder pages follow the Home layout (FEAT-43).</p><div class="tags"><span class="tag">VortX</span><span class="tag">Apple TV app</span><span class="tag cost">medium</span></div></div>
+    <div class="box"><h3>Focus colour wash</h3><p class="small muted">For Show Hero OFF: a soft wash of the focused poster's colour on the right side of the screen instead of a backdrop. Cheap on older Apple TVs and reuses the poster-colour extraction already built.</p><div class="tags"><span class="tag">official NuvioTV</span><span class="tag cost">low</span></div></div>
+  </div>
+</section>
+
+<section id="nav">
+  <div class="sec-head"><span class="eyebrow">Navigation chrome</span><h2>Keep the top bar, or move to a rail?</h2></div>
+  <div class="grid2">
+    <div class="box">
+      <div class="tv" role="img" aria-label="Mockup: system top tab bar"><div class="bd cool"></div><div class="scrimL"></div><div class="tabbar"><span class="on">Home</span><span>Search</span><span>Library</span><span>Add-ons</span><span>Settings</span></div></div>
+      <h3>System top tab bar (today's default)</h3>
+      <p class="small muted">The native tvOS bar. Apple defines its size and how it scrolls away, and BUG-66's fix makes it behave. Netflix, Prime, Disney+ and VortX use top navigation. Five destinations fit easily.</p>
+      <div class="tags"><span class="tag fix">no new code</span></div>
+    </div>
+    <div class="box">
+      <div class="tv" role="img" aria-label="Mockup: floating glass pill rail on the left"><div class="bd warm"></div><div class="scrimL"></div><div class="pill-rail"><i class="on"></i><i></i><i></i><i></i><i></i></div></div>
+      <h3>Floating glass pill rail</h3>
+      <p class="small muted">Orivio, Cb541 and official NuvioTV's Modern Sidebar: a small vertical pill of icons on the left that opens into a labelled glass panel on Left. The Apple TV app, Max and Plex (after its rollback) use a side rail. Could replace today's Menu-revealed sidebar for those who pick Sidebar.</p>
+      <div class="tags"><span class="tag">FEAT-45</span><span class="tag cost">medium</span><span class="tag risk">rail must stay out of the strip's way</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="reco">
+  <div class="sec-head"><span class="eyebrow">If I had to pick</span><h2>Recommendation</h2></div>
+  <div class="reco">
+    <p><b>Build B · Stage &amp; Strip as a new Home layout, beside today's.</b> It's the look Steven keeps pointing at, it keeps the info panel, and it removes the cause of most Home bugs instead of tuning them again. Ship it as <b>Home Layout: Stage / Classic</b>, with Stage as the default once it has passed a device pass. Classic becomes A (the native billboard): today's Classic with the focus-following hero and the pinned mode removed. When Stage settles, delete the pinned layout and its ~5,000 lines of correction code, constants and A/B switches.</p>
+    <p><b>Ride along:</b> Continue Watching-aware hero copy, add-on name next to row titles, and the trailer-after-a-pause rule. All three are small and fit B naturally.</p>
+    <p><b>Later:</b> C (hybrid hero) once B is stable; it's B plus a rolling carousel on top. The layout picker with previews, the Featured panel, Continue Watching card styles, badges and the Collections hub can each be their own small batch.</p>
+    <p><b>Timing:</b> start after Steven's verdict on beta.19-rc1, which carries the 10-02 Home fixes. If those fixes hold, B can be built calmly. If they don't, that's another argument for moving away from the pinned layout.</p>
+    <p class="small muted">Ground rules from the research, whichever direction you pick: the stage never takes focus. The backdrop swaps after a pause, never on every press. A row never moves after it has landed. Trailers are muted, start only after the viewer stops, and stop on any move. Stay inside the 60/80 pt safe area.</p>
+  </div>
+  <div class="sec-head" style="margin-top:12px"><h3>Questions for you</h3></div>
+  <div class="q small">
+    <div><b>How many rows should be visible at once?</b> B shows one row plus the next title. Official NuvioTV has a "Show Preview Row" option that shows a sliver of the next row's posters too. Is one row enough for how you browse?</div>
+    <div><b>What happens to the pinned layout?</b> Keep it as a third choice for a while, or replace it with Stage straight away?</div>
+    <div><b>Is the top tab bar staying the default?</b> Or should the pill rail come with this revamp?</div>
+    <div><b>Should the Detail revamp land first?</b> It's already planned and touches different files. Home could follow it, or both could run in parallel in separate branches.</div>
+  </div>
+</section>
+
+<section id="sources">
+  <div class="sec-head"><span class="eyebrow">Where this came from</span><h2>Sources</h2></div>
+  <ul class="sources">
+    <li>Official NuvioTV, source: <a href="https://github.com/NuvioMedia/NuvioTV">github.com/NuvioMedia/NuvioTV</a> (<code>ModernHomeContent.kt</code>, <code>GridHomeContent.kt</code>, <code>ClassicHomeContent.kt</code>, <code>LayoutPreviewAnimation.kt</code>)</li>
+    <li>NuvioMobile: <a href="https://github.com/NuvioMedia/NuvioMobile/tree/cmp-rewrite">github.com/NuvioMedia/NuvioMobile</a></li>
+    <li>Orivio: <a href="https://github.com/prehakanson-art/OrivioTVAppleTV">github.com/prehakanson-art/OrivioTVAppleTV</a>, plus the local handoff doc and Steven's 09-13 photo</li>
+    <li>bobsupra NuvioTVOS: <a href="https://github.com/bobsupra/NuvioTVOS">github.com/bobsupra/NuvioTVOS</a></li>
+    <li>Cb541 NuvioTVOS: <a href="https://github.com/Cb541/NuvioTVOS">github.com/Cb541/NuvioTVOS</a></li>
+    <li>VortX: <a href="https://github.com/dcoscolin/StremioPowerUp2026">github.com/dcoscolin/StremioPowerUp2026</a>, <a href="https://newreleases.io/project/github/VortXTV/VortX/release/v0.3.0">v0.3.0 notes</a></li>
+    <li>Swiftfin, source: <a href="https://github.com/jellyfin/Swiftfin">github.com/jellyfin/Swiftfin</a> (<code>CinematicItemSelector.swift</code>, <code>FocusedPosterCinematicBackgroundView.swift</code>)</li>
+    <li>Apple: <a href="https://www.apple.com/uk/newsroom/2025/06/apple-tv-brings-a-beautiful-redesign-and-enhanced-home-entertainment-experience/">tvOS 26 Newsroom</a>, <a href="https://support.apple.com/en-sg/guide/tv/atvb59b423ba/26/tvos/26">TV app sidebar guide</a>, HIG <a href="https://developer.apple.com/design/human-interface-guidelines/tab-bars">tab bars</a>, <a href="https://developer.apple.com/design/human-interface-guidelines/layout">layout</a>, <a href="https://developer.apple.com/design/human-interface-guidelines/lockups">lockups</a>, <a href="https://developer.apple.com/design/human-interface-guidelines/top-shelf">Top Shelf</a></li>
+    <li><a href="https://sixcolors.com/post/2025/06/tvos-26-brings-minor-additions-and-weird-priorities/">Six Colors on tvOS 26</a>, <a href="https://9to5mac.com/2025/07/16/apples-tv-app-gets-fresh-design-in-ios-26-and-tvos-26-heres-whats-new/">9to5Mac</a>, <a href="https://www.macrumors.com/2026/03/18/tvos-26-4-genius-browse-mode/">MacRumors on Genius Browse</a></li>
+    <li>Netflix: <a href="https://www.androidauthority.com/netflix-new-tv-experience-redesign-3555283">Android Authority</a>; Prime Video: <a href="https://aboutamazon.com/news/entertainment/prime-video-updated-steaming-experience">About Amazon</a>; Disney+: <a href="https://9to5mac.com/2025/10/02/disney-reveals-app-redesign-coming-soon-to-ios-and-tvos/">9to5Mac</a></li>
+    <li>Plex: <a href="https://plex.tv/blog/the-new-plex-experience">Plex blog</a>, <a href="https://www.aftvnews.com/plex-is-rolling-back-some-of-the-changes-brought-on-by-its-recent-redesign/">AFTVnews on the rollback</a>; Infuse: <a href="https://community.firecore.com/t/infuse-8-4-3-now-available/59647">8.4.3 notes</a></li>
+    <li>NuvioTV's own code (<code>HomeView.swift</code>, <code>BrowseComponents.swift</code>, <code>Theme.swift</code>), <code>docs/beta-feedback-tracker.md</code>, and Steven's reference frames (<code>ref-nuvio-t68</code>, <code>ref-omni-t21</code>, the 10-01 Home photo)</li>
+  </ul>
+</section>
+</div>

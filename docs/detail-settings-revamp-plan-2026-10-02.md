@@ -37,7 +37,7 @@ Source: the options board `docs/research/detail-settings-revamp-2026-10-02.html`
   - Clear Cache / Licenses rows in About.
   - Settings search.
   - FEAT-41's depth sliders and preview.
-  - The FEAT-45 icon rail: D6 removes the sidebar, so the tracker reply explains that.
+  - **Correction (2026-10-03):** FEAT-45 is Steven's *app navigation* rail request, not a Settings rail. It is not declined; it is built by the Home Stage & Strip batch (`docs/home-stage-strip-plan-2026-10-03.md`, H9). The Settings layout here is unaffected.
   - An ambient-colour background (option D).
   - The trailer-bridge caption lining up with the hero logo.
 
@@ -252,7 +252,7 @@ The block is hidden when both lines are empty.
    - FEAT-35 → IN PROGRESS.
    - New FEAT rows (next free ids) for the Settings explainer/re-sort and spoiler-safe episodes.
    - FEAT-28 → folded into the Ratings section toggle.
-   - FEAT-45 → declined (D6), reply text owed.
+   - FEAT-45 → leave open. It is the app navigation rail, planned in `docs/home-stage-strip-plan-2026-10-03.md` (H9). See the correction under Defaults.
 4. Copy the three Explore reports from this cloud session into `docs/research/detail-settings-revamp-explore-2026-10-02.md` if the local session wants them verbatim; the evidence section above is the summary.
 
 ### Design phase (before any edit)
@@ -399,7 +399,7 @@ Debug build launched with `-debug.detailScrollProbe YES --console`, logged to `~
 - **Tracker replies:**
   - FEAT-35: built.
   - FEAT-28: section toggle.
-  - FEAT-7 / FEAT-45: the explainer layout replaces the sidebar.
+  - FEAT-7: the explainer layout replaces the Settings sidebar. FEAT-45 is not part of this batch (see the correction under Defaults).
   - FEAT-41: next.
 - Update CLAUDE.md and memory.
 

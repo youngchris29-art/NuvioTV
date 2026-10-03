@@ -577,4 +577,38 @@ The simulator's focus engine is known to park rows differently from the hardware
 
 **Logs:** `docs/research/home-stage-strip-spike/sim-run1-walks-rail.log` (first walks a1–b2, rail iterations), `sim-run2-a1-a2.log` (re-run with focus-timed press windows).
 
-**Device:** spike Debug build installed on the Living Room Apple TV (`com.youngchris29.NuvioTV`). Walks pending with Christian, in the Test profile.
+**Device (Living Room Apple TV, Test profile, 2026-10-03 ~16:03–16:09 ET, Christian at the remote; console streamed):**
+- Spike Debug build installed as `com.youngchris29.NuvioTV`.
+- The Test profile runs FEAT-30's sidebar mode (`sidebar_style = "sidebar"` on this install), so the system tab bar was hidden in every walk.
+
+| Mech | Per click | Rest position | After rest | Held Down | Swipes | Christian |
+|---|---|---|---|---|---|---|
+| a1 | one glide of one page, **1.13–1.20 s** | within 0.2 pt of the page boundary | nothing | one 5-page glide (4.1 s) | multi-row swipes glide several pages in one motion | "smooth but a bit slow" |
+| **a2** | **one glide of one page, 0.51–0.73 s**, Down and Up | **exactly on the boundary** (every rest a multiple of P from the baseline) | nothing | one 2-page glide (1.0 s) | one page each, or one glide for a multi-row swipe | **"faster and still smooth"** |
+
+- In a1, clicks closer together than ~1.2 s merge into one long glide (3.5 s for two pages on the first walk). The engine's own scroll is the slow part.
+- The hardware engine did **not** park off-page in either variant. That is unlike the pinned layout, where the device rested 40–67 pt short of the simulator. With pages exactly one viewport-minus-peek tall and view-aligned targets, the rest is deterministic.
+- **b1 and b2 were not run on the device.** b2 never pages, and b1 can't page on a held Down (both seen in the simulator), while a2 met every criterion. That saved Christian two walks.
+
+**Rail on the device** (`-sidebar_style sidebar -debug.stageSpike a2 -debug.stageSpikeRail fail`):
+- Left mid-row stays in the row ✓.
+- Left from card 0 opens the rail (labels, dim) ✓.
+- Up past the top and Down past the bottom stay inside ✓ (`contained heading=up/down`).
+- Right returns to the current row ✓ (×3, `exit via=right` → row-1 focus request → focus on row 1's card 0).
+- Menu at row 1 pages to row 0 (one 1.36 s motion), then Menu at row 0 opens the rail ✓; Menu in the rail exits to row 0 ✓.
+- Select on Search from the rail switches tab, and focus lands in Search's text field ✓.
+- **Swipe momentum did not open the rail** (Christian: "rail didn't pop open on swipes"). Two left swipes that landed on card 0 by momentum (16:08:14.13 and 16:08:20.71) armed nothing. The rail did open twice during that step, 1.04 s and 2.4 s after a swipe had landed on card 0. Each was a fresh Left from card 0, the designed entry, and Christian closed each with Right.
+
+**Logs:** `docs/research/home-stage-strip-spike/device-a1.log`, `device-a2.log`, `device-rail.log` (StageSpike lines only).
+
+### Spike verdict (feeds P1 and P4)
+
+**Paging mechanism: (a), as a2.** A vertical `ScrollView`; each row in a page frame of height P = rowHeight + 2·lift, top-aligned; `.scrollTargetLayout()` + `.scrollTargetBehavior(.viewAligned)`; a trailing clear spacer of `peek`; `.scrollPosition(id:anchor: .top)` driven by the focused row's key with a 0.5 s ease-out. The focus engine moves focus, and the app's position animation overrides the engine's slower scroll. On hardware that is one motion per press, exactly on the boundary, nothing after. Tune the duration on device in Wave 2 (0.5 s now; the plan's range is 0.45–0.6 s).
+
+**Rail entry: arm on a failed Left** (`UIFocusSystem.movementDidFailNotification`, heading `.left`), never permanently focusable. Two requirements the spike adds to P4:
+1. **Content must be unfocusable while the rail holds focus, on every tab root.** The rail is a TabView overlay, and the engine otherwise leaks out of it (Down past the bottom, and Right from row 1 to an off-screen row-0 card). In the spike, the strip got `.disabled(railFocused)` from a rail-focus notification. P4 needs a shell-level gate every tab root applies.
+2. **Right and Menu are app-handled exits.** With content gated, Right fails, and the rail posts an exit. The active tab re-enables and restores its own focus (Home: a focus request for the current row). Per-card memory (e.g. after a Menu reveal from card 5) needs the row views to accept an item id on the focus request, not only the first card. `UIFocusSystem.requestFocusUpdate(to:)` on a remembered SwiftUI focus item did not stick, and a `UIFocusGuide` lost to the off-screen row, so restoration must be SwiftUI-side.
+
+**Open for P4:** the plan says "Right or Select on an item switches tab". In the spike, Right always returns to the current tab. Either works mechanically, since Right is app-handled. P4 decides the semantics.
+
+**Clean-up:** the spike clone stays until P1/P4 are written (the designers may read it), then it is deleted (`~/Claude/Projects/NuvioMobile-stage-spike`). The Apple TV is back on the `284fd764` dev build (reinstalled 16:10).

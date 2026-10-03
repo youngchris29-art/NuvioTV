@@ -10,6 +10,13 @@
 5. FEAT-43 → the Stage batch's H5 (answered by H6).
 6. Coordination message → **moot**: the revamp merged before it was sent. Its Detail items come into this batch (see below).
 
+**Spec-phase answers (Christian, 2026-10-03):**
+- Trailer Start Delay fixed values count from focus, never before rest.
+- Title logos move to TMDB `original`.
+- Cinemeta/metahub posters move from `medium` to `large` (w780 only covers TMDB).
+- Episodes row gets the edge fade.
+- Defaults taken without objection: 250 pt ramp (lower the constant if Large/landscape rest closer); only an explicit "Off" migrates from the old A/B; scrolling never changes Detail glass (this also stops Classic's synopsis-panel flattening); T1 ships with both legs off until the device check picks one.
+
 **Defaults taken at the start (Christian can override):**
 - **Detail items join this batch**, since the revamp is merged and they are unowned:
   - the action-button labels go through the localized keys (`DetailView.actionLabel` still uses `Label(String, …)` at `284fd764`), plus status keys;
@@ -297,13 +304,13 @@ New debug knobs in this batch are launch arguments only, with no new About rows 
 
 Dev build with `-debug.homeScrollProbe YES -debug.pinnedRowSettleProbe YES -debug.trailerProbe YES -debug.tabBarStateProbe YES --console`, logged to `~/Downloads/steven-rc1-verdict.log`. Steven's settings.
 
-1. **Home walk, 10 rows down and up, at Large and Medium+:** one motion per press, no late title step, no creep, no doubled hero title.
+1. **Home walk, 10 rows down and up, at Large and Medium+:** never two hero titles at once (old text fades out before the new text fades in), no stale hero after leaving a folder, no hero without a title or logo. Row motion is not judged here: M2 was dropped (H6) and the pinned motion is retired by the Stage batch.
 2. **Inline trailer on a focused poster:** starts after the row rests, the ring keeps the poster colour, and leaving mid-morph shows no gap or ghost.
 3. **Detail → Play via Infuse → return:** inline trailers still play, and after 30 minutes of browsing too.
 4. **Detail backdrop and posters are visibly sharper** (Oak Street).
 5. **Folder page:** the title rises and stays, the chips stay, the edges fade.
 6. **Cold launch, then rest on row 1:** the tab bar is fully shown or fully hidden, never half.
-7. **Empty Continue Watching, Up from row 2:** focus lands on Genres.
+7. ~~Empty Continue Watching, Up from row 2: focus lands on Genres.~~ Dropped with N1 (H6).
 8. **Row fade at Medium+** on portrait rows.
 9. **Trailer Start Delay** options.
 10. **Auto-Play Best** (if built) on Lizzie Borden picks the HDR link.
@@ -328,4 +335,9 @@ Dev build with `-debug.homeScrollProbe YES -debug.pinnedRowSettleProbe YES -debu
     - test74 PASS, test75 PASS, test76 PASS;
     - **test69 SKIPPED**: no collection row on the guest fixture's Home. The C test plan seeds one through the existing `-debug.collectionsSeedJsonB64` helper.
 - Tracker (`87430cf`): BUG-131…140 and FEAT-52…54 added; BUG-66, BUG-126 and BUG-127 annotated.
-- Design phase running: spec A (`docs/research/steven-rc1-fix-spec-A-motion-trailers.md`: M3, R2, R1, M4, M5, B2) and spec B (`docs/research/steven-rc1-fix-spec-B-images-rows-detail.md`: I1, F, C, T1, A, Detail items, P).
+- **Design phase done.**
+  - Spec A r2 (`docs/research/steven-rc1-fix-spec-A-motion-trailers.md`) and spec B r2 (`docs/research/steven-rc1-fix-spec-B-images-rows-detail.md`) written.
+  - Opus critique (`docs/research/steven-rc1-fix-spec-critique.md`): 30 findings, 2 P1 / 15 P2 / 13 P3. Both P1s fixed in r2: the hero-mode Play/Pause mute path, and the hero sharpen moved after commit so prefetches are unchanged.
+  - The waves follow the critique's merged plan (W1 A/B/C, W2 D/E/F, W3 T/D/A, W4 H/G).
+- **metahub poster sizes measured (main session):** small 300×450, medium 500×750, large 780×1170 (2–3× the bytes of medium) on three titles. The `large` poster upgrade stays.
+- Previously: design phase running: spec A (`docs/research/steven-rc1-fix-spec-A-motion-trailers.md`: M3, R2, R1, M4, M5, B2) and spec B (`docs/research/steven-rc1-fix-spec-B-images-rows-detail.md`: I1, F, C, T1, A, Detail items, P).

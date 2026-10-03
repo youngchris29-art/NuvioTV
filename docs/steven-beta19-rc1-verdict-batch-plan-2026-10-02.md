@@ -1,6 +1,24 @@
 # Steven's beta.19-rc1 verdict: fix plan (2026-10-02)
 
-**Status: DRAFT, waiting for Christian's approval. No code has been written.**
+**Status: APPROVED and STARTED 2026-10-03 ("start the fix batch").** Clone `~/Claude/Projects/NuvioMobile-steven-rc1`, branch `claude/steven-beta19-rc1-verdict` off `284fd764` (the revamp merge). Wave 0 baselines are running.
+
+**Christian's calls, answered 2026-10-03:**
+1. Auto-Play Best Source → **(b) real ranking**: resolution > DV/HDR > cached > size within the streams that arrived, honouring the Sources filters.
+2. Trailer Start Delay default → **Automatic** (rest + 1 s).
+3. Soft row fade → **the default, with a real Appearance setting**; the About A/B row goes.
+4. Colour → **a lighter Cinematic Detail scrim only.** No warmer neutral tokens. The ambient poster-colour background is the Stage batch's H3 (FEAT-53).
+5. FEAT-43 → the Stage batch's H5 (answered by H6).
+6. Coordination message → **moot**: the revamp merged before it was sent. Its Detail items come into this batch (see below).
+
+**Defaults taken at the start (Christian can override):**
+- **Detail items join this batch**, since the revamp is merged and they are unowned:
+  - the action-button labels go through the localized keys (`DetailView.actionLabel` still uses `Label(String, …)` at `284fd764`), plus status keys;
+  - F's edge fade on More Like This, Trailers, Cast and Collection;
+  - one glass rule for the chips and the action buttons on scroll back up;
+  - the lighter Cinematic scrim (call 4).
+  Classic Detail's synopsis panel is left alone: Classic is removed after one or two betas.
+- **M1 shrinks to a device check for T1 and B1.** Its two questions served M2, which is dropped. T1 needs the new `off=`/`ins=` probe on hardware; B1 needs the Infuse play-and-return repro. Both run with Christian once the first build carries the probes.
+- **UI legs run on FA87 itself**: no parallel session owns it now.
 
 **Update 2026-10-03, decision H6** (`docs/home-redesign-decisions-2026-10-03.md`). Christian picked the Stage & Strip Home redesign (`docs/home-stage-strip-plan-2026-10-03.md`). That batch starts only after this one merges, because both edit the same Home files. For this batch:
 - **Drop M2** (the one-motion settle and slide rules) **and N1** (Up into Genres). The new Home pages whole rows and its stage can't take focus, so neither is needed there. The old Home stays as the "Classic" layout with today's motion.
@@ -9,7 +27,7 @@
 - **The redesign builds on two pieces of this batch:**
   - I1's per-view decode size and w780 posters, for its 3840 px stage art.
   - F, which must land as a reusable row modifier, because the redesign's strip applies it to every row.
-- **Calls 4 and 5 under "Christian's calls before Wave 1" are answered.** The ambient poster-colour background is part of the redesign (H3; log it as FEAT-53 as planned). FEAT-43 Follow layout is the redesign's collections page (H5).
+- **Call 5 under "Christian's calls before Wave 1" is answered, and so is the ambient half of call 4.** The ambient poster-colour background is part of the redesign (H3; log it as FEAT-53 as planned). FEAT-43 Follow layout is the redesign's collections page (H5). (Correction: call 4's "warmer neutral tokens" half was still open. Answered with the others below.)
 - **The Detail + Settings revamp merged on 2026-10-03** (`tvos-shared-extraction` at `284fd764`). Branch this batch off that tip rather than `5f2d5cd3`; the Coordination section's file-avoidance rules no longer apply.
 
 ## Sources

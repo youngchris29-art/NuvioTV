@@ -17,6 +17,7 @@
 | H3 | Ambient poster-colour background | **Yes, on by default.** A blurred full-colour wash from the focused title fills the strip and blends into the stage art. Decoded at 3840 px. A setting turns it off. |
 | H4 | Titles | **The row heading sits at the top of the strip, and item names sit under the posters.** Hide Titles turns the names off. The strip's height leaves room for the names. The heading is never tracked separately. |
 | H5 | Collections | **A second stage-and-strip page (FEAT-43).** The folder's logo or title appears in the stage. The grid view stays as an option. |
+| H9 | Navigation | **Floating pill rail added (FEAT-45).** Navigation becomes Tabs / Rail (replacing FEAT-30's Sidebar); default Tabs. Rail option: Always Visible (default) / Hide While Browsing. Applies to every tab. |
 | H6 | Pending fix batch `docs/steven-beta19-rc1-verdict-batch-plan-2026-10-02.md` | **Drop M2 and N1. Keep M5 and everything else.** |
 
 **H6 in detail:**

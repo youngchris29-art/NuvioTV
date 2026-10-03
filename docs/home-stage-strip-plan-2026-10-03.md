@@ -26,6 +26,7 @@ Run it in a **local Claude Code session on the Mac**. The cloud container has no
 | H6 | **Fix batch** (`docs/steven-beta19-rc1-verdict-batch-plan-2026-10-02.md`): drop M2 and N1; keep M5 and everything else. |
 | H7 | **The next row shows its heading only**, peeking under the strip. No poster sliver. |
 | H8 | **Today's layout stays as "Classic"** for one or two betas: a Home Layout picker with Stage / Classic. |
+| H9 | **Floating pill rail** (added 2026-10-03; FEAT-45): a small vertical glass pill of icons on the left that opens into a labelled glass panel when focused. It applies to every tab, not just Home. |
 
 ### Defaults I chose (override any when approving)
 
@@ -50,6 +51,14 @@ Run it in a **local Claude Code session on the Mac**. The cloud container has no
 - The handoff's "3840 px" rule applies to sharp full-bleed art (the stage art and the background trailer), not to the blurred wash.
 - Off-switch: "Ambient Background" in Home Screen settings, default ON. With OLED True Black on, it dims to 40%.
 
+**Navigation rail (H9).**
+- **Navigation** becomes **Tabs / Rail**. Rail replaces today's Menu-revealed Sidebar mode (FEAT-30). A stored `sidebar_style = "sidebar"` migrates to `"rail"` on first launch, and `SidebarOverlay.swift` is retired.
+- **Default stays Tabs.** Steven likes the tab bar hiding on scroll, and this doesn't change it for anyone who hasn't opted in.
+- **New "Rail" option: Always Visible / Hide While Browsing**, default Always Visible. This is the choice FEAT-45 asked for.
+  - **Always Visible:** the rail reserves its width, so content never shifts.
+  - **Hide While Browsing:** the rail floats over content, slides out once you leave the top row or scroll down, and comes back on Menu or at the top. It never reserves width, so hiding it moves nothing.
+- **Rail contents:** Home, Search, Library, Add-ons, Settings, plus the profile avatar at the bottom.
+
 **Folder layout.** A folder follows the Home layout. Stage Home gives a stage-and-strip folder; Classic Home keeps today's grid. A per-folder "Grid" choice stays in the folder header's Edit menu.
 
 **Release vehicle.** A beta.19 rc after the fix batch is cut and confirmed. This batch never shares an rc with the fix batch.
@@ -64,7 +73,8 @@ Run it in a **local Claude Code session on the Mac**. The cloud container has no
    - The Home Screen pane stays its own pane, and this batch owns it.
    - If the revamp's Settings part has merged, the new Home rows get description ids plus copy in all six locales. If not, they ship with English inline subtitles, and the revamp's W3 copy wave picks them up.
    - Either way, this batch never edits `Localizable.xcstrings` while the revamp is open. Strings are added through the same scripts at the end, after the revamp merges.
-3. **Branch:** submodule `claude/home-stage-strip`, off `tvos-shared-extraction` after both of the above. Never use `git worktree` on the submodule.
+3. **The navigation picker lives in the Appearance pane,** which the revamp re-sorts. The rail work (W2-D) starts only after the revamp's Settings part has merged.
+4. **Branch:** submodule `claude/home-stage-strip`, off `tvos-shared-extraction` after both of the above. Never use `git worktree` on the submodule.
 
 ## Evidence (code facts)
 
@@ -224,6 +234,35 @@ The stage frame never changes size. A focus change during the fade-out cancels t
 - **Menu:** at row > 0, pages to row 0, focusing that row's remembered card. At row 0 it reveals the sidebar in sidebar mode; otherwise it does the system default.
 - **Top Shelf:** unchanged.
 
+### Navigation rail (H9)
+
+**Collapsed rail:**
+- 84 pt wide, a vertical glass capsule hugging the left edge (16 pt from the bezel), vertically centred.
+- Icons 36 pt; the current tab's icon sits on a filled platter.
+- Profile avatar at the bottom.
+- Visible on every tab root and on pushed pages (Detail, folders). It hides only in the player and full-screen covers.
+
+**Opening it:**
+- The rail is its own focus section. **Left from the leftmost focusable item** in content enters it.
+  - Detection uses `movementDidFailNotification` / a leading-edge focus guide, not `.onMoveCommand`, which fires on every press (Orivio's lesson).
+- On focus it expands to a **300 pt labelled glass panel** over a 0.55 dim of the content.
+- **Right or Select** on an item switches tab and returns focus to that tab's remembered item.
+- **Menu inside the rail** closes it back to content.
+
+**Menu at a tab root** (at the top) focuses the rail. This replaces today's sidebar reveal and Classic's `sidebarMenuRevealHandler`. In Stage, Menu at row > 0 still pages to row 0 first.
+
+**Glass sits behind the buttons, never around them.** Wrapping focusable content in `glassEffect` hides it from the focus engine; this is the Orivio focus trap noted in `docs/research/orivio-tv-handoff.md`. The buttons follow the HIG contract: native `Button`s, system focus, no custom focus chrome.
+
+**Layout:**
+- **Always Visible:** every tab root gets a fixed leading inset (rail + gap, about 116 pt).
+  - In Stage: the stage's left block and the strip rows start right of the rail, and the stage art still bleeds full-width behind it.
+  - In Settings: the revamp's explainer column moves right by the same inset.
+- **Hide While Browsing:** no inset; the rail overlays the left edge.
+  - In Stage it slides out when the strip leaves row 0 and slides back at row 0.
+  - On other tabs it follows the per-tab scrolled-down state that `SidebarChromeModel` already tracks.
+
+**Tab bar:** in Rail mode the system tab bar is hidden for good, using the same mechanism Sidebar mode uses today (`HiddenTabBarFocusBlocker`). `TabBarContentScrollLink` stays only for Tabs mode.
+
 ### Collections (H5)
 
 `FolderDetailView`, when the folder layout is Rows:
@@ -239,6 +278,8 @@ The stage frame never changes size. A focus change during the fade-out cancels t
 | Home Layout | Stage / Classic, default Stage | Picker at the top of the pane. In Classic the existing rows show unchanged. |
 | Ambient Background | default ON | Toggle, shown in Stage only. |
 | Trailer Location | Background / In Row | Same key. Labels in Stage are Background (`"hero"`) and In Row (`"poster"`). Classic keeps "Hero" / "Poster" wording. The `heroLocationEffective` fallback captions get a Stage case. |
+| Navigation (Appearance pane) | Tabs / Rail, default Tabs | Replaces Tabs / Sidebar. |
+| Rail (Appearance pane) | Always Visible / Hide While Browsing, default Always Visible | Shown only with Rail. |
 | Show Hero, Nuvio-Style Hero, Hero Sources, Autoplay Hero Trailer | — | Classic only, hidden in Stage. The stage always shows the focused title. |
 | Upcoming Episodes, Catalogs, Show Catalog Type | — | Apply to both layouts. |
 
@@ -276,7 +317,12 @@ The focus engine is the risk. Spike two mechanisms behind a debug arg on a throw
 
 **Measure on simulator and device** with the probe from the fix batch (M1): movements per press, settle time, any movement after rest, and Down held for 3 s.
 
-**Pick the one with one motion and nothing after.** Record the numbers in OUTCOME. Expectation: (a) if the engine respects page alignment, otherwise (b).
+**Rail entry (c).** A bare-bones rail on a test tab. Prove three things on hardware:
+- Left from the first card of a horizontal row enters the rail. Left mid-row must scroll the row, not open the rail.
+- The panel opens without a focus trap.
+- Right returns to the same card.
+
+**Pick the paging mechanism with one motion and nothing after.** Record the numbers in OUTCOME. Expectation: (a) if the engine respects page alignment, otherwise (b).
 
 ### Design phase (before any edit)
 
@@ -292,6 +338,12 @@ The focus engine is the risk. Spike two mechanisms behind a debug arg on a throw
   - Wash layer (decode size, blur, tint, cross-fade), `ArtworkColorStore.Use.wash`.
   - Folder Rows page (per-tab data load choice, header rise, grid option).
   - Home Screen pane rows and visibility rules, and the `home_layout` key plus launch arg.
+- **P4 (Opus Plan): Rail spec.**
+  - The `NavigationRail` view and its focus graph (entry via edge detection, exit, Menu).
+  - The migration from `sidebar_style`.
+  - Insets per tab for both visibility modes.
+  - Interplay with the Stage strip, Detail, folder pages and the revamp's Settings root.
+  - What gets deleted from `SidebarOverlay.swift` and `ContentView`/`MainTabView`.
 - **P3 (Opus critique)** of P1 and P2 against the HIG contract, Steven's measurements (one motion per press, nothing after rest, no doubled title, offset 0 at top) and the test list.
 - **Checkpoint:** Christian skims the geometry table and the swap timeline (about 5 minutes).
 
@@ -345,6 +397,14 @@ The focus engine is the risk. Spike two mechanisms behind a debug arg on a throw
 - English strings for all new settings and labels.
 - If the revamp's Settings part has merged: description ids + `SettingsDescriptions` entries (SlopMonster to 5/5), then translations through `populate-localizable-xcstrings.py` → de/es/fr/it/vi → `merge-translations-into-xcstrings.py`.
 
+**Wave 2b (after W2-C): W2-D (Opus): navigation rail.**
+- New `DesignSystem/NavigationRail.swift`.
+- Changes to the tab shell in `ContentView.swift`/`MainTabView`: migration, rail overlay, insets, Menu routing.
+- The Navigation and Rail pickers in `AppearanceSettingsPane.swift`.
+- Retire `SidebarOverlay.swift` (keep `HiddenTabBarFocusBlocker`).
+- Stage hook: hide-while-browsing driven by the strip's row index.
+- Unit tests: migration plus inset math.
+
 **Gate 2:**
 - Debug and Release builds.
 - NuvioTVTests.
@@ -377,6 +437,14 @@ The focus engine is the risk. Spike two mechanisms behind a debug arg on a throw
 - Folder Rows page: header rise, rows per tab, exit restores focus (Stage analogues of test57 and test69).
 - Ambient wash present, and absent when switched off.
 - Hold menu on a strip poster (Stage analogue of test71).
+- Rail tests:
+  - Left from the first card enters the rail; Left mid-row doesn't.
+  - Expands with labels; Right returns to the same card.
+  - Menu at a tab root focuses the rail.
+  - Hide While Browsing hides at row ≥ 1 and returns at row 0.
+  - The tab switch works from the rail.
+  - Migration from `"sidebar"`.
+  - These replace test52SidebarOverlay and its Sidebar-mode cases.
 
 **New unit tests:** StripGeometry table, StageSwapModel timeline, wash colour.
 
@@ -417,6 +485,14 @@ Debug build with probes streamed:
 11. Switch Home Layout to Classic: today's Home, unchanged (spot-check a pinned walk).
 12. 4K sharpness: stage art and posters are sharp on the 4K TV.
 13. French UI spot check.
+14. **Rail Always Visible** (Appearance → Navigation → Rail):
+    - On every tab, Left from the first item opens the labelled panel and Right comes back to the same item.
+    - Content never shifts.
+    - Menu at a tab root opens the rail.
+    - Detail and a folder page show the rail too.
+    - In the player there's no rail.
+15. **Rail Hide While Browsing:** the rail leaves when you page down the strip or scroll another tab, and returns at the top. Nothing else moves when it hides.
+16. **Switch Navigation back to Tabs:** today's tab bar, unchanged, still hiding on scroll.
 
 ### Merge, cut, comms (each on Christian's go)
 
@@ -425,8 +501,9 @@ Debug build with probes streamed:
 3. **Steven DM** (SlopMonster to 5/5):
    - Name every new setting and its default.
    - Point him to Home Layout → Classic for comparison.
+   - Tell him the FEAT-45 rail is under Appearance → Navigation → Rail, with Always Visible / Hide While Browsing.
    - Ask for a video of a Down walk, like his Fusion comparison, plus a folder walk.
-4. Tracker updates: FEAT-43 built, FEAT-53 built; BUG-87/88/89/121/122/126 "retired in Stage".
+4. Tracker updates: FEAT-43 built, FEAT-53 built, FEAT-45 built (the rail), FEAT-30 Sidebar mode superseded by Rail; BUG-87/88/89/121/122/126 "retired in Stage".
 5. Update CLAUDE.md and memory.
 6. After one or two betas with Stage confirmed: a small follow-up batch deletes Classic's pinned mode (Nuvio-Style Hero / hero-off pinned) along with its ≈ 5,000 lines, 20 constants, A/B switches and 102 unit tests. The decision on whether Classic's non-pinned billboard stays as a choice is Christian's call then.
 
@@ -435,8 +512,8 @@ Debug build with probes streamed:
 | Phase | Agents |
 |---|---|
 | Spike | 1 Opus |
-| Design | 2 Opus Plan + 1 Opus critique |
-| Execution | 4 Opus (W1-A, W2-A, W2-B, W3) + 3 Sonnet (W1-B, W1-C, W2-C) |
+| Design | 3 Opus Plan (P1, P2, P4) + 1 Opus critique |
+| Execution | 5 Opus (W1-A, W2-A, W2-B, W2-D, W3) + 3 Sonnet (W1-B, W1-C, W2-C) |
 | Review | 2–3 Opus rounds + about 3 fix agents |
 
 ## Risks worth knowing before the go
@@ -447,7 +524,8 @@ Debug build with probes streamed:
 4. **Strip height varies with poster size,** so the stage shrinks at Large (logo slot compression). Screenshots at Gate 1 catch layouts that look cramped.
 5. **Collections need per-tab data.** That's new loading behaviour in `FolderDetailViewModel` and possibly the shared repository. P2 must keep it in Swift if possible.
 6. **Test churn.** About 40 UI tests are pinned to Classic or duplicated for Stage. The fixture's default layout flips, so every Classic test needs the launch arg, or it fails confusingly.
-7. **Two batches touch the same files.** This plan must not start until the fix batch merges. The Detail + Settings revamp owns `Localizable.xcstrings` until it merges.
+7. **The rail touches every tab, not just Home.** A focus trap or an inset mistake would show up in Search, Library, Settings and Detail. The spike's rail check, the rail UI tests and device step 14 cover each tab. Tabs mode stays byte-identical for everyone who doesn't switch.
+8. **Two batches touch the same files.** This plan must not start until the fix batch merges. The Detail + Settings revamp owns `Localizable.xcstrings` until it merges.
 
 ## OUTCOME
 

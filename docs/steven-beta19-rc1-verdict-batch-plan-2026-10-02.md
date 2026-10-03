@@ -319,4 +319,13 @@ Dev build with `-debug.homeScrollProbe YES -debug.pinnedRowSettleProbe YES -debu
 
 ## OUTCOME
 
-_(filled in as waves land)_
+### Wave 0 (2026-10-03)
+
+- Clone `~/Claude/Projects/NuvioMobile-steven-rc1`, branch `claude/steven-beta19-rc1-verdict` off `284fd764`. `local.properties` copied (backend `https://api.nuvio.tv`); MPVKit symlinked from the main checkout.
+- **Baseline on `284fd764` (FA87):**
+  - Debug and Release simulator builds green; NuvioTVTests **709 / 0**.
+  - UI legs:
+    - test74 PASS, test75 PASS, test76 PASS;
+    - **test69 SKIPPED**: no collection row on the guest fixture's Home. The C test plan seeds one through the existing `-debug.collectionsSeedJsonB64` helper.
+- Tracker (`87430cf`): BUG-131…140 and FEAT-52…54 added; BUG-66, BUG-126 and BUG-127 annotated.
+- Design phase running: spec A (`docs/research/steven-rc1-fix-spec-A-motion-trailers.md`: M3, R2, R1, M4, M5, B2) and spec B (`docs/research/steven-rc1-fix-spec-B-images-rows-detail.md`: I1, F, C, T1, A, Detail items, P).

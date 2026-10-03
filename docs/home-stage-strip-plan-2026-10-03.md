@@ -1,6 +1,6 @@
 # Home redesign, Stage & Strip: implementation plan (2026-10-03)
 
-**Status: DRAFT, waiting for Christian's approval. No code written.**
+**Status: APPROVED by Christian 2026-10-03 (including H9, the floating pill rail). No code written yet; runs in a local session on the Mac.**
 
 **Sources:**
 - Decisions: `docs/home-redesign-decisions-2026-10-03.md` (H1–H6, revised to B).

@@ -21,6 +21,7 @@ Source: the options board `docs/research/detail-settings-revamp-2026-10-02.html`
 | D7 | Diagnostics | **An always-visible "Developer" category** at the bottom of the root list. Nothing is hidden behind an unlock. |
 | D9 | Cinematic action row (asked 10-02 after P1 measured six labelled buttons at ~1500 pt) | **Icon-only secondary buttons in Cinematic.** Play/Resume keeps its label; Start Over, Watch Trailer, Watched, Library and Shuffle are round icon buttons with their existing accessibility labels, so the row fits the text column and the credits stay beside it. The Icon-Only Buttons setting keeps applying to Classic. |
 | D10 | IMDb ★ when the Ratings toggle is off (asked 10-02) | **Hidden too.** Ratings OFF hides the strip, the ★ on the meta line and the About ratings row. The ★ shows only with Ratings ON and the MDBList strip off or empty. |
+| D11 | Gate 1 checkpoint (10-02): Detail approved as built; Settings should look like the option 1 mockup "with toggle buttons and everything" | **Settings visual pass in Wave 2:** switch-style toggles (custom `ToggleStyle` over a real `Toggle`; a deliberate, Christian-directed exception to the HIG contract's native-Toggle-only rule), a subtle rounded platter on every row at rest, small-caps section headers, picker/link values shown as `value ›` instead of the grey pill, and the explainer as an accent-gradient icon tile + bold title + description + optional footnote. Description copy moves from Wave 3 into Wave 2 so the explainer shows real text at Gate 2. |
 | D8 | Re-sort | **9 panes in 4 groups, plus Developer = 10 categories.** Advanced (Remote Setup only) folds into Account & Profiles. |
 
 ### Defaults I chose (override any of them when approving)
@@ -426,7 +427,52 @@ Debug build launched with `-debug.detailScrollProbe YES --console`, logged to `~
 ### Wave 0 (2026-10-02)
 
 - Release order: beta.19-rc1 was already cut (build 133 `5f2d5cd3`, sweep-1002 batch on top of `3f377cd8`) before this session started, so the branch was cut from that tip. Outer `main` got this plan via `--no-ff` merge `5a9cdbd`; the plan branch was deleted.
-- Baseline on `5f2d5cd3`: `NuvioTVTests` 650 / 0; Debug + Release simulator builds green. UI legs test17/33/40/51/68/72: all 6 FAIL at launch ("profile picker never appeared"). The FA87 fixture came back from a shutdown signed in but with zero profiles and no network requests from the app (relaunch did not help). That is the fixture, not code (nothing on the branch yet). Fixture repair owed before Gate 1. FixtureSetupTests not run as a baseline: it writes the synced Poster Size / Hide Titles settings through the UI.
+- Baseline on `5f2d5cd3`: `NuvioTVTests` 650 / 0; Debug + Release simulator builds green. UI legs test17/33/40/51/68/72: all 6 FAIL at launch ("profile picker never appeared"). The FA87 fixture came back from a shutdown signed in but with zero profiles and no network requests from the app (relaunch did not help). That is the fixture, not code (nothing on the branch yet). Diagnosis: the container prefs held `anonymous_user_id` and no session/profile keys, i.e. the fixture had been signed out onto an anonymous guest session. Workaround applied (BUG-38 guest-seeding recipe): a local-only `profile_payload` with one profile named "Chris" bound to the anonymous user id, written into the container plist (backup `/tmp/fa87-prefs-backup.plist`). The picker shows it and the harness's `app.buttons["Chris"]` matches; content is guest Cinemeta, not Christian's library. Re-signing FA87 into his account needs him (credentials). Baseline UI legs were not re-run on the guest fixture; Gate legs are judged per failure. FixtureSetupTests not run as a baseline: it writes the synced Poster Size / Hide Titles settings through the UI.
 - Tracker: FEAT-35 and FEAT-28 marked in progress; new FEAT-50 (Settings re-sort + explainer) and FEAT-51 (spoiler-safe episodes). **FEAT-45 left as is:** it asks for an icon rail for the app's FEAT-30 navigation sidebar, not the Settings sidebar, so D6 does not answer it; the plan's "declined (D6)" reply text is wrong and needs Christian's call before any reply.
 - Design: P1 spec `docs/research/detail-settings-revamp-spec-p1-detail.md`, P2 spec `docs/research/detail-settings-revamp-spec-p2-settings.md`; P3 critique pending. Spec-level resolutions taken by the main session: P1 key names (`DetailSettingsKeys`: `detail_layout`, `detail_section_*`, `detail_hide_episode_spoilers`) are canonical; P2 Q14 keeps "Account & Profiles" (D8); P2 Q15 Minimal root rows are title + subtitle, no icon, no explainer; P2 Q16 Detail row labels unchanged in this batch. D9/D10 asked and answered.
 
+
+### Wave 1 (2026-10-02) — `53c1edc8`
+
+- Three agents: W1-A Detail hero (Opus), W1-B Settings infrastructure (Opus, upgraded per F21f), W1-C spoiler-safe episodes (Sonnet). P3 critique folded into `docs/research/detail-settings-revamp-spec-corrections.md` first (2 P1 / 9 P2 / 10 P3).
+- Main-session fixes: missing `import Combine` in `SettingsExplainerModel.swift`; one unit test assumed a ratings order the plan doesn't specify (non-leading sources keep MDBList order) and was corrected.
+- Gate 1: Debug green, `NuvioTVTests` 686 / 0 (2 deliberate skips). Evidence via the new `RevampEvidenceTests` harness (`8928c440`), screenshots `docs/research/detail-settings-revamp-sim-evidence/g1-*`. Captures need `detail_trailer_autoplay = false` in the fixture prefs (else the full-screen trailer covers the page). Christian approved the Detail look as built; asked for Settings to match the option 1 mockup (D11).
+
+### Wave 2 (2026-10-02) — `f5f15b1a`, `7d535bd0`, `ff6eb202`
+
+- Four agents: W2-A Detail anchoring/About/section toggles (Opus), W2-V Settings visual pass (Opus), W2-B and W2-C pane split (Sonnet), then W2-D description copy (Sonnet, 148 rows, deslop 5/5, footnotes on 9 rows). Main session rewired the pane switch and deleted the four emptied pane files (AccountServices, Advanced, Playback, ContentSources).
+- Gate-1 "3-line teaser" was NOT a bug: Cinemeta's own Dune description ends in "fu..."; the probe now reads `syn=126` (measured four-line slot), `trunc=0` correctly.
+- Visual fix round 1 (`ff6eb202`): link rows show one chevron with a full-width platter, disclosure rows get the rest platter, native Menu pill left untinted with the rest platter raised to 9.5% white to match it.
+- Gate 2: `NuvioTVTests` 701 / 0, no skips (description coverage tests run). Screenshots `g2-*`. Christian: "lock it" for Settings (2026-10-02).
+- Carried into Wave 3: the focused picker row highlights light grey (not white); Hero Sources' inner toggles lack the switch look.
+
+### Wave 3 + review round 1 (2026-10-02/03) — `4d232296`, `7bc66962`, `e3d2b04a`, `fd2cfefa`
+
+- Translations: populate found 356 new keys; Sonnet translated ~347 per language (de/es/fr/it/vi), merged with zero specifier mismatches. Review r1 corrected "Detail Page" (was the mobile app's "Meta screen" wording), "Layout", "Look" and es "Player"; 12 stale keys removed.
+- Visual fix round 2: focused picker rows no longer forced into a light scheme; Hero Sources and Catalogs rows use the switch + platter.
+- UI legs (FA87, guest fixture, 4 batches + 2 reruns): final state for the 24 legs run — PASS test04, 05, 16, 17, 25, 29, 40, 43, 53, 79, 80, 81, 82, 83, 84, TabBarScrollLink 75/76; SKIP with explicit guest-data reasons test33 (no season posters), 35 (not signed in), 54 (no collection tile), 68 (no 6+ season shelf), 72 and 77-Play (Play disabled, no streams), 78 (no truncated synopsis), DetailRowAnchorTests (Play disabled changes the focus path). Not run: FixtureSetupTests/PinnedRowSettleRegimeTests (they write synced poster settings) and the long-tail Appearance legs (07/09/11-13/18/26-28/30/32/36/45), whose chip steps were already stale before this batch.
+- App bugs the legs found and fixed: the switch ToggleStyle exposed an empty accessibility value (now explicit On/Off + toggle trait); the Settings root ignored `prefersDefaultFocus` inside a tvOS List on a cold entry and after the theme remount (now `@FocusState` + `.defaultFocus` + a one-shot landing correction).
+- Gates on `fd2cfefa`: `NuvioTVTests` 708 / 0, Debug + Release simulator builds green.
+
+**Review round 1 (Opus, read-only, Codex on its limit until 10-29)**
+
+| # | Sev | Finding | Decision |
+|---|---|---|---|
+| D1 | P2 | Ratings slot could appear after first paint (gate waited for a tt id) | Fixed: reserved from settings alone |
+| D2 | P2 | Series Play mounts late, `.defaultFocus` had no target | Fixed: one-shot late Play focus, never after user input |
+| D3 | P3 | Start Over hidden for percent-only progress | Fixed |
+| D4 | P3 | Aired-unwatched count recomputed per press | Fixed: cached per visit |
+| D5 | P3 | `isAired` compared UTC timestamps to a local date | Fixed: full ISO-8601 parse |
+| D6 | P3 | Actor-directors dropped from "With" | Fixed: leading crew run only |
+| D7 | P3 | About focus animation ignored Reduce Motion | Fixed |
+| D8 | P3 | Classic carries `.defaultFocus` | Accepted: Classic has nothing focusable above Play; documented here |
+| D9 | P3 | Live settings changes re-render a mounted Detail | Accepted (focus re-resolves on return; device step 6) |
+| D10 | P3 | Teaser could lose focus when re-measured | Fixed: flips to plain text only while unfocused |
+| S1 | P2 | Focusable About rows showed no focus | Fixed: no-op Button with kit chrome |
+| S2 | P2 | Explainer models observed by the List owners (re-render per focus move) | Fixed: held via `@State` |
+| S3-5 | P3 | Wrong translations (Detail Page, Layout/Look, es Player) | Fixed |
+| S6 | P3 | Stale catalog keys | Fixed (12 removed) |
+| S7 | P3 | UI tests uncommitted at review time | Fixed (`fd2cfefa`) |
+| S8 | P3 | One debrid hint still said "in Settings" | Fixed, translated |
+
+Next: review round 2 over the fix diff, then the device pass.

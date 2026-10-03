@@ -174,7 +174,7 @@ a{color:var(--accent)}
   <p class="lede">This board compares NuvioTV's Home screen with the official Nuvio apps, the other Apple TV ports of Nuvio, VortX, and the big tvOS apps (Apple TV app, Netflix, Prime, Disney+, Infuse, Plex, Swiftfin, Arctic Fuse). It sets out four directions for the Home screen and a set of smaller pieces you can mix in, ending with a recommendation. Each direction has a rough mockup, what it fixes, and what it costs.</p>
   <div class="meta-strip"><span>7 Nuvio/Stremio clients</span><span>12 tvOS apps</span><span>5 read from source code</span><span>Apple HIG tab bars, layout, lockups, Top Shelf</span></div>
   <nav class="toc" aria-label="Sections">
-    <a href="#today">Today</a><a href="#cost">The hidden cost</a><a href="#landscape">What others do</a><a href="#options">Four directions</a><a href="#modules">Add-ons</a><a href="#nav">Navigation</a><a href="#reco">Recommendation</a><a href="#sources">Sources</a>
+    <a href="#today">Today</a><a href="#verdict">Steven&#39;s video</a><a href="#cost">The hidden cost</a><a href="#landscape">What others do</a><a href="#options">Four directions</a><a href="#modules">Add-ons</a><a href="#nav">Navigation</a><a href="#reco">Recommendation</a><a href="#sources">Sources</a>
   </nav>
 </header>
 
@@ -197,6 +197,29 @@ a{color:var(--accent)}
       <li>Asks: browse collections like the Apple TV app (FEAT-36), Home-style collection pages (FEAT-43), a size between Medium and Large (FEAT-39, shipped as Medium+).</li>
     </ul>
     <div class="tags"><span class="tag risk">8 Home bugs since August</span><span class="tag risk">mostly pinned layout</span></div></div>
+  </div>
+</section>
+
+<section id="verdict">
+  <div class="sec-head"><span class="eyebrow">New evidence · 2 October evening</span><h2>Steven's beta.19-rc1 video, measured against Fusion</h2>
+  <p class="lede small">A local session measured Steven's 6.6-minute video frame by frame, NuvioTV beside Fusion (<code>docs/research/steven-beta19-rc1-video-triage-2026-10-02.md</code>). The measurements moved the pick from B to A.</p></div>
+  <div class="grid2">
+    <div class="box"><h3>One Down press</h3>
+      <div class="chart" role="img" aria-label="Movements per press: NuvioTV four over about 2 seconds, Fusion one over about 1 second">
+        <div class="bar"><span>NuvioTV: row slide</span><div class="track"><div class="fill alt" style="width:50%"></div></div><span class="n">0–1.15 s</span></div>
+        <div class="bar"><span>NuvioTV: creep back</span><div class="track"><div class="fill alt" style="width:26%;margin-left:50%"></div></div><span class="n">+0.6 s</span></div>
+        <div class="bar"><span>NuvioTV: hero cross-fade</span><div class="track"><div class="fill alt" style="width:6%;margin-left:62%"></div></div><span class="n">~0.1 s, late</span></div>
+        <div class="bar"><span>NuvioTV: title step</span><div class="track"><div class="fill alt" style="width:8%;margin-left:83%"></div></div><span class="n">1.9–2.3 s</span></div>
+        <div class="bar"><span>Fusion: page scroll</span><div class="track"><div class="fill" style="width:43%"></div></div><span class="n">~1.0 s</span></div>
+      </div>
+      <p class="small muted">The track spans about 2.3 s. Fusion's hero scrolls away with the page, so nothing above the row changes in place, and titles sit under the posters.</p></div>
+    <div class="box"><h3>What else he said</h3><ul class="small">
+      <li><b>Keep:</b> Depth Takes Poster Color ("WOW"), the current type, the tab bar hiding on scroll.</li>
+      <li><b>Cold, dull, too dark:</b> Fusion paints a bright blurred colour wash from the focused title. NuvioTV is near-black.</li>
+      <li><b>Blurry on 4K:</b> every image is decoded at 1920 px or less, but a 4K Apple TV draws 3840. Any new full-bleed layer must decode at 3840 px, and posters need w780.</li>
+      <li><b>Trailer morph:</b> the ring loses the poster colour, a ghost logo appears when you move off a card whose morph has just started, and trailers stop altogether until relaunch after an Infuse hand-off.</li>
+      <li><b>Collections</b> should look and move exactly like Home.</li>
+    </ul></div>
   </div>
 </section>
 
@@ -271,10 +294,10 @@ a{color:var(--accent)}
   <div class="sec-head"><span class="eyebrow">Home screen</span><h2>Four directions</h2>
   <p class="lede small">Each mockup shows Home with focus in the first catalog row. They go from the most native to the most custom.</p></div>
 
-  <article class="option">
+  <article class="option pick">
     <div>
       <div class="tv" role="img" aria-label="Mockup: billboard hero with dots on top, continue watching and poster rows below">
-        <div class="bd cool"></div><div class="scrimL"></div><div class="scrimB"></div>
+        <div class="bd cool"></div><div style="position:absolute;inset:40% 0 0 0;background:radial-gradient(60% 80% at 30% 60%,rgba(240,140,90,.55),transparent 70%),radial-gradient(50% 70% at 80% 70%,rgba(200,80,140,.45),transparent 70%)"></div><div class="scrimL"></div>
         <div class="tabbar"><span class="on">Home</span><span>Search</span><span>Library</span><span>Add-ons</span><span>Settings</span></div>
         <div style="position:absolute;left:6cqw;top:12cqw;display:grid;gap:.9cqw;width:40cqw">
           <div class="logo" style="font-size:4.6cqw">Not a Stranger</div>
@@ -289,20 +312,21 @@ a{color:var(--accent)}
           <div class="rowlbl" style="margin-top:.6cqw">Popular · Cinemeta</div>
         </div>
       </div>
-      <p class="cap">A · Home at launch. Down scrolls the hero away and the rows take the screen.</p>
+      <p class="cap">A · Home at launch. Down scrolls the whole page; the colour wash behind the rows comes from the focused title.</p>
     </div>
     <div class="notes">
-      <span class="opt-id">A · Native Billboard</span>
-      <p class="small">The Apple TV app and Disney+ layout. A full-bleed carousel at the top that scrolls away, then Continue Watching and plain rows with titles above them, and system focus doing all the scrolling. The hero no longer follows focus, so the backdrop changes only from the carousel. This is today's Classic layout with the focus-following, the pinned mode and their tuning removed.</p>
+      <span class="opt-id">A · Fusion-style Page</span>
+      <span class="pick-badge">Chosen 2026-10-03</span>
+      <p class="small">Fusion's layout (the app Steven uses as his reference), close to the Apple TV app's. A full-bleed carousel sits at the top and scrolls away with the page. Below it come Continue Watching and the rows: a heading above each row, and each title's name under its poster. Every Down press is one native page scroll, and nothing moves after it settles. Behind the rows, a blurred <b>full-colour wash taken from the focused title</b> fades in after a short pause and shows what's in focus, instead of an info panel. Trailers play in that background layer or in the row, chosen in a setting.</p>
       <div class="pc">
-        <div><h4>For</h4><ul class="small"><li>The most stable option: rows land where tvOS puts them, with no correction.</li><li>Removes most of the amber code and its A/B switches.</li><li>Matches Apple's own app, and the tab bar scrolls off as designed.</li></ul></div>
-        <div><h4>Against</h4><ul class="small"><li>No information about the focused title until you open it. Steven's favourite part of Nuvio, the info panel, is gone.</li><li>Feels like the Apple TV app, not like Nuvio.</li></ul></div>
+        <div><h4>For</h4><ul class="small"><li>It matches what Steven measured in Fusion: one ~1 s ease-out per press, where NuvioTV makes four movements over about 2 s.</li><li>It retires the pinned-row correction code (~5,000 lines) and its bug class. Steven already found the unpinned classic mode smoother.</li><li>The colour wash answers "cold, dull, too dark" and builds on the poster-colour effect he loves.</li><li>Collection folders can use the same page component (FEAT-43).</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>No synopsis for the focused title while you browse the rows. It stays in the carousel and on Detail.</li><li>The wash must stay cheap: one 3840 px decode per pause, never one per press.</li></ul></div>
       </div>
-      <div class="tags"><span class="tag fix">ends BUG-87/89/121/122 class</span><span class="tag cost">effort: medium (mostly deletion)</span><span class="tag risk">loses the focus info panel</span></div>
+      <div class="tags"><span class="tag fix">one motion per press</span><span class="tag fix">ends BUG-87/89/121/122 class</span><span class="tag fix">FEAT-43</span><span class="tag cost">effort: high (new page component + ambient layer)</span></div>
     </div>
   </article>
 
-  <article class="option pick">
+  <article class="option">
     <div>
       <div class="tv" role="img" aria-label="Mockup: fixed stage showing focused title in the top half, one row of posters in a strip at the bottom">
         <div class="bd warm" style="clip-path:inset(0 0 44% 0)"></div>
@@ -324,7 +348,7 @@ a{color:var(--accent)}
     </div>
     <div class="notes">
       <span class="opt-id">B · Stage &amp; Strip</span>
-      <span class="pick-badge">Recommended</span>
+      <span class="pick-badge" style="background:var(--panel-2);color:var(--muted)">My first pick, before Steven&#39;s video</span>
       <p class="small">Official NuvioTV's Modern layout and VortX's living backdrop. The top ~54% is a <b>stage</b> that can't take focus. It shows the focused title (art on the right, logo, meta and synopsis on the left) and swaps after a 0.45 s pause. The bottom ~46% is a <b>strip</b> that shows one row at a time, with the next row's title peeking below. Up and Down page whole rows, so each row lands in exactly one place. The row title sits at the top of the strip, outside the focus band.</p>
       <div class="pc">
         <div><h4>For</h4><ul class="small"><li>It's what Steven keeps holding up as the reference (his official-Nuvio video frame looks like this).</li><li>A row can only land in one place, so the bounce, late-settle, short-row and title-clearance bugs can't happen. Most of the amber code and 20 constants can go.</li><li>Keeps the info panel people like.</li></ul></div>
@@ -443,20 +467,44 @@ a{color:var(--accent)}
 </section>
 
 <section id="reco">
-  <div class="sec-head"><span class="eyebrow">If I had to pick</span><h2>Recommendation</h2></div>
+  <div class="sec-head"><span class="eyebrow">Decided 2026-10-03</span><h2>Direction chosen</h2></div>
   <div class="reco">
-    <p><b>Build B · Stage &amp; Strip as a new Home layout, beside today's.</b> It's the look Steven keeps pointing at, it keeps the info panel, and it removes the cause of most Home bugs instead of tuning them again. Ship it as <b>Home Layout: Stage / Classic</b>, with Stage as the default once it has passed a device pass. Classic becomes A (the native billboard): today's Classic with the focus-following hero and the pinned mode removed. When Stage settles, delete the pinned layout and its ~5,000 lines of correction code, constants and A/B switches.</p>
-    <p><b>Ride along:</b> Continue Watching-aware hero copy, add-on name next to row titles, and the trailer-after-a-pause rule. All three are small and fit B naturally.</p>
-    <p><b>Later:</b> C (hybrid hero) once B is stable; it's B plus a rolling carousel on top. The layout picker with previews, the Featured panel, Continue Watching card styles, badges and the Collections hub can each be their own small batch.</p>
-    <p><b>Timing:</b> start after Steven's verdict on beta.19-rc1, which carries the 10-02 Home fixes. If those fixes hold, B can be built calmly. If they don't, that's another argument for moving away from the pinned layout.</p>
-    <p class="small muted">Ground rules from the research, whichever direction you pick: the stage never takes focus. The backdrop swaps after a pause, never on every press. A row never moves after it has landed. Trailers are muted, start only after the viewer stops, and stop on any move. Stay inside the 60/80 pt safe area.</p>
+    <p><b>Hero model: A · Fusion-style page.</b> A carousel at the top that scrolls away with the page, and native scrolling below with one motion per press. The pinned hero, its focus-following and the row correction code are retired.</p>
+    <p><b>Ambient background: yes, on by default.</b> A blurred full-colour wash from the focused title behind the page, cross-fading after a short pause, decoded at 3840 px. A setting turns it off for OLED black.</p>
+    <p><b>Titles:</b> a section heading above each row, plus each title's name under its poster (Hide Titles still turns the names off). The heading scrolls with its row and is never tracked separately.</p>
+    <p><b>Trailers: both, as a setting.</b> Trailer Location becomes Background or In Row.</p>
+    <ul class="small">
+      <li><b>Background:</b> plays behind the page after the viewer rests, and stops on any move.</li>
+      <li><b>In Row:</b> today's morph, started only once the row has rested, keeping the poster-colour ring.</li>
+    </ul>
+    <p><b>Collections:</b> folders are a second instance of the same page component (FEAT-43). The folder's title or logo is a header that rises gently on scroll, and the grid view stays as an option.</p>
+    <p><b>Today's fix batch</b> (<code>docs/steven-beta19-rc1-verdict-batch-plan-2026-10-02.md</code>):</p>
+    <ul class="small">
+      <li><b>Drops</b> M2 (one-motion settle rules), M5 (hero cross-fade) and N1 (Up into Genres). The new page makes them unnecessary.</li>
+      <li><b>Keeps</b> everything that survives the redesign:
+        <ul>
+          <li>the trailer server wedge (B)</li>
+          <li>4K decode and w780 posters (I1)</li>
+          <li>edge fade (F)</li>
+          <li>morph and ring fixes (M3, R1, R2)</li>
+          <li>tab bar snap (T1)</li>
+          <li>collection header (C)</li>
+          <li>trailer delay setting (M4)</li>
+          <li>Auto-Play ranking (A)</li>
+        </ul>
+      </li>
+    </ul>
+    <p class="small muted">Rules for the new page:</p>
+    <ul class="small muted">
+      <li>One motion per press, and nothing moves after it settles.</li>
+      <li>Home rests at offset 0 at the top, so the tab bar is never half shown.</li>
+      <li>Every full-bleed image decodes at 3840 px.</li>
+      <li>The edge fade belongs to the row component, so it appears wherever rows do.</li>
+    </ul>
   </div>
-  <div class="sec-head" style="margin-top:12px"><h3>Questions for you</h3></div>
+  <div class="sec-head" style="margin-top:12px"><h3>Next step</h3></div>
   <div class="q small">
-    <div><b>How many rows should be visible at once?</b> B shows one row plus the next title. Official NuvioTV has a "Show Preview Row" option that shows a sliver of the next row's posters too. Is one row enough for how you browse?</div>
-    <div><b>What happens to the pinned layout?</b> Keep it as a third choice for a while, or replace it with Stage straight away?</div>
-    <div><b>Is the top tab bar staying the default?</b> Or should the pill rail come with this revamp?</div>
-    <div><b>Should the Detail revamp land first?</b> It's already planned and touches different files. Home could follow it, or both could run in parallel in separate branches.</div>
+    <div>Write an implementation plan for the new page, the same way as the Detail + Settings plan (specs, waves, gates, device pass in the Test profile). It runs on the Mac after the fix batch lands, since both touch <code>HomeView</code>, <code>BrowseComponents</code> and <code>InlineTrailerCard</code>.</div>
   </div>
 </section>
 

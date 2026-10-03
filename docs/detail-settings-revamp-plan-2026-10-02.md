@@ -476,3 +476,8 @@ Debug build launched with `-debug.detailScrollProbe YES --console`, logged to `~
 | S8 | P3 | One debrid hint still said "in Settings" | Fixed, translated |
 
 Next: review round 2 over the fix diff, then the device pass.
+
+**Review round 2** (over `4d232296..fd2cfefa` fixes): 0 P1 / 1 P2 / 8 P3. P2: the late Play claim latched before focus landed → fixed in `dfec0940` (skips a disabled Play, latches on observed landing, one 120 ms retry). P3s fixed: moves out of the hero count as input, cache keyed on meta id, single toggle a11y value + stale comment, About rows not announced as buttons. Accepted: credits filter on non-TMDB cast (matches old behaviour), Swift vs Kotlin aired parser duplication (same semantics), root focus correction overriding tab-return memory (spec choice), throwaway `@State` model inits (harmless).
+**Review round 3** (over `dfec0940`): 0 P1 / 0 P2 / 5 P3. Fixed #4 in `284fd764` (late claim limited to 4 s after appear, so a Select on Watched/Library is never followed by a focus jump). Accepted #1/#2 (the claim may give up in rare engine timings; worst case = no claim, never a wrong move), #3 (stale aired count only if release dates change mid-visit with the same id and episode count), #5 (claim lifecycle is a device-pass item, step 3b).
+Review loop closed (no P1/P2). Gates on `284fd764`: `NuvioTVTests` 709 / 0; UI re-check test16/29/40 PASS after the a11y change; Debug + Release sim green; Debug device build (`com.youngchris29.NuvioTV`) green.
+Device pass checklist: `docs/detail-settings-revamp-device-pass.md`.

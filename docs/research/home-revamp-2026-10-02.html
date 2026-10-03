@@ -294,7 +294,7 @@ a{color:var(--accent)}
   <div class="sec-head"><span class="eyebrow">Home screen</span><h2>Four directions</h2>
   <p class="lede small">Each mockup shows Home with focus in the first catalog row. They go from the most native to the most custom.</p></div>
 
-  <article class="option pick">
+  <article class="option">
     <div>
       <div class="tv" role="img" aria-label="Mockup: billboard hero with dots on top, continue watching and poster rows below">
         <div class="bd cool"></div><div style="position:absolute;inset:40% 0 0 0;background:radial-gradient(60% 80% at 30% 60%,rgba(240,140,90,.55),transparent 70%),radial-gradient(50% 70% at 80% 70%,rgba(200,80,140,.45),transparent 70%)"></div><div class="scrimL"></div>
@@ -316,7 +316,7 @@ a{color:var(--accent)}
     </div>
     <div class="notes">
       <span class="opt-id">A · Fusion-style Page</span>
-      <span class="pick-badge">Chosen 2026-10-03</span>
+      <span class="pick-badge" style="background:var(--panel-2);color:var(--muted)">Considered, not chosen</span>
       <p class="small">Fusion's layout (the app Steven uses as his reference), close to the Apple TV app's. A full-bleed carousel sits at the top and scrolls away with the page. Below it come Continue Watching and the rows: a heading above each row, and each title's name under its poster. Every Down press is one native page scroll, and nothing moves after it settles. Behind the rows, a blurred <b>full-colour wash taken from the focused title</b> fades in after a short pause and shows what's in focus, instead of an info panel. Trailers play in that background layer or in the row, chosen in a setting.</p>
       <div class="pc">
         <div><h4>For</h4><ul class="small"><li>It matches what Steven measured in Fusion: one ~1 s ease-out per press, where NuvioTV makes four movements over about 2 s.</li><li>It retires the pinned-row correction code (~5,000 lines) and its bug class. Steven already found the unpinned classic mode smoother.</li><li>The colour wash answers "cold, dull, too dark" and builds on the poster-colour effect he loves.</li><li>Collection folders can use the same page component (FEAT-43).</li></ul></div>
@@ -326,7 +326,7 @@ a{color:var(--accent)}
     </div>
   </article>
 
-  <article class="option">
+  <article class="option pick">
     <div>
       <div class="tv" role="img" aria-label="Mockup: fixed stage showing focused title in the top half, one row of posters in a strip at the bottom">
         <div class="bd warm" style="clip-path:inset(0 0 44% 0)"></div>
@@ -348,12 +348,13 @@ a{color:var(--accent)}
     </div>
     <div class="notes">
       <span class="opt-id">B · Stage &amp; Strip</span>
-      <span class="pick-badge" style="background:var(--panel-2);color:var(--muted)">My first pick, before Steven&#39;s video</span>
+      <span class="pick-badge">Chosen 2026-10-03</span>
       <p class="small">Official NuvioTV's Modern layout and VortX's living backdrop. The top ~54% is a <b>stage</b> that can't take focus. It shows the focused title (art on the right, logo, meta and synopsis on the left) and swaps after a 0.45 s pause. The bottom ~46% is a <b>strip</b> that shows one row at a time, with the next row's title peeking below. Up and Down page whole rows, so each row lands in exactly one place. The row title sits at the top of the strip, outside the focus band.</p>
       <div class="pc">
         <div><h4>For</h4><ul class="small"><li>It's what Steven keeps holding up as the reference (his official-Nuvio video frame looks like this).</li><li>A row can only land in one place, so the bounce, late-settle, short-row and title-clearance bugs can't happen. Most of the amber code and 20 constants can go.</li><li>Keeps the info panel people like.</li></ul></div>
         <div><h4>Against</h4><ul class="small"><li>Only one row is visible at a time, so browsing many catalogs means more presses. Grid layout or Landscape Rows help.</li><li>A rewrite of the row container: HomeView's body and scrolling, not the cards.</li><li>Steven has spent a month tuning the current pinned layout with you, so it needs a careful explanation and a way back.</li></ul></div>
       </div>
+      <div class="box" style="background:var(--panel-2)"><h3 style="font-size:1rem">What B must do to answer Steven&#39;s video</h3><ul class="small"><li>The stage swap never moves geometry and never shows two titles at once: old text fades out, then new text fades in, after one pause.</li><li>The strip makes one move per press, and nothing moves after it settles.</li><li>The stage art, ambient wash and background trailer decode at 3840 px.</li></ul></div>
       <div class="tags"><span class="tag fix">ends the pinned-row bug class</span><span class="tag fix">FEAT-15 info panel kept</span><span class="tag cost">effort: high</span><span class="tag risk">fewer rows on screen</span></div>
     </div>
   </article>
@@ -467,44 +468,24 @@ a{color:var(--accent)}
 </section>
 
 <section id="reco">
-  <div class="sec-head"><span class="eyebrow">Decided 2026-10-03</span><h2>Direction chosen</h2></div>
+  <div class="sec-head"><span class="eyebrow">Decided 2026-10-03 (revised)</span><h2>Direction chosen</h2></div>
   <div class="reco">
-    <p><b>Hero model: A · Fusion-style page.</b> A carousel at the top that scrolls away with the page, and native scrolling below with one motion per press. The pinned hero, its focus-following and the row correction code are retired.</p>
-    <p><b>Ambient background: yes, on by default.</b> A blurred full-colour wash from the focused title behind the page, cross-fading after a short pause, decoded at 3840 px. A setting turns it off for OLED black.</p>
-    <p><b>Titles:</b> a section heading above each row, plus each title's name under its poster (Hide Titles still turns the names off). The heading scrolls with its row and is never tracked separately.</p>
-    <p><b>Trailers: both, as a setting.</b> Trailer Location becomes Background or In Row.</p>
+    <p><b>Hero model: B · Stage &amp; Strip.</b> The top of the screen is a stage that can't take focus. It shows the focused title (art, logo, meta, synopsis). The rows page one at a time through a fixed strip at the bottom, so a row can only land in one place. The pinned hero above scrolling rows, and its correction code, are retired.</p>
+    <p><b>The stage swap is the one motion B keeps, so it must meet Steven's measurements.</b> It waits for one short pause, fades the old text out before the new text fades in (no doubled title), and never changes the stage's size or moves the strip.</p>
+    <p><b>Ambient background: yes, on by default.</b> A blurred full-colour wash from the focused title fills the strip and blends into the stage art. It is decoded at 3840 px, and a setting turns it off.</p>
+    <p><b>Titles:</b> the row heading sits at the top of the strip and each title's name sits under its poster (Hide Titles turns the names off). The strip height leaves room for the names.</p>
+    <p><b>Trailers: both, as a setting.</b></p>
     <ul class="small">
-      <li><b>Background:</b> plays behind the page after the viewer rests, and stops on any move.</li>
-      <li><b>In Row:</b> today's morph, started only once the row has rested, keeping the poster-colour ring.</li>
+      <li><b>Background</b> plays in the stage behind its text, after a pause, and stops on any move.</li>
+      <li><b>In Row</b> keeps the morph inside the strip. It starts only after the strip has stopped and keeps the poster-colour ring. The strip's height doesn't change, so the morph only widens the card.</li>
     </ul>
-    <p><b>Collections:</b> folders are a second instance of the same page component (FEAT-43). The folder's title or logo is a header that rises gently on scroll, and the grid view stays as an option.</p>
-    <p><b>Today's fix batch</b> (<code>docs/steven-beta19-rc1-verdict-batch-plan-2026-10-02.md</code>):</p>
-    <ul class="small">
-      <li><b>Drops</b> M2 (one-motion settle rules), M5 (hero cross-fade) and N1 (Up into Genres). The new page makes them unnecessary.</li>
-      <li><b>Keeps</b> everything that survives the redesign:
-        <ul>
-          <li>the trailer server wedge (B)</li>
-          <li>4K decode and w780 posters (I1)</li>
-          <li>edge fade (F)</li>
-          <li>morph and ring fixes (M3, R1, R2)</li>
-          <li>tab bar snap (T1)</li>
-          <li>collection header (C)</li>
-          <li>trailer delay setting (M4)</li>
-          <li>Auto-Play ranking (A)</li>
-        </ul>
-      </li>
-    </ul>
-    <p class="small muted">Rules for the new page:</p>
-    <ul class="small muted">
-      <li>One motion per press, and nothing moves after it settles.</li>
-      <li>Home rests at offset 0 at the top, so the tab bar is never half shown.</li>
-      <li>Every full-bleed image decodes at 3840 px.</li>
-      <li>The edge fade belongs to the row component, so it appears wherever rows do.</li>
-    </ul>
+    <p><b>Collections:</b> a folder is a second stage-and-strip page (FEAT-43), with the folder's logo or title in the stage. The grid view stays as an option.</p>
+    <p><b>Today's fix batch:</b> drop M2 (settle rules) and N1 (Up into Genres). B makes both unnecessary, because the strip pages whole rows and the stage can't take focus. <b>Put M5 back in the batch:</b> its fade-out-then-in rule for the hero text is exactly what the stage needs, so it carries over instead of being thrown away. Everything else stays as before.</p>
   </div>
-  <div class="sec-head" style="margin-top:12px"><h3>Next step</h3></div>
+  <div class="sec-head" style="margin-top:12px"><h3>Still open</h3></div>
   <div class="q small">
-    <div>Write an implementation plan for the new page, the same way as the Detail + Settings plan (specs, waves, gates, device pass in the Test profile). It runs on the Mac after the fix batch lands, since both touch <code>HomeView</code>, <code>BrowseComponents</code> and <code>InlineTrailerCard</code>.</div>
+    <div><b>How much of the next row shows?</b> Only its heading (as in the mockup), or a sliver of its posters too (official NuvioTV's "Show Preview Row")?</div>
+    <div><b>What happens to today's layout?</b> Keep Classic as a fallback for one or two betas, as with Detail?</div>
   </div>
 </section>
 

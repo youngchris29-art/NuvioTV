@@ -340,4 +340,26 @@ Dev build with `-debug.homeScrollProbe YES -debug.pinnedRowSettleProbe YES -debu
   - Opus critique (`docs/research/steven-rc1-fix-spec-critique.md`): 30 findings, 2 P1 / 15 P2 / 13 P3. Both P1s fixed in r2: the hero-mode Play/Pause mute path, and the hero sharpen moved after commit so prefetches are unchanged.
   - The waves follow the critique's merged plan (W1 A/B/C, W2 D/E/F, W3 T/D/A, W4 H/G).
 - **metahub poster sizes measured (main session):** small 300×450, medium 500×750, large 780×1170 (2–3× the bytes of medium) on three titles. The `large` poster upgrade stays.
+### Wave 1 + Gate 1 (2026-10-03 evening)
+
+- **Clone commit `8d3e361b`.**
+  - W1-A (Opus): M3 rest gate + per-row playing key, hero-mode mute kept; R2 morph stages and abort.
+  - W1-B (Sonnet): I1 decode sizes, w780 + metahub large posters, original logos.
+  - W1-C (Sonnet): B2 listener lifecycle.
+- **Gate 1:**
+  - Debug green; NuvioTVTests **788 / 0** (+79); jvm **1372 / 0**; K/N **1390 / 0**; w500 grep gate clean.
+  - Warnings 321 → 321: two new Swift-6-only isolation warnings, both harmless in Swift 5 mode (the `ArtworkLetterbox.zoom` call shape copied from `CachedAsyncImage`; Detail's legacy trailer completion is now `@Sendable` but still delivered on main).
+- **Simulator (FA87), classic hero:**
+  - gate fires at rest + 1.00 s (`src=clock` until W2-E feeds Home's rest);
+  - morph goes reveal → wide; row scroll pass 1 moves, pass 2 measures `fits`;
+  - the listener starts on first use and serves 1920×1080; the trailer attaches and plays;
+  - a fast double-Right collapses the card cleanly.
+- **Image probe:**
+  - Home posters fetch metahub `poster/large` 780×1170 and decode at card size 512×768 (`req=768`);
+  - backdrops ≥ 1920 go to the large pool;
+  - `poster/small … req=1920` lines come from call sites scheduled for W3/W4.
+- **B1 knob recipe:** `silent` → `health alive=0` → `dead reason=active` → `rebuild prefer=8230` → `retire-timeout` → `ready port=8230` (same port) → new titles play.
+- **Finding, pre-existing, not from this batch.** In the pinned (Nuvio-style) hero on the simulator, focus jumps from the morphing row-0 card into the hero about 1.3 s after the morph starts (`upFallback … reason=upIntoHero src=press-any`), and the card collapses. The unchanged `284fd764` build does the same. It only touches Classic's pinned mode, which the Stage batch retires. Recheck on the device pass with the Nuvio hero on.
+- **Mute in both trailer locations** waits for W2-E's leaf readout (no log line yet); checked at Gate 2.
+
 - Previously: design phase running: spec A (`docs/research/steven-rc1-fix-spec-A-motion-trailers.md`: M3, R2, R1, M4, M5, B2) and spec B (`docs/research/steven-rc1-fix-spec-B-images-rows-detail.md`: I1, F, C, T1, A, Detail items, P).

@@ -1,0 +1,594 @@
+Filtering the log data using "composedMessage CONTAINS "[StageSpike]""
+2026-10-03 11:10:08.818 view appear mech=a1 rail=- sidebar=0 pageSeconds=0.5 noZoom=0
+2026-10-03 11:10:08.820 config mech=a1 P=515.5 H=559.5 rows=0 pageSeconds=0.5
+2026-10-03 11:10:11.459 config mech=a1 P=515.5 H=559.5 rows=4 pageSeconds=0.5
+2026-10-03 11:10:11.537 observers started
+2026-10-03 11:10:11.537 marker attached mech=a1
+2026-10-03 11:10:11.822 baseline y=520.5 P=515.5 H=559.5 rows=4
+2026-10-03 11:10:14.133 focus → UIKitFocusableViewResponderItem frame=328,618,220,374 label=- id=-
+2026-10-03 11:10:16.444 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+2026-10-03 11:10:17.909 seg p=1 k=1 start=-410 dur=1600 from=520.5 to=5.0 travel=-515.5
+2026-10-03 11:10:18.929 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+2026-10-03 11:10:19.918 PRESS #1 0→1 mech=a1 moves=1 settle=1190 travel=-515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:series:top close=row
+2026-10-03 11:10:21.929 seg p=2 k=1 start=+88 dur=1802 from=5.0 to=-510.5 travel=-515.5
+2026-10-03 11:10:23.247 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+2026-10-03 11:10:24.914 PRESS #2 1→2 mech=a1 moves=1 settle=1890 travel=-515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:movie:imdbRating close=row
+2026-10-03 11:10:26.867 seg p=3 k=1 start=+499 dur=1348 from=-510.5 to=-1026.0 travel=-515.5
+2026-10-03 11:10:28.749 moveFail heading=down
+2026-10-03 11:10:28.874 PRESS #3 2→3 mech=a1 moves=1 settle=1848 travel=-515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:series:imdbRating close=idle
+2026-10-03 11:10:34.719 focus → UIKitFocusableViewResponderItem frame=328,103,220,374 label=- id=-
+2026-10-03 11:10:35.576 focus → nil
+2026-10-03 11:10:35.942 focus → UIKitFocusableFillerItem frame=0,82,1920,391 label=- id=-
+2026-10-03 11:10:36.082 focus → UIKitFocusableViewResponderItem frame=824,163,220,374 label=- id=-
+2026-10-03 11:10:37.447 seg p=0 k=1 start=n/a dur=1352 from=-1026.0 to=-510.5 travel=515.5
+2026-10-03 11:10:37.657 PRESS #4 3→2 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:movie:imdbRating close=idle
+2026-10-03 11:10:37.841 focus → UIKitFocusableFillerItem frame=824,82,220,391 label=- id=-
+2026-10-03 11:10:38.031 focus → UIKitFocusableViewResponderItem frame=824,163,220,374 label=- id=-
+2026-10-03 11:10:39.393 seg p=5 k=1 start=-150 dur=1346 from=-510.5 to=5.0 travel=515.5
+2026-10-03 11:10:39.788 focus → UIKitFocusableFillerItem frame=824,82,220,391 label=- id=-
+2026-10-03 11:10:40.073 focus → UIKitFocusableViewResponderItem frame=824,163,220,374 label=- id=-
+2026-10-03 11:10:40.099 PRESS #5 2→1 mech=a1 moves=1 settle=1196 travel=515.5 afterRest=0 residual=moving src=row key=com.linvo.cinemeta:series:top close=row
+2026-10-03 11:10:41.340 seg p=6 k=1 start=-114 dur=1253 from=5.0 to=520.5 travel=515.5
+2026-10-03 11:10:42.049 focus → UITabBarButton frame=391,62,124,36 label=Home id=-
+2026-10-03 11:10:42.778 PRESS #6 1→0 mech=a1 moves=1 settle=1139 travel=515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:movie:top close=idle
+2026-10-03 11:10:44.052 moveFail heading=up
+2026-10-03 11:10:48.088 focus → UIKitFocusableViewResponderItem frame=328,618,220,374 label=- id=-
+2026-10-03 11:10:48.536 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+2026-10-03 11:10:48.737 focus → UIKitFocusableFillerItem frame=328,1590,220,415 label=- id=-
+2026-10-03 11:10:48.899 focus → UIKitFocusableFillerItem frame=328,1833,220,415 label=- id=-
+2026-10-03 11:10:49.003 moveFail heading=down
+2026-10-03 11:10:49.109 moveFail heading=down
+2026-10-03 11:10:49.150 focus → UIKitFocusableViewResponderItem frame=328,891,220,374 label=- id=-
+2026-10-03 11:10:49.193 PRESS #7 0→1 mech=a1 moves=1 settle=moving travel=-1243.0 afterRest=0 residual=moving src=row key=com.linvo.cinemeta:series:top close=row
+2026-10-03 11:10:49.216 focus → UIKitFocusableFillerItem frame=328,1410,220,391 label=- id=-
+2026-10-03 11:10:49.318 moveFail heading=down
+2026-10-03 11:10:49.418 moveFail heading=down
+2026-10-03 11:10:49.445 focus → UIKitFocusableViewResponderItem frame=328,361,220,374 label=- id=-
+2026-10-03 11:10:49.518 moveFail heading=down
+2026-10-03 11:10:49.620 moveFail heading=down
+2026-10-03 11:10:49.721 moveFail heading=down
+2026-10-03 11:10:49.822 moveFail heading=down
+2026-10-03 11:10:49.922 moveFail heading=down
+2026-10-03 11:10:50.023 moveFail heading=down
+2026-10-03 11:10:50.123 moveFail heading=down
+2026-10-03 11:10:50.226 moveFail heading=down
+2026-10-03 11:10:50.324 moveFail heading=down
+2026-10-03 11:10:50.426 moveFail heading=down
+2026-10-03 11:10:50.527 moveFail heading=down
+2026-10-03 11:10:50.627 moveFail heading=down
+2026-10-03 11:10:50.639 seg p=7 k=1 start=+11 dur=1944 from=520.5 to=-1026.0 travel=-1546.5
+2026-10-03 11:10:50.722 PRESS #8 1→3 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:series:imdbRating close=idle
+2026-10-03 11:10:50.741 moveFail heading=down
+2026-10-03 11:10:50.846 moveFail heading=down
+2026-10-03 11:10:50.942 moveFail heading=down
+2026-10-03 11:11:36.832 view appear mech=a2 rail=- sidebar=0 pageSeconds=0.5 noZoom=0
+2026-10-03 11:11:36.833 config mech=a2 P=515.5 H=559.5 rows=0 pageSeconds=0.5
+2026-10-03 11:11:37.754 config mech=a2 P=515.5 H=559.5 rows=4 pageSeconds=0.5
+2026-10-03 11:11:37.775 observers started
+2026-10-03 11:11:37.775 marker attached mech=a2
+2026-10-03 11:11:37.905 baseline y=520.5 P=515.5 H=559.5 rows=4
+2026-10-03 11:11:41.156 focus → UIKitFocusableViewResponderItem frame=328,618,220,374 label=- id=-
+2026-10-03 11:11:42.984 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+2026-10-03 11:11:43.605 seg p=1 k=1 start=-60 dur=533 from=520.5 to=5.0 travel=-515.5
+2026-10-03 11:11:44.807 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+2026-10-03 11:11:44.846 PRESS #1 0→1 mech=a2 moves=1 settle=474 travel=-515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:series:top close=row
+2026-10-03 11:11:45.422 seg p=2 k=1 start=-74 dur=533 from=5.0 to=-510.5 travel=-515.5
+2026-10-03 11:11:46.629 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+2026-10-03 11:11:46.652 PRESS #2 1→2 mech=a2 moves=1 settle=459 travel=-515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:movie:imdbRating close=row
+2026-10-03 11:11:47.255 seg p=3 k=1 start=-47 dur=533 from=-510.5 to=-1026.0 travel=-515.5
+2026-10-03 11:11:48.469 moveFail heading=down
+2026-10-03 11:11:48.655 PRESS #3 2→3 mech=a2 moves=1 settle=486 travel=-515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:series:imdbRating close=idle
+2026-10-03 11:11:52.360 focus → UIKitFocusableViewResponderItem frame=328,103,220,374 label=- id=-
+2026-10-03 11:11:52.376 focus → nil
+2026-10-03 11:11:52.412 focus → UIKitFocusableViewResponderItem frame=80,106,220,374 label=- id=-
+2026-10-03 11:11:52.989 seg p=4 k=1 start=-102 dur=533 from=-1026.0 to=-510.5 travel=515.5
+2026-10-03 11:11:54.206 focus → UIKitFocusableFillerItem frame=80,82,220,391 label=- id=-
+2026-10-03 11:11:54.320 focus → UIKitFocusableViewResponderItem frame=80,176,220,374 label=- id=-
+2026-10-03 11:11:54.343 PRESS #4 3→2 mech=a2 moves=2 settle=moving travel=555.5 afterRest=1 residual=moving src=row key=com.linvo.cinemeta:movie:imdbRating close=row
+2026-10-03 11:11:54.939 seg p=4 k=2 start=+1731 dur=650 from=-510.5 to=5.0 travel=515.5
+2026-10-03 11:11:55.873 PRESS #5 2→1 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:series:top close=idle
+2026-10-03 11:11:56.012 focus → UIKitFocusableFillerItem frame=80,82,220,391 label=- id=-
+2026-10-03 11:11:56.101 focus → UIKitFocusableViewResponderItem frame=80,163,220,374 label=- id=-
+2026-10-03 11:11:56.722 seg p=6 k=1 start=-75 dur=560 from=5.0 to=520.5 travel=515.5
+2026-10-03 11:11:57.885 focus → UITabBarButton frame=391,62,124,36 label=Home id=-
+2026-10-03 11:11:58.140 PRESS #6 1→0 mech=a2 moves=1 settle=485 travel=515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:movie:top close=idle
+2026-10-03 11:11:59.704 moveFail heading=up
+2026-10-03 11:12:03.596 focus → UIKitFocusableViewResponderItem frame=328,618,220,374 label=- id=-
+2026-10-03 11:12:04.114 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+2026-10-03 11:12:04.302 focus → UIKitFocusableFillerItem frame=328,1576,220,415 label=- id=-
+2026-10-03 11:12:04.451 focus → UIKitFocusableFillerItem frame=328,1883,220,415 label=- id=-
+2026-10-03 11:12:04.559 moveFail heading=down
+2026-10-03 11:12:04.667 moveFail heading=down
+2026-10-03 11:12:04.743 focus → UIKitFocusableViewResponderItem frame=328,862,220,374 label=- id=-
+2026-10-03 11:12:04.777 PRESS #7 0→1 mech=a2 moves=1 settle=moving travel=-1259.0 afterRest=0 residual=moving src=row key=com.linvo.cinemeta:series:top close=row
+2026-10-03 11:12:04.803 focus → UIKitFocusableFillerItem frame=328,1381,220,391 label=- id=-
+2026-10-03 11:12:04.904 moveFail heading=down
+2026-10-03 11:12:05.005 moveFail heading=down
+2026-10-03 11:12:05.045 focus → UIKitFocusableViewResponderItem frame=328,363,220,374 label=- id=-
+2026-10-03 11:12:05.106 moveFail heading=down
+2026-10-03 11:12:05.207 moveFail heading=down
+2026-10-03 11:12:05.308 moveFail heading=down
+2026-10-03 11:12:05.414 moveFail heading=down
+2026-10-03 11:12:05.518 moveFail heading=down
+2026-10-03 11:12:05.621 moveFail heading=down
+2026-10-03 11:12:05.719 moveFail heading=down
+2026-10-03 11:12:05.820 moveFail heading=down
+2026-10-03 11:12:05.921 moveFail heading=down
+2026-10-03 11:12:06.023 moveFail heading=down
+2026-10-03 11:12:06.128 moveFail heading=down
+2026-10-03 11:12:06.223 moveFail heading=down
+2026-10-03 11:12:06.224 seg p=7 k=1 start=-69 dur=2033 from=520.5 to=-1026.0 travel=-1546.5
+2026-10-03 11:12:06.289 PRESS #8 1→3 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:series:imdbRating close=idle
+2026-10-03 11:12:06.325 moveFail heading=down
+2026-10-03 11:12:06.434 moveFail heading=down
+2026-10-03 11:12:06.532 moveFail heading=down
+2026-10-03 11:12:15.932 view appear mech=b1 rail=- sidebar=0 pageSeconds=0.5 noZoom=0
+2026-10-03 11:12:15.932 config mech=b1 P=515.5 H=559.5 rows=0 pageSeconds=0.5
+2026-10-03 11:12:16.758 config mech=b1 P=515.5 H=559.5 rows=4 pageSeconds=0.5
+2026-10-03 11:12:16.775 observers started
+2026-10-03 11:12:16.776 marker attached mech=b1
+2026-10-03 11:12:16.905 baseline y=520.5 P=515.5 H=559.5 rows=4
+2026-10-03 11:12:20.219 focus → UIKitFocusableViewResponderItem frame=328,618,220,374 label=- id=-
+2026-10-03 11:12:22.103 moveFail heading=down
+2026-10-03 11:12:22.215 focusRequest row=com.linvo.cinemeta:series:top gen=1
+2026-10-03 11:12:22.252 focus → UIKitFocusableViewResponderItem frame=80,1134,220,374 label=- id=-
+2026-10-03 11:12:22.924 seg p=1 k=1 start=+198 dur=500 from=520.5 to=5.0 travel=-515.5
+2026-10-03 11:12:23.897 moveFail heading=down
+2026-10-03 11:12:23.898 PRESS #1 0→1 mech=b1 moves=1 settle=698 travel=-515.5 afterRest=0 residual=0.0 src=down key=com.linvo.cinemeta:series:top close=press
+2026-10-03 11:12:23.952 focusRequest row=com.linvo.cinemeta:movie:imdbRating gen=2
+2026-10-03 11:12:23.978 focus → UIKitFocusableViewResponderItem frame=80,1134,220,374 label=- id=-
+2026-10-03 11:12:24.605 seg p=2 k=1 start=+112 dur=478 from=5.0 to=-510.5 travel=-515.5
+2026-10-03 11:12:25.733 moveFail heading=down
+2026-10-03 11:12:25.734 PRESS #2 1→2 mech=b1 moves=1 settle=590 travel=-515.5 afterRest=0 residual=0.0 src=down key=com.linvo.cinemeta:movie:imdbRating close=press
+2026-10-03 11:12:25.769 focusRequest row=com.linvo.cinemeta:series:imdbRating gen=3
+2026-10-03 11:12:25.786 focus → UIKitFocusableViewResponderItem frame=80,1134,220,374 label=- id=-
+2026-10-03 11:12:26.455 seg p=3 k=1 start=+104 dur=500 from=-510.5 to=-1026.0 travel=-515.5
+2026-10-03 11:12:27.569 moveFail heading=down
+2026-10-03 11:12:27.571 PRESS #3 2→3 mech=b1 moves=1 settle=604 travel=-515.5 afterRest=0 residual=0.0 src=down key=com.linvo.cinemeta:series:imdbRating close=press
+2026-10-03 11:12:29.089 PRESS #4 3→3 mech=b1 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=down key=- close=idle
+2026-10-03 11:12:31.459 focus → UIKitFocusableViewResponderItem frame=0,521,1920,6 label=- id=-
+2026-10-03 11:12:31.528 sentinel focus ignored (re-resolution 58 ms after a page)
+2026-10-03 11:12:31.558 focusRequest row=com.linvo.cinemeta:movie:imdbRating gen=4
+2026-10-03 11:12:31.585 focus → UIKitFocusableViewResponderItem frame=80,103,220,374 label=- id=-
+2026-10-03 11:12:32.255 seg p=5 k=1 start=+185 dur=483 from=-1026.0 to=-510.5 travel=515.5
+2026-10-03 11:12:33.300 focus → UIKitFocusableViewResponderItem frame=0,521,1920,6 label=- id=-
+2026-10-03 11:12:33.302 PRESS #5 3→2 mech=b1 moves=1 settle=668 travel=515.5 afterRest=0 residual=0.0 src=up-move key=com.linvo.cinemeta:movie:imdbRating close=press
+2026-10-03 11:12:33.380 sentinel focus ignored (re-resolution 78 ms after a page)
+2026-10-03 11:12:33.420 focusRequest row=com.linvo.cinemeta:series:top gen=5
+2026-10-03 11:12:33.452 focus → UIKitFocusableViewResponderItem frame=80,103,220,374 label=- id=-
+2026-10-03 11:12:34.089 seg p=6 k=1 start=+185 dur=485 from=-510.5 to=5.0 travel=515.5
+2026-10-03 11:12:35.189 focus → UIKitFocusableViewResponderItem frame=0,521,1920,6 label=- id=-
+2026-10-03 11:12:35.193 PRESS #6 2→1 mech=b1 moves=1 settle=670 travel=515.5 afterRest=0 residual=0.0 src=up-move key=com.linvo.cinemeta:series:top close=press
+2026-10-03 11:12:35.261 focus → nil
+2026-10-03 11:12:35.311 focus → UIKitFocusableViewResponderItem frame=80,103,220,374 label=- id=-
+2026-10-03 11:12:35.353 focusRequest row=com.linvo.cinemeta:movie:top gen=6
+2026-10-03 11:12:36.055 seg p=7 k=1 start=+230 dur=527 from=5.0 to=520.5 travel=515.5
+2026-10-03 11:12:37.143 focus → UITabBarButton frame=391,62,124,36 label=Home id=-
+2026-10-03 11:12:37.146 PRESS #7 1→0 mech=b1 moves=1 settle=757 travel=515.5 afterRest=0 residual=0.0 src=up-move key=com.linvo.cinemeta:movie:top close=press
+2026-10-03 11:12:38.675 PRESS #8 0→0 mech=b1 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=up-move key=- close=idle
+2026-10-03 11:12:38.874 moveFail heading=up
+2026-10-03 11:12:42.989 focus → UIKitFocusableViewResponderItem frame=328,618,220,374 label=- id=-
+2026-10-03 11:12:43.434 moveFail heading=down
+2026-10-03 11:12:43.636 moveFail heading=down
+2026-10-03 11:12:43.790 moveFail heading=down
+2026-10-03 11:12:43.887 moveFail heading=down
+2026-10-03 11:12:43.988 moveFail heading=down
+2026-10-03 11:12:44.088 moveFail heading=down
+2026-10-03 11:12:44.190 moveFail heading=down
+2026-10-03 11:12:44.290 moveFail heading=down
+2026-10-03 11:12:44.393 moveFail heading=down
+2026-10-03 11:12:44.494 moveFail heading=down
+2026-10-03 11:12:44.595 moveFail heading=down
+2026-10-03 11:12:44.696 moveFail heading=down
+2026-10-03 11:12:44.796 moveFail heading=down
+2026-10-03 11:12:44.897 moveFail heading=down
+2026-10-03 11:12:44.998 moveFail heading=down
+2026-10-03 11:12:45.104 moveFail heading=down
+2026-10-03 11:12:45.201 moveFail heading=down
+2026-10-03 11:12:45.300 moveFail heading=down
+2026-10-03 11:12:45.403 moveFail heading=down
+2026-10-03 11:12:45.503 moveFail heading=down
+2026-10-03 11:12:45.604 moveFail heading=down
+2026-10-03 11:12:45.706 moveFail heading=down
+2026-10-03 11:12:45.809 moveFail heading=down
+2026-10-03 11:12:55.683 view appear mech=b2 rail=- sidebar=0 pageSeconds=0.5 noZoom=0
+2026-10-03 11:12:55.683 config mech=b2 P=515.5 H=559.5 rows=0 pageSeconds=0.5
+2026-10-03 11:12:56.544 config mech=b2 P=515.5 H=559.5 rows=4 pageSeconds=0.5
+2026-10-03 11:12:56.563 observers started
+2026-10-03 11:12:56.563 marker attached mech=b2
+2026-10-03 11:12:56.689 baseline y=520.5 P=515.5 H=559.5 rows=4
+2026-10-03 11:13:00.192 focus → UIKitFocusableViewResponderItem frame=328,618,220,374 label=- id=-
+2026-10-03 11:13:02.063 moveFail heading=down
+2026-10-03 11:13:03.853 moveFail heading=down
+2026-10-03 11:13:05.686 moveFail heading=down
+2026-10-03 11:13:07.522 moveFail heading=down
+2026-10-03 11:13:11.609 focus → UITabBarButton frame=391,62,124,36 label=Home id=-
+2026-10-03 11:13:13.583 moveFail heading=up
+2026-10-03 11:13:15.413 moveFail heading=up
+2026-10-03 11:13:17.226 moveFail heading=up
+2026-10-03 11:13:19.065 moveFail heading=up
+2026-10-03 11:13:22.948 focus → UIKitFocusableViewResponderItem frame=328,618,220,374 label=- id=-
+2026-10-03 11:13:23.459 moveFail heading=down
+2026-10-03 11:13:23.662 moveFail heading=down
+2026-10-03 11:13:23.809 moveFail heading=down
+2026-10-03 11:13:23.911 moveFail heading=down
+2026-10-03 11:13:24.013 moveFail heading=down
+2026-10-03 11:13:24.116 moveFail heading=down
+2026-10-03 11:13:24.212 moveFail heading=down
+2026-10-03 11:13:24.314 moveFail heading=down
+2026-10-03 11:13:24.407 moveFail heading=down
+2026-10-03 11:13:24.519 moveFail heading=down
+2026-10-03 11:13:24.615 moveFail heading=down
+2026-10-03 11:13:24.717 moveFail heading=down
+2026-10-03 11:13:24.819 moveFail heading=down
+2026-10-03 11:13:24.919 moveFail heading=down
+2026-10-03 11:13:25.020 moveFail heading=down
+2026-10-03 11:13:25.124 moveFail heading=down
+2026-10-03 11:13:25.219 moveFail heading=down
+2026-10-03 11:13:25.324 moveFail heading=down
+2026-10-03 11:13:25.421 moveFail heading=down
+2026-10-03 11:13:25.522 moveFail heading=down
+2026-10-03 11:13:25.625 moveFail heading=down
+2026-10-03 11:13:25.727 moveFail heading=down
+2026-10-03 11:13:25.830 moveFail heading=down
+2026-10-03 11:15:00.225 observers started
+2026-10-03 11:15:00.225 rail mount armed=0 focused=- tab=0 mode=always
+2026-10-03 11:15:00.229 focus → nil
+2026-10-03 11:15:00.320 view appear mech=a2 rail=always sidebar=1 pageSeconds=0.5 noZoom=0
+2026-10-03 11:15:00.320 config mech=a2 P=515.5 H=559.5 rows=0 pageSeconds=0.5
+2026-10-03 11:15:00.474 focus → UIKitFocusableViewResponderItem frame=28,316,60,60 label=- id=-
+2026-10-03 11:15:00.490 rail focus -→0 armed=0 focused=0 tab=0 mode=always
+2026-10-03 11:15:01.807 config mech=a2 P=515.5 H=559.5 rows=4 pageSeconds=0.5
+2026-10-03 11:15:01.824 marker attached mech=a2
+2026-10-03 11:15:01.957 baseline y=520.5 P=515.5 H=559.5 rows=4
+2026-10-03 11:15:05.165 moveFail heading=right
+2026-10-03 11:15:06.383 moveFail heading=right
+2026-10-03 11:15:07.596 moveFail heading=right
+2026-10-03 11:15:08.830 moveFail heading=left
+2026-10-03 11:15:10.427 moveFail heading=left
+2026-10-03 11:15:11.644 moveFail heading=left
+2026-10-03 11:15:12.878 moveFail heading=left
+2026-10-03 11:15:14.599 focus → UIKitFocusableViewResponderItem frame=28,390,276,60 label=- id=-
+2026-10-03 11:15:14.741 rail focus 0→1 armed=0 focused=1 tab=0 mode=always
+2026-10-03 11:15:15.817 focus → UIKitFocusableViewResponderItem frame=28,464,276,60 label=- id=-
+2026-10-03 11:15:15.828 rail focus 1→2 armed=0 focused=2 tab=0 mode=always
+2026-10-03 11:15:17.053 focus → UIKitFocusableViewResponderItem frame=28,390,276,60 label=- id=-
+2026-10-03 11:15:17.061 rail focus 2→1 armed=0 focused=1 tab=0 mode=always
+2026-10-03 11:15:18.284 focus → UIKitFocusableViewResponderItem frame=28,316,276,60 label=- id=-
+2026-10-03 11:15:18.294 rail focus 1→0 armed=0 focused=0 tab=0 mode=always
+2026-10-03 11:15:19.537 moveFail heading=right
+2026-10-03 11:15:21.476 rail menu armed=0 focused=0 tab=0 mode=always
+2026-10-03 11:15:23.326 rail menu armed=0 focused=0 tab=0 mode=always
+2026-10-03 11:15:31.441 observers started
+2026-10-03 11:15:31.441 rail mount armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:15:31.444 focus → nil
+2026-10-03 11:15:31.496 view appear mech=a2 rail=fail sidebar=1 pageSeconds=0.5 noZoom=0
+2026-10-03 11:15:31.496 config mech=a2 P=515.5 H=559.5 rows=0 pageSeconds=0.5
+2026-10-03 11:15:31.530 focus → nil
+2026-10-03 11:15:32.327 config mech=a2 P=515.5 H=559.5 rows=4 pageSeconds=0.5
+2026-10-03 11:15:32.344 marker attached mech=a2
+2026-10-03 11:15:32.378 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+2026-10-03 11:15:32.541 baseline y=520.5 P=515.5 H=559.5 rows=4
+2026-10-03 11:15:35.996 focus → UIKitFocusableViewResponderItem frame=444,618,220,374 label=- id=-
+2026-10-03 11:15:37.366 focus → UIKitFocusableViewResponderItem frame=692,618,220,374 label=- id=-
+2026-10-03 11:15:38.619 focus → UIKitFocusableViewResponderItem frame=940,618,220,374 label=- id=-
+2026-10-03 11:15:39.851 focus → UIKitFocusableViewResponderItem frame=692,618,220,374 label=- id=-
+2026-10-03 11:15:41.360 focus → UIKitFocusableViewResponderItem frame=444,618,220,374 label=- id=-
+2026-10-03 11:15:42.594 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+2026-10-03 11:15:43.845 rail arm reason=moveFail-left armed=1 focused=- tab=0 mode=fail
+2026-10-03 11:15:43.845 moveFail heading=left
+2026-10-03 11:15:43.878 focus → UIKitFocusableViewResponderItem frame=28,316,60,60 label=- id=-
+2026-10-03 11:15:43.892 rail focus -→0 armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:15:45.343 focus → UIKitFocusableViewResponderItem frame=28,390,276,60 label=- id=-
+2026-10-03 11:15:45.353 rail focus 0→1 armed=1 focused=1 tab=0 mode=fail
+2026-10-03 11:15:46.582 focus → UIKitFocusableViewResponderItem frame=28,464,276,60 label=- id=-
+2026-10-03 11:15:46.592 rail focus 1→2 armed=1 focused=2 tab=0 mode=fail
+2026-10-03 11:15:47.802 focus → UIKitFocusableViewResponderItem frame=28,390,276,60 label=- id=-
+2026-10-03 11:15:47.810 rail focus 2→1 armed=1 focused=1 tab=0 mode=fail
+2026-10-03 11:15:49.030 focus → UIKitFocusableViewResponderItem frame=28,316,276,60 label=- id=-
+2026-10-03 11:15:49.037 rail focus 1→0 armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:15:50.249 moveFail heading=right
+2026-10-03 11:15:51.826 rail menu armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:15:51.832 focus → nil
+2026-10-03 11:15:51.834 rail focus 0→- armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:15:51.838 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+2026-10-03 11:15:53.826 menu at row 0 -> chrome.requestReveal()
+2026-10-03 11:15:53.828 rail arm reason=revealRequest armed=1 focused=- tab=0 mode=fail
+2026-10-03 11:15:53.843 focus → UIKitFocusableViewResponderItem frame=28,316,60,60 label=- id=-
+2026-10-03 11:15:53.847 rail focus -→0 armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:15:55.360 PRESS #1 0→0 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=menu key=- close=idle
+2026-10-03 11:17:55.452 observers started
+2026-10-03 11:17:55.452 rail mount armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:17:55.455 focus → nil
+2026-10-03 11:17:55.536 view appear mech=a2 rail=fail sidebar=1 pageSeconds=0.5 noZoom=0
+2026-10-03 11:17:55.541 config mech=a2 P=515.5 H=559.5 rows=0 pageSeconds=0.5
+2026-10-03 11:17:55.637 focus → nil
+2026-10-03 11:17:57.033 config mech=a2 P=515.5 H=559.5 rows=4 pageSeconds=0.5
+2026-10-03 11:17:57.050 marker attached mech=a2
+2026-10-03 11:17:57.083 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+2026-10-03 11:17:57.242 baseline y=520.5 P=515.5 H=559.5 rows=4
+2026-10-03 11:18:00.753 focus → UIKitFocusableViewResponderItem frame=444,618,220,374 label=- id=-
+2026-10-03 11:18:01.987 focus → UIKitFocusableViewResponderItem frame=692,618,220,374 label=- id=-
+2026-10-03 11:18:03.218 focus → UIKitFocusableViewResponderItem frame=940,618,220,374 label=- id=-
+2026-10-03 11:18:04.450 focus → UIKitFocusableViewResponderItem frame=692,618,220,374 label=- id=-
+2026-10-03 11:18:06.113 focus → UIKitFocusableViewResponderItem frame=444,618,220,374 label=- id=-
+2026-10-03 11:18:07.334 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+2026-10-03 11:18:08.581 rail capture return item=UIKitFocusableViewResponderItem armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:18:08.581 rail arm reason=moveFail-left armed=1 focused=- tab=0 mode=fail
+2026-10-03 11:18:08.581 moveFail heading=left
+2026-10-03 11:18:08.705 focus → UIKitFocusableViewResponderItem frame=28,316,60,60 label=- id=-
+2026-10-03 11:18:08.732 rail focus -→0 armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:18:10.230 focus → UIKitFocusableViewResponderItem frame=28,390,276,60 label=- id=-
+2026-10-03 11:18:10.252 rail focus 0→1 armed=1 focused=1 tab=0 mode=fail
+2026-10-03 11:18:11.483 focus → UIKitFocusableViewResponderItem frame=28,464,276,60 label=- id=-
+2026-10-03 11:18:11.490 rail focus 1→2 armed=1 focused=2 tab=0 mode=fail
+2026-10-03 11:18:12.716 focus → UIKitFocusableViewResponderItem frame=28,390,276,60 label=- id=-
+2026-10-03 11:18:12.724 rail focus 2→1 armed=1 focused=1 tab=0 mode=fail
+2026-10-03 11:18:13.970 focus → UIKitFocusableViewResponderItem frame=28,316,276,60 label=- id=-
+2026-10-03 11:18:13.979 rail focus 1→0 armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:18:15.217 rail exit via=right armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:18:15.217 moveFail heading=right
+2026-10-03 11:18:15.237 focus → nil
+2026-10-03 11:18:15.247 rail focus 0→- armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:18:15.264 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+2026-10-03 11:18:15.587 rail exit landed same=1 target=item nil=0 armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:18:16.949 menu at row 0 -> chrome.requestReveal()
+2026-10-03 11:18:16.955 rail capture return item=UIKitFocusableViewResponderItem armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:18:16.955 rail arm reason=revealRequest armed=1 focused=- tab=0 mode=fail
+2026-10-03 11:18:16.977 focus → UIKitFocusableViewResponderItem frame=28,316,60,60 label=- id=-
+2026-10-03 11:18:16.985 rail focus -→0 armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:18:18.478 PRESS #1 0→0 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=menu key=- close=idle
+2026-10-03 11:18:18.977 rail menu armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:18:18.978 rail exit via=menu armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:18:18.989 focus → nil
+2026-10-03 11:18:18.995 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+2026-10-03 11:18:18.998 rail focus 0→- armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:18:19.144 rail exit landed same=1 target=item nil=0 armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:18:21.047 focus → UIKitFocusableViewResponderItem frame=196,1134,220,374 label=- id=-
+2026-10-03 11:18:21.675 seg p=2 k=1 start=-59 dur=533 from=520.5 to=5.0 travel=-515.5
+2026-10-03 11:18:22.913 focus → UIKitFocusableViewResponderItem frame=444,618,220,374 label=- id=-
+2026-10-03 11:18:23.092 PRESS #2 0→1 mech=a2 moves=1 settle=474 travel=-515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:series:top close=idle
+2026-10-03 11:18:24.137 focus → UIKitFocusableViewResponderItem frame=692,618,220,374 label=- id=-
+2026-10-03 11:18:25.365 focus → UIKitFocusableViewResponderItem frame=444,618,220,374 label=- id=-
+2026-10-03 11:18:26.598 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+2026-10-03 11:18:27.850 rail capture return item=UIKitFocusableViewResponderItem armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:18:27.850 rail arm reason=moveFail-left armed=1 focused=- tab=0 mode=fail
+2026-10-03 11:18:27.850 moveFail heading=left
+2026-10-03 11:18:27.893 focus → UIKitFocusableViewResponderItem frame=28,316,60,60 label=- id=-
+2026-10-03 11:18:27.900 rail focus -→0 armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:18:29.587 focus → UIKitFocusableFillerItem frame=214,82,1706,415 label=- id=-
+2026-10-03 11:18:29.605 rail focus 0→- armed=1 focused=- tab=0 mode=fail
+2026-10-03 11:18:29.605 rail disarm (focus left the rail) armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:18:29.708 focus → UIKitFocusableViewResponderItem frame=940,133,220,374 label=- id=-
+2026-10-03 11:18:30.309 seg p=3 k=1 start=-130 dur=569 from=5.0 to=520.5 travel=515.5
+2026-10-03 11:18:31.382 focus → UIKitFocusableViewResponderItem frame=692,618,220,374 label=- id=-
+2026-10-03 11:18:31.725 PRESS #3 1→0 mech=a2 moves=1 settle=439 travel=515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:movie:top close=idle
+2026-10-03 11:18:32.868 focus → UIKitFocusableViewResponderItem frame=692,1134,220,374 label=- id=-
+2026-10-03 11:18:33.475 seg p=4 k=1 start=-84 dur=533 from=520.5 to=5.0 travel=-515.5
+2026-10-03 11:18:34.875 PRESS #4 0→1 mech=a2 moves=1 settle=449 travel=-515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:series:top close=idle
+2026-10-03 11:20:18.386 rail guide enabled=0 hasItem=0
+2026-10-03 11:20:18.435 observers started
+2026-10-03 11:20:18.436 rail mount armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:20:18.462 focus → nil
+2026-10-03 11:20:18.681 view appear mech=a2 rail=fail sidebar=1 pageSeconds=0.5 noZoom=0
+2026-10-03 11:20:18.684 config mech=a2 P=515.5 H=559.5 rows=0 pageSeconds=0.5
+2026-10-03 11:20:18.815 focus → nil
+2026-10-03 11:20:19.823 config mech=a2 P=515.5 H=559.5 rows=4 pageSeconds=0.5
+2026-10-03 11:20:19.867 marker attached mech=a2
+2026-10-03 11:20:19.956 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+2026-10-03 11:20:20.159 baseline y=520.5 P=515.5 H=559.5 rows=4
+2026-10-03 11:20:24.630 focus → UIKitFocusableViewResponderItem frame=444,618,220,374 label=- id=-
+2026-10-03 11:20:26.033 focus → UIKitFocusableViewResponderItem frame=692,618,220,374 label=- id=-
+2026-10-03 11:20:27.266 focus → UIKitFocusableViewResponderItem frame=940,618,220,374 label=- id=-
+2026-10-03 11:20:28.485 focus → UIKitFocusableViewResponderItem frame=692,618,220,374 label=- id=-
+2026-10-03 11:20:30.029 focus → UIKitFocusableViewResponderItem frame=444,618,220,374 label=- id=-
+2026-10-03 11:20:31.266 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+2026-10-03 11:20:32.509 rail capture return item=UIKitFocusableViewResponderItem armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:20:32.509 rail arm reason=moveFail-left armed=1 focused=- tab=0 mode=fail
+2026-10-03 11:20:32.509 moveFail heading=left
+2026-10-03 11:20:32.521 rail guide enabled=0 hasItem=1
+2026-10-03 11:20:32.550 focus → UIKitFocusableViewResponderItem frame=28,316,60,60 label=- id=-
+2026-10-03 11:20:32.556 rail guide enabled=1 hasItem=1
+2026-10-03 11:20:32.568 rail focus -→0 armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:20:34.045 focus → UIKitFocusableViewResponderItem frame=28,390,276,60 label=- id=-
+2026-10-03 11:20:34.056 rail focus 0→1 armed=1 focused=1 tab=0 mode=fail
+2026-10-03 11:20:35.284 focus → UIKitFocusableViewResponderItem frame=28,464,276,60 label=- id=-
+2026-10-03 11:20:35.292 rail focus 1→2 armed=1 focused=2 tab=0 mode=fail
+2026-10-03 11:20:36.500 focus → UIKitFocusableViewResponderItem frame=28,390,276,60 label=- id=-
+2026-10-03 11:20:36.506 rail focus 2→1 armed=1 focused=1 tab=0 mode=fail
+2026-10-03 11:20:37.731 focus → UIKitFocusableViewResponderItem frame=28,316,276,60 label=- id=-
+2026-10-03 11:20:37.736 rail focus 1→0 armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:20:38.968 moveFail heading=up
+2026-10-03 11:20:40.262 focus → UIKitFocusableViewResponderItem frame=28,390,276,60 label=- id=-
+2026-10-03 11:20:40.267 rail focus 0→1 armed=1 focused=1 tab=0 mode=fail
+2026-10-03 11:20:41.298 focus → UIKitFocusableViewResponderItem frame=28,464,276,60 label=- id=-
+2026-10-03 11:20:41.302 rail focus 1→2 armed=1 focused=2 tab=0 mode=fail
+2026-10-03 11:20:42.333 focus → UIKitFocusableViewResponderItem frame=28,538,276,60 label=- id=-
+2026-10-03 11:20:42.338 rail focus 2→3 armed=1 focused=3 tab=0 mode=fail
+2026-10-03 11:20:43.353 focus → UIKitFocusableViewResponderItem frame=28,612,276,60 label=- id=-
+2026-10-03 11:20:43.358 rail focus 3→4 armed=1 focused=4 tab=0 mode=fail
+2026-10-03 11:20:44.383 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+2026-10-03 11:20:44.389 rail guide enabled=0 hasItem=1
+2026-10-03 11:20:44.392 rail focus 4→- armed=1 focused=- tab=0 mode=fail
+2026-10-03 11:20:44.393 rail disarm (focus left the rail) armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:20:45.419 focus → UIKitFocusableViewResponderItem frame=196,1134,220,374 label=- id=-
+2026-10-03 11:20:46.043 seg p=1 k=1 start=-84 dur=533 from=520.5 to=5.0 travel=-515.5
+2026-10-03 11:20:46.583 focus → UIKitFocusableViewResponderItem frame=196,103,220,374 label=- id=-
+2026-10-03 11:20:46.612 focus → nil
+2026-10-03 11:20:46.643 focus → UIKitFocusableFillerItem frame=116,82,1804,391 label=- id=-
+2026-10-03 11:20:46.742 focus → UIKitFocusableViewResponderItem frame=940,163,220,374 label=- id=-
+2026-10-03 11:20:46.764 PRESS #1 0→1 mech=a2 moves=1 settle=450 travel=-515.5 afterRest=0 residual=moving src=row key=com.linvo.cinemeta:series:top close=row
+2026-10-03 11:20:47.359 seg p=2 k=1 start=-118 dur=597 from=5.0 to=520.5 travel=515.5
+2026-10-03 11:20:47.619 moveFail heading=up
+2026-10-03 11:20:48.657 moveFail heading=up
+2026-10-03 11:20:48.776 PRESS #2 1→0 mech=a2 moves=1 settle=479 travel=515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:movie:top close=idle
+2026-10-03 11:20:49.669 moveFail heading=up
+2026-10-03 11:20:50.682 moveFail heading=up
+2026-10-03 11:20:51.717 moveFail heading=up
+2026-10-03 11:20:52.753 focus → UIKitFocusableViewResponderItem frame=1188,618,220,374 label=- id=-
+2026-10-03 11:20:54.345 menu at row 0 -> chrome.requestReveal()
+2026-10-03 11:20:54.346 rail capture return item=UIKitFocusableViewResponderItem armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:20:54.346 rail arm reason=revealRequest armed=1 focused=- tab=0 mode=fail
+2026-10-03 11:20:54.360 focus → UIKitFocusableViewResponderItem frame=28,316,60,60 label=- id=-
+2026-10-03 11:20:54.363 rail guide enabled=1 hasItem=1
+2026-10-03 11:20:54.367 rail focus -→0 armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:20:55.876 PRESS #3 0→0 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=menu key=- close=idle
+2026-10-03 11:20:56.327 rail menu armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:20:56.327 rail exit via=menu armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:20:56.331 focus → nil
+2026-10-03 11:20:56.335 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+2026-10-03 11:20:56.336 rail guide enabled=0 hasItem=1
+2026-10-03 11:20:56.337 rail focus 0→- armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:20:56.483 rail exit landed same=0 target=item nil=0 armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:20:58.329 focus → UIKitFocusableViewResponderItem frame=196,1134,220,374 label=- id=-
+2026-10-03 11:20:58.959 seg p=4 k=1 start=-38 dur=533 from=520.5 to=5.0 travel=-515.5
+2026-10-03 11:21:00.166 focus → UIKitFocusableViewResponderItem frame=444,618,220,374 label=- id=-
+2026-10-03 11:21:00.376 PRESS #4 0→1 mech=a2 moves=1 settle=495 travel=-515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:series:top close=idle
+2026-10-03 11:21:01.401 focus → UIKitFocusableViewResponderItem frame=692,618,220,374 label=- id=-
+2026-10-03 11:21:02.619 focus → UIKitFocusableViewResponderItem frame=444,618,220,374 label=- id=-
+2026-10-03 11:21:03.853 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+2026-10-03 11:21:05.076 rail capture return item=UIKitFocusableViewResponderItem armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:21:05.076 rail arm reason=moveFail-left armed=1 focused=- tab=0 mode=fail
+2026-10-03 11:21:05.076 moveFail heading=left
+2026-10-03 11:21:05.094 focus → UIKitFocusableViewResponderItem frame=28,316,60,60 label=- id=-
+2026-10-03 11:21:05.097 rail guide enabled=1 hasItem=1
+2026-10-03 11:21:05.099 rail focus -→0 armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:21:06.545 focus → UIKitFocusableFillerItem frame=214,82,1706,415 label=- id=-
+2026-10-03 11:21:06.548 rail guide enabled=0 hasItem=1
+2026-10-03 11:21:06.549 rail focus 0→- armed=1 focused=- tab=0 mode=fail
+2026-10-03 11:21:06.549 rail disarm (focus left the rail) armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:21:06.586 focus → UIKitFocusableViewResponderItem frame=940,133,220,374 label=- id=-
+2026-10-03 11:21:07.210 seg p=5 k=1 start=-45 dur=533 from=5.0 to=520.5 travel=515.5
+2026-10-03 11:21:08.297 focus → UIKitFocusableViewResponderItem frame=692,618,220,374 label=- id=-
+2026-10-03 11:21:08.626 PRESS #5 1→0 mech=a2 moves=1 settle=489 travel=515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:movie:top close=idle
+2026-10-03 11:21:09.754 focus → UIKitFocusableViewResponderItem frame=692,1134,220,374 label=- id=-
+2026-10-03 11:21:10.359 seg p=6 k=1 start=-100 dur=533 from=520.5 to=5.0 travel=-515.5
+2026-10-03 11:21:11.776 PRESS #6 0→1 mech=a2 moves=1 settle=434 travel=-515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:series:top close=idle
+2026-10-03 11:23:16.536 observers started
+2026-10-03 11:23:16.537 rail mount armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:23:16.539 focus → nil
+2026-10-03 11:23:16.608 view appear mech=a2 rail=fail sidebar=1 pageSeconds=0.5 noZoom=0
+2026-10-03 11:23:16.609 config mech=a2 P=515.5 H=559.5 rows=0 pageSeconds=0.5
+2026-10-03 11:23:16.725 focus → nil
+2026-10-03 11:23:17.599 config mech=a2 P=515.5 H=559.5 rows=4 pageSeconds=0.5
+2026-10-03 11:23:17.622 marker attached mech=a2
+2026-10-03 11:23:17.662 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+2026-10-03 11:23:17.843 baseline y=520.5 P=515.5 H=559.5 rows=4
+2026-10-03 11:23:21.655 focus → UIKitFocusableViewResponderItem frame=444,618,220,374 label=- id=-
+2026-10-03 11:23:23.032 focus → UIKitFocusableViewResponderItem frame=692,618,220,374 label=- id=-
+2026-10-03 11:23:24.198 focus → UIKitFocusableViewResponderItem frame=940,618,220,374 label=- id=-
+2026-10-03 11:23:25.436 focus → UIKitFocusableViewResponderItem frame=692,618,220,374 label=- id=-
+2026-10-03 11:23:27.117 focus → UIKitFocusableViewResponderItem frame=444,618,220,374 label=- id=-
+2026-10-03 11:23:28.383 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+2026-10-03 11:23:29.717 rail capture return item=UIKitFocusableViewResponderItem armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:23:29.717 rail arm reason=moveFail-left armed=1 focused=- tab=0 mode=fail
+2026-10-03 11:23:29.718 moveFail heading=left
+2026-10-03 11:23:29.812 focus → UIKitFocusableViewResponderItem frame=28,316,60,60 label=- id=-
+2026-10-03 11:23:29.831 rail focus -→0 armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:23:29.831 home railFocused note=1
+2026-10-03 11:23:31.196 focus → UIKitFocusableViewResponderItem frame=28,390,276,60 label=- id=-
+2026-10-03 11:23:31.209 rail focus 0→1 armed=1 focused=1 tab=0 mode=fail
+2026-10-03 11:23:31.209 home railFocused note=1
+2026-10-03 11:23:32.435 focus → UIKitFocusableViewResponderItem frame=28,464,276,60 label=- id=-
+2026-10-03 11:23:32.444 rail focus 1→2 armed=1 focused=2 tab=0 mode=fail
+2026-10-03 11:23:32.444 home railFocused note=1
+2026-10-03 11:23:33.670 focus → UIKitFocusableViewResponderItem frame=28,390,276,60 label=- id=-
+2026-10-03 11:23:33.681 rail focus 2→1 armed=1 focused=1 tab=0 mode=fail
+2026-10-03 11:23:33.681 home railFocused note=1
+2026-10-03 11:23:34.881 focus → UIKitFocusableViewResponderItem frame=28,316,276,60 label=- id=-
+2026-10-03 11:23:34.887 rail focus 1→0 armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:23:34.887 home railFocused note=1
+2026-10-03 11:23:36.374 rail contained heading=up armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:23:36.377 moveFail heading=up
+2026-10-03 11:23:37.872 focus → UIKitFocusableViewResponderItem frame=28,390,276,60 label=- id=-
+2026-10-03 11:23:37.999 rail focus 0→1 armed=1 focused=1 tab=0 mode=fail
+2026-10-03 11:23:37.999 home railFocused note=1
+2026-10-03 11:23:38.898 focus → UIKitFocusableViewResponderItem frame=28,464,276,60 label=- id=-
+2026-10-03 11:23:38.904 rail focus 1→2 armed=1 focused=2 tab=0 mode=fail
+2026-10-03 11:23:38.904 home railFocused note=1
+2026-10-03 11:23:39.935 focus → UIKitFocusableViewResponderItem frame=28,538,276,60 label=- id=-
+2026-10-03 11:23:39.941 rail focus 2→3 armed=1 focused=3 tab=0 mode=fail
+2026-10-03 11:23:39.941 home railFocused note=1
+2026-10-03 11:23:40.964 focus → UIKitFocusableViewResponderItem frame=28,612,276,60 label=- id=-
+2026-10-03 11:23:40.971 rail focus 3→4 armed=1 focused=4 tab=0 mode=fail
+2026-10-03 11:23:40.971 home railFocused note=1
+2026-10-03 11:23:41.998 rail contained heading=down armed=1 focused=4 tab=0 mode=fail
+2026-10-03 11:23:41.998 moveFail heading=down
+2026-10-03 11:23:43.038 rail contained heading=down armed=1 focused=4 tab=0 mode=fail
+2026-10-03 11:23:43.039 moveFail heading=down
+2026-10-03 11:23:44.207 focus → UIKitFocusableViewResponderItem frame=28,538,276,60 label=- id=-
+2026-10-03 11:23:44.307 rail focus 4→3 armed=1 focused=3 tab=0 mode=fail
+2026-10-03 11:23:44.308 home railFocused note=1
+2026-10-03 11:23:45.252 focus → UIKitFocusableViewResponderItem frame=28,464,276,60 label=- id=-
+2026-10-03 11:23:45.262 rail focus 3→2 armed=1 focused=2 tab=0 mode=fail
+2026-10-03 11:23:45.262 home railFocused note=1
+2026-10-03 11:23:46.282 focus → UIKitFocusableViewResponderItem frame=28,390,276,60 label=- id=-
+2026-10-03 11:23:46.290 rail focus 2→1 armed=1 focused=1 tab=0 mode=fail
+2026-10-03 11:23:46.290 home railFocused note=1
+2026-10-03 11:23:47.314 focus → UIKitFocusableViewResponderItem frame=28,316,276,60 label=- id=-
+2026-10-03 11:23:47.320 rail focus 1→0 armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:23:47.320 home railFocused note=1
+2026-10-03 11:23:48.331 rail contained heading=up armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:23:48.331 moveFail heading=up
+2026-10-03 11:23:49.367 rail contained heading=up armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:23:49.368 moveFail heading=up
+2026-10-03 11:23:50.403 rail exit via=right armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:23:50.408 home rail exit -> focus row 0 com.linvo.cinemeta:movie:top
+2026-10-03 11:23:50.409 moveFail heading=right
+2026-10-03 11:23:50.550 focusRequest row=com.linvo.cinemeta:movie:top gen=1
+2026-10-03 11:23:50.589 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+2026-10-03 11:23:50.619 rail focus 0→- armed=1 focused=- tab=0 mode=fail
+2026-10-03 11:23:50.619 rail disarm (focus left the rail) armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:23:50.619 home railFocused note=0
+2026-10-03 11:23:52.147 menu at row 0 -> chrome.requestReveal()
+2026-10-03 11:23:52.152 rail capture return item=UIKitFocusableViewResponderItem armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:23:52.152 rail arm reason=revealRequest armed=1 focused=- tab=0 mode=fail
+2026-10-03 11:23:52.166 focus → UIKitFocusableViewResponderItem frame=28,316,60,60 label=- id=-
+2026-10-03 11:23:52.172 rail focus -→0 armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:23:52.173 home railFocused note=1
+2026-10-03 11:23:53.679 PRESS #1 0→0 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=menu key=- close=idle
+2026-10-03 11:23:54.144 rail menu armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:23:54.144 rail exit via=menu armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:23:54.144 home rail exit -> focus row 0 com.linvo.cinemeta:movie:top
+2026-10-03 11:23:54.178 focusRequest row=com.linvo.cinemeta:movie:top gen=2
+2026-10-03 11:23:54.191 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+2026-10-03 11:23:54.194 rail focus 0→- armed=1 focused=- tab=0 mode=fail
+2026-10-03 11:23:54.195 rail disarm (focus left the rail) armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:23:54.195 home railFocused note=0
+2026-10-03 11:23:56.166 focus → UIKitFocusableViewResponderItem frame=196,1134,220,374 label=- id=-
+2026-10-03 11:23:56.793 seg p=2 k=1 start=-60 dur=533 from=520.5 to=5.0 travel=-515.5
+2026-10-03 11:23:58.149 focus → UIKitFocusableViewResponderItem frame=444,618,220,374 label=- id=-
+2026-10-03 11:23:58.210 PRESS #2 0→1 mech=a2 moves=1 settle=474 travel=-515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:series:top close=idle
+2026-10-03 11:23:59.353 focus → UIKitFocusableViewResponderItem frame=692,618,220,374 label=- id=-
+2026-10-03 11:24:00.592 focus → UIKitFocusableViewResponderItem frame=444,618,220,374 label=- id=-
+2026-10-03 11:24:01.797 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+2026-10-03 11:24:03.045 rail capture return item=UIKitFocusableViewResponderItem armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:24:03.045 rail arm reason=moveFail-left armed=1 focused=- tab=0 mode=fail
+2026-10-03 11:24:03.045 moveFail heading=left
+2026-10-03 11:24:03.066 focus → UIKitFocusableViewResponderItem frame=28,316,60,60 label=- id=-
+2026-10-03 11:24:03.073 rail focus -→0 armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:24:03.073 home railFocused note=1
+2026-10-03 11:24:04.580 rail exit via=right armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:24:04.580 home rail exit -> focus row 1 com.linvo.cinemeta:series:top
+2026-10-03 11:24:04.580 moveFail heading=right
+2026-10-03 11:24:04.627 focusRequest row=com.linvo.cinemeta:series:top gen=3
+2026-10-03 11:24:04.645 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+2026-10-03 11:24:04.653 rail focus 0→- armed=1 focused=- tab=0 mode=fail
+2026-10-03 11:24:04.653 rail disarm (focus left the rail) armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:24:04.653 home railFocused note=0
+2026-10-03 11:24:06.436 rail capture return item=UIKitFocusableViewResponderItem armed=0 focused=- tab=0 mode=fail
+2026-10-03 11:24:06.436 rail arm reason=moveFail-left armed=1 focused=- tab=0 mode=fail
+2026-10-03 11:24:06.437 moveFail heading=left
+2026-10-03 11:24:06.453 focus → UIKitFocusableViewResponderItem frame=28,316,60,60 label=- id=-
+2026-10-03 11:24:06.458 rail focus -→0 armed=1 focused=0 tab=0 mode=fail
+2026-10-03 11:24:06.459 home railFocused note=1
+2026-10-03 11:24:07.871 focus → UIKitFocusableViewResponderItem frame=28,390,276,60 label=- id=-
+2026-10-03 11:24:07.880 rail focus 0→1 armed=1 focused=1 tab=0 mode=fail
+2026-10-03 11:24:07.880 home railFocused note=1
+2026-10-03 11:24:09.100 rail select Search different=1 armed=1 focused=1 tab=1 mode=fail
+2026-10-03 11:24:09.387 focus → nil
+2026-10-03 11:24:09.401 rail focus 1→- armed=0 focused=- tab=1 mode=fail
+2026-10-03 11:24:09.401 home railFocused note=0
+2026-10-03 11:24:09.630 focus → TVTextField frame=215,241,1541,71 label=- id=-
+2026-10-03 11:24:10.601 marker detached
+2026-10-03 11:24:10.659 view disappear

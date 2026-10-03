@@ -529,4 +529,52 @@ Debug build with probes streamed:
 
 ## OUTCOME
 
-_(filled in by the local session as waves land)_
+### Status (2026-10-03)
+
+- Plan branch merged into outer `main` (`17646af`), branch deleted. Plan copied to `~/.claude/plans/home-stage-strip.md`.
+- **Wave 0 not started: the fix batch has not been built.** `docs/steven-beta19-rc1-verdict-batch-plan-2026-10-02.md` is still a draft with no branch. The Detail + Settings revamp has merged (`284fd764`). FEAT-45 was never marked declined, so nothing needed resetting.
+- H6 written into the fix plan (`5875482`): M2 and N1 dropped, M5 kept, I1 and F named as the pieces this batch builds on.
+- On Christian's go, the Wave 0.5 spike ran ahead of the dependency.
+
+### Wave 0.5 spike
+
+**Where:** throwaway clone `~/Claude/Projects/NuvioMobile-stage-spike`, branch `claude/home-stage-spike` off `284fd764`, one local commit `035095a4`, push disabled. Never merged. Code: `StageStripSpike.swift` (spike Home + frame probe), `SpikeRail.swift`, two branches in `MainTabView`, `StageSpikeTests.swift` (drivers, no assertions).
+
+**Knobs:**
+- `-debug.stageSpike a1|a2|b1|b2` (strip mechanism).
+- `-debug.stageSpikeRail fail|always` (with `-sidebar_style sidebar`).
+- `-debug.stageSpikeStripHeight`, `-debug.stageSpikePageSeconds` (default 0.5).
+
+**Mechanisms:**
+- **a1:** vertical `ScrollView`, pages of height P, `.scrollTargetBehavior(.viewAligned)`, focus engine scrolls.
+- **a2:** a1 plus `.scrollPosition(id:)` animated to the focused row (0.5 s ease-out).
+- **b1:** no scroll view; rows offset by `-i·P`, only the current row enabled, `.onMoveCommand` pages and sends a focus request.
+- **b2:** same layout; rows i±1 enabled and the engine moves focus.
+
+**Probe:** a `CADisplayLink` reads a marker's presentation-layer y in window space each frame. A segment = consecutive frames moving ≥ 0.25 pt, ended by 6 still frames. The press summaries mis-assign some segments (the row's focus report lags the scroll), so the per-segment lines with timestamps are the ground truth.
+
+**Simulator (FA87, guest Cinemeta, 4 rows, Medium posters: P = 515.5, H = 559.5, stage 520.5):**
+
+| Mech | Motions per press | Duration per page | Residual after rest | Movement after rest | Held Down 3 s | Up from row 0 |
+|---|---|---|---|---|---|---|
+| a1 | 1, every press both ways | 1.15–1.9 s | 0.0 pt | none | one 3-page glide (1.94 s) | tab bar |
+| a2 | 1, every press both ways | 0.53–0.65 s | 0.0 pt | none | one 3-page glide (2.0 s) | tab bar |
+| b1 | 1 | 0.6–0.75 s | 0.0 pt | none | **does not page** (`.onMoveCommand` gets no repeats on a held press) | **failed once** (moveFail up) |
+| b2 | **never pages**: the engine won't move focus into offset rows outside the strip | — | — | — | — | tab bar |
+
+The simulator's focus engine is known to park rows differently from the hardware's. The pinned layout rested true in the sim and short on the device. So these numbers pick the candidates, and the device decides.
+
+**Rail entry (c), simulator, a2 Home with `-sidebar_style sidebar`:**
+- **`always` (rail permanently focusable): fails.** It takes default focus at launch, and Right goes nowhere (moveFail right). The engine cannot move from the overlay into the TabView's content, the same thing FEAT-30's sidebar hit.
+- **`fail` (rail focusable only once armed by a Left that has no target, via `UIFocusSystem.movementDidFailNotification`): works**, after two changes found in the runs:
+  1. **Content must be unfocusable while the rail holds focus.** Otherwise Down past the bottom item leaks into content, and Right from row 1 jumps to an off-screen row-0 card whose frame overlaps the rail item's beam. A `UIFocusGuide` right of the rail lost to that card, and `requestFocusUpdate(to:)` with the remembered SwiftUI focus item didn't stick. The spike disables the strip on a rail-focus notification.
+  2. **Right becomes an explicit exit.** With content disabled, Right from the rail fails. The rail then posts an exit, and Home re-enables the strip and sends a focus request for the current row (first card; per-card memory needs the row views to accept an item id, a P1/P4 spec item).
+- **Results with both changes:**
+  - Left mid-row stays in the row ✓; Left from card 0 opens the rail ✓.
+  - Up at the top and Down at the bottom stay in the rail ✓.
+  - Right returns to the current row from row 0 and from row 1 ✓.
+  - Menu in the rail exits ✓; Menu at row 0 opens it ✓; Select on Search switches tab ✓.
+
+**Logs:** `docs/research/home-stage-strip-spike/sim-run1-walks-rail.log` (first walks a1–b2, rail iterations), `sim-run2-a1-a2.log` (re-run with focus-timed press windows).
+
+**Device:** spike Debug build installed on the Living Room Apple TV (`com.youngchris29.NuvioTV`). Walks pending with Christian, in the Test profile.

@@ -2,6 +2,16 @@
 
 **Status: DRAFT, waiting for Christian's approval. No code has been written.**
 
+**Update 2026-10-03, decision H6** (`docs/home-redesign-decisions-2026-10-03.md`). Christian picked the Stage & Strip Home redesign (`docs/home-stage-strip-plan-2026-10-03.md`). That batch starts only after this one merges, because both edit the same Home files. For this batch:
+- **Drop M2** (the one-motion settle and slide rules) **and N1** (Up into Genres). The new Home pages whole rows and its stage can't take focus, so neither is needed there. The old Home stays as the "Classic" layout with today's motion.
+- **Keep M5** (the hero text fades out before the new text fades in). The new Home's stage uses the same rule.
+- **Keep everything else as written:** B, I1, F, M3, R1, R2, T1, C, M4, A.
+- **The redesign builds on two pieces of this batch:**
+  - I1's per-view decode size and w780 posters, for its 3840 px stage art.
+  - F, which must land as a reusable row modifier, because the redesign's strip applies it to every row.
+- **Calls 4 and 5 under "Christian's calls before Wave 1" are answered.** The ambient poster-colour background is part of the redesign (H3; log it as FEAT-53 as planned). FEAT-43 Follow layout is the redesign's collections page (H5).
+- **The Detail + Settings revamp merged on 2026-10-03** (`tvos-shared-extraction` at `284fd764`). Branch this batch off that tip rather than `5f2d5cd3`; the Coordination section's file-avoidance rules no longer apply.
+
 ## Sources
 
 - **DM:** Steven's beta.19-rc1 verdict, 5:09 PM ET 2026-10-02, plus:
@@ -51,7 +61,7 @@ Tracker rows take the next free IDs: BUG-130 onward and FEAT-52 onward. `docs/be
     - Which release (`via=`) produces the late 9 pt step?
     - Does a hero commit trigger it (relayout → geometry change → hold release)?
   - Main session plus Christian, about 20 min.
-- **M2. One motion per press (Opus).**
+- **M2. One motion per press (Opus).** **DROPPED 2026-10-03 (H6, see the update under Status).**
   - The title's slide is decided once, inside the same transaction as the row's settle (or the engine's rest). No independent title motion after rest.
   - A hero swap or commit must never re-arm the corrector or release a held slide.
   - The corrector stands down for residuals of 10 pt or less, so the 3–4 px creep goes.
@@ -173,6 +183,8 @@ Tracker rows take the next free IDs: BUG-130 onward and FEAT-52 onward. `docs/be
   - snap the rows to y = 0 in `PinnedRowSettle`'s top-rest plan. It must not be focus-triggered: the 08-27 ban.
 
 ### N1: Up into the genre row with no Continue Watching
+
+**DROPPED 2026-10-03 (H6, see the update under Status).**
 
 **Finding.** The engine resolves Up straight to the hero when Genres is the topmost row and parked under the hero clip, or when the short-row floor's focus section reaches into row 2. The reveal only scrolls; it never moves focus.
 

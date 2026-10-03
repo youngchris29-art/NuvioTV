@@ -1,0 +1,574 @@
+<title>NuvioTV Detail &amp; Settings Revamp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a long-form board. Each option = a 16:9 "screen" mockup beside its notes; screens use container units so they scale like a TV. */
+:root{
+  --bg:#0d1016; --panel:#151a23; --panel-2:#1c2330; --line:#2a3242;
+  --fg:#e9edf3; --muted:#9aa5b6; --faint:#6b7588;
+  --accent:#f0b35c; --accent-ink:#1a1206; --good:#7fd1a8; --warn:#f08a6c;
+  --display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body:"IBM Plex Sans", "Helvetica Neue", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme:dark;
+}
+html,body{background:var(--bg);color:var(--fg)}
+body{font-family:var(--body);font-size:16px;line-height:1.55;padding-inline:20px;padding-block:0 64px}
+.wrap{max-width:1180px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.1;margin:0}
+h1{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:700;letter-spacing:-.02em}
+h2{font-size:clamp(1.6rem,3.2vw,2.2rem);font-weight:700;letter-spacing:-.01em}
+h3{font-size:1.3rem;font-weight:700}
+p{margin:0}
+.lede{max-width:68ch;color:var(--muted);font-size:1.08rem}
+.eyebrow{font-family:var(--mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+header.top{padding-block:56px 32px;display:grid;gap:16px;border-bottom:1px solid var(--line)}
+.meta-strip{display:flex;flex-wrap:wrap;gap:8px 20px;font-family:var(--mono);font-size:.8rem;color:var(--faint)}
+nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+nav.toc a{font-family:var(--mono);font-size:.8rem;color:var(--fg);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+nav.toc a:hover,nav.toc a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+section{padding-block:48px 8px;display:grid;gap:24px}
+.sec-head{display:grid;gap:10px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;min-width:0}
+.box h3{font-size:1.1rem}
+ul{margin:0;padding-left:1.1em;display:grid;gap:6px}
+li{min-width:0}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+code,.mono{font-family:var(--mono);font-size:.85em}
+.tag{display:inline-block;font-family:var(--mono);font-size:.72rem;padding:2px 8px;border-radius:6px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.tag.fix{border-color:#3c5a4b;color:var(--good)}
+.tag.cost{border-color:#5a4a33;color:var(--accent)}
+.tag.risk{border-color:#5a3a33;color:var(--warn)}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+
+/* comparison table */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;min-width:820px;font-size:.9rem}
+th,td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--line)}
+th{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);background:var(--panel)}
+td:first-child{font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.src{font-family:var(--mono);font-size:.7rem;color:var(--faint)}
+
+/* option layout */
+.option{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:24px;align-items:start;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px}
+@media (max-width:860px){.option{grid-template-columns:1fr}}
+.option .notes{display:grid;gap:12px;min-width:0}
+.opt-id{font-family:var(--display);font-weight:700;color:var(--accent);font-size:1rem;letter-spacing:.02em}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){.pc{grid-template-columns:1fr}}
+.pc h4{margin:0 0 4px;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.pick{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.pick-badge{justify-self:start;background:var(--accent);color:var(--accent-ink);font-family:var(--mono);font-size:.72rem;font-weight:500;padding:3px 10px;border-radius:999px}
+
+/* ---------- TV mockups ---------- */
+.tv{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:10px;overflow:hidden;container-type:inline-size;background:#05070a;box-shadow:0 0 0 1px #2a3242,0 18px 40px -20px #000;font-family:var(--body);color:#fff}
+.tv *{box-sizing:border-box}
+.cap{font-family:var(--mono);font-size:.72rem;color:var(--faint);margin-top:8px}
+.bd{position:absolute;inset:0}
+.bd.warm{background:radial-gradient(60% 70% at 72% 38%,#7a4a2c 0%,#3a2318 40%,transparent 70%),radial-gradient(40% 50% at 88% 70%,#5b3b2a,transparent 70%),linear-gradient(120deg,#1b120d,#2a1a12 60%,#120c09)}
+.bd.cool{background:radial-gradient(55% 65% at 70% 40%,#2c5a7a 0%,#173148 45%,transparent 72%),radial-gradient(35% 45% at 90% 75%,#36506b,transparent 70%),linear-gradient(120deg,#0b1219,#122233 60%,#081018)}
+.bd.green{background:radial-gradient(55% 65% at 72% 40%,#3d5b3a 0%,#1f3220 45%,transparent 72%),linear-gradient(120deg,#0c120c,#162418 60%,#0a0f0a)}
+.bd.ambient{background:radial-gradient(70% 90% at 30% 40%,#6b2f4a 0%,#3a1a2c 45%,#15090f 80%)}
+.scrimL{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.85) 0%,rgba(0,0,0,.55) 38%,rgba(0,0,0,.05) 70%)}
+.scrimB{position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.85) 100%)}
+.blurred{filter:blur(2px) brightness(.55)}
+.logo{font-family:var(--display);font-weight:700;letter-spacing:-.02em;line-height:.9;text-transform:uppercase}
+.mline{font-size:1.25cqw;color:rgba(255,255,255,.82);display:flex;gap:.6cqw;align-items:center;flex-wrap:wrap}
+.chip{border:1px solid rgba(255,255,255,.45);border-radius:.3cqw;padding:0 .35cqw;font-size:.9cqw;font-family:var(--mono)}
+.syn{font-size:1.15cqw;line-height:1.4;color:rgba(255,255,255,.86)}
+.btns{display:flex;gap:.8cqw;align-items:center}
+.play{background:#fff;color:#111;border-radius:99px;padding:.7cqw 1.8cqw;font-size:1.25cqw;font-weight:600;white-space:nowrap}
+.rb{width:3.1cqw;height:3.1cqw;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;font-size:1.3cqw}
+.rowlbl{font-size:1.15cqw;font-weight:600}
+.row{display:flex;gap:.9cqw}
+.card{border-radius:.5cqw;background:linear-gradient(160deg,#3b4a5e,#1d2531)}
+.card.land{width:13cqw;aspect-ratio:16/9}
+.card.post{width:7cqw;aspect-ratio:2/3}
+.card.focus{outline:.25cqw solid #fff;outline-offset:.2cqw;transform:scale(1.06)}
+.ava{width:5cqw;height:5cqw;border-radius:50%;background:linear-gradient(160deg,#9b8a7a,#4a3f36)}
+.credits{font-size:1cqw;line-height:1.45;color:rgba(255,255,255,.7);text-align:right}
+.credits b{color:#fff;font-weight:600}
+.glass{background:rgba(255,255,255,.08);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14);border-radius:1.2cqw}
+.tabs{display:flex;gap:2.2cqw;font-size:1.1cqw;font-weight:600;color:rgba(255,255,255,.55)}
+.tabs .on{color:#fff;position:relative}
+.tabs .on::after{content:"";position:absolute;left:0;right:0;bottom:-.6cqw;height:.25cqw;border-radius:.2cqw;background:#fff}
+.hint{position:absolute;font-family:var(--mono);font-size:.85cqw;color:rgba(255,255,255,.55)}
+.badge-row{display:flex;gap:.4cqw}
+.rate{display:flex;gap:1.2cqw;font-size:1cqw;color:rgba(255,255,255,.8)}
+.rate b{color:#fff}
+
+/* settings mockups */
+.set{position:absolute;inset:0;background:linear-gradient(160deg,#121722,#0b0e14)}
+.s-title{position:absolute;top:4cqw;left:6cqw;font-family:var(--display);font-weight:700;font-size:2.4cqw}
+.s-list{display:grid;gap:.6cqw}
+.s-row{display:flex;justify-content:space-between;align-items:center;padding:.9cqw 1.3cqw;border-radius:.8cqw;background:rgba(255,255,255,.06);font-size:1.15cqw;color:rgba(255,255,255,.9)}
+.s-row .v{color:rgba(255,255,255,.55);font-size:1.05cqw}
+.s-row.f{background:#fff;color:#111;transform:scale(1.03)}
+.s-row.f .v{color:#555}
+.s-row.hd{background:none;padding:.4cqw .2cqw 0;font-size:.85cqw;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.s-cat{display:flex;gap:.8cqw;align-items:center;padding:.8cqw 1.1cqw;border-radius:.8cqw;font-size:1.15cqw;color:rgba(255,255,255,.75)}
+.s-cat.on{background:rgba(255,255,255,.14);color:#fff}
+.s-cat .ic{width:1.6cqw;height:1.6cqw;border-radius:.4cqw;background:var(--accent)}
+.s-grp{font-family:var(--mono);font-size:.8cqw;letter-spacing:.12em;color:rgba(255,255,255,.4);padding:.6cqw 1.1cqw 0}
+.toggle{width:2.8cqw;height:1.6cqw;border-radius:99px;background:#34c759;position:relative}
+.toggle::after{content:"";position:absolute;right:.2cqw;top:.2cqw;width:1.2cqw;height:1.2cqw;border-radius:50%;background:#fff}
+.preview{border-radius:1cqw;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+.tile{border-radius:1.2cqw;padding:1.4cqw;background:rgba(255,255,255,.07);display:grid;gap:.5cqw;align-content:start}
+.tile .t{font-family:var(--display);font-weight:700;font-size:1.5cqw}
+.tile .st{font-size:.95cqw;color:rgba(255,255,255,.6)}
+.tile.f{background:#fff;color:#111;transform:scale(1.04)}
+.tile.f .st{color:#555}
+.dot{display:inline-block;width:.8cqw;height:.8cqw;border-radius:50%;background:#34c759;margin-right:.4cqw;vertical-align:middle}
+
+/* IA table */
+.ia{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:760px){.ia{grid-template-columns:1fr}}
+.ia ol{margin:0;padding-left:1.3em;display:grid;gap:8px}
+.ia li span{color:var(--muted);font-size:.9rem}
+
+.reco{background:linear-gradient(135deg,#221a10,#151a23 60%);border:1px solid #5a4a33;border-radius:18px;padding:24px;display:grid;gap:14px}
+.q{display:grid;gap:10px;counter-reset:q}
+.q div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+a{color:var(--accent)}
+.sources{columns:2 320px;column-gap:24px;font-size:.85rem}
+.sources li{break-inside:avoid;margin-bottom:6px}
+@media (prefers-reduced-motion:no-preference){.card.focus,.s-row.f,.tile.f{transition:transform .2s}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <span class="eyebrow">Brainstorm · 2 October 2026 · no code</span>
+  <h1>NuvioTV Detail &amp; Settings Revamp</h1>
+  <p class="lede">I looked at how the official Nuvio apps, the other Apple TV ports of Nuvio and the big tvOS media apps lay out their title pages and settings. This board compares them with NuvioTV today and sets out four directions for each screen, plus the smaller pieces you can mix in. Each direction comes with a rough mockup, what it fixes, and what it costs.</p>
+  <div class="meta-strip"><span>10 apps &amp; forks surveyed</span><span>5 read from source code</span><span>Apple HIG tvOS + WWDC25</span><span>Steven's FEAT-35 / BUG-127 photos</span></div>
+  <nav class="toc" aria-label="Sections">
+    <a href="#today">Today</a><a href="#landscape">What others do</a><a href="#detail">Detail options</a><a href="#modules">Detail add-ons</a><a href="#settings">Settings options</a><a href="#ia">Settings structure</a><a href="#reco">Recommendation</a><a href="#sources">Sources</a>
+  </nav>
+</header>
+
+<!-- TODAY -->
+<section id="today">
+  <div class="sec-head"><span class="eyebrow">Starting point</span><h2>NuvioTV today</h2></div>
+  <div class="grid2">
+    <div class="box">
+      <h3>Detail page</h3>
+      <ul class="small">
+        <li>Full-bleed backdrop with an optional poster on the right 40%, a muted hero trailer and a fixed scrim.</li>
+        <li>Top block: logo, meta chips, the action row (Play + 4 glass buttons), genres, and a long label/value "Details" table (Director … Awards, Ratings) in a 1200 pt left column. A 560 pt glass synopsis panel sits on the right, capped at 18 lines.</li>
+        <li>Then nine stacked rows: studio logos, parental guide, episodes, cast, saga, trailers, More Like This, comments.</li>
+        <li>Ratings appear only as one IMDb chip and a "Ratings" line in the Details table. There is no rating control, no tabs and no way to hide sections.</li>
+        <li><code>DetailView.swift</code> is 2,570 lines.</li>
+      </ul>
+      <div class="tags"><span class="tag risk">FEAT-35 "looks a bit dated"</span><span class="tag risk">BUG-127 panel is interim</span><span class="tag risk">BUG-96/99 scroll anchoring</span><span class="tag risk">BUG-41 glass jank</span></div>
+    </div>
+    <div class="box">
+      <h3>Settings</h3>
+      <ul class="small">
+        <li>Sidebar of 7 categories plus a native List on the right. Moving focus over a category swaps the pane without a click. That part works well.</li>
+        <li>The panes are lopsided: Playback ≈29 rows, Appearance ≈33, About ≈28, Advanced 2.</li>
+        <li>The Detail page options are buried in Appearance › Poster Style.</li>
+        <li>About shows about 20 diagnostics and A/B switches to every user.</li>
+        <li>There is no search, no setting descriptions and no live previews (except the colour swatches). There is no Clear cache, Licenses or Privacy row.</li>
+        <li>Settings Style has Default and Minimal. The Top Bar style Steven asked for in FEAT-7 never shipped.</li>
+      </ul>
+      <div class="tags"><span class="tag risk">FEAT-7 Top Bar style</span><span class="tag risk">FEAT-41 depth preview</span><span class="tag risk">FEAT-45 icon rail</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- LANDSCAPE -->
+<section id="landscape">
+  <div class="sec-head"><span class="eyebrow">Research</span><h2>What the others do</h2>
+  <p class="lede small">Rows marked <span class="mono">src</span> were read from source code. The rest come from reviews, release notes or docs. None of the Nuvio forks have README screenshots of these screens, so their layouts are taken from code.</p></div>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>App</th><th>Detail page</th><th>Settings</th><th>Worth taking</th></tr></thead>
+    <tbody>
+      <tr><td>Official NuvioTV<br><span class="src">Android TV · src</span></td><td>Logo hero, pill Play labelled "Resume S1E3" plus round icon buttons, synopsis at 60% width, MDBList ratings row. Below that, seasons and episodes, then <b>one tabbed row: Cast | Ratings | More Like This | Trailer | Collection</b>, then comments and logos.</td><td>Rail grouped as YOU / LOOK / WATCH / SERVICES / SYSTEM. Three styles: Classic, Zen, and <b>Horizon</b> (top tabs with a gliding pill). Mini previews of Home layouts. Essential vs Advanced mode.</td><td>Tabbed secondary row, grouped rail, Horizon style</td></tr>
+      <tr><td>NuvioMobile<br><span class="src">phone/tablet · src</span></td><td><b>The user arranges the page</b>: 10 sections, each can be switched off, reordered, or grouped into tabs. Background mode: Normal / Cinematic / <b>Dominant Color</b>.</td><td>Root list of pushed pages, plus <b>search that indexes individual rows</b>.</td><td>Section toggles and order, colour-tinted page, settings search</td></tr>
+      <tr><td>Orivio<br><span class="src">Apple TV · src</span></td><td>Logo and title share one fixed 180 pt slot. Two meta lines, then a focusable synopsis teaser. <b>Start Over beside Resume</b>, <b>Rate 1–10</b>, "N aired unwatched". Per-section display switches.</td><td>Ten categories, each with a <b>subtitle line</b>, previewed live on focus. A second surface styled like the tvOS Settings app. A complete <code>SETTINGS_REFERENCE.md</code>.</td><td>Fixed logo slot, Start Over, Rate, category subtitles</td></tr>
+      <tr><td>bobsupra NuvioTVOS<br><span class="src">Apple TV · src</span></td><td>Backdrop dims as you scroll. A "Creator and Cast | Trailer" switcher. <b>The source picker opens as a glass overlay on Detail</b>. Trailers carry over from the card without rebuffering.</td><td>Eight categories, <b>live previews</b> of card style and Home layout, a choice of settings background tint, and account stats strips for Trakt, Simkl and MDBList.</td><td>Source picker overlay, live previews</td></tr>
+      <tr><td>Apple TV app<br><span class="src">tvOS 26 · Steven's photo</span></td><td>Key art fills the screen. Logo, genre line, a 4-line synopsis, then the <b>technical badges (4K, DV, Atmos, CC, AD)</b> on one line, Play pill + round buttons. <b>Cast and director credits right-aligned</b> in small text. Rows start below the fold.</td><td>System Settings: one title over a split view, large icon on the left, grouped list on the right.</td><td>The quiet landing view, the badge line, right-hand credits</td></tr>
+      <tr><td>Swiftfin<br><span class="src">Jellyfin · src</span></td><td>Enhanced/Simple layouts. Two columns: a 450 pt left with logo and actions, a right with synopsis and badges. Order: Episodes → Genres → Studios → Seasons → Cast → Extras → Similar → <b>About last</b>.</td><td>The left pane <b>shows the focused setting's description</b> (a scrolling "learn more"). A full-width glass Switch User button.</td><td>Description pane, About-last ordering</td></tr>
+      <tr><td>Infuse 8</td><td>New details layout, <b>opt-in in Settings</b> so the old one stays. Tech badges, file info, versions, local Extras section (8.4).</td><td>General / Playback / Reset, grouped lists.</td><td>Ship the new layout as a choice</td></tr>
+      <tr><td>Plex (new app)</td><td>Studio logo instead of text, a larger artwork hero, a user + critic ratings block (source picked in Settings). Release notes fixed <b>logo shifting</b> and <b>focus landing in the wrong place</b>.</td><td>Settings › Experience holds presentation choices.</td><td>Known pitfalls to avoid</td></tr>
+      <tr><td>Arctic Fuse 2<br><span class="src">Kodi · src</span></td><td>A clean hero with plot, buttons and toggles. <b>The rows appear only once you press Down</b>, and each row has its own on/off. The rows reuse the Home row components.</td><td>Nine categories, including a "Details" category, and a glass "Preview Settings" panel that slides in.</td><td>Rows revealed on Down, per-row toggles</td></tr>
+      <tr><td>Netflix / Prime / Disney+</td><td>Tabs under the hero: Episodes / More Like This / Extras / Details (Netflix, as in Steven's second photo). Tiles that expand in place, muted preview that fades back to the still.</td><td>Mostly profile-level settings.</td><td>Tab strip under the hero</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="grid2">
+    <div class="box"><h3>Patterns that keep coming up on Detail</h3><ul class="small">
+      <li>The landing view is a quiet hero: logo bottom-left, one meta line, a short synopsis, Play. Everything else is below the fold.</li>
+      <li>Focus lands on Play/Resume, and the logo has a fixed slot so nothing reflows when data arrives.</li>
+      <li>Technical badges (4K, HDR, DV, Atmos) sit on one line in a secondary tone.</li>
+      <li>Episodes first for series, then cast, extras, similar, and the About/Details block <b>last</b>.</li>
+      <li>The page can be configured: a layout choice (Infuse, Swiftfin), per-row toggles (AF2, Orivio, Nuvio mobile).</li>
+      <li>The backdrop dims or blurs as you scroll down.</li>
+    </ul></div>
+    <div class="box"><h3>Patterns that keep coming up in Settings</h3><ul class="small">
+      <li>One title above a split view: categories on the left, a grouped list on the right.</li>
+      <li>The setting under focus is explained in place (Swiftfin's left pane, Orivio's subtitles).</li>
+      <li>Three to six groups at the top, diagnostics last and usually hidden.</li>
+      <li>Live previews for anything visual (bobsupra, official NuvioTV, AF2).</li>
+      <li>Native list rows. Glass only on controls, never on the list background (HIG; Orivio's focus-trap lesson).</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- DETAIL OPTIONS -->
+<section id="detail">
+  <div class="sec-head"><span class="eyebrow">Detail page</span><h2>Four directions</h2>
+  <p class="lede small">Each mockup shows the first screen you see after opening a title. They go from the smallest change to the largest.</p></div>
+
+  <!-- A -->
+  <article class="option pick">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: cinematic hero with logo, meta, badges, synopsis and buttons on the left, credits on the right, rows peeking at the bottom">
+        <div class="bd warm"></div><div class="scrimL"></div><div class="scrimB"></div>
+        <div style="position:absolute;left:6cqw;bottom:14cqw;display:grid;gap:1.1cqw;width:42cqw">
+          <div class="logo" style="font-size:5.4cqw">Mayday</div>
+          <div class="mline">Film · Action · Comedy <span class="chip">PG-13</span></div>
+          <div class="syn">A Navy pilot on a secret Cold War mission is trapped behind enemy lines. His only hope is an eccentric ex-KGB agent.</div>
+          <div class="mline">2026 · 1h 50m · ★ 7.1 <span class="chip">4K</span><span class="chip">DV</span><span class="chip">ATMOS</span><span class="chip">CC</span></div>
+          <div class="btns"><span class="play">▶ Play</span><span class="rb">＋</span><span class="rb">✓</span><span class="rb">▷</span><span class="rb">⋯</span></div>
+        </div>
+        <div class="credits" style="position:absolute;right:6cqw;bottom:14cqw;width:24cqw">With <b>Ryan Reynolds, Kenneth Branagh</b> and <b>Maria Bakalova</b><br>Directed by <b>John Francis Daley</b></div>
+        <div style="position:absolute;left:6cqw;bottom:2cqw" class="row"><div class="card land" style="height:8cqw"></div><div class="card land" style="height:8cqw"></div><div class="card land" style="height:8cqw"></div></div>
+      </div>
+      <p class="cap">A · first screen. Rows peek at the bottom; Down brings them up while the backdrop dims.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">A · Cinematic Clean</span>
+      <span class="pick-badge">Recommended base</span>
+      <p class="small">The Apple TV app layout from Steven's photo. The first screen is just the hero. The left block becomes logo, genre line, a 3–4 line synopsis, a badge line, then the buttons. Cast and director move to a small right-aligned credits block. The 18-line glass panel and the long Details table go away; the table moves to an <b>About</b> section at the bottom of the page. The rows below stay as they are, but the first one only peeks until you press Down.</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>It answers FEAT-35 and BUG-127 directly, matching his own reference photo.</li><li>Removes the biggest glass surface, which was the main BUG-41 cost.</li><li>The rows and the scroll anchoring below the fold barely change.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>A long synopsis gets cut to 4 lines. It needs a "More" press or a focusable synopsis, as in official NuvioTV and Orivio.</li><li>Add-on titles without a backdrop look flat. Fall back to option D's ambient look.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">fixes FEAT-35, BUG-127</span><span class="tag fix">helps BUG-41</span><span class="tag cost">effort: medium (top block only)</span></div>
+    </div>
+  </article>
+
+  <!-- B -->
+  <article class="option">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: hero at top with a tab strip below it and one content row">
+        <div class="bd cool"></div><div class="scrimL"></div><div class="scrimB"></div>
+        <div style="position:absolute;left:6cqw;top:7cqw;display:grid;gap:1cqw;width:44cqw">
+          <div class="logo" style="font-size:4.6cqw">Severance</div>
+          <div class="mline">2022 · 2 seasons · ★ 8.7 <span class="chip">TV-MA</span><span class="chip">4K</span><span class="chip">HDR</span></div>
+          <div class="syn">Mark leads a team whose memories have been surgically divided between their work and personal lives.</div>
+          <div class="btns"><span class="play">▶ Resume S2 E4</span><span class="rb">↺</span><span class="rb">＋</span><span class="rb">✓</span></div>
+        </div>
+        <div style="position:absolute;left:6cqw;top:33cqw" class="tabs"><span class="on">Episodes</span><span>Cast &amp; Crew</span><span>More Like This</span><span>Trailers &amp; Extras</span><span>Details</span><span>Comments</span></div>
+        <div style="position:absolute;left:6cqw;top:38cqw;display:grid;gap:.8cqw">
+          <div class="mline"><span class="chip">Season 1</span><span class="chip" style="background:#fff;color:#111">Season 2</span> · 6 aired unwatched</div>
+          <div class="row"><div class="card land focus"></div><div class="card land"></div><div class="card land"></div><div class="card land"></div><div class="card land"></div></div>
+        </div>
+      </div>
+      <p class="cap">B · the whole page fits on one screen. The tab strip swaps the row underneath it.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">B · Tabbed Shelf</span>
+      <p class="small">The Netflix layout from Steven's second photo, and what official NuvioTV does for Cast, Ratings, More Like This, Trailer and Collection. The hero stays at the top, and under it a single tab strip (Episodes, Cast &amp; Crew, More Like This, Trailers &amp; Extras, Details, Comments) swaps one shelf underneath. The page hardly scrolls.</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>Steven asked for tabs by name in FEAT-35.</li><li>With little or no vertical scroll, the BUG-96/99 anchoring problems mostly go away.</li><li>Every section is one press from the hero.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>Content behind a tab is easy to miss. Saga and comments get used less.</li><li>Focus between the tab strip and the shelf is a known tvOS trouble spot: it needs a focus guide and must remember the last tab.</li><li>The biggest rewrite of the four.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">FEAT-35 tabs</span><span class="tag fix">removes BUG-96/99 class</span><span class="tag cost">effort: high</span><span class="tag risk">focus risk</span></div>
+    </div>
+  </article>
+
+  <!-- C -->
+  <article class="option">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: two-column hero, narrow left with logo and buttons, right with synopsis and ratings">
+        <div class="bd green"></div><div class="scrimL" style="background:linear-gradient(90deg,rgba(0,0,0,.8),rgba(0,0,0,.6) 60%,rgba(0,0,0,.3))"></div><div class="scrimB"></div>
+        <div style="position:absolute;left:6cqw;bottom:12cqw;display:grid;gap:1.4cqw;width:30cqw">
+          <div class="logo" style="font-size:4.4cqw">The Runner</div>
+          <div class="btns"><span class="play">▶ Play</span><span class="rb">＋</span><span class="rb">✓</span><span class="rb">★</span></div>
+          <div class="mline" style="font-size:1cqw">Hold Play: choose source</div>
+        </div>
+        <div style="position:absolute;left:42cqw;bottom:12cqw;display:grid;gap:1.1cqw;width:46cqw">
+          <div class="rate"><span><b>IMDb</b> 7.4</span><span><b>RT</b> 88%</span><span><b>Metacritic</b> 71</span><span><b>Trakt</b> 76%</span><span><b>Letterboxd</b> 3.6</span></div>
+          <div class="syn">Maia Marten, a brilliant London lawyer, has her life shattered by a single call on her morning run: her son has been taken. To get him back, she must keep running.</div>
+          <div class="mline">2026 · Thriller · 6 episodes <span class="chip">TV-14</span><span class="chip">HDR10</span></div>
+          <div class="mline" style="color:rgba(255,255,255,.6)">Creator <b style="color:#fff;font-weight:600">&nbsp;Ben Richards</b> · Network <b style="color:#fff;font-weight:600">&nbsp;Prime Video</b></div>
+        </div>
+      </div>
+      <p class="cap">C · actions on the left, reading on the right. Ratings get their own strip.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">C · Two-Column Refine</span>
+      <p class="small">The Swiftfin and Infuse layout, and the closest to today. A narrow left column holds the logo and buttons. A wide right column holds a ratings strip (MDBList sources), the synopsis, the meta line and two credit lines, with no glass panel. Everything below stays as today, except that Details moves to the end.</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>Least risk: it keeps the current focus sections and row code.</li><li>Gives the MDBList ratings a real home (official NuvioTV and Orivio both have a ratings row).</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>Looks like a tidied-up version of today, not a new design. It may not satisfy Steven's "dated" comment.</li><li>The text block on the right competes with the artwork.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">partly FEAT-35</span><span class="tag cost">effort: low–medium</span></div>
+    </div>
+  </article>
+
+  <!-- D -->
+  <article class="option">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: blurred ambient colour background with a large poster card on the left and info on the right">
+        <div class="bd ambient"></div>
+        <div style="position:absolute;left:7cqw;top:9cqw;width:20cqw;aspect-ratio:2/3;border-radius:1cqw;background:linear-gradient(160deg,#c45a7c,#4a1d33);box-shadow:0 2.4cqw 4cqw rgba(0,0,0,.6)"></div>
+        <div style="position:absolute;left:32cqw;top:12cqw;display:grid;gap:1.2cqw;width:52cqw">
+          <div class="logo" style="font-size:4.8cqw">Perfect Blue</div>
+          <div class="mline">1997 · Anime · Thriller · 1h 21m <span class="chip">R</span></div>
+          <div class="syn">A pop singer leaves her group to become an actress, and begins to lose her grip on what is real as a stalker follows her every move.</div>
+          <div class="btns"><span class="play">▶ Play</span><span class="rb">＋</span><span class="rb">✓</span><span class="rb">▷</span></div>
+        </div>
+        <div style="position:absolute;left:7cqw;bottom:3cqw" class="row"><div class="card post" style="height:6cqw"></div><div class="card post" style="height:6cqw"></div><div class="card post" style="height:6cqw"></div><div class="card post" style="height:6cqw"></div></div>
+      </div>
+      <p class="cap">D · built from the poster. Works for add-on titles that have no backdrop.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">D · Poster &amp; Ambient Colour</span>
+      <p class="small">Steven's "large poster with a shadow" request, combined with NuvioMobile's Dominant Color background mode. The page is tinted with a blurred wash of the poster's own colours, and a large poster card sits beside the information. This is the same colour extraction as T3 "Depth Takes Poster Color".</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>Looks good for anime, add-on and older titles whose backdrops are missing or poor.</li><li>Every title gets its own colour, which suits the poster-colour features already built.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>Less cinematic than A for big releases with good key art.</li><li>Best as a <b>background mode</b> (Cinematic / Ambient / Auto) on top of A, not as the only layout.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">FEAT-35 poster ask</span><span class="tag cost">effort: medium as a mode</span></div>
+    </div>
+  </article>
+</section>
+
+<!-- MODULES -->
+<section id="modules">
+  <div class="sec-head"><span class="eyebrow">Mix and match</span><h2>Detail add-ons that work with any direction</h2></div>
+  <div class="grid2">
+    <div class="box"><h3>Section toggles and order</h3><p class="small muted">A "Detail Page" settings pane where each section can be switched off and moved (NuvioMobile has 10 sections; Orivio and Arctic Fuse 2 have switches). This also covers Steven's FEAT-28 "hide ratings".</p><div class="tags"><span class="tag">NuvioMobile</span><span class="tag">Orivio</span><span class="tag cost">low–medium</span></div></div>
+    <div class="box"><h3>Fixed logo slot</h3><p class="small muted">The logo and the fallback title share one fixed-height slot, as in Orivio, so the page never shifts when the logo loads. Plex had to ship a fix for exactly that.</p><div class="tags"><span class="tag">Orivio</span><span class="tag cost">low</span></div></div>
+    <div class="box"><h3>Badge line from the real source</h3><p class="small muted">4K, DV, HDR10, Atmos and CC shown on one line, taken from the stream that Play will actually use, or from the best cached one.</p><div class="tags"><span class="tag">Apple TV app</span><span class="tag">Infuse</span><span class="tag cost">medium</span></div></div>
+    <div class="box"><h3>Start Over and Rate</h3><p class="small muted">A Start Over button next to Resume. A Rate 1–10 button that syncs both ways with Trakt and Simkl (Orivio comparison #24).</p><div class="tags"><span class="tag">Orivio</span><span class="tag">official NuvioTV</span><span class="tag cost">low / medium</span></div></div>
+    <div class="box"><h3>Ratings strip</h3><p class="small muted">IMDb, Rotten Tomatoes, Metacritic, Trakt and Letterboxd from MDBList on one row, in a user-set order, instead of a line in the Details table.</p><div class="tags"><span class="tag">official NuvioTV</span><span class="tag cost">low</span></div></div>
+    <div class="box"><h3>Spoiler-safe episodes</h3><p class="small muted">Blur unwatched episode stills and synopses. Show "6 aired unwatched" next to the season picker.</p><div class="tags"><span class="tag">official NuvioTV</span><span class="tag">Orivio</span><span class="tag cost">low</span></div></div>
+    <div class="box"><h3>Source picker over Detail</h3><p class="small muted">Hold Play opens the sources as a glass sheet over the page, with sort and filter, instead of a pushed screen. You keep the context and Back returns straight to the page.</p><div class="tags"><span class="tag">bobsupra NuvioTVOS</span><span class="tag cost">medium–high</span></div></div>
+    <div class="box"><h3>About block last</h3><p class="small muted">Director, writers, studios, country, language, status and awards move to a two-column About section at the end of the page, where Swiftfin and the Apple TV app put it.</p><div class="tags"><span class="tag">Swiftfin</span><span class="tag">Apple TV app</span><span class="tag cost">low</span></div></div>
+  </div>
+</section>
+
+<!-- SETTINGS OPTIONS -->
+<section id="settings">
+  <div class="sec-head"><span class="eyebrow">Settings</span><h2>Four directions</h2>
+  <p class="lede small">All four keep native <code>List</code> rows and system focus. What changes is the frame around them and how the categories are organised.</p></div>
+
+  <article class="option pick">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: Settings with left description pane and grouped list on the right">
+        <div class="set"></div>
+        <div class="s-title">Settings</div>
+        <div style="position:absolute;left:6cqw;top:10cqw;width:36cqw;display:grid;gap:1.4cqw">
+          <div style="width:12cqw;height:12cqw;border-radius:2.4cqw;background:linear-gradient(150deg,#f0b35c,#a8642a);display:grid;place-items:center;font-size:5cqw">▶</div>
+          <div style="font-family:var(--display);font-weight:700;font-size:1.9cqw">Match Content Frame Rate</div>
+          <div style="font-size:1.15cqw;line-height:1.5;color:rgba(255,255,255,.7)">Switches the Apple TV to the frame rate of the video, for example 23.976 fps for most films. This removes judder in slow pans. The screen may go black for a moment when playback starts.</div>
+          <div style="font-size:.95cqw;color:rgba(255,255,255,.45)">Also set in tvOS Settings › Video and Audio › Match Content</div>
+        </div>
+        <div style="position:absolute;left:48cqw;top:10cqw;width:46cqw" class="s-list">
+          <div class="s-row hd">Player</div>
+          <div class="s-row">Default Player <span class="v">mpv ›</span></div>
+          <div class="s-row f">Match Content Frame Rate <span class="toggle"></span></div>
+          <div class="s-row">Enhanced Video Renderer <span class="toggle"></span></div>
+          <div class="s-row hd">Skipping</div>
+          <div class="s-row">Skip Intro <span class="v">Button ›</span></div>
+          <div class="s-row">Auto-Skip <span class="v">Intros, Recaps ›</span></div>
+        </div>
+      </div>
+      <p class="cap">1 · the left side explains whatever row has focus.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">1 · Native Split + Explainer</span>
+      <span class="pick-badge">Recommended base</span>
+      <p class="small">The tvOS Settings app and Swiftfin's layout. One "Settings" title sits over a split. The right side keeps today's native list. The left side changes with focus: on the category list it shows a large icon and a short summary of the category; inside a pane it shows the focused row's icon and a plain description of what that setting does. To keep the category rail, use a third, narrow icon column (Steven's FEAT-45).</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>Fixes the real problem with ~120 settings: nobody knows what "Network Readahead" or "Keep Profile 7 FEL" does.</li><li>Closest to Apple's own design. Fits the HIG contract.</li><li>Every row needs a description written once, and that text also becomes the docs.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>Writing ~120 descriptions is the real cost.</li><li>The list gets narrower, so long values need short labels.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">HIG fit</span><span class="tag fix">FEAT-45 via icon rail</span><span class="tag cost">effort: medium (mostly copy)</span></div>
+    </div>
+  </article>
+
+  <article class="option">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: grouped category rail with section headings and a live poster preview">
+        <div class="set"></div>
+        <div style="position:absolute;left:4cqw;top:5cqw;width:24cqw;display:grid;gap:.3cqw">
+          <div class="s-grp">YOU</div><div class="s-cat"><span class="ic"></span>Account &amp; Profiles</div>
+          <div class="s-grp">LOOK</div><div class="s-cat on"><span class="ic"></span>Appearance</div><div class="s-cat"><span class="ic"></span>Home Screen</div><div class="s-cat"><span class="ic"></span>Detail Page</div>
+          <div class="s-grp">WATCH</div><div class="s-cat"><span class="ic"></span>Player</div><div class="s-cat"><span class="ic"></span>Subtitles &amp; Audio</div>
+          <div class="s-grp">SERVICES</div><div class="s-cat"><span class="ic"></span>Trakt, Simkl, MDBList</div>
+        </div>
+        <div style="position:absolute;left:32cqw;top:6cqw;width:34cqw" class="s-list">
+          <div class="s-row hd">Posters</div>
+          <div class="s-row">Size <span class="v">Medium+ ›</span></div>
+          <div class="s-row f">Corners <span class="v">Rounded ›</span></div>
+          <div class="s-row">Card Depth <span class="v">Soft ›</span></div>
+          <div class="s-row">Accent Focus Ring <span class="toggle"></span></div>
+        </div>
+        <div class="preview" style="position:absolute;right:4cqw;top:6cqw;width:24cqw;height:40cqw;display:grid;place-items:center;gap:1cqw;padding:2cqw">
+          <div style="font-family:var(--mono);font-size:.8cqw;color:rgba(255,255,255,.5);letter-spacing:.1em">PREVIEW</div>
+          <div class="row"><div class="card post" style="width:8cqw;border-radius:1.2cqw;outline:.25cqw solid #f0b35c;outline-offset:.2cqw"></div><div class="card post" style="width:8cqw;border-radius:1.2cqw;opacity:.7"></div></div>
+          <div style="font-size:.9cqw;color:rgba(255,255,255,.55)">Left/Right to adjust</div>
+        </div>
+      </div>
+      <p class="cap">2 · grouped categories, with a live preview for visual settings.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">2 · Grouped Rail + Live Preview</span>
+      <p class="small">Official NuvioTV's grouped rail (YOU, LOOK, WATCH, SERVICES, SYSTEM), each category with a one-line subtitle as in Orivio. Panes that change how things look get a third column with a live preview card that updates as you scroll through values. This is what Steven asked for in FEAT-41.</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>Poster size, corners, depth and focus ring are hard to judge without seeing them. A preview fixes that.</li><li>Group headings make 9+ categories easy to scan.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>The preview only helps the LOOK panes. Elsewhere it is empty space, unless it falls back to option 1's description.</li><li>Three columns are tight at 1920 pt.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">FEAT-41</span><span class="tag cost">effort: medium</span></div>
+    </div>
+  </article>
+
+  <article class="option">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: top tab bar of categories with a full-width two-column list">
+        <div class="set"></div>
+        <div style="position:absolute;left:50%;top:3.5cqw;transform:translateX(-50%);display:flex;gap:.4cqw;padding:.5cqw;border-radius:99px;background:rgba(255,255,255,.08)">
+          <span class="s-cat" style="padding:.6cqw 1.4cqw">Account</span><span class="s-cat on" style="padding:.6cqw 1.4cqw;border-radius:99px;background:#fff;color:#111">Player</span><span class="s-cat" style="padding:.6cqw 1.4cqw">Subtitles</span><span class="s-cat" style="padding:.6cqw 1.4cqw">Look</span><span class="s-cat" style="padding:.6cqw 1.4cqw">Home</span><span class="s-cat" style="padding:.6cqw 1.4cqw">Detail</span><span class="s-cat" style="padding:.6cqw 1.4cqw">About</span>
+        </div>
+        <div style="position:absolute;left:8cqw;top:12cqw;width:39cqw" class="s-list">
+          <div class="s-row hd">Engine</div>
+          <div class="s-row">Default Player <span class="v">mpv ›</span></div>
+          <div class="s-row f">Match Frame Rate <span class="toggle"></span></div>
+          <div class="s-row">Streaming Buffer <span class="v">Large ›</span></div>
+          <div class="s-row">Network Readahead <span class="v">60 s ›</span></div>
+        </div>
+        <div style="position:absolute;left:53cqw;top:12cqw;width:39cqw" class="s-list">
+          <div class="s-row hd">Sources</div>
+          <div class="s-row">Auto-Play Best Source <span class="toggle"></span></div>
+          <div class="s-row">Sort Sources <span class="v">Quality ›</span></div>
+          <div class="s-row">Minimum Resolution <span class="v">1080p ›</span></div>
+          <div class="s-row">Cached Only <span class="toggle" style="background:rgba(255,255,255,.25)"></span></div>
+        </div>
+      </div>
+      <p class="cap">3 · categories across the top. The pane uses the full width in two columns.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">3 · Horizon Top Tabs</span>
+      <p class="small">Official NuvioTV's "Horizon" style and the Top Bar choice Steven asked for in FEAT-7. Categories become a capsule bar at the top with a pill that slides between them. Below it, the pane splits into two columns of section groups, so a 29-row pane fits on about one screen.</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>Matches the app's Top Tabs navigation option.</li><li>Uses the screen width. Short panes look less empty.</li><li>Easy to offer as a third Settings Style next to Default and Minimal.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>Seven or more tabs in a capsule is crowded. Labels must stay short.</li><li>Two list columns break the native single-list focus model. Left/Right between them needs care.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">FEAT-7</span><span class="tag cost">effort: medium as a style</span><span class="tag risk">focus between columns</span></div>
+    </div>
+  </article>
+
+  <article class="option">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: settings hub of large tiles showing status for each area">
+        <div class="set"></div>
+        <div class="s-title">Settings</div>
+        <div style="position:absolute;left:6cqw;right:6cqw;top:10cqw;display:grid;grid-template-columns:repeat(4,1fr);gap:1.4cqw">
+          <div class="tile f"><span class="t">Account</span><span class="st">chris · Test profile</span></div>
+          <div class="tile"><span class="t">Services</span><span class="st"><span class="dot"></span>Trakt · <span class="dot"></span>Real-Debrid</span></div>
+          <div class="tile"><span class="t">Player</span><span class="st">mpv · Match FPS on</span></div>
+          <div class="tile"><span class="t">Subtitles</span><span class="st">English · Medium · SDH off</span></div>
+          <div class="tile"><span class="t">Look</span><span class="st">Amber · Medium+ · Glass</span></div>
+          <div class="tile"><span class="t">Home</span><span class="st">Hero on · 14 rows</span></div>
+          <div class="tile"><span class="t">Detail Page</span><span class="st">Cinematic · 7 sections</span></div>
+          <div class="tile"><span class="t">Sources</span><span class="st">TMDB · 3 plugins</span></div>
+        </div>
+        <div style="position:absolute;left:6cqw;bottom:4cqw;font-size:1cqw;color:rgba(255,255,255,.5)">About · Version 0.3.0 beta.18 (132)</div>
+      </div>
+      <p class="cap">4 · a status board. Each tile opens its pane.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">4 · Status Hub</span>
+      <p class="small">The opening screen is a grid of large tiles. Each one shows the current state in a few words (Trakt connected, mpv, Hero on), like bobsupra's account stats strips. Opening a tile pushes a full-screen list. It works like a dashboard of the setup.</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>You see how the app is set up at a glance. Useful when helping a tester ("send a photo of Settings").</li><li>Very approachable for new users.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>One extra press to every setting, and the instant pane preview is lost.</li><li>The status lines are a second source of truth that has to be kept current.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag cost">effort: medium</span><span class="tag risk">slower for power users</span></div>
+    </div>
+  </article>
+</section>
+
+<!-- IA -->
+<section id="ia">
+  <div class="sec-head"><span class="eyebrow">Under any Settings option</span><h2>Re-sort the categories first</h2>
+  <p class="lede small">This is the cheapest win and none of the directions works without it. Today two panes carry most of the rows and the Detail page settings are hard to find.</p></div>
+  <div class="ia">
+    <div class="box"><h3>Today (7)</h3><ol class="small">
+      <li>Account &amp; Services <span>≈27 rows</span></li>
+      <li>Playback <span>≈29 rows: player, skipping, sources, subtitles, languages</span></li>
+      <li>Appearance <span>≈33 rows: theme, posters, Detail page, depth, badges</span></li>
+      <li>Home Screen <span>≈13 rows + catalogs</span></li>
+      <li>Content Sources <span>≈14 rows + plugins</span></li>
+      <li>Advanced <span>2 rows</span></li>
+      <li>About <span>≈28 rows, about 20 of them diagnostics</span></li>
+    </ol></div>
+    <div class="box"><h3>Proposed (9, in 4 groups)</h3><ol class="small">
+      <li><b>You</b> · Account &amp; Profiles <span>sign in, server, Remote Setup</span></li>
+      <li><b>You</b> · Services <span>Trakt, Simkl, MDBList, Debrid</span></li>
+      <li><b>Look</b> · Appearance <span>theme, posters, focus, depth, badges</span></li>
+      <li><b>Look</b> · Home Screen <span>hero, rows, catalogs</span></li>
+      <li><b>Look</b> · Detail Page <span>new: layout, background, trailer, sections</span></li>
+      <li><b>Watch</b> · Player <span>engine, frame rate, buffer, skipping</span></li>
+      <li><b>Watch</b> · Sources <span>auto-play, filters, sort, plugins, metadata</span></li>
+      <li><b>Watch</b> · Subtitles &amp; Audio <span>style, languages, SDH</span></li>
+      <li><b>System</b> · About <span>version, Clear cache, Licenses. Diagnostics hidden behind a "Developer" switch, unlocked by pressing Version several times</span></li>
+    </ol></div>
+  </div>
+  <div class="box"><h3>Also worth considering</h3><ul class="small">
+    <li><b>Essential / Advanced mode</b> (official NuvioTV, Orivio): hide the power-user rows (Profile 7 FEL, readahead, the A/B switches) unless Advanced is on.</li>
+    <li><b>Settings search</b> (NuvioMobile indexes every row). Typing with the Siri Remote is slow and the HIG contract rules out <code>.searchable</code>, so this is low priority on TV.</li>
+    <li><b>A settings reference doc</b> like Orivio's <code>SETTINGS_REFERENCE.md</code>, which would double as the source of the option 1 descriptions.</li>
+  </ul></div>
+</section>
+
+<!-- RECO -->
+<section id="reco">
+  <div class="sec-head"><span class="eyebrow">If I had to pick</span><h2>Recommendation</h2></div>
+  <div class="reco">
+    <p><b>Detail:</b> build <b>A · Cinematic Clean</b> as the new default. Add D's ambient colour as a Background setting (Cinematic / Ambient / Auto, where Auto picks Ambient when there is no backdrop). Take the cheap add-ons first: fixed logo slot, ratings strip, About block last, section toggles. Keep B's tabs in reserve. If Steven still finds the page too long once A ships, the tabs can replace only the rows below the fold, without touching the hero.</p>
+    <p><b>Settings:</b> re-sort the categories into the 9-pane layout first, then move to <b>1 · Native Split + Explainer</b>, with option 2's live preview only on Appearance (FEAT-41) and Home. Offer Horizon (option 3) later as the Top Bar Settings Style if testers still want it.</p>
+    <p><b>Ship it like Infuse did:</b> keep the current Detail layout as a "Classic" choice for one or two betas, so testers can compare the two on their own TVs.</p>
+    <p class="small muted">Ground rules from the research, whichever option you pick: glass only behind controls and never wrapping focusable content (Orivio's focus trap, HIG). Focus always lands on Play. Nothing moves once data loads. Stay inside the 60/80 pt safe area so focused cards do not overlap text.</p>
+  </div>
+  <div class="sec-head" style="margin-top:12px"><h3>Questions for you</h3></div>
+  <div class="q small">
+    <div><b>How far should the Detail page go?</b> A refines the current structure. B (tabs) is a different page. Which kind of change are you after?</div>
+    <div><b>Should the old Detail layout survive?</b> Infuse-style opt-in, or a clean switch?</div>
+    <div><b>Should Settings get more categories?</b> Going from 7 to 9 makes each pane smaller but makes the list longer.</div>
+    <div><b>Who writes the setting descriptions?</b> Option 1 needs about 120 short descriptions in plain words. I can draft them from the code.</div>
+    <div><b>Should the diagnostics stay visible to testers?</b> Steven's photo loop depends on them. A Developer switch keeps them one step away instead of removing them.</div>
+  </div>
+</section>
+
+<!-- SOURCES -->
+<section id="sources">
+  <div class="sec-head"><span class="eyebrow">Where this came from</span><h2>Sources</h2></div>
+  <ul class="sources">
+    <li>Official NuvioTV (Android TV), source: <a href="https://github.com/NuvioMedia/NuvioTV">github.com/NuvioMedia/NuvioTV</a></li>
+    <li>NuvioMobile, source: <a href="https://github.com/NuvioMedia/NuvioMobile">github.com/NuvioMedia/NuvioMobile</a></li>
+    <li>Orivio for Apple TV: <a href="https://github.com/prehakanson-art/OrivioTVAppleTV">github.com/prehakanson-art/OrivioTVAppleTV</a> and the local handoff doc <code>docs/research/orivio-tv-handoff.md</code></li>
+    <li>bobsupra NuvioTVOS: <a href="https://github.com/bobsupra/NuvioTVOS">github.com/bobsupra/NuvioTVOS</a></li>
+    <li>Cb541 NuvioTVOS: <a href="https://github.com/Cb541/NuvioTVOS">github.com/Cb541/NuvioTVOS</a></li>
+    <li>VortX / StremioX: <a href="https://github.com/dcoscolin/StremioPowerUp2026">github.com/dcoscolin/StremioPowerUp2026</a></li>
+    <li>Swiftfin, source: <a href="https://github.com/jellyfin/Swiftfin">github.com/jellyfin/Swiftfin</a></li>
+    <li>Arctic Fuse 2, skin XML: <a href="https://github.com/jurialmunkey/skin.arctic.fuse.2">github.com/jurialmunkey/skin.arctic.fuse.2</a></li>
+    <li>Apple HIG (materials, layout, focus, split views, lists, typography) and <a href="https://developer.apple.com/videos/play/wwdc2025/356/">WWDC25 session 356</a></li>
+    <li><a href="https://www.apple.com/newsroom/2025/06/apple-tv-brings-a-beautiful-redesign-and-enhanced-home-entertainment-experience/">Apple Newsroom: tvOS 26</a>, <a href="https://appleinsider.com/articles/25/09/14/tvos-26-review-high-on-polish-light-on-new-features-for-apple-tv">AppleInsider tvOS 26 review</a></li>
+    <li><a href="https://firecore.com/blog/infuse-8-now-available">Infuse 8 announcement</a>, <a href="https://community.firecore.com/t/make-infuse-detail-view-completely-customizable/56706">Infuse detail-view request</a></li>
+    <li><a href="https://forums.plex.tv/t/release-notes-for-plex-experience-preview-apple-tv/903004">Plex Apple TV release notes</a>, <a href="https://www.pcworld.com/article/2585755/im-a-plex-media-server-user-heres-what-i-think-of-plexs-new-apple-tv-app.html">PCWorld on the new Plex app</a></li>
+    <li><a href="https://www.engadget.com/entertainment/streaming/netflix-overhauls-its-tv-app-with-a-fresh-ui-and-responsive-recommendations-121511958.html">Engadget: Netflix TV redesign</a>, <a href="https://www.thewrap.com/amazon-prime-video-redesign-info-details-preview-photos/">TheWrap: Prime Video redesign</a></li>
+    <li><a href="https://blog.stremio.com/stremio-tech-update-61-apple-tv-tvos-app-updated/">Stremio tvOS update</a></li>
+    <li>NuvioTV's own code (<code>DetailView.swift</code>, <code>SettingsView.swift</code> and the panes), <code>docs/beta-feedback-tracker.md</code>, <code>docs/orivio-feature-comparison-2026-10-01.md</code>, and Steven's reference photos from 09-09</li>
+  </ul>
+</section>
+</div>

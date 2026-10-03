@@ -46,6 +46,52 @@ Mechanics learned, for the retry:
 - Switching the editor to Markdown drops images, so the body goes in as an HTML paste in rich-text mode.
 - The title needs the `[tvOS]` prefix once the rule works.
 
+## Editing the body: rich text only (2026-10-01)
+
+The post is a rich-text post. Its four screenshots are stored as bare
+`https://preview.redd.it/<id>.png?...` lines at the end of `selftext`, and the ids are the keys
+of the post's `media_metadata`.
+
+- **What broke.** The beta.18 block swap was first sent to `/api/editusertext` as `text=` markdown
+  (the whole body). That flips the post into markdown mode: the four image lines render as plain
+  links, and `![img](url)` renders as the literal word "img".
+- **What fixed it.** Re-sending the whole body on the same endpoint as `richtext_json=`, with each
+  image line as `{"e":"img","id":"<media id>"}`. All four screenshots rendered inline again
+  (verified by screenshot). The converter used is `scripts/reddit/md-to-rtjson.py` (outer repo);
+  it covers exactly what the body uses: paragraphs, `**bold**`, `[text](url)`, `* ` bullets, and
+  the bare preview image lines.
+- **The response of a rich-text edit is the post object** (`id`, `name`, `selftext`, ...), not the
+  `{"json":{"errors":[]}}` envelope a markdown edit returns. It is not a failure.
+
+`NuvioMobile/scripts/update-reddit-beta-post.py` (the updater `release-beta.sh --reddit-changelog`
+calls through the OAuth path, `https://oauth.reddit.com/api/editusertext`) was changed the same day
+so it cannot repeat the markdown edit:
+
+- After `replace_block()` the new body is converted with `md-to-rtjson.py` and sent as
+  `richtext_json=`; `text=` is gone. The diff and the `[y/N]` prompt are unchanged and run first;
+  the conversion runs before the prompt so a body it cannot represent stops the run.
+- Every bare preview line in the new body must have become an `img` node and every `img` id must be
+  a `media_metadata` key of the fetched post, or the script refuses and the post is not modified.
+  `--dry-run` runs the same conversion and reports the node and image counts.
+- The response is accepted as the post object (bare or under `data`, id matching the post) or as an
+  errors envelope with no errors; anything else is printed and treated as "check by hand".
+- The converter is found at `../../scripts/reddit/md-to-rtjson.py` relative to the script (this
+  repo's layout). Override with `--rtjson-converter PATH` or `NUVIO_RTJSON_CONVERTER`.
+- The post is fetched with `raw_json=1`. Without it Reddit HTML-escapes `selftext` (`->` arrives as
+  `-&gt;`), which would have broken the `Settings -> About` closing anchor and put entities into the
+  rich-text text nodes.
+- Leading `<!-- -->` notes in the changelog file (`docs/comms-reddit-*-changelog.md` open with them)
+  are stripped before the swap.
+- `--self-test` (42 checks, no network) now proves four image lines become four `img` nodes in
+  order as the last nodes, with no image URL left as text, that the media_metadata check rejects an
+  unknown or dropped id, and that the post-object response counts as success.
+
+Not yet proven: the OAuth path has never edited the live post (the 10-01 swap went through the
+logged-in session's old.reddit endpoint). After the first `release-beta.sh --reddit-changelog` run,
+open the post and check the four screenshots and the Repo / Download lines. The converter has no
+line-break node, so if Reddit stores those two lines as one paragraph with a hard break they come
+back as one line.
+
 ## Body
 
 Hey everyone,

@@ -1,0 +1,129 @@
+Filtering the log data using "composedMessage CONTAINS "[StageSpike]""
+2026-10-03 11:34:21.437 view appear mech=a1 rail=- sidebar=0 pageSeconds=0.5 noZoom=0
+2026-10-03 11:34:21.437 config mech=a1 P=515.5 H=559.5 rows=0 pageSeconds=0.5
+2026-10-03 11:34:22.401 config mech=a1 P=515.5 H=559.5 rows=4 pageSeconds=0.5
+2026-10-03 11:34:22.435 observers started
+2026-10-03 11:34:22.435 marker attached mech=a1
+2026-10-03 11:34:22.561 baseline y=520.5 P=515.5 H=559.5 rows=4
+2026-10-03 11:34:25.737 focus → UIKitFocusableViewResponderItem frame=328,618,220,374 label=- id=-
+2026-10-03 11:34:27.593 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+2026-10-03 11:34:28.912 seg p=1 k=1 start=-49 dur=1250 from=520.5 to=5.0 travel=-515.5
+2026-10-03 11:34:29.384 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+2026-10-03 11:34:29.430 PRESS #1 0→1 mech=a1 moves=1 settle=1201 travel=-515.5 afterRest=0 residual=0.0 src=vfocus-down key=com.linvo.cinemeta:series:top close=row
+2026-10-03 11:34:30.712 seg p=2 k=1 start=-68 dur=1233 from=5.0 to=-510.5 travel=-515.5
+2026-10-03 11:34:31.228 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+2026-10-03 11:34:31.261 PRESS #2 1→2 mech=a1 moves=1 settle=1165 travel=-515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:movie:imdbRating close=row
+2026-10-03 11:34:32.530 seg p=3 k=1 start=-66 dur=1217 from=-510.5 to=-1026.0 travel=-515.5
+2026-10-03 11:34:33.057 moveFail heading=down
+2026-10-03 11:34:33.945 PRESS #3 2→3 mech=a1 moves=1 settle=1150 travel=-515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:series:imdbRating close=idle
+2026-10-03 11:34:36.967 focus → UIKitFocusableViewResponderItem frame=328,103,220,374 label=- id=-
+2026-10-03 11:34:36.990 focus → nil
+2026-10-03 11:34:37.092 focus → UIKitFocusableFillerItem frame=0,82,1920,391 label=- id=-
+2026-10-03 11:34:37.158 focus → UIKitFocusableViewResponderItem frame=824,163,220,374 label=- id=-
+2026-10-03 11:34:38.396 seg p=4 k=1 start=+131 dur=1180 from=-1026.0 to=-510.5 travel=515.5
+2026-10-03 11:34:38.825 focus → UIKitFocusableFillerItem frame=824,82,220,391 label=- id=-
+2026-10-03 11:34:38.965 focus → UIKitFocusableViewResponderItem frame=824,176,220,374 label=- id=-
+2026-10-03 11:34:38.993 PRESS #4 3→2 mech=a1 moves=2 settle=moving travel=555.5 afterRest=1 residual=moving src=vfocus-up key=com.linvo.cinemeta:movie:imdbRating close=row
+2026-10-03 11:34:40.230 seg p=4 k=2 start=+1828 dur=1317 from=-510.5 to=5.0 travel=515.5
+2026-10-03 11:34:40.512 PRESS #5 2→1 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:series:top close=idle
+2026-10-03 11:34:40.707 focus → UIKitFocusableFillerItem frame=824,82,220,391 label=- id=-
+2026-10-03 11:34:40.876 focus → UIKitFocusableViewResponderItem frame=824,163,220,374 label=- id=-
+2026-10-03 11:34:42.145 seg p=0 k=1 start=n/a dur=1367 from=5.0 to=520.5 travel=515.5
+2026-10-03 11:34:42.428 PRESS #6 1→0 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:movie:top close=idle
+2026-10-03 11:34:42.619 focus → UITabBarButton frame=391,62,124,36 label=Home id=-
+2026-10-03 11:34:44.145 PRESS #7 0→0 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=vfocus-up key=- close=idle
+2026-10-03 11:34:44.323 moveFail heading=up
+2026-10-03 11:34:48.250 focus → UIKitFocusableViewResponderItem frame=328,618,220,374 label=- id=-
+2026-10-03 11:34:48.774 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+2026-10-03 11:34:48.774 PRESS #8 0→0 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=vfocus-down key=- close=press
+2026-10-03 11:34:48.954 focus → UIKitFocusableFillerItem frame=328,1562,220,415 label=- id=-
+2026-10-03 11:34:49.106 focus → UIKitFocusableFillerItem frame=328,1679,220,415 label=- id=-
+2026-10-03 11:34:49.209 moveFail heading=down
+2026-10-03 11:34:49.310 moveFail heading=down
+2026-10-03 11:34:49.357 focus → UIKitFocusableViewResponderItem frame=328,862,220,374 label=- id=-
+2026-10-03 11:34:49.357 PRESS #9 0→1 mech=a1 moves=1 settle=moving travel=-1260.5 afterRest=0 residual=moving src=vfocus-down key=com.linvo.cinemeta:series:top close=press
+2026-10-03 11:34:49.429 focus → UIKitFocusableFillerItem frame=328,1329,220,391 label=- id=-
+2026-10-03 11:34:49.528 moveFail heading=down
+2026-10-03 11:34:49.630 moveFail heading=down
+2026-10-03 11:34:49.637 focus → UIKitFocusableViewResponderItem frame=328,359,220,374 label=- id=-
+2026-10-03 11:34:49.733 moveFail heading=down
+2026-10-03 11:34:49.836 moveFail heading=down
+2026-10-03 11:34:49.936 moveFail heading=down
+2026-10-03 11:34:50.038 moveFail heading=down
+2026-10-03 11:34:50.148 moveFail heading=down
+2026-10-03 11:34:50.241 moveFail heading=down
+2026-10-03 11:34:50.345 moveFail heading=down
+2026-10-03 11:34:50.445 moveFail heading=down
+2026-10-03 11:34:50.549 moveFail heading=down
+2026-10-03 11:34:50.653 moveFail heading=down
+2026-10-03 11:34:50.749 moveFail heading=down
+2026-10-03 11:34:50.852 moveFail heading=down
+2026-10-03 11:34:50.862 seg p=9 k=1 start=-30 dur=2000 from=520.5 to=-1026.0 travel=-1546.5
+2026-10-03 11:34:50.878 PRESS #10 1→3 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=vfocus-up key=com.linvo.cinemeta:series:imdbRating close=idle
+2026-10-03 11:34:50.961 moveFail heading=down
+2026-10-03 11:34:51.063 moveFail heading=down
+2026-10-03 11:34:51.162 moveFail heading=down
+2026-10-03 11:35:00.030 view appear mech=a2 rail=- sidebar=0 pageSeconds=0.5 noZoom=0
+2026-10-03 11:35:00.030 config mech=a2 P=515.5 H=559.5 rows=0 pageSeconds=0.5
+2026-10-03 11:35:00.798 config mech=a2 P=515.5 H=559.5 rows=4 pageSeconds=0.5
+2026-10-03 11:35:00.821 observers started
+2026-10-03 11:35:00.821 marker attached mech=a2
+2026-10-03 11:35:00.945 baseline y=520.5 P=515.5 H=559.5 rows=4
+2026-10-03 11:35:04.327 focus → UIKitFocusableViewResponderItem frame=328,618,220,374 label=- id=-
+2026-10-03 11:35:06.155 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+2026-10-03 11:35:06.778 seg p=1 k=1 start=-27 dur=533 from=520.5 to=5.0 travel=-515.5
+2026-10-03 11:35:08.006 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+2026-10-03 11:35:08.043 PRESS #1 0→1 mech=a2 moves=1 settle=506 travel=-515.5 afterRest=0 residual=0.0 src=vfocus-down key=com.linvo.cinemeta:series:top close=row
+2026-10-03 11:35:08.628 seg p=2 k=1 start=-65 dur=533 from=5.0 to=-510.5 travel=-515.5
+2026-10-03 11:35:09.819 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+2026-10-03 11:35:09.841 PRESS #2 1→2 mech=a2 moves=1 settle=468 travel=-515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:movie:imdbRating close=row
+2026-10-03 11:35:10.445 seg p=3 k=1 start=-47 dur=533 from=-510.5 to=-1026.0 travel=-515.5
+2026-10-03 11:35:11.668 moveFail heading=down
+2026-10-03 11:35:11.845 PRESS #3 2→3 mech=a2 moves=1 settle=487 travel=-515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:series:imdbRating close=idle
+2026-10-03 11:35:15.549 focus → UIKitFocusableViewResponderItem frame=328,103,220,374 label=- id=-
+2026-10-03 11:35:15.569 focus → nil
+2026-10-03 11:35:15.595 focus → UIKitFocusableViewResponderItem frame=80,106,220,374 label=- id=-
+2026-10-03 11:35:16.179 seg p=4 k=1 start=-22 dur=533 from=-1026.0 to=-510.5 travel=515.5
+2026-10-03 11:35:17.411 focus → UIKitFocusableFillerItem frame=80,82,220,391 label=- id=-
+2026-10-03 11:35:17.496 focus → UIKitFocusableViewResponderItem frame=80,153,220,374 label=- id=-
+2026-10-03 11:35:17.523 PRESS #4 3→2 mech=a2 moves=2 settle=moving travel=539.0 afterRest=1 residual=moving src=vfocus-up key=com.linvo.cinemeta:movie:imdbRating close=row
+2026-10-03 11:35:18.112 seg p=4 k=2 start=+1812 dur=633 from=-510.5 to=5.0 travel=515.5
+2026-10-03 11:35:19.045 PRESS #5 2→1 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:series:top close=idle
+2026-10-03 11:35:19.237 focus → UIKitFocusableFillerItem frame=80,82,220,391 label=- id=-
+2026-10-03 11:35:19.342 focus → UIKitFocusableViewResponderItem frame=80,176,220,374 label=- id=-
+2026-10-03 11:35:19.962 seg p=0 k=1 start=n/a dur=633 from=5.0 to=520.5 travel=515.5
+2026-10-03 11:35:20.895 PRESS #6 1→0 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:movie:top close=idle
+2026-10-03 11:35:21.086 focus → UITabBarButton frame=391,62,124,36 label=Home id=-
+2026-10-03 11:35:22.612 PRESS #7 0→0 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=vfocus-up key=- close=idle
+2026-10-03 11:35:22.900 moveFail heading=up
+2026-10-03 11:35:26.782 focus → UIKitFocusableViewResponderItem frame=328,618,220,374 label=- id=-
+2026-10-03 11:35:27.299 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+2026-10-03 11:35:27.300 PRESS #8 0→0 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=vfocus-down key=- close=press
+2026-10-03 11:35:27.488 focus → UIKitFocusableFillerItem frame=328,1576,220,415 label=- id=-
+2026-10-03 11:35:27.638 focus → UIKitFocusableFillerItem frame=328,1883,220,415 label=- id=-
+2026-10-03 11:35:27.638 PRESS #9 0→1 mech=a2 moves=1 settle=moving travel=-407.0 afterRest=0 residual=moving src=vfocus-down key=com.linvo.cinemeta:series:top close=press
+2026-10-03 11:35:27.749 moveFail heading=down
+2026-10-03 11:35:27.849 moveFail heading=down
+2026-10-03 11:35:27.904 focus → UIKitFocusableViewResponderItem frame=328,883,220,374 label=- id=-
+2026-10-03 11:35:27.965 focus → UIKitFocusableFillerItem frame=328,1402,220,391 label=- id=-
+2026-10-03 11:35:27.965 PRESS #10 1→3 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=moving src=vfocus-down key=com.linvo.cinemeta:series:imdbRating close=press
+2026-10-03 11:35:28.065 moveFail heading=down
+2026-10-03 11:35:28.168 moveFail heading=down
+2026-10-03 11:35:28.234 focus → UIKitFocusableViewResponderItem frame=328,365,220,374 label=- id=-
+2026-10-03 11:35:28.272 moveFail heading=down
+2026-10-03 11:35:28.374 moveFail heading=down
+2026-10-03 11:35:28.475 moveFail heading=down
+2026-10-03 11:35:28.576 moveFail heading=down
+2026-10-03 11:35:28.677 moveFail heading=down
+2026-10-03 11:35:28.778 moveFail heading=down
+2026-10-03 11:35:28.879 moveFail heading=down
+2026-10-03 11:35:28.985 moveFail heading=down
+2026-10-03 11:35:29.087 moveFail heading=down
+2026-10-03 11:35:29.190 moveFail heading=down
+2026-10-03 11:35:29.293 moveFail heading=down
+2026-10-03 11:35:29.395 moveFail heading=down
+2026-10-03 11:35:29.445 seg p=9 k=1 start=-22 dur=2050 from=520.5 to=-1026.0 travel=-1546.5
+2026-10-03 11:35:29.498 moveFail heading=down
+2026-10-03 11:35:29.499 PRESS #11 3→3 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=vfocus-down key=- close=idle
+2026-10-03 11:35:29.602 moveFail heading=down
+2026-10-03 11:35:29.703 moveFail heading=down

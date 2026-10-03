@@ -1,0 +1,99 @@
+16:03:33.089 view appear mech=a1 rail=- sidebar=1 pageSeconds=0.5 noZoom=0
+16:03:33.089 config mech=a1 P=515.5 H=559.5 rows=0 pageSeconds=0.5
+16:03:33.143 config mech=a1 P=493.0 H=537.0 rows=1 pageSeconds=0.5
+16:03:33.149 observers started
+16:03:33.149 marker attached mech=a1
+16:03:33.156 focus → UIKitFocusableViewResponderItem frame=80,715,360,203 label=- id=-
+16:03:33.274 baseline y=543.0 P=493.0 H=537.0 rows=1
+16:03:37.520 config mech=a1 P=493.0 H=537.0 rows=19 pageSeconds=0.5
+16:03:39.084 focus → UIKitFocusableViewResponderItem frame=80,1192,416,234 label=- id=-
+16:03:39.134 config mech=a1 P=493.0 H=537.0 rows=25 pageSeconds=0.5
+16:03:40.004 focus → UIKitFocusableViewResponderItem frame=80,1137,234,351 label=- id=-
+16:03:40.028 PRESS #1 0→1 mech=a1 moves=1 settle=moving travel=-490.0 afterRest=0 residual=moving src=vfocus-down key=collection-erfs5gwk-community-2 close=row
+16:03:40.095 config mech=a1 P=493.0 H=537.0 rows=33 pageSeconds=0.5
+16:03:40.454 focus → UIKitFocusableViewResponderItem frame=80,1176,234,351 label=- id=-
+16:03:40.485 PRESS #2 1→2 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=moving src=row key=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you close=row
+16:03:40.792 config mech=a1 P=493.0 H=537.0 rows=37 pageSeconds=0.5
+16:03:41.486 focus → UIKitFocusableViewResponderItem frame=80,149,234,351 label=- id=-
+16:03:41.486 PRESS #3 2→3 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=moving src=row key=collection-hftcv0ta-community close=press
+16:03:42.801 seg p=1 k=1 start=+56 dur=3510 from=543.0 to=-443.0 travel=-986.0
+16:03:43.000 PRESS #4 3→2 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=-0.1 src=vfocus-up key=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you close=idle
+16:04:00.305 focus → UIKitFocusableFillerItem frame=80,139,624,368 label=- id=-
+16:04:00.441 focus → UIKitFocusableFillerItem frame=1904,199,416,368 label=- id=-
+16:04:00.523 focus → UIKitFocusableViewResponderItem frame=1758,442,416,234 label=- id=-
+16:04:00.804 focus → UIKitFocusableFillerItem frame=1425,78,416,380 label=- id=-
+16:04:00.857 focus → UIKitFocusableViewResponderItem frame=1632,262,360,203 label=- id=-
+16:04:00.884 PRESS #5 2→1 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=moving src=vfocus-down key=collection-erfs5gwk-community-2 close=row
+16:04:01.325 moveFail heading=up
+16:04:01.947 moveFail heading=up
+16:04:02.103 seg p=0 k=1 start=n/a dur=1635 from=-443.0 to=543.0 travel=986.0
+16:04:02.386 PRESS #6 1→0 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=row key=continue-watching close=idle
+16:04:03.275 focus → UIKitFocusableViewResponderItem frame=1344,1192,416,234 label=- id=-
+16:04:04.230 focus → UIKitFocusableViewResponderItem frame=888,701,416,234 label=- id=-
+16:04:04.230 PRESS #7 0→1 mech=a1 moves=1 settle=moving travel=-491.0 afterRest=0 residual=moving src=vfocus-down key=collection-erfs5gwk-community-2 close=press
+16:04:04.491 focus → UIKitFocusableViewResponderItem frame=432,699,416,234 label=- id=-
+16:04:04.572 seg p=7 k=1 start=+26 dur=1136 from=543.0 to=50.0 travel=-493.0
+16:04:04.724 focus → UIKitFocusableViewResponderItem frame=-24,699,416,234 label=- id=-
+16:04:04.907 focus → UIKitFocusableFillerItem frame=-370,699,416,234 label=- id=-
+16:04:04.958 focus → UIKitFocusableViewResponderItem frame=-286,699,416,234 label=- id=-
+16:04:05.115 moveFail heading=left
+16:04:05.428 moveFail heading=left
+16:04:05.740 PRESS #8 1→1 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=-0.0 src=vfocus-up key=- close=idle
+16:04:05.831 focus → UIKitFocusableFillerItem frame=79,127,416,380 label=- id=-
+16:04:05.895 focus → UIKitFocusableViewResponderItem frame=236,282,360,203 label=- id=-
+16:04:06.235 moveFail heading=up
+16:04:06.983 focus → UIKitFocusableViewResponderItem frame=-152,714,360,203 label=- id=-
+16:04:06.983 PRESS #9 1→0 mech=a1 moves=1 settle=moving travel=492.5 afterRest=0 residual=moving src=vfocus-up key=continue-watching close=press
+16:04:07.126 seg p=9 k=1 start=-8 dur=1201 from=50.0 to=543.0 travel=493.0
+16:04:07.218 moveFail heading=left
+16:04:07.620 moveFail heading=up
+16:04:08.493 PRESS #10 0→0 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=vfocus-down key=- close=idle
+16:04:14.956 focus → UIKitFocusableFillerItem frame=80,1125,1760,392 label=- id=-
+16:04:15.019 focus → UIKitFocusableFillerItem frame=1904,1065,416,392 label=- id=-
+16:04:15.104 focus → UIKitFocusableViewResponderItem frame=1758,957,416,234 label=- id=-
+16:04:15.676 focus → UIKitFocusableFillerItem frame=80,1121,1760,392 label=- id=-
+16:04:15.737 focus → UIKitFocusableFillerItem frame=1914,1059,234,392 label=- id=-
+16:04:15.737 PRESS #11 0→1 mech=a1 moves=1 settle=moving travel=-516.5 afterRest=0 residual=moving src=vfocus-down key=collection-erfs5gwk-community-2 close=press
+16:04:15.822 focus → UIKitFocusableViewResponderItem frame=1793,901,234,351 label=- id=-
+16:04:16.441 focus → UIKitFocusableViewResponderItem frame=1652,1140,234,351 label=- id=-
+16:04:16.441 PRESS #12 1→2 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=moving src=vfocus-down key=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you close=press
+16:04:17.142 focus → UIKitFocusableViewResponderItem frame=1652,1143,234,351 label=- id=-
+16:04:17.175 PRESS #13 2→3 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=moving src=vfocus-down key=collection-hftcv0ta-community close=row
+16:04:17.924 focus → UIKitFocusableViewResponderItem frame=1652,1140,234,351 label=- id=-
+16:04:17.961 PRESS #14 3→4 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=moving src=row key=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you close=row
+16:04:19.203 seg p=11 k=1 start=-41 dur=4123 from=543.0 to=-1922.0 travel=-2465.0
+16:04:19.470 PRESS #15 4→5 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=-0.2 src=row key=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_because_movies close=idle
+16:04:21.946 focus → UIKitFocusableFillerItem frame=1217,133,624,368 label=- id=-
+16:04:22.097 focus → UIKitFocusableViewResponderItem frame=1526,208,234,351 label=- id=-
+16:04:22.649 focus → UIKitFocusableFillerItem frame=1526,112,234,367 label=- id=-
+16:04:22.728 focus → UIKitFocusableViewResponderItem frame=1652,196,234,351 label=- id=-
+16:04:22.757 PRESS #16 5→4 mech=a1 moves=1 settle=moving travel=509.0 afterRest=0 residual=moving src=vfocus-up key=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you close=row
+16:04:23.331 focus → UIKitFocusableFillerItem frame=1530,109,234,380 label=- id=-
+16:04:23.411 focus → UIKitFocusableFillerItem frame=1914,178,234,375 label=- id=-
+16:04:23.496 focus → UIKitFocusableViewResponderItem frame=1790,380,234,351 label=- id=-
+16:04:23.496 PRESS #17 4→3 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=moving src=row key=collection-hftcv0ta-community close=press
+16:04:24.015 focus → UIKitFocusableFillerItem frame=1538,125,234,368 label=- id=-
+16:04:24.015 PRESS #18 3→2 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=moving src=vfocus-down key=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you close=press
+16:04:24.095 focus → UIKitFocusableFillerItem frame=1904,189,416,368 label=- id=-
+16:04:24.178 focus → UIKitFocusableViewResponderItem frame=1758,438,416,234 label=- id=-
+16:04:24.766 focus → UIKitFocusableFillerItem frame=1356,118,416,380 label=- id=-
+16:04:24.766 PRESS #19 2→1 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=moving src=vfocus-up key=collection-erfs5gwk-community-2 close=press
+16:04:24.837 focus → UIKitFocusableViewResponderItem frame=1244,277,360,203 label=- id=-
+16:04:26.077 seg p=16 k=1 start=-42 dur=3921 from=-1922.0 to=543.0 travel=2465.0
+16:04:26.277 PRESS #20 1→0 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=vfocus-up key=continue-watching close=idle
+16:04:27.358 moveFail heading=up
+16:04:33.173 focus → UIKitFocusableFillerItem frame=80,1125,1760,392 label=- id=-
+16:04:33.238 focus → UIKitFocusableViewResponderItem frame=888,1132,416,234 label=- id=-
+16:04:34.468 seg p=21 k=1 start=-43 dur=1173 from=543.0 to=50.0 travel=-493.0
+16:04:35.297 focus → UIKitFocusableFillerItem frame=80,1113,1760,392 label=- id=-
+16:04:35.375 focus → UIKitFocusableViewResponderItem frame=740,1074,234,351 label=- id=-
+16:04:35.394 PRESS #21 0→1 mech=a1 moves=1 settle=1129 travel=-493.0 afterRest=0 residual=moving src=vfocus-down key=collection-erfs5gwk-community-2 close=row
+16:04:35.790 focus → UIKitFocusableFillerItem frame=80,1168,1760,392 label=- id=-
+16:04:35.874 focus → UIKitFocusableFillerItem frame=1914,1049,234,392 label=- id=-
+16:04:35.958 focus → UIKitFocusableViewResponderItem frame=1792,886,234,351 label=- id=-
+16:04:35.958 PRESS #22 1→2 mech=a1 moves=1 settle=moving travel=-713.0 afterRest=0 residual=moving src=row key=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:movie:recs_movies_for_you close=press
+16:04:35.990 focus → UIKitFocusableFillerItem frame=1792,1546,129,392 label=- id=-
+16:04:36.225 focus → UIKitFocusableViewResponderItem frame=1652,888,234,351 label=- id=-
+16:04:36.254 PRESS #23 2→3 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=moving src=vfocus-up key=collection-hftcv0ta-community close=row
+16:04:37.354 seg p=22 k=1 start=-62 dur=1921 from=50.0 to=-1429.0 travel=-1479.0
+16:04:37.771 PRESS #24 3→4 mech=a1 moves=0 settle=0 travel=0.0 afterRest=0 residual=-0.2 src=row key=app.xperience.21e577a3-adc1-47c4-a75b-34493a8dab94:series:recs_series_for_you close=idle

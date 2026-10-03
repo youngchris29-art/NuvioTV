@@ -481,3 +481,7 @@ Next: review round 2 over the fix diff, then the device pass.
 **Review round 3** (over `dfec0940`): 0 P1 / 0 P2 / 5 P3. Fixed #4 in `284fd764` (late claim limited to 4 s after appear, so a Select on Watched/Library is never followed by a focus jump). Accepted #1/#2 (the claim may give up in rare engine timings; worst case = no claim, never a wrong move), #3 (stale aired count only if release dates change mid-visit with the same id and episode count), #5 (claim lifecycle is a device-pass item, step 3b).
 Review loop closed (no P1/P2). Gates on `284fd764`: `NuvioTVTests` 709 / 0; UI re-check test16/29/40 PASS after the a11y change; Debug + Release sim green; Debug device build (`com.youngchris29.NuvioTV`) green.
 Device pass checklist: `docs/detail-settings-revamp-device-pass.md`.
+
+### Device pass — PASSED 2026-10-03 (Christian, Living Room Apple TV, "Test" profile)
+
+Dev build `com.youngchris29.NuvioTV` from `284fd764`, launched with `-debug.detailScrollProbe YES --console` (log `~/Downloads/detail-settings-revamp.log`, no crash/assert lines). Detail steps 1–10 PASS, Settings steps 11–17 PASS. (devicectl note: app launch args must follow `--`, otherwise devicectl parses `-debug.x YES` as its own flags.)

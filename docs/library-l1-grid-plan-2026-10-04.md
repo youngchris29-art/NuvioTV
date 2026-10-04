@@ -1,6 +1,6 @@
 # Library L1 grid (2026-10-04)
 
-**Status: BUILT, GATED AND REVIEWED ON THE MAC 2026-10-04; DEVICE PASS IN PROGRESS. NOT MERGED.** NuvioMobile branch `claude/library-l1-grid`, off `tvos-shared-extraction` `7e71ba87` (beta.19-rc2), tip `8bc17387` (pushed). Written in a cloud session on Christian's go ("start the Library L1 grid work"), then compiled, fixed, tested and reviewed in a Mac session: see "Mac session (2026-10-04)" below. Merging, the build bump, a cut and any DM wait for Christian's go.
+**Status: READY TO MERGE ON CHRISTIAN'S GO (2026-10-04). Built, gated, reviewed (no open P1/P2) and device-passed on every step the Test profile can run; steps 2, 3, 4 and 7 (provider libraries) NOT WALKED by his call. NOT MERGED, not cut.** NuvioMobile branch `claude/library-l1-grid`, off `tvos-shared-extraction` `7e71ba87` (beta.19-rc2), tip `422bb0c4` (pushed). It fast-forwards onto `tvos-shared-extraction` as long as nothing lands there first. Written in a cloud session on Christian's go ("start the Library L1 grid work"), then compiled, fixed, tested and reviewed in a Mac session: see "Mac session (2026-10-04)" below. Merging, the build bump, a cut and any DM wait for Christian's go.
 
 L1 is the first step of direction **L3 · Split Library** on the revamp board (`docs/research/search-library-revamp-2026-10-04.html`, "Recommendation"). It finishes the grid that the list column will later sit beside.
 
@@ -96,6 +96,7 @@ Throwaway clone `~/Claude/Projects/NuvioMobile-library-l1` (MPVKit symlinked fro
 - `a1096a6c` Mac review round 2: remove reporting and list capture.
 - `062e13a9` Mac review round 3: keep "This list is no longer available".
 - `8bc17387` Mac review round 4: never show a subclass's message (token leak).
+- `422bb0c4` device pass step 10: Up from the right half of the pill row reaches Saved / Debrid Cloud.
 
 ### Compile fixes
 
@@ -109,7 +110,8 @@ Throwaway clone `~/Claude/Projects/NuvioMobile-library-l1` (MPVKit symlinked fro
 | `f670413d` | green | green | 988 / 0 | 1,395 / 0 | 1,413 / 0 | 435 / 0 | green |
 | `a1096a6c` | green | green | 990 / 0 (18 L1) | 1,395 / 0 | 1,413 / 0 | 435 / 0 | green |
 | `062e13a9` (Kotlin copy only) | green | | | 1,395 / 0 | 1,413 / 0 | | green |
-| `8bc17387` (Kotlin copy only; the device-pass build) | green | | | 1,395 / 0 | 1,413 / 0 | | green |
+| `8bc17387` (Kotlin copy only; device pass steps 1–9) | green | | | 1,395 / 0 | 1,413 / 0 | | green |
+| `422bb0c4` (one SwiftUI modifier; device pass step 10 re-check) | green | green | 990 / 0 | | | | green |
 
 `xcodebuild` ran with the Bash sandbox off (in-sandbox it exits 70); the `NuvioTV` scheme has no test action, so the unit tests run through the `NuvioTVTests` scheme. powerd was healthy this session.
 
@@ -157,6 +159,31 @@ The fixture's guest library was empty (frame 01: the empty state renders). Six l
 - Badges sit inside the artwork and ride the focus in default (04, 06), Accent Ring (10, 11) and No Zoom (12, 13). On the focused card in default mode the bar looks a little thinner where the lift's rounded edge crops it, the same as Continue Watching cards.
 - Not checkable on the simulator: default-mode parallax on hardware, provider lists, Wi-Fi off.
 
-### Device pass (Living Room Apple TV, Test profile, dev build `com.youngchris29.NuvioTV` 134 from `8bc17387`)
+### Device pass (Living Room Apple TV, Test profile, dev build `com.youngchris29.NuvioTV` 134)
 
-In progress. Results per step are added as they are walked.
+Walked by Christian on 2026-10-04 (about 13:10–13:45 ET), one step at a time, console streamed over `devicectl --console` (it dropped three times with Mercury error 1001, the TV's connection timing out: no crash logs from the pass). Built from `8bc17387`, then `422bb0c4` for the step 10 re-check. The Test profile is in sidebar mode, has six local titles (one watched, two in progress) and TorBox, and no Trakt, Simkl or MDBList. Photos in `docs/research/library-l1-device-evidence/`.
+
+| Step | Result |
+|---|---|
+| 1. Local library | **PASS.** No List pill, no source badge; "3 movies · 3 series"; All / Movies / Series; Sort reads Recently Added; all three smart filters; tick on Nemesis, bars on Jack Ryan and The Crash (photo 01). |
+| 2. Trakt | **NOT WALKED** (Test has no Trakt; Christian chose to skip). |
+| 3. Simkl or MDBList | **NOT WALKED** (same). |
+| 4. Loading and failure, Wi-Fi off, Retry | **NOT WALKED** (needs a provider library: the local one loads from disk). |
+| 5. Smart filters | **PASS.** In Progress leaves the two in-progress titles; Watched turns In Progress off; Watched plus the other type shows "No titles match these filters"; Clear Filters restores the grid. |
+| 6. Badges in three focus modes | **PASS.** Default: the tick rides the lifted card (02) and the bar stays on the lifted artwork (03). No Zoom (04) and Accent Ring (05): both inside the ring. |
+| 7. Remove on a personal Trakt list | **NOT WALKED** (needs Trakt). |
+| 8. Hold menu, local library | **PASS.** Mark as Watched adds the tick, the label flips to Mark as Unwatched and back, Remove from Library removes the title and the count drops by one. |
+| 9. Debrid Cloud (TorBox) | **PASS.** Saved / Debrid Cloud unchanged; the grid's pills hide on Debrid Cloud and come back on Saved. |
+| 10. Focus | **FAILED, then PASS after `422bb0c4`.** Up from the Sort pill or any chip right of it did nothing: the focus engine searches straight up, and the Saved / Debrid Cloud row is two chips wide. That row is now one full-width focus section, like the pill row. Re-check on the device: Up from Sort and from Watched lands on Saved / Debrid Cloud, Down returns, Up from the grid still lands on the pills. Probably present before L1 (the old sort-chip row also ran past those two chips). Everything else in step 10 passed first time: Right walks every pill, Left from All does nothing, Down from Watched lands in the grid, the Sort menu lists Recently Added / Oldest First / A–Z / Z–A with no provider order on the local library, Menu opens the sidebar. |
+
+The steps not walked cover the provider-only code: the List pill, the Trakt Order / List Order labels, the loading and failed states, list-aware Remove (incl. the Simkl confirmation and the failure alert). Those paths are covered by the unit tests and the four review rounds, not by a device run.
+
+### New bugs
+
+None open. Step 10's Up gap was fixed and device-confirmed in the same session (`422bb0c4`).
+
+### Still owed
+
+- Christian's go to fast-forward `tvos-shared-extraction` to `422bb0c4`. The build bump, a cut and any DM come after, each on his go.
+- A device run of steps 2, 3, 4 and 7 on a profile with a provider library (a tester, or a later pass).
+- The translation pass (about 30 English-only strings), before a public cut.

@@ -35,3 +35,20 @@ Effort: ~30–45 min.
 
 1. Port 1 (poster resolver) — independent of the Detail/Settings revamp; safe to do anytime.
 2. (Carried, optional LOW) 2026-10-03 auto-skip toast — see `docs/upstream-port-plan-2026-10-03.md`.
+
+## OUTCOME ADDENDUM (2026-10-04 afternoon)
+
+**Port 1 MERGED** on Christian's go: `tvos-shared-extraction` fast-forwarded `422bb0c4` → `12b19ff5` (one commit, built on branch `claude/upstream-1004` in a throwaway clone, both deleted), pushed, outer pointer bumped. Not cut.
+
+- Applied upstream's diff verbatim. The fork's `CustomPosterUrlResolver.kt` was byte-identical to upstream's parent of `6ce99ef2`.
+- Callers checked (plan step 3): every `resolve()` call is in `shared/.../core/poster/` (`CustomPosterOverlay.kt` ×6, the fork-only `CustomPosterUrls.kt` ×1), and there is no static-URL mode. A pattern with no placeholder used to come back unchanged, which put one image on every poster; it now falls back to the original art.
+- Tests: the existing `resolve_pattern_without_any_placeholders_returns_as_is` asserted the old behaviour and became `..._returns_null`. Six new cases cover encoded and lowercase-encoded braces, the encoded pipe and optional forms, an encoded RPDB pattern keeping its TMDB fallback, other `%` escapes left alone, and `{}` / uppercase not counting as placeholders.
+- Gates: jvm 1401 (+6), tvOS-native 1419 (+6), NuvioTVTests 990/0 on FA87 (Debug simulator build). No Swift changes; no device pass needed. No review round: a verbatim 14-line upstream diff.
+
+**Upstream-report candidates (2):**
+1. Upstream's own `CustomPosterUrlResolverTest.resolve_pattern_without_any_placeholders_returns_as_is` still asserts the old behaviour, so it fails on `cmp-rewrite` after `6ce99ef2`.
+2. The callers decide shape support with `"{shape}" in pattern` on the raw pattern, before `resolve()` decodes it. A `%7Bshape%7D` pattern therefore never resolves for landscape or square cards; poster cards work. Same on upstream and on the fork (kept for parity).
+
+**Not ported:** the carried 10-03 auto-skip toast (optional, LOW) was left out of this batch.
+
+**New upstream commit since this check:** upstream moved again to `057918d4`. `a9797ff8` "feat(mdblist): choose which lists appear in the library" touches `MdbListLibraryModels.kt`, `MdbListLibraryRemote.kt` and `MdbListLibraryService.kt`, and all three have `shared/` copies in the fork. That is the 10-05 daily check's item.

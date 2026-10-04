@@ -1,5 +1,5 @@
 diff --git a/iosApp/NuvioTV/ContentView.swift b/iosApp/NuvioTV/ContentView.swift
-index 1e75d7a..eec41a2 100644
+index 1e75d7aa..f743847f 100644
 --- a/iosApp/NuvioTV/ContentView.swift
 +++ b/iosApp/NuvioTV/ContentView.swift
 @@ -380,7 +380,10 @@ struct MainTabView: View {
@@ -25,7 +25,18 @@ index 1e75d7a..eec41a2 100644
          .environment(\.tabBarVisibility, tabBarVisibility)
          .environment(\.sidebarChrome, sidebarChrome)
          // BUG-66 evidence probe (2026-09-10): arms `TabBarStateProbe`'s on-device tab-bar geometry
-@@ -481,6 +488,9 @@ struct MainTabView: View {
+@@ -424,6 +431,10 @@ struct MainTabView: View {
+         // (TabBarStateProbe.swift) which the About pane's toggle writes in Release too, so a
+         // DEBUG-only armer meant every rc sample logged `NOT-FOUND state=unknown`.
+         .background(TabBarProbeArmer())
++        // SPIKE: the keyboard scanner sits on the shell (moved from SearchView on the Mac run,
++        // 2026-10-04) so it keeps sampling while another tab is on screen: inside SearchView it
++        // left the window on every tab switch, and Home was sampled once.
++        .background(SpikeKeyboardScanner().frame(width: 0, height: 0))
+         // FEAT-30: the shell-wide focus scope `resetFocus(in:)` targets. Sidebar mode only, so
+         // tabs mode carries no new modifier at all (the byte-identical promise; test54's row walk
+         // stopped finding tiles in the one run where this scope was declared in both modes).
+@@ -481,6 +492,9 @@ struct MainTabView: View {
              // Geometry pane — what the bar tracks after a switch is the half of BUG-66 the cold
              // launch never showed. No-op unless that probe is armed.
              TabBarStateProbe.noteTabSelected(tab)
@@ -37,12 +48,13 @@ index 1e75d7a..eec41a2 100644
  }
 diff --git a/iosApp/NuvioTV/Screens/SearchFieldSpike.swift b/iosApp/NuvioTV/Screens/SearchFieldSpike.swift
 new file mode 100644
-index 0000000..c87f371
+index 00000000..6d660569
 --- /dev/null
 +++ b/iosApp/NuvioTV/Screens/SearchFieldSpike.swift
-@@ -0,0 +1,271 @@
+@@ -0,0 +1,305 @@
 +import SwiftUI
 +import UIKit
++import Combine
 +
 +/// THROWAWAY SPIKE (2026-10-04). Never merge; build it in a throwaway clone.
 +///
@@ -78,15 +90,46 @@ index 0000000..c87f371
 +
 +    /// What the walk is looking at, stamped into every keyboard-scan line: "search", "detail",
 +    /// "grid" (See All) or "person". Main-actor state (project default isolation).
-+    static var screen = "search"
++    /// Pushed screens from Search, innermost last (a stack since the Mac run, 2026-10-04: with
++    /// Detail → person stacked, Detail's `onDisappear` used to reset the tag to "search" while the
++    /// person page was still on top).
++    static var screens: [String] = []
++    static var screen: String { screens.last ?? "search" }
 +    static var tab = 0
++
++    /// Probe on: any variant, or the control with `-debug.searchFieldSpikeProbe YES` (added on the
++    /// Mac run, 2026-10-04: a control baseline for the keyboard detector and the latency lines;
++    /// the control's UI is unchanged either way).
++    static let probeEnabled: Bool = variant != nil
++        || UserDefaults.standard.bool(forKey: "debug.searchFieldSpikeProbe")
 +
 +    private static let t0 = Date()
 +
++    /// Every line also lands in `Library/Caches/search-spike.log` (appended, one header per
++    /// launch), because the `devicectl --console` stream to the Apple TV drops on its own
++    /// (Mercury error 1001). Pull it with `devicectl device copy from --domain-type
++    /// appDataContainer --domain-identifier com.youngchris29.NuvioTV --source
++    /// Library/Caches/search-spike.log --destination …`.
++    private static let fileHandle: FileHandle? = {
++        guard let caches = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
++        else { return nil }
++        let url = caches.appendingPathComponent("search-spike.log")
++        if !FileManager.default.fileExists(atPath: url.path) {
++            FileManager.default.createFile(atPath: url.path, contents: nil)
++        }
++        guard let handle = try? FileHandle(forWritingTo: url) else { return nil }
++        _ = try? handle.seekToEnd()
++        let header = "=== launch \(Date()) variant=\(variant?.rawValue ?? "control")\n"
++        try? handle.write(contentsOf: Data(header.utf8))
++        return handle
++    }()
++
 +    static func log(_ message: @autoclosure () -> String) {
-+        guard variant != nil else { return }
++        guard probeEnabled else { return }
 +        let t = String(format: "%.3f", Date().timeIntervalSince(t0))
-+        NSLog("[SearchSpike] t=%@ %@", t, message())
++        let line = "[SearchSpike] t=\(t) \(message())"
++        NSLog("%@", line)
++        try? fileHandle?.write(contentsOf: Data((line + "\n").utf8))
 +    }
 +
 +    /// Variant C's query box. A reference type that `MainTabView` never observes; SearchView
@@ -216,11 +259,13 @@ index 0000000..c87f371
 +    func body(content: Content) -> some View {
 +        content
 +            .onAppear {
-+                SearchFieldSpike.screen = name
++                SearchFieldSpike.screens.append(name)
 +                SearchFieldSpike.log("screen \(name) appear")
 +            }
 +            .onDisappear {
-+                SearchFieldSpike.screen = "search"
++                if let i = SearchFieldSpike.screens.lastIndex(of: name) {
++                    SearchFieldSpike.screens.remove(at: i)
++                }
 +                SearchFieldSpike.log("screen \(name) disappear")
 +            }
 +    }
@@ -245,7 +290,7 @@ index 0000000..c87f371
 +        super.didMoveToWindow()
 +        loop?.cancel()
 +        loop = nil
-+        guard window != nil, SearchFieldSpike.variant != nil else { return }
++        guard window != nil, SearchFieldSpike.probeEnabled else { return }
 +        SearchFieldSpike.log("scanner armed variant=\(SearchFieldSpike.variant?.rawValue ?? "-")")
 +        loop = Task { [weak self] in
 +            while !Task.isCancelled {
@@ -313,7 +358,7 @@ index 0000000..c87f371
 +    }
 +}
 diff --git a/iosApp/NuvioTV/Screens/SearchView.swift b/iosApp/NuvioTV/Screens/SearchView.swift
-index e301e08..6b87777 100644
+index e301e08c..39218e13 100644
 --- a/iosApp/NuvioTV/Screens/SearchView.swift
 +++ b/iosApp/NuvioTV/Screens/SearchView.swift
 @@ -25,8 +25,14 @@ struct SearchView: View {
@@ -339,7 +384,7 @@ index e301e08..6b87777 100644
  
                          if queryIsEmpty {
                              historyChips
-@@ -63,23 +70,40 @@ struct SearchView: View {
+@@ -63,23 +70,39 @@ struct SearchView: View {
                  // to the system default and exits, so the exit convention survives one step
                  // further in. Structurally absent in tabs mode — see `SidebarMenuRevealModifier`.
                  .sidebarMenuReveal()
@@ -376,7 +421,6 @@ index e301e08..6b87777 100644
 +        .onReceive(SearchFieldSpike.TabQuery.shared.$text) { text in
 +            if SearchFieldSpike.variant == .c, text != query { query = text }
 +        }
-+        .background(SpikeKeyboardScanner().frame(width: 0, height: 0))
          .onAppear { model.start() }
          .onDisappear { model.stop() }
      }

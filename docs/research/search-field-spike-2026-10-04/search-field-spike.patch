@@ -1,0 +1,382 @@
+diff --git a/iosApp/NuvioTV/ContentView.swift b/iosApp/NuvioTV/ContentView.swift
+index 1e75d7a..eec41a2 100644
+--- a/iosApp/NuvioTV/ContentView.swift
++++ b/iosApp/NuvioTV/ContentView.swift
+@@ -380,7 +380,10 @@ struct MainTabView: View {
+                 HomeView(model: home)
+                     .tabBarImmersiveHide()
+             }
+-            Tab("Search", systemImage: "magnifyingglass", value: 1) {
++            // SPIKE (2026-10-04, never merge): variant C gives Search the system search role.
++            // `nil` is today's plain tab. See SearchFieldSpike.swift.
++            Tab("Search", systemImage: "magnifyingglass", value: 1,
++                role: SearchFieldSpike.variant == .c ? .search : nil) {
+                 SearchView()
+                     .tabBarImmersiveHide()
+             }
+@@ -413,6 +416,10 @@ struct MainTabView: View {
+                     .tabBarImmersiveHide()
+             }
+         }
++        // SPIKE: variant C's `.searchable` sits on the TabView (Apple's WWDC25 search-tab
++        // pattern). Its text lives in `SearchFieldSpike.TabQuery.shared`, never in this view's
++        // state, so typing doesn't re-evaluate this body (T3/BUG-66).
++        .modifier(SpikeTabSearchable())
+         .environment(\.tabBarVisibility, tabBarVisibility)
+         .environment(\.sidebarChrome, sidebarChrome)
+         // BUG-66 evidence probe (2026-09-10): arms `TabBarStateProbe`'s on-device tab-bar geometry
+@@ -481,6 +488,9 @@ struct MainTabView: View {
+             // Geometry pane — what the bar tracks after a switch is the half of BUG-66 the cold
+             // launch never showed. No-op unless that probe is armed.
+             TabBarStateProbe.noteTabSelected(tab)
++            // SPIKE: a keyboard line while tab != 1 is the bleed-onto-another-tab case.
++            SearchFieldSpike.tab = tab
++            SearchFieldSpike.log("tab \(tab)")
+         }
+     }
+ }
+diff --git a/iosApp/NuvioTV/Screens/SearchFieldSpike.swift b/iosApp/NuvioTV/Screens/SearchFieldSpike.swift
+new file mode 100644
+index 0000000..c87f371
+--- /dev/null
++++ b/iosApp/NuvioTV/Screens/SearchFieldSpike.swift
+@@ -0,0 +1,271 @@
++import SwiftUI
++import UIKit
++
++/// THROWAWAY SPIKE (2026-10-04). Never merge; build it in a throwaway clone.
++///
++/// Question: can tvOS 26/27's system search field (`.searchable`) replace Search's plain
++/// `TextField` without the keyboard-bleed bug that got it banned (SearchView's header comment,
++/// `docs/design/hig-hybrid-contract.md`)? If it can, Search gets live results under the keyboard,
++/// Siri dictation, iPhone typing and the viewer's Linear/Grid keyboard choice (FEAT-37).
++///
++/// Launch with `-debug.searchFieldSpike A|B|C`. Unset (or anything else) = today's TextField,
++/// which is the control, and every spike code path below is inert.
++///
++/// - A "plain": `.searchable` on Search's existing results ScrollView, inside the tab's existing
++///   NavigationStack; titles push Detail as today. This is VortX's structure and exactly what
++///   the ban describes, so A answers "does the original bug still reproduce on tvOS 26/27?".
++/// - B "host": `.searchable` in its own clipped NavigationStack that holds only `Color.clear`
++///   (bobsupra NuvioTVOS's `NativeSearchKeyboardHost`); results are siblings below it (Linear
++///   keyboard) or to its right (Grid keyboard), and Detail is pushed by the OUTER stack, so
++///   nothing pushed can ever sit under the keyboard.
++/// - C "search tab": `Tab(role: .search)` with `.searchable` on the TabView (Apple's WWDC25
++///   pattern). The typed text lives in `TabQuery.shared`, which only SearchView observes, so
++///   typing never re-evaluates `MainTabView`'s body (the T3/BUG-66 rule in ContentView).
++///
++/// Every observation is logged as `[SearchSpike] t=<s> …` (NSLog), so a `devicectl … --console`
++/// stream or Console.app captures the whole walk. See
++/// `docs/research/search-field-spike-2026-10-04.md` in the outer repo for the legs.
++enum SearchFieldSpike {
++    enum Variant: String { case a = "A", b = "B", c = "C" }
++
++    /// Launch-latched: the variant can't change mid-session.
++    static let variant: Variant? = UserDefaults.standard
++        .string(forKey: "debug.searchFieldSpike")
++        .flatMap { Variant(rawValue: $0.uppercased()) }
++
++    /// What the walk is looking at, stamped into every keyboard-scan line: "search", "detail",
++    /// "grid" (See All) or "person". Main-actor state (project default isolation).
++    static var screen = "search"
++    static var tab = 0
++
++    private static let t0 = Date()
++
++    static func log(_ message: @autoclosure () -> String) {
++        guard variant != nil else { return }
++        let t = String(format: "%.3f", Date().timeIntervalSince(t0))
++        NSLog("[SearchSpike] t=%@ %@", t, message())
++    }
++
++    /// Variant C's query box. A reference type that `MainTabView` never observes; SearchView
++    /// subscribes to `$text`.
++    final class TabQuery: ObservableObject {
++        static let shared = TabQuery()
++        @Published var text = ""
++    }
++
++    /// The keyboard layout the scan last saw ("linear"/"grid"). Variant B lays out around it.
++    /// Never set back to "none", so a host rebuild can't flip the layout back and forth.
++    final class KeyboardState: ObservableObject {
++        static let shared = KeyboardState()
++        @Published var layout = "linear"
++    }
++}
++
++// MARK: - Variant A: .searchable on the results ScrollView
++
++struct SpikeSearchableA: ViewModifier {
++    @Binding var query: String
++    let onSubmit: () -> Void
++
++    func body(content: Content) -> some View {
++        if SearchFieldSpike.variant == .a {
++            content
++                .searchable(text: $query, prompt: "Search movies & shows")
++                .onSubmit(of: .search, onSubmit)
++        } else {
++            content
++        }
++    }
++}
++
++// MARK: - Variant B: the clipped keyboard host
++
++/// bobsupra's host: a NavigationStack with nothing in it but the search field. It is clipped to
++/// a fixed frame by the caller, and it never pushes anything.
++struct SpikeSearchFieldHost: View {
++    @Binding var text: String
++    let onSubmit: () -> Void
++
++    var body: some View {
++        NavigationStack {
++            Color.clear
++                .frame(maxWidth: .infinity, maxHeight: .infinity)
++                .searchable(text: $text, prompt: "Search movies & shows")
++                .onSubmit(of: .search, onSubmit)
++                .toolbar(.hidden, for: .navigationBar)
++        }
++    }
++}
++
++/// Lays Search's results out around variant B's host; a pass-through for every other variant.
++struct SpikeSearchLayout<Results: View>: View {
++    @Binding var query: String
++    let onSubmit: () -> Void
++    let results: () -> Results
++    @ObservedObject private var keyboard = SearchFieldSpike.KeyboardState.shared
++
++    /// Explicit, because the private `keyboard` would make the synthesized init private.
++    init(
++        query: Binding<String>,
++        onSubmit: @escaping () -> Void,
++        @ViewBuilder results: @escaping () -> Results
++    ) {
++        _query = query
++        self.onSubmit = onSubmit
++        self.results = results
++    }
++
++    /// bobsupra's measured frames: Linear = 220 pt keyboard band under a 56 pt top inset;
++    /// Grid = a 780 × 780 column on the left.
++    private static var linearHeight: CGFloat { 220 + 56 }
++    private static var gridSide: CGFloat { 780 }
++
++    var body: some View {
++        if SearchFieldSpike.variant == .b {
++            if keyboard.layout == "grid" {
++                HStack(alignment: .top, spacing: Theme.Spacing.lg) {
++                    SpikeSearchFieldHost(text: $query, onSubmit: onSubmit)
++                        .frame(width: Self.gridSide, height: Self.gridSide, alignment: .topLeading)
++                        .clipped()
++                    results()
++                }
++            } else {
++                VStack(alignment: .leading, spacing: 0) {
++                    SpikeSearchFieldHost(text: $query, onSubmit: onSubmit)
++                        .padding(.top, 56)
++                        .frame(maxWidth: .infinity)
++                        .frame(height: Self.linearHeight, alignment: .top)
++                        .clipped()
++                    results()
++                }
++            }
++        } else {
++            results()
++        }
++    }
++}
++
++// MARK: - Variant C: .searchable on the TabView
++
++struct SpikeTabSearchable: ViewModifier {
++    func body(content: Content) -> some View {
++        if SearchFieldSpike.variant == .c {
++            content.searchable(
++                text: Binding(
++                    get: { SearchFieldSpike.TabQuery.shared.text },
++                    set: { SearchFieldSpike.TabQuery.shared.text = $0 }
++                ),
++                prompt: "Search movies & shows"
++            )
++        } else {
++            content
++        }
++    }
++}
++
++// MARK: - Probes
++
++/// Stamps `SearchFieldSpike.screen` while a pushed screen is on top, so a keyboard seen during
++/// "detail" is the original bleed bug.
++struct SpikeScreenTag: ViewModifier {
++    let name: String
++
++    func body(content: Content) -> some View {
++        content
++            .onAppear {
++                SearchFieldSpike.screen = name
++                SearchFieldSpike.log("screen \(name) appear")
++            }
++            .onDisappear {
++                SearchFieldSpike.screen = "search"
++                SearchFieldSpike.log("screen \(name) disappear")
++            }
++    }
++}
++
++/// Zero-size probe. Every 250 ms while the spike is on, it walks every window of the scene for
++/// visible views whose class name contains "Keyboard" (bobsupra's detector heuristic) and logs
++/// the summary when it changes, together with the focused item's type and the tab bar's frame.
++/// Bleed = a keyboard line while `screen=detail`, or while `tab` isn't 1.
++struct SpikeKeyboardScanner: UIViewRepresentable {
++    func makeUIView(context: Context) -> SpikeKeyboardScanView { SpikeKeyboardScanView() }
++    func updateUIView(_ uiView: SpikeKeyboardScanView, context: Context) {}
++}
++
++final class SpikeKeyboardScanView: UIView {
++    private var loop: Task<Void, Never>?
++    private var lastKeyboard = ""
++    private var lastFocus = ""
++    private var lastTabBar = ""
++
++    override func didMoveToWindow() {
++        super.didMoveToWindow()
++        loop?.cancel()
++        loop = nil
++        guard window != nil, SearchFieldSpike.variant != nil else { return }
++        SearchFieldSpike.log("scanner armed variant=\(SearchFieldSpike.variant?.rawValue ?? "-")")
++        loop = Task { [weak self] in
++            while !Task.isCancelled {
++                self?.scan()
++                try? await Task.sleep(nanoseconds: 250_000_000)
++            }
++        }
++    }
++
++    private func scan() {
++        guard let scene = window?.windowScene else { return }
++        var hits: [String] = []
++        var layout: String?
++        var tabBar = "none"
++        for win in scene.windows where !win.isHidden {
++            walk(win, window: win, hits: &hits, layout: &layout, tabBar: &tabBar)
++        }
++
++        let keyboard = hits.isEmpty ? "none" : hits.joined(separator: " | ")
++        if keyboard != lastKeyboard {
++            lastKeyboard = keyboard
++            SearchFieldSpike.log("kb \(keyboard) screen=\(SearchFieldSpike.screen) tab=\(SearchFieldSpike.tab)")
++        }
++        if let layout, SearchFieldSpike.KeyboardState.shared.layout != layout {
++            SearchFieldSpike.KeyboardState.shared.layout = layout
++            SearchFieldSpike.log("layout \(layout)")
++        }
++
++        let focus = scene.focusSystem?.focusedItem.map { String(describing: type(of: $0)) } ?? "nil"
++        if focus != lastFocus {
++            lastFocus = focus
++            SearchFieldSpike.log("focus \(focus) screen=\(SearchFieldSpike.screen) tab=\(SearchFieldSpike.tab)")
++        }
++        if tabBar != lastTabBar {
++            lastTabBar = tabBar
++            SearchFieldSpike.log("tabbar \(tabBar)")
++        }
++    }
++
++    private func walk(
++        _ view: UIView,
++        window: UIWindow,
++        hits: inout [String],
++        layout: inout String?,
++        tabBar: inout String
++    ) {
++        if view.isHidden || view.alpha < 0.01 { return }
++        let name = String(describing: type(of: view))
++        if let bar = view as? UITabBar {
++            let f = bar.convert(bar.bounds, to: window)
++            tabBar = "y=\(Int(f.minY)) h=\(Int(f.height)) onscreen=\(f.intersects(window.bounds) ? 1 : 0)"
++        }
++        if name.contains("Keyboard") {
++            let f = view.convert(view.bounds, to: window)
++            if f.width > 200, f.height > 40, f.intersects(window.bounds) {
++                let kind = (f.height > 320 && f.width < 900) ? "grid" : (f.width >= 900 ? "linear" : "other")
++                if kind != "other" { layout = kind }
++                hits.append("\(name) \(kind) \(Int(f.minX)),\(Int(f.minY)) \(Int(f.width))x\(Int(f.height))")
++                return
++            }
++        }
++        for sub in view.subviews {
++            walk(sub, window: window, hits: &hits, layout: &layout, tabBar: &tabBar)
++        }
++    }
++}
+diff --git a/iosApp/NuvioTV/Screens/SearchView.swift b/iosApp/NuvioTV/Screens/SearchView.swift
+index e301e08..6b87777 100644
+--- a/iosApp/NuvioTV/Screens/SearchView.swift
++++ b/iosApp/NuvioTV/Screens/SearchView.swift
+@@ -25,8 +25,14 @@ struct SearchView: View {
+             ZStack {
+                 Theme.Palette.background.ignoresSafeArea()
+ 
++                // SPIKE (2026-10-04, never merge): variant B lays the results out around its own
++                // search-field host; a pass-through otherwise. See SearchFieldSpike.swift.
++                SpikeSearchLayout(query: $query, onSubmit: { model.recordSearch(query) }) {
+                 ScrollView(.vertical) {
+                     VStack(alignment: .leading, spacing: Theme.Spacing.xl) {
++                        // SPIKE: today's field is the control; every spike variant replaces it
++                        // with the system search field.
++                        if SearchFieldSpike.variant == nil {
+                         HStack(spacing: Theme.Spacing.md) {
+                             Image(systemName: "magnifyingglass")
+                                 .foregroundStyle(Theme.Palette.textSecondary)
+@@ -38,6 +44,7 @@ struct SearchView: View {
+                         }
+                         .padding(Theme.Spacing.lg)
+                         .glassEffect(.regular, in: RoundedRectangle(cornerRadius: Theme.Radius.card))
++                        }
+ 
+                         if queryIsEmpty {
+                             historyChips
+@@ -63,23 +70,40 @@ struct SearchView: View {
+                 // to the system default and exits, so the exit convention survives one step
+                 // further in. Structurally absent in tabs mode — see `SidebarMenuRevealModifier`.
+                 .sidebarMenuReveal()
++                // SPIKE: variant A puts `.searchable` right here, on the results ScrollView.
++                .modifier(SpikeSearchableA(query: $query, onSubmit: { model.recordSearch(query) }))
++                }
+             }
+             .navigationDestination(for: TitleRoute.self) { route in
+                 DetailView(preview: route.preview)
++                    .modifier(SpikeScreenTag(name: "detail"))
+             }
+             .navigationDestination(for: CatalogRoute.self) { route in
+                 CatalogGridView(route: route)
++                    .modifier(SpikeScreenTag(name: "grid"))
+             }
+             .navigationDestination(for: PersonRoute.self) { route in
+                 PersonDetailView(personId: route.id, personName: route.name)
++                    .modifier(SpikeScreenTag(name: "person"))
+             }
+             .navigationDestination(for: EntityRoute.self) { route in
+                 EntityBrowseView(route: route)
+             }
+         }
+         .onChange(of: query) { _, newValue in
++            SearchFieldSpike.log("query '\(newValue)'")
+             model.queryChanged(newValue)
+         }
++        // SPIKE: live-results cadence. The gap between a `query` line and the next `results`
++        // line is the keystroke-to-results latency (350 ms debounce + add-on fan-out).
++        .onChange(of: model.sections.count) { _, count in
++            SearchFieldSpike.log("results sections=\(count) loading=\(model.isLoading)")
++        }
++        // SPIKE: variant C's text arrives through the TabView-level field.
++        .onReceive(SearchFieldSpike.TabQuery.shared.$text) { text in
++            if SearchFieldSpike.variant == .c, text != query { query = text }
++        }
++        .background(SpikeKeyboardScanner().frame(width: 0, height: 0))
+         .onAppear { model.start() }
+         .onDisappear { model.stop() }
+     }

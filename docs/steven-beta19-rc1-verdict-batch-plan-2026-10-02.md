@@ -362,4 +362,20 @@ Dev build with `-debug.homeScrollProbe YES -debug.pinnedRowSettleProbe YES -debu
 - **Finding, pre-existing, not from this batch.** In the pinned (Nuvio-style) hero on the simulator, focus jumps from the morphing row-0 card into the hero about 1.3 s after the morph starts (`upFallback … reason=upIntoHero src=press-any`), and the card collapses. The unchanged `284fd764` build does the same. It only touches Classic's pinned mode, which the Stage batch retires. Recheck on the device pass with the Nuvio hero on.
 - **Mute in both trailer locations** waits for W2-E's leaf readout (no log line yet); checked at Gate 2.
 
+### Wave 2 + Gate 2 (2026-10-03 night)
+
+- **Clone commit `f12c1d29`.**
+  - W2-D (Sonnet): R1 ring, B2 inline call sites, M4 row.
+  - W2-E (Opus): M5 `TextSwapModel` + `HeroTextLayer`, cover freeze, logo ink, M3 Home hooks, DEBUG leaf labels.
+  - W2-F (Opus): F Soft default + `row_edge_fade` Appearance setting + migration, C folder header, all SettingsDescriptions copy.
+- **Gate 2:** Debug + Release green; NuvioTVTests **863 / 0** (+75); `devRowEdgeFade` gone; `debug.rowEdgeFade` only in comments and the legacy key.
+- **Simulator:**
+  - **Hero text:** a 10-step pinned-hero walk reads `maxLive=1` throughout (swaps 1 → 11 → 12), so never two title blocks at once; `present … logoInk=legible`; one `logoInk sync-sample ms=1.01`.
+  - **Mute, Poster location:** `event=play host=card`, then `mute muted=0`, then `muted=1`.
+  - **Mute, Hero location** (row card focused, `-hero_trailer_autoplay YES`): `gate … host=hero src=pinned`, `event=play host=hero`, then `muted=0` / `muted=1`. The critique's P1 case is fixed.
+  - **Listener readout:** `rebuilds=` and `recent=` present.
+- **test69 / test70 harness, in progress:**
+  - **test69:** the folder seed imports (`[CollectionsSeed] imported=true collections=1 folders=1`). The walk could not see a folder with no hero art (BUG-38 rule), so the seed now carries a backdrop. It now reaches the page, then skips: it samples pixels at the header's accessibility frame (y −443), which ignores the visual-effect offset. Being fixed.
+  - **test70:** legs now land in identical states. The scrolled phase matches Off almost exactly (middle 0.00013, focused card 0.00003). The rest phase differs by 0.094: Off and Soft rest bands look identical, so the difference is the pinned hero backdrop behind the cards. Being fixed to compare card interiors.
+
 - Previously: design phase running: spec A (`docs/research/steven-rc1-fix-spec-A-motion-trailers.md`: M3, R2, R1, M4, M5, B2) and spec B (`docs/research/steven-rc1-fix-spec-B-images-rows-detail.md`: I1, F, C, T1, A, Detail items, P).

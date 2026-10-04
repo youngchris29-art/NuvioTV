@@ -60,7 +60,25 @@ Prior run: **2026-08-26**, see `docs/upstream-port-plan-2026-08-26.md`. Upstream
 
 **Current open action items:**
 
-- **[APPROVED 2026-10-03, BLOCKED on the fix batch; Wave 0.5 spike DONE on Christian's go] Home Stage & Strip** (H1–H9 incl. the FEAT-45 floating pill rail; plan `docs/home-stage-strip-plan-2026-10-03.md`, copy `~/.claude/plans/home-stage-strip.md`; decisions `docs/home-redesign-decisions-2026-10-03.md`). Wave 0 can't start until the Steven beta.19-rc1 fix batch (`docs/steven-beta19-rc1-verdict-batch-plan-2026-10-02.md`, still DRAFT, no branch) merges. That batch now carries the H6 note (drop M2 + N1, keep M5; I1 and F feed this batch; branch off `284fd764`). The Detail + Settings revamp dependency is met (`284fd764`). Spike (throwaway clone `~/Claude/Projects/NuvioMobile-stage-spike`, local commit `035095a4`, never merged; full numbers in the plan's OUTCOME, logs `docs/research/home-stage-strip-spike/`):
+- **[BUILT + REVIEWED 2026-10-03/04, device session 2026-10-04 owed, NOT merged] Steven beta.19-rc1 verdict fix batch** (plan `docs/steven-beta19-rc1-verdict-batch-plan-2026-10-02.md`, approved 10-03 "start the fix batch"; specs `docs/research/steven-rc1-fix-spec-{A-motion-trailers,B-images-rows-detail}.md`, critique + review rounds r1–r3 in `docs/research/steven-rc1-*`).
+  - **Branch:** clone `~/Claude/Projects/NuvioMobile-steven-rc1`, `claude/steven-beta19-rc1-verdict` off `284fd764`, 8 commits, tip `d4f4b4cc`. Pushed as a backup; not merged.
+  - **Scope (H6 applied: M2 and N1 dropped, M5 kept):**
+    - trailers: M3 rest gate + per-row playing key (mute works in both trailer locations), R2 morph stages/abort, R1 poster-colour ring, B2 listener lifecycle (survives Infuse, same-port rebuild), M4 Trailer Start Delay (Automatic default);
+    - hero: M5 text fades out before the new text fades in, plus cover freeze and logo ink; I1 per-view decode sizes, w780 + metahub-large posters, original logos, hero sharpen at rest;
+    - rows and folders: F Soft edge fade default + an Appearance setting (mask overdraw 160 pt, not 72, or pinned rows rest 14 pt off); C folder header rises and pins;
+    - tab bar: T1 two fix legs behind `-debug.tabBarRestFix`, both off;
+    - playback: A Auto-Play Best ranks resolution > DV/HDR > cached > size; P "Preparing playback…" unless DV;
+    - Detail: localized labels with `detail.status.*` keys, glass never changes on scroll, lighter Cinematic scrim, fades on Detail rows incl. Episodes;
+    - strings: 27 keys in 6 languages.
+  - **Gates on `d4f4b4cc`:** Debug + Release green, NuvioTVTests 966/0, jvm 1385, K/N 1403, composeApp 435. UI legs pass or are environmental: YouTube `LOGIN_REQUIRED` bot-check from this Mac blocked trailer extraction late on 10-03 (the base build too).
+  - **Review:** Opus r1 0 P1 / 4 P2 → fixed; r2 and r3 0 P1 / 0 P2, P3s fixed.
+  - **Next (10-04, Test profile):** checklist `docs/steven-rc1-device-session-2026-10-04.md`; the Apple TV build of `d4f4b4cc` is prebuilt in `~/Claude/Projects/NuvioMobile-steven-rc1-device`. Run the YouTube pre-check first, then:
+    - the T1 leg decision;
+    - the F.5 Soft frame-time gate (Off default if it fails);
+    - B1 Infuse;
+    - the device pass.
+  - **Then:** set the T1 default leg (one constant), merge (ff `tvos-shared-extraction`), cut beta.19-rc2 and send Steven's DM, each on Christian's go. Release notes say Auto-Play Best breaks ties by file size.
+- **[APPROVED 2026-10-03, BLOCKED on the fix batch; Wave 0.5 spike DONE on Christian's go] Home Stage & Strip** (H1–H9 incl. the FEAT-45 floating pill rail; plan `docs/home-stage-strip-plan-2026-10-03.md`, copy `~/.claude/plans/home-stage-strip.md`; decisions `docs/home-redesign-decisions-2026-10-03.md`). Wave 0 can't start until the Steven beta.19-rc1 fix batch merges (built and reviewed 10-03/04 as `d4f4b4cc`, device session 10-04, see the bullet above). That batch now carries the H6 note (drop M2 + N1, keep M5; I1 and F feed this batch; branch off `284fd764`). The Detail + Settings revamp dependency is met (`284fd764`). Spike (throwaway clone `~/Claude/Projects/NuvioMobile-stage-spike`, local commit `035095a4`, never merged; full numbers in the plan's OUTCOME, logs `docs/research/home-stage-strip-spike/`):
   - **Paging = a2:** a vertical ScrollView with view-aligned pages plus `.scrollPosition(id:)` animated to the focused row. On the Living Room ATV: one 0.51–0.73 s glide per click, exactly on the boundary, nothing after; Christian: "faster and still smooth". a1 (engine-only) is accurate but takes 1.13–1.20 s. b1 doesn't page on a held Down; b2 never pages.
   - **Rail = arm on a failed Left** (`movementDidFailNotification`). Needs content gated unfocusable while the rail holds focus, and app-handled Right/Menu exits with SwiftUI-side focus restore. Swipe momentum didn't open it on hardware.
   - Next once the fix batch merges: Wave 0 → P1/P2/P4 specs (with the spike's two rail requirements) → P3 critique → Christian's geometry/timeline skim.

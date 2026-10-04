@@ -378,4 +378,30 @@ Dev build with `-debug.homeScrollProbe YES -debug.pinnedRowSettleProbe YES -debu
   - **test69:** the folder seed imports (`[CollectionsSeed] imported=true collections=1 folders=1`). The walk could not see a folder with no hero art (BUG-38 rule), so the seed now carries a backdrop. It now reaches the page, then skips: it samples pixels at the header's accessibility frame (y −443), which ignores the visual-effect offset. Being fixed.
   - **test70:** legs now land in identical states. The scrolled phase matches Off almost exactly (middle 0.00013, focused card 0.00003). The rest phase differs by 0.094: Off and Soft rest bands look identical, so the difference is the pinned hero backdrop behind the cards. Being fixed to compare card interiors.
 
+### Wave 3 + Gate 3 (2026-10-03 night)
+
+- **Clone commit `2b53224c`.**
+  - W3-T (Opus): T1 legs behind `-debug.tabBarRestFix 1|2`, default 0, works in Release; `off=`/`ins=` probe.
+  - W3-A (Sonnet): Auto-Play Best ranking + "Preparing playback…" unless DV.
+  - W3-D (Sonnet): D1 labels + status keys, D2 glass never changes on scroll, D3 lighter scrim (top-left 0.60 → 0.33), F on Detail rows incl. Episodes, Detail I1 sizes.
+- **Gate 3:** Debug + Release green; NuvioTVTests **898 / 0**; jvm **1385 / 0**; K/N **1403 / 0**; composeApp iosSim **435 / 0**.
+- **UI legs, passed:** test69 (seeded folder page), test80, test74, test79, test75, test76, test64, test65, test83.
+- **UI legs, skipped (guest fixture limits, unchanged from before this batch):**
+  - test77: Play disabled on the guest;
+  - test78: synopsis fits, no sheet;
+  - test58 / test63: four rows, wrong poster regime.
+- **UI legs, failed, both traced to the harness, not the app:**
+  - **test33's Classic leg:** `glass=1` at rest because `-debug.trailerForceNoTrailer` is honoured only with `-debug.trailerProbe YES`. Detail played its trailer, which correctly flattens the glass. Fixed by adding the flag.
+  - **test70's rest phase:** the first launch after a cold start rests the pinned rows about 14 pt lower; Soft happened to run first. Off-first then Soft-second rest shots are pixel-identical, shift 0. Fixed with a throwaway warm-up leg. The scrolled phase already matched Off exactly.
+
+### Wave 4 (2026-10-03 night)
+
+- **Clone commit `4665b300`.**
+  - **W4-H (Opus), I1.7 hero sharpen:**
+    - prefetches, the launch head and the deadline-bound hero fetches stay as before;
+    - 0.6 s after a commit, the on-screen hero sharpens to the form size (Nuvio 3072 bucket, classic full-bleed) and the TMDB logo to `original` at slot size;
+    - the sharpen is a same-identity `adoptSharpened` and logs `[HomeHero] sharpen start|adopt|paint|none|skip`.
+  - **W4-G (Sonnet), new UI legs:** test85/85B/85C/86/86B/87/88/88B/89/90/91 in `TrailerMotionUITests.swift`, plus `-trailer_start_delay 1` pins on the legs that assumed the old dwell.
+- **Gate 4:** Debug green; NuvioTVTests **913 / 0**. UI batches running. Review round 1 running: two Opus read-only passes, A trailers/hero and B images/rows/Detail/tab bar/auto-play.
+
 - Previously: design phase running: spec A (`docs/research/steven-rc1-fix-spec-A-motion-trailers.md`: M3, R2, R1, M4, M5, B2) and spec B (`docs/research/steven-rc1-fix-spec-B-images-rows-detail.md`: I1, F, C, T1, A, Detail items, P).

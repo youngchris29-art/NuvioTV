@@ -445,4 +445,37 @@ Dev build with `-debug.homeScrollProbe YES -debug.pinnedRowSettleProbe YES -debu
 - French status words: Sorti, Terminée, Série en cours, En cours, Annulé, En production, Prévu, Post-production, Rumeur, Pilote. Statuses shared by films and series take the default masculine.
 - The catalog diff is additive (+992 lines).
 
+### Review rounds 2–3 fixes, final gate (2026-10-04, ~00:30 ET)
+
+**Clone commits:**
+- **`808e9ae4` (round-2 P3s and strings):**
+  - hero, launch-head and first-play logos use slot-sized lookups;
+  - a late legacy backdrop replaces the card-size stand-in;
+  - the fade hold is cleared on disappear;
+  - a slow listener on a cache hit retries once;
+  - status words move to `detail.status.*`;
+  - 27 catalog keys translated.
+- **`c40a880b` (Soft mask overdraw 72 → 160 pt).** test70 caught a real change: with the 72 pt mask, the focus engine rested pinned rows 14 pt differently under Soft. On FA87, Off, Soft@400 and Soft@160 all rest at y = 51; Soft@72 at y = 37, title margin 6 vs 20. 160 pt = the 88 pt top reach + the 20 pt lift + slack. test70 now passes. The earlier "cold-start effect" reading was wrong: with a warm-up Off leg, both Off runs matched System and only Soft was off.
+- **`d4f4b4cc` (round-3 P3s):**
+  - the late backdrop waits out the commit's cross-fade;
+  - a joined fetch re-checks its own size and decodes from the cached bytes;
+  - a normal fetch shares a smaller in-flight download;
+  - the orphan `"Released"` catalog entry is removed (it came from the populate script's phone-app harvest, not a pre-existing key).
+
+**Review round 3:** 0 P1, 0 P2, 3 P3, all fixed (`docs/research/steven-rc1-review-r3.md`). Two consecutive rounds without P1/P2: the review bar is met.
+
+**Final gate on `d4f4b4cc`:**
+- Debug + Release green;
+- NuvioTVTests **966 / 0**;
+- jvm **1385 / 0**, K/N **1403 / 0**, composeApp **435 / 0** (no Kotlin changed after Gate 3);
+- catalog: every new key translated.
+
+**UI legs after the fixes:**
+- pass: 85, 85B, 86B, 87, 88, 89, 90, test01, test69, test70, RowLeadingEdge ×2, test75.
+- **Environmental:** test85C, test86, test91 and test37 failed or skipped because **YouTube refused every client from this Mac with `LOGIN_REQUIRED … "Sign in to confirm you're not a bot"`**, after a night of trailer runs. The unchanged `284fd764` build gets the same answer.
+
+**Ready for the device session:**
+- Apple TV build of `d4f4b4cc` in `~/Claude/Projects/NuvioMobile-steven-rc1-device` (worktree of the clone), not installed yet.
+- Branch `claude/steven-beta19-rc1-verdict` pushed to origin as a backup (not merged).
+
 - Previously: design phase running: spec A (`docs/research/steven-rc1-fix-spec-A-motion-trailers.md`: M3, R2, R1, M4, M5, B2) and spec B (`docs/research/steven-rc1-fix-spec-B-images-rows-detail.md`: I1, F, C, T1, A, Detail items, P).

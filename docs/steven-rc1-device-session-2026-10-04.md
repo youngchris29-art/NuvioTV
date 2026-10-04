@@ -2,7 +2,9 @@
 
 **When:** 2026-10-04, with Christian at the remote. About 35 minutes.
 
-**Build:** a dev build of the batch tip, installed as `com.youngchris29.NuvioTV`. I start every launch from the Mac with `--console`, so the probe lines stream to me. Photos are only needed where a step says so.
+**Build:** dev build of the batch tip `d4f4b4cc` (prebuilt in `~/Claude/Projects/NuvioMobile-steven-rc1-device`), installed as `com.youngchris29.NuvioTV` at the start of the session. I start every launch from the Mac with `--console`, so the probe lines stream to me. Photos are only needed where a step says so.
+
+**First, before you sit down:** I check that YouTube trailer extraction works again from this network. On 2026-10-03 night it answered every client with `LOGIN_REQUIRED` ("confirm you're not a bot") after a night of test runs. If it's still blocked, parts 2 (trailer phase), 3 and the trailer items of part 4 wait.
 
 **Pick "Test" at the profile picker every time.** Never "Chris".
 

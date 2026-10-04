@@ -1,6 +1,6 @@
 # Search S1 · Native Search (2026-10-04)
 
-**Status: WAVE 0 DONE 2026-10-04 (evening); W1–W5 not started.** Wave 0 ran on Christian's "start wave 0" with D1, D3 and D5 taken at their recommendations as working assumptions; **those three still need his confirmation before W1.** Wave 0 settled D2 and D4 and the tvOS 26 rule (see [Wave 0 outcome](#wave-0-outcome-2026-10-04) below), and the W1–W4 specs here are revised to match. Written from:
+**Status: W1 BUILT 2026-10-04 (night); W2, W4, W5 next.** D1, D3 and D5 were approved by Christian after Wave 0 ("D1, D3, D5 approved, start W1"). W1 is `8b0710b6` on NuvioMobile `claude/search-s1`, in the clone `~/Claude/Projects/NuvioMobile-search-s1` off `dad2bed5`. It is committed locally and not pushed or merged. Gates on W1: NuvioTVTests 1004 / 0 (990 + 14 new policy tests) and `test92SearchLiveResults` PASS on FA87 (tvOS 26.5). Its screenshots show rows under the Linear keyboard with no submit, and "severance" saved to Recent after opening a result. Not yet: W2, W4 (six UI tests still drive the old `TextField`), W5, a Release build and the device pass. Wave 0 settled D2 and D4 and the tvOS 26 rule (see [Wave 0 outcome](#wave-0-outcome-2026-10-04) below), and the W1–W4 specs here are revised to match. Written from:
 
 - the search-field spike, run 2026-10-04 on the Living Room Apple TV (`docs/research/search-field-spike-2026-10-04/README.md`, its logs and photos);
 - the revamp board's S1 direction (`docs/research/search-library-revamp-2026-10-04.html`, "S1 · Native Search" and "Recommendation");

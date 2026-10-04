@@ -1,6 +1,6 @@
 # Search S1 · Native Search (2026-10-04)
 
-**Status: DRAFT PLAN, NOT APPROVED. No code written.** Needs Christian's calls on D1–D5 below; after that, Wave 0 (a throwaway rig plus one short device session) settles the six unknowns before any production code. Written from:
+**Status: WAVE 0 DONE 2026-10-04 (evening); W1–W5 not started.** Wave 0 ran on Christian's "start wave 0" with D1, D3 and D5 taken at their recommendations as working assumptions; **those three still need his confirmation before W1.** Wave 0 settled D2 and D4 and the tvOS 26 rule (see [Wave 0 outcome](#wave-0-outcome-2026-10-04) below), and the W1–W4 specs here are revised to match. Written from:
 
 - the search-field spike, run 2026-10-04 on the Living Room Apple TV (`docs/research/search-field-spike-2026-10-04/README.md`, its logs and photos);
 - the revamp board's S1 direction (`docs/research/search-library-revamp-2026-10-04.html`, "S1 · Native Search" and "Recommendation");
@@ -45,12 +45,12 @@ S1-a ships FEAT-37 on its own and needs none of those answers.
 | # | Question | Options | Recommendation |
 |---|---|---|---|
 | D1 | Scope | (a) S1-a now, S1-b after the board's questions 2–3. (b) Everything on the board's Search step in one batch. | **(a).** S1-a is self-contained and answers FEAT-37 now. S1-b rebuilds the page's content and needs a design spec and a critique. |
-| D2 | Sidebar mode (the Test profile's default) | (a) Build a Menu router now: Menu pressed while focus is in the system keyboard opens the sidebar. The FEAT-45 rail reuses it. (b) Sidebar mode keeps today's `TextField` until the rail replaces Sidebar mode. (c) Hold all of S1 until the rail lands. | **(a), falling back to (b) if Wave 0 can't make the router work.** The rail hides the system tab bar for good. The spike showed that `HiddenTabBarFocusBlocker` does not stop the search container from sending Menu-focus to that hidden bar, so the rail has to solve the same press anyway. Solving it here gives the rail's P4 spec a proven mechanism. It's one new file and doesn't touch `ContentView.swift`. |
+| D2 | Sidebar mode (the Test profile's default) | (a) Build a Menu router now: Menu pressed while focus is in the system keyboard opens the sidebar. The FEAT-45 rail reuses it. (b) Sidebar mode keeps today's `TextField` until the rail replaces Sidebar mode. (c) Hold all of S1 until the rail lands. | **(a), falling back to (b) if Wave 0 can't make the router work.** The rail hides the system tab bar for good. The spike showed that `HiddenTabBarFocusBlocker` does not stop the search container from sending Menu-focus to that hidden bar, so the rail has to solve the same press anyway. Solving it here gives the rail's P4 spec a proven mechanism. It's one new file and doesn't touch `ContentView.swift`. **→ Wave 0: (a), but as a focus redirect, not a press router** (U3). |
 | D3 | Tab bar while the keyboard is up | (a) Leave it visible (spike-tested). (b) Hide it while the keyboard has focus (board, bobsupra). | **(a).** (b) adds a new tab-bar visibility trigger (BUG-66 territory) for a look nobody has seen yet. Revisit in S1-b. |
-| D4 | With Grid, the bar stays pinned on Search instead of scrolling off (`y=46` while the scroll latch reads `sd=1`) | (a) Accept. (b) Link it to the results with `TabBarContentScrollLink`. | **Let Wave 0 decide.** Ship (b) only if the controller chain under `.searchable` links cleanly (U4); otherwise (a), and log it. |
+| D4 | With Grid, the bar stays pinned on Search instead of scrolling off (`y=46` while the scroll latch reads `sd=1`) | (a) Accept. (b) Link it to the results with `TabBarContentScrollLink`. | **Let Wave 0 decide.** Ship (b) only if the controller chain under `.searchable` links cleanly (U4); otherwise (a), and log it. **→ Wave 0: (a) accept.** Neither link mode moved the bar (U4). |
 | D5 | When a query joins Recent Searches (the inline keyboard has no Search/Done key) | (a) When a result is opened from it. (b) After it rests with results. (c) Both. | **(a)**, plus the iPhone keyboard's return key through `.onSubmit(of: .search)`. (b) would save partial words like "dun". This matches VortX and the board's "saved on intent". |
 
-One rule rather than a decision: **if tvOS 26 still bleeds (U1), tvOS 26 keeps today's `TextField`** behind `#available(tvOS 27, *)`. The deployment target is 26.0.
+One rule rather than a decision: **if tvOS 26 still bleeds (U1), tvOS 26 keeps today's `TextField`** behind `#available(tvOS 27, *)`. The deployment target is 26.0. **→ Wave 0: no bleed on tvOS 26.5, so no fallback path** (U1).
 
 ## Unknowns Wave 0 must answer
 
@@ -67,20 +67,42 @@ Wave 0 runs in a throwaway clone with the spike patch applied, because it alread
 
 U7, low priority: in Sidebar mode, Back from Detail returns focus to the keyboard, not the card. Check whether the shell focus scope (`ShellFocusScopeModifier`, Sidebar mode only) causes it. Fix it in W2 if it's cheap; otherwise log it.
 
+## Wave 0 outcome (2026-10-04)
+
+Rig: throwaway clone `~/Claude/Projects/NuvioMobile-search-w0` at `tvos-shared-extraction` `dad2bed5` with the spike patch, then the probes below. It was deleted after the run. The full rig is `docs/research/search-s1-wave0-2026-10-04/wave0-rig.patch` (applies to `dad2bed5`), with logs in `logs/`. It ran on the FA87 simulator (tvOS 26.5, XCUITest) and on the Living Room Apple TV (tvOS 27.2, **Test profile**, Grid keyboard, Christian at the remote). Device runs: 1 = A + rows mode 1; 2 = A2 + rows mode 2 + top-down tab link; 3 = A0; 4 and 4b = Sidebar mode, A2 + the Menu router.
+
+| # | Answer | Evidence |
+|---|---|---|
+| U1 | **No bleed on tvOS 26.5.** No `TextField` fallback is needed for tvOS 26. | XCUITest `testW0SearchableSimA` and `…A2` on FA87: `keyboards=0 searchFields=0` while Detail and Home show. Probe: `kb none` from 0.06 s after Detail opens until 0.56 s before it closes (the pop), and on tabs 0 and 2. Query and focus kept after Back. |
+| U2 | **The echo comes from keeping the query in the view's `@State`.** Moving it into an `ObservableObject` query box cures it. Isolating the `.searchable` layer from results updates (A2) also cuts re-renders, so W1 takes the A2 shape. | iPhone, "severance". **A0** (the morning spike's structure, verbatim): 75 query changes, **31 backward steps**, flicker seen. **A** (query box, `.searchable` still inside the model-observing view): monotonic, 0 backward. **A2** (query box + `.searchable` in a layer that observes only the query): monotonic, 0 backward. In A2 the field layer re-rendered only on query changes (20 times against 107 for the content). |
+| U3 | **A press recognizer can't stop the search container's Menu → hidden-tab-bar move; a focus redirect can.** In Sidebar mode, when focus lands on a `UITabBarButton`, call `requestReveal()`: the sidebar opens with focus on its row. Picking a row hands focus back to the keyboard. Up from the keyboard's top row never reaches the hidden bar. **Right from the sidebar can't reach the system keyboard**: it isn't a geometric neighbour. Menu inside the sidebar leaves the app, which is today's FEAT-30 behaviour. | Run 4: the consuming, exclusive window recognizer took the press (`router gate take=1 … inKeyboard=1`) but never recognized, and focus hit `UITabBarButton` 62 ms later with `blocker=1`. So `HiddenTabBarFocusBlocker` doesn't stop it. Run 4b: simultaneous, the recognizer does fire, but the system moves focus anyway. `router redirect hiddenTabBar prev=UIKeyboard -> requestReveal` 25 ms later, and the sidebar is focused (`chromeFocused=1`). |
+| U4 | **The bar can't be made to follow `.searchable`'s results on Grid.** Accept it (D4 (a)). | The existing attacher's parent walk from inside `.searchable` stops at `TVSearchController` and never reaches the tab controller. Linking from the top (window root → `UITabBarController` → selected tab: `TabHostingController > NavigationStackHostingController > SearchContainerViewWrapper > UISearchContainerViewController`) attached (`trk=other`), but the bar still sat at `y=46` while `sd=1` (Christian's video `IMG_0379.MOV`, run 2). |
+| U5 | **XCUITest sees the field as `app.searchFields`** (`textFields` = 0). `app.typeText` works with focus in the inline keyboard. The empty field's `value` reads "Search movies & shows, Press ￼ to change keyboards"; after typing it reads the query. **The simulator defaults to Linear** (keyboard frame 1760 × 66), and Down goes from the keyboard into the results. While Detail or Home shows, `app.keyboards.count == 0` and `app.searchFields.count == 0`, which is the assertion test92 needs. | Same two XCUITests, `W0 [...]` lines in `logs/xcuitest-*.log`. |
+| U6 | **Mode 2:** hold the old rows until the new search finishes, or 1 s after its first row. Christian: "rows stayed put". Mode 1 (swap on the first new row) made the page collapse to one row and regrow on every letter. | Run 1 (mode 1) against run 2 (mode 2: swaps at 0.12–0.27 s with `loading=0` for "dune"). |
+| U7 | Not tested (low priority). Logged. | — |
+
+Also learned:
+
+- A new file declaring `ObservableObject`s needs `import Combine` (`MemberImportVisibility`); W1's SearchView does.
+- The press logger must read the scene from the window itself, because a `UIWindow`'s own `window` is nil.
+- tvOS kills a running app when the keyboard layout changes in Settings (`signal 9`).
+- After this run, the FA87 simulator and the Apple TV dev app (`com.youngchris29.NuvioTV`) both hold the rig build. It is inert without its launch flags apart from the A2-shaped SearchView, and the next build replaces it on both.
+
 ## Build (S1-a)
 
-NuvioMobile clone `~/Claude/Projects/NuvioMobile-search-s1`, branch `claude/search-s1` off the `tvos-shared-extraction` tip at the start (`422bb0c4` today). Waves are cut by file ownership. `SearchView.swift` belongs to W1; W2 and W3 each add one mount line to it after W1 lands. **No `shared/` changes**: `SearchRepository.kt` is an upstream extraction, so everything here stays on the Swift side. No `ContentView.swift` changes either, which keeps clear of Home Stage & Strip.
+NuvioMobile clone `~/Claude/Projects/NuvioMobile-search-s1`, branch `claude/search-s1` off the `tvos-shared-extraction` tip at the start (`dad2bed5` at Wave 0). Waves are cut by file ownership. W1 owns `SearchView.swift` and `SearchViewModel.swift`. W2 owns `SidebarOverlay.swift` and doesn't touch `SearchView`. W3 is dropped. **No `shared/` changes**: `SearchRepository.kt` is an upstream extraction, so everything here stays on the Swift side. No `ContentView.swift` changes either.
 
 ### W1 · Field swap (`SearchView.swift`, `SearchViewModel.swift`)
 
 1. **The field.** Delete the `HStack` field block (`SearchView.swift` L30–40). Put `.searchable(text:prompt:)` with the existing key `"Search movies & shows"` (already translated into de/es/fr/it/vi) on the results `ScrollView`, after `.sidebarMenuReveal()`, inside the existing `NavigationStack`. Never put it on the `TabView`, and never add a second `NavigationStack`.
-2. **Structure for the echo**, as U2 settles it. The default from the hypothesis:
-   - `SearchView` owns a `SearchQueryBox` (`@StateObject`, `@Published text`) and applies `.searchable` and `.onChange(of: text)` → `model.queryChanged`.
-   - A child, `SearchContent`, owns or observes `SearchViewModel` and draws everything inside the `ScrollView`.
-   - A results update then re-renders only the child.
+2. **Structure for the echo (U2: settled, A2 shape).** The query must not live in `@State`.
+   - `SearchView` owns a `SearchViewOwner` (`@StateObject`) that never publishes and holds the `SearchViewModel` and a `SearchQueryBox` (`@Published text`), so `SearchView`'s body never re-runs on a results update.
+   - A `SearchFieldLayer` observes only the query box. It applies `.searchable(text: $queryBox.text, …)` and `.onChange(of: text)` → `model.queryChanged`.
+   - `SearchContent` observes the model and draws everything inside the `ScrollView`.
+   - `import Combine`. The rig's `SearchView` in `wave0-rig.patch` is the reference.
 3. **Keep the old rows while the next ones load.**
    - `SearchRepository` publishes `isLoading = true` with empty sections at the start of every new query (`SearchRepository.kt` L150), so live typing would blank the page on every letter.
-   - `SearchViewModel`'s `uiState` watcher keeps the current `sections` while a newer query is loading and has no section yet. It swaps in the first new section when it arrives, and clears to the empty message only when the newer query settles empty.
+   - `SearchViewModel`'s `uiState` watcher keeps the current `sections` while a newer query is loading. It swaps in the new rows when that search finishes, or 1 s after its first row arrives (U6 mode 2), and clears to the empty message only when the newer query settles empty. Swapping on the first new row (mode 1) collapsed the page on every letter.
    - "Searching…" shows only when there are no rows to keep.
    - The rule goes in a pure `SearchRowsHold` helper so it can be unit-tested.
 4. **Recent Searches on open (D5).**
@@ -89,14 +111,23 @@ NuvioMobile clone `~/Claude/Projects/NuvioMobile-search-s1`, branch `claude/sear
    - Keep `.onSubmit(of: .search)` for the iPhone keyboard's return key.
    - The rule ("record on the first push per query") is a pure `SearchHistoryOnOpen` helper. The repository already ignores queries under 2 characters and dedupes.
    - BUG-47/48 and UX-13 (See All query threading, grid focus on pop) must stay fixed; test23/test24 cover them.
-5. **tvOS 26 (only if U1 bleeds).** Move today's field into a `LegacySearchField` view, used under `if #available(tvOS 27, *) { … } else { … }`. Both paths share the same `query` and view model.
+5. ~~tvOS 26 fallback~~ **Dropped:** U1 found no bleed on tvOS 26.5. Today's `TextField` path is deleted, not kept.
 6. **Comments.**
    - Rewrite the header's ban (L4–7) as the rule in item 1.
    - Drop the stale "root TextField keeps this screen focusable" note (L228) and `CatalogRowView`'s stale `onSelect` doc (`BrowseComponents.swift` L4927–4929).
 
-### W2 · Sidebar mode (D2 = a)
+### W2 · Sidebar mode (D2 = a, revised by U3: a focus redirect)
 
-New `DesignSystem/SystemKeyboardMenuRouter.swift`, mounted once in `SearchView`'s root:
+**Revised after Wave 0.** No press recognizer can stop the search container's Menu → hidden-tab-bar move, so W2 redirects that focus instead:
+
+- **The redirect.** `HiddenTabBarFocusBlocker` (`DesignSystem/SidebarOverlay.swift`) already observes every `UIFocusSystem.didUpdateNotification` in Sidebar mode. Teach it one more rule, behind a callback the overlay passes in: when the next focused item is a `UITabBarButton` and the sidebar doesn't hold focus, call `chrome.requestReveal()`.
+  - This is app-wide, not Search-only: any path into the hidden bar now opens the sidebar instead of stranding focus on an invisible button.
+  - The rail plan keeps `HiddenTabBarFocusBlocker`, so the FEAT-45 rail inherits the redirect and only needs it to focus the rail instead.
+  - Wave 0's prototype is `SearchMenuRouter.focusUpdated` in `wave0-rig.patch`.
+- **Back to the keyboard.** Picking a sidebar row already lands focus on the keyboard (`handOffFocusToContent`). Right from the sidebar does nothing, because the system keyboard isn't its geometric neighbour. Add an app-handled Right on the panel that calls `handOffFocusToContent()`, the same exit the rail plan specifies. Otherwise "pick a row" is the only way back. Small, in `SidebarOverlay.swift`.
+- **No `SearchView` change, no new file.** The Home Stage & Strip plan's W2-D, which retires the rest of `SidebarOverlay.swift`, must carry the redirect into the rail. Add one line to its P4 notes.
+
+The original router design is kept below for the record; **do not build it**:
 
 - **Shape.** A zero-size `UIViewRepresentable` that installs a press recognizer on the **window** in `didMoveToWindow` and removes it when it leaves the window or is dismantled. This is `HomeUpSwipeCatcher`'s install/teardown pattern. Search's root leaves the window on every tab switch and push, so the router only exists while Search is on screen.
 - **Recognizer.** A `UITapGestureRecognizer` with `allowedPressTypes = [.menu]` and `allowedTouchTypes = []`, left at the default `cancelsTouchesInView = true` so a recognised press is consumed. That is unlike the passive Home catcher. The in-repo precedent for consuming Menu is `NativePlayerHostController.pressesBegan`.
@@ -108,7 +139,7 @@ New `DesignSystem/SystemKeyboardMenuRouter.swift`, mounted once in `SearchView`'
 - **Up from the keyboard** into the hidden bar: fix only if U3 shows it happens. Use the same gate and a blocker re-assert, not a second mechanism.
 - **Hand-off to the rail.** Add one line to the Home Stage & Strip plan's P4 notes: the rail's "Menu at a tab root" must cover focus inside the system keyboard, and should adopt this router. That plan also retires `SidebarOverlay.swift`; whichever batch merges second adapts the `requestReveal()` call.
 
-### W3 · Tab bar on Search (only if U4 links cleanly)
+### W3 · Tab bar on Search — DROPPED (U4: the bar can't follow `.searchable`'s results; D4 = accept)
 
 - Replace `TabBarContentScrollLink.homeRowsScrollView`, a single global slot named for Home, with a per-tab slot, and keep `TabBarStateProbe`'s `trk=rows` reading Home's.
 - Mount `TabBarContentScrollLinkAttacher(pinnedContainer: false)` in the background of Search's results `VStack`. It stays inert in Sidebar mode, as it already is.
@@ -123,19 +154,19 @@ Six UI tests and two helpers assume today's full-screen keyboard. They find the 
 
 Migrate them to the U5 answers:
 
-- find the field the new way;
-- type with focus already in the keyboard;
+- find the field with `app.searchFields.firstMatch`. An empty field's `value` is the prompt plus "Press ￼ to change keyboards", so test for the query with `value == "dune"`, not "non-empty";
+- `openTab("Search")` already ends with a Down, which lands in the keyboard; type with `app.typeText`;
 - no Menu-to-dismiss. test19's Menu ×2 would now leave the app, so it needs a rewrite, not a tweak;
-- go Right into the results on Grid and Down on Linear, reading the layout from the screen or pinning it on FA87.
+- FA87 is on **Linear**: Down goes from the keyboard into the results. Keep a Grid branch (Right ×7) keyed on `app.keyboards.firstMatch.frame.width < 900`, as the Wave 0 test does.
 
 New tests:
 
 - **UI · `test92SearchLiveResults`.** Type "dune" without submitting; a results row appears. Open it, and no keyboard element exists while Detail shows. Press Menu, and the query is intact and "dune" is now a Recent chip. Run it on FA87 (tvOS 26.5) and once on a tvOS 27.0 simulator.
-- **Unit:** `SearchRowsHold`, `SearchHistoryOnOpen`, and the router's focus-in-keyboard walk.
+- **Unit:** `SearchRowsHold` (mode 2 timing), `SearchHistoryOnOpen`, and the hidden-tab-bar redirect rule (pure: given the sidebar state and the next item's class name, reveal or not).
 
 ### W5 · Docs and copy
 
-- `docs/design/hig-hybrid-contract.md` L35: take `.searchable` out of "Explicitly out". Add a MUST under "Where the system wins": `.searchable` on the results container inside the tab's own `NavigationStack`; never on the `TabView`; never a nested `NavigationStack`; tvOS 26 keeps the `TextField` if U1 says so.
+- `docs/design/hig-hybrid-contract.md` L35: take `.searchable` out of "Explicitly out". Add a MUST under "Where the system wins": `.searchable` on the results container inside the tab's own `NavigationStack`; never on the `TabView`; never a nested `NavigationStack`; keep the typed text in an `ObservableObject`, never in `@State` (U2's echo); in Sidebar mode the hidden tab bar's focus is redirected into the sidebar (W2). Verified on tvOS 26.5 (simulator) and 27.2 (device).
 - **Settings copy.** Re-read the strings that mention "the search field" (`SettingsDescriptions.swift` L324, `SourcesSettingsPane.swift` L298–299). New strings, if any, go through the localization pipeline for de/es/fr/it/vi.
 - **Tracker.** FEAT-37 → BUILT, pointing at this plan.
 - **Release notes / Steven's DM.** "Search shows results while you type; dictation and typing from your iPhone work; a search is saved to Recent when you open one of its results." Say how Sidebar mode behaves, whichever D2 path ships. Run SlopMonster before showing either.
@@ -157,23 +188,17 @@ The TV's keyboard is on **Grid**. Changing the layout in tvOS Settings terminate
 4. **iPhone keyboard.** Type "severance" on the phone. **No flicker** (gate), with each letter appearing once in the probe or log.
 5. **Dictation.** Say "the bear".
 6. **Recent Searches.** Opening a "dune" result adds the chip. Partial queries never appear.
-7. **Tabs mode.** Menu from the keyboard goes to the tab bar. Home shows no keyboard. Search is intact on return. The bar's scroll behaviour on Grid matches what D4 shipped.
-8. **Sidebar mode.** Menu from the keyboard opens the sidebar. Right and Menu come back into Search, and nothing invisible ever holds focus.
+7. **Tabs mode.** Menu from the keyboard goes to the tab bar. Home shows no keyboard. Search is intact on return. On Grid the bar stays put while the results scroll (D4: accepted); on Linear it scrolls off.
+8. **Sidebar mode.** Menu from the keyboard opens the sidebar with focus on its row. Right, or picking the Search row, comes back to the keyboard. Nothing invisible ever holds focus, on Search or any other tab.
 9. **Stress.** Open and close Detail five times quickly.
 10. **Regressions.** See All → grid → Back (UX-13, BUG-47/48); Hide Discover on and off; Search Sources toggles; Retry on the error state.
 
 ## Risks
 
-- **tvOS 26 bleeds (U1).** tvOS 26 keeps the `TextField`, and S1-a's live search is tvOS 27+ only. Say so in the release notes.
-- **The echo fix doesn't hold (U2).** Options for Christian:
-  - ship with a release-note caveat ("typing from an iPhone may flicker");
-  - drop iPhone typing's promise from the copy;
-  - hold S1-a.
-
-  Dictation is unaffected.
-- **Rail overlap.** Home Stage & Strip's W2-D retires `SidebarOverlay.swift` and moves Menu routing into the shell. The router is one file with one `requestReveal()` call. The merge order decides who adapts.
+- ~~tvOS 26 bleeds~~ and ~~the echo fix doesn't hold~~: **retired by Wave 0** (U1: no bleed on 26.5; U2: the A0/A/A2 comparison isolates the cause and the fix). The tvOS 26 check was the simulator, not a 26 device; any tvOS 26 tester report of a keyboard over Detail reopens it.
+- **Rail overlap.** Home Stage & Strip's W2-D retires most of `SidebarOverlay.swift` but keeps `HiddenTabBarFocusBlocker`, where W2's redirect lives. The merge order decides who adapts; the rail only changes the redirect's target.
 - **UI tests driving an inline keyboard** are new ground for the harness. The tvOS 27.0 simulator never reports `hasFocus`, so the primary UI legs stay on FA87 (26.5).
-- **Class-name keyboard detection** depends on private UIKit names. The router fails closed: no match means the system default, which is today's spike behaviour, not a crash.
+- **Class-name detection** depends on private UIKit names: `UITabBarButton` for the redirect. If a tvOS update renames it, the redirect stops firing and Menu from the keyboard strands focus on the hidden bar again (Wave 0 run 4's state), with no crash. Test92's Sidebar leg is the canary.
 
 ## S1-b outline (separate plan, after the board's questions 2–3)
 
@@ -189,11 +214,12 @@ From the board's S1 direction and its mix-and-match pieces:
 
 ## Effort and delegation
 
-- **Wave 0:** about half a day, including the ~40-minute device session.
+- **Wave 0:** done 2026-10-04 evening: three FA87 simulator runs plus one device session (runs 1–4b, about 25 minutes of Christian's time).
 - **W1–W5:** about a day of agent work plus gates, then the review rounds and the device pass. Delegation follows the playbook:
-  - W1 and W2 to Opus (judgment: the echo structure, `NavigationPath`, the router gate);
-  - W3 and W4 to Sonnet, from exact specs written after Wave 0;
+  - W1 to Opus (the A2 structure, `NavigationPath`, rows hold), working from the rig patch;
+  - W2 to Opus (the redirect and the Right exit in `SidebarOverlay.swift`);
+  - W4 to Sonnet, from the U5 facts above;
   - W5 in the main session.
-- **Concurrency.** Nothing here overlaps Home Stage & Strip's Wave 0/1 files (`HomeView.swift`, the strip and stage). The overlap is W2 and that batch's W2-D.
+- **Concurrency.** Nothing here overlaps Home Stage & Strip's Wave 0/1 files (`HomeView.swift`, the strip and stage). The overlap is W2 and that batch's W2-D, both in `SidebarOverlay.swift`.
 
-**Next step:** Christian's answers on D1–D5, then Wave 0.
+**Next step:** Christian confirms D1 (split), D3 (bar stays visible while typing) and D5 (save to Recent on open); then W1–W5 on `claude/search-s1`.

@@ -1,0 +1,194 @@
+[SearchSpike] t=0.000 scanner armed variant=A2
+[TabBarLink] linked chain=NavigationStackHostingController<AnyView> > UIKitNavigationController(skip) > TabHostingController tab=UIKitTabBarController sv=HostingScrollView svh=1080 pinned=1 legacyObserved=rows adjBottom=0 adjTop=0 restFix=0
+[SearchSpike] t=0.037 tabbarlink linked chain=NavigationStackHostingController<AnyView> > UIKitNavigationController(skip) > TabHostingController sv=HostingScrollView svh=1080 observed=self
+[SearchSpike] t=0.042 presslogger installed window=UIWindow level=0
+[SearchSpike] t=0.042 kb none screen=search tab=0
+[SearchSpike] t=0.042 focus UIKitFocusableViewResponderItem screen=search tab=0 blocker=0
+[SearchSpike] t=0.042 tabbar y=46 h=68 onscreen=1
+[TabBarStateProbe] chain root=UIHostingController<ModifiedContent<LazyView<ModifiedContent<ContentView, _PreferenceWritingModifier<PreferredColorSchemeKey>>>, RootModifier>> tab=UIKitTabBarController selected=TabHostingController > UIKitNavigationController > NavigationStackHostingController<AnyView> legacyObserved=rows
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=---- m=cls r=arm svh=1080
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=---- m=cls r=attach svh=1080
+[SearchSpike] t=0.295 focus UITabBarButton screen=search tab=0 blocker=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=---- m=cls r=tick svh=986
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=---- m=cls r=tick svh=574
+[SearchSpike] t=5.303 press right window=UIWindow focus=nil inKeyboard=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=---- m=cls r=tab svh=574
+[SearchSpike] t=5.475 tab 1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=---- m=cls r=tab2 svh=574
+[TabBarLink] unlinked (left window) controllers=2
+[SearchSpike] t=6.635 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x135 | UIKeyboard grid 80,261 432x750 screen=search tab=1
+[SearchSpike] t=6.635 layout grid
+[SearchSpike] t=6.635 tablink2 linked targets=TabHostingController > NavigationStackHostingController<AnyView > SearchContainerViewWrapper<ModifiedConte sv=HostingScrollView svh=787
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=other sd=0 sdt=---- m=cls r=tick svh=-
+[SearchSpike] t=9.314 focus UIKitFocusableViewResponderItem screen=search tab=1 blocker=0
+[SearchSpike] t=9.315 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=10.356 focus UIKeyboard screen=search tab=1 blocker=0
+[SearchSpike] t=10.401 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=20.902 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=21.161 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=21.608 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=22.297 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=22.333 query 'd' renders view=1 layer=3 content=10
+[SearchSpike] t=22.883 results sections=1 loading=true
+[SearchSpike] t=23.013 rows swap mode=2 old=1 new=8 after=0.12s loading=0
+[SearchSpike] t=23.101 results sections=8 loading=false
+[SearchSpike] t=23.168 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=23.412 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=23.830 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=24.308 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=24.578 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=25.031 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=25.048 query 'du' renders view=1 layer=5 content=20
+[SearchSpike] t=25.649 rows swap mode=2 old=8 new=8 after=0.22s loading=0
+[SearchSpike] t=26.081 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=26.348 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=26.857 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=27.233 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=27.718 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=27.751 query 'dun' renders view=1 layer=7 content=29
+[SearchSpike] t=28.312 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=28.461 rows swap mode=2 old=8 new=8 after=0.27s loading=0
+[SearchSpike] t=28.703 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=28.867 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=29.423 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=29.647 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=30.137 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=30.170 query 'dune' renders view=1 layer=9 content=40
+[SearchSpike] t=30.848 rows swap mode=2 old=8 new=7 after=0.27s loading=0
+[SearchSpike] t=30.958 results sections=7 loading=false
+[SearchSpike] t=42.683 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=43.163 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=43.433 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=46.771 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=46.822 query '' renders view=1 layer=11 content=50
+[SearchSpike] t=46.956 results sections=0 loading=false
+[SearchSpike] t=49.171 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=53.310 query 'S' renders view=1 layer=12 content=52
+[SearchSpike] t=53.867 results sections=1 loading=true
+[SearchSpike] t=53.990 rows swap mode=2 old=1 new=8 after=0.11s loading=0
+[SearchSpike] t=54.092 results sections=8 loading=false
+[SearchSpike] t=55.005 query 'SE' renders view=1 layer=13 content=62
+[SearchSpike] t=56.633 rows swap mode=2 old=8 new=3 after=1.22s loading=1
+[SearchSpike] t=56.718 results sections=3 loading=true
+[SearchSpike] t=56.822 query 'SEV' renders view=1 layer=14 content=68
+[SearchSpike] t=58.286 rows swap mode=2 old=3 new=3 after=1.48s loading=1
+[SearchSpike] t=59.372 query 'SEVe' renders view=1 layer=15 content=77
+[SearchSpike] t=59.686 rows swap mode=2 old=3 new=7 after=1.21s loading=1
+[SearchSpike] t=59.777 results sections=7 loading=true
+[SearchSpike] t=59.967 query 'SEVer' renders view=1 layer=16 content=81
+[SearchSpike] t=61.155 rows swap mode=2 old=7 new=5 after=1.34s loading=1
+[SearchSpike] t=61.259 results sections=5 loading=true
+[SearchSpike] t=61.623 rows swap mode=2 old=5 new=7 after=0.18s loading=0
+[SearchSpike] t=61.677 results sections=7 loading=false
+[SearchSpike] t=65.270 query 'SEVera' renders view=1 layer=17 content=94
+[SearchSpike] t=66.414 query 'SEVeran' renders view=1 layer=18 content=100
+[SearchSpike] t=67.033 rows swap mode=2 old=7 new=1 after=1.34s loading=1
+[SearchSpike] t=67.080 results sections=1 loading=true
+[SearchSpike] t=67.484 query 'SEVeranc' renders view=1 layer=19 content=105
+[SearchSpike] t=67.778 query 'SEVerance' renders view=1 layer=20 content=107
+[SearchSpike] t=68.368 rows swap mode=2 old=1 new=1 after=1.25s loading=1
+[SearchSpike] t=69.400 rows swap mode=2 old=1 new=6 after=0.99s loading=0
+[SearchSpike] t=69.500 results sections=6 loading=false
+[SearchSpike] t=210.942 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=211.244 focus UIKitFocusableViewResponderItem screen=search tab=1 blocker=0
+[SearchSpike] t=211.280 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=212.827 focus UIKeyboard screen=search tab=1 blocker=0
+[SearchSpike] t=212.916 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=214.161 focus nil screen=search tab=1 blocker=0
+[SearchSpike] t=216.662 focus UITabBarButton screen=search tab=1 blocker=0
+[SearchSpike] t=216.870 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=217.121 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=217.187 focus UIKitFocusableViewResponderItem screen=search tab=1 blocker=0
+[SearchSpike] t=217.975 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=217.999 focus UIKeyboard screen=search tab=1 blocker=0
+[SearchSpike] t=218.626 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=218.846 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=219.072 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=219.297 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=219.867 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=220.273 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=220.707 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=220.969 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=221.459 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=221.500 query '' renders view=1 layer=26 content=151
+[SearchSpike] t=221.633 results sections=0 loading=false
+[SearchSpike] t=223.287 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=223.577 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=223.796 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=224.046 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=224.411 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=224.637 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=225.177 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=225.185 query 'd' renders view=1 layer=27 content=153
+[SearchSpike] t=225.701 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=225.832 results sections=1 loading=true
+[SearchSpike] t=226.045 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=226.126 rows swap mode=2 old=1 new=8 after=0.23s loading=0
+[SearchSpike] t=226.235 results sections=8 loading=false
+[SearchSpike] t=226.311 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=226.812 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=227.382 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=227.411 query 'du' renders view=1 layer=29 content=164
+[SearchSpike] t=227.772 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=228.049 rows swap mode=2 old=8 new=8 after=0.23s loading=0
+[SearchSpike] t=228.283 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=228.749 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=228.772 query 'dun' renders view=1 layer=31 content=172
+[SearchSpike] t=229.248 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=229.433 rows swap mode=2 old=8 new=8 after=0.26s loading=0
+[SearchSpike] t=229.676 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=230.232 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=230.442 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=230.833 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=231.268 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=231.302 query 'dune' renders view=1 layer=33 content=183
+[SearchSpike] t=231.978 rows swap mode=2 old=8 new=7 after=0.26s loading=0
+[SearchSpike] t=232.101 results sections=7 loading=false
+[SearchSpike] t=233.757 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=234.036 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=234.040 focus UIKitFocusableViewResponderItem screen=search tab=1 blocker=0
+[SearchSpike] t=238.008 press down window=UIWindow focus=nil inKeyboard=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=other sd=1 sdt=-1-- m=cls r=down svh=-
+[SearchSpike] t=238.708 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=239.410 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=240.210 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=240.895 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=241.745 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=243.416 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=244.184 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=245.282 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=246.149 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=246.650 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=247.184 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=247.768 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=248.285 press up window=UIWindow focus=nil inKeyboard=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=other sd=0 sdt=-0-- m=cls r=up svh=-
+[SearchSpike] t=248.851 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=249.711 focus UITabBarButton screen=search tab=1 blocker=0
+[SearchSpike] t=249.838 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=250.755 focus UIKitFocusableViewResponderItem screen=search tab=1 blocker=0
+[SearchSpike] t=250.803 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=281.650 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=281.685 focus UIKeyboard screen=search tab=1 blocker=0
+[SearchSpike] t=283.018 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=283.348 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=283.619 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=283.877 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=284.128 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=286.671 focus UIKitFocusableViewResponderItem screen=search tab=1 blocker=0
+[SearchSpike] t=286.738 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=287.890 press down window=UIWindow focus=nil inKeyboard=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=other sd=1 sdt=-1-- m=cls r=down svh=-
+[SearchSpike] t=288.458 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=289.259 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=290.026 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=290.844 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=291.812 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=292.715 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=293.546 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=294.080 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=294.664 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=295.165 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=295.782 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=296.533 press up window=UIWindow focus=nil inKeyboard=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=other sd=0 sdt=-0-- m=cls r=up svh=-

@@ -1,0 +1,9 @@
+W0 [A2 open] searchFields=1 textFields=0 keyboards=1 keys=29 kbFrame=(80.0, 261.5, 1760.0, 66.0) sfFrame=(76.00002837181091, 156.77030515670776, 1226.9999432563782, 70.45938968658447) sfValue=Optional(Search movies & shows, Press ￼ to change keyboards) sfLabel=Search movies & shows sfFocus=false
+W0 [A2 typed] searchFields=1 textFields=0 keyboards=1 keys=29 kbFrame=(80.0, 261.5, 1760.0, 66.0) sfFrame=(76.00000381469727, 156.84090924263, 1767.9999923706055, 70.31818151473999) sfValue=Optional(dune) sfLabel=Search movies & shows sfFocus=false
+W0 [A2] layout=linear-or-unknown kbFrame=(80.0, 261.5, 1760.0, 66.0)
+W0 [A2 inResults] searchFields=1 textFields=0 keyboards=1 keys=29 kbFrame=(80.0, 261.5, 1760.0, 66.0) sfFrame=(76.00000381469727, 156.84090924263, 1767.9999923706055, 70.31818151473999) sfValue=Optional(dune) sfLabel=Search movies & shows sfFocus=false focusedButton=Dune: Part Three
+W0 [A2 detail] searchFields=0 textFields=0 keyboards=0 keys=0 focusedButton=Mark Watched
+W0 [A2 back] searchFields=1 textFields=0 keyboards=1 keys=29 kbFrame=(80.0, 261.5, 1760.0, 66.0) sfFrame=(76.00000381469727, 156.84090924263, 1767.9999923706055, 70.31818151473999) sfValue=Optional(dune) sfLabel=Search movies & shows sfFocus=false focusedButton=Dune: Part Three
+W0 [A2 home] searchFields=0 textFields=0 keyboards=0 keys=0 focusedButton=Cops
+W0 [A2 return] searchFields=1 textFields=0 keyboards=1 keys=29 kbFrame=(80.0, 261.5, 1760.0, 66.0) sfFrame=(76.00000381469727, 156.84090924263, 1767.9999923706055, 70.31818151473999) sfValue=Optional(dune) sfLabel=Search movies & shows sfFocus=false focusedButton=Dune: Part One
+Test Case '-[NuvioTVUITests.NuvioTVUITests testW0SearchableSimA2]' passed (74.219 seconds).

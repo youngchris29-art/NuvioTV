@@ -404,4 +404,45 @@ Dev build with `-debug.homeScrollProbe YES -debug.pinnedRowSettleProbe YES -debu
   - **W4-G (Sonnet), new UI legs:** test85/85B/85C/86/86B/87/88/88B/89/90/91 in `TrailerMotionUITests.swift`, plus `-trailer_start_delay 1` pins on the legs that assumed the old dwell.
 - **Gate 4:** Debug green; NuvioTVTests **913 / 0**. UI batches running. Review round 1 running: two Opus read-only passes, A trailers/hero and B images/rows/Detail/tab bar/auto-play.
 
+### Gate 4 UI legs (2026-10-03 night)
+
+- **Passed:**
+  - new legs test85 / 85B / 85C / 86 / 86B / 88B / 89 / 90 / 91;
+  - test01, test37, test41, test70 (now green with the warm-up leg), test33's Classic leg;
+  - InlineTrailerTileProbe ×2, RowLeadingEdge zoom-on.
+- **test87 and test88 failed on harness parsing only.** The app was right: the label reads `ring=poster,`, and the row shows "Trailer Start Delay — Automatic ›". Both are fixed in the test (token trim; value read on the row's line).
+- **RowLeadingEdge No Zoom failed once, then passed on a re-run (flaky).** In the failing run, focus came down the rows to a mid-row card, because a trailer gate fired on a row passed during the four-Down walk. The base `284fd764` build has the same race through its 1 s dwell, and its one run passed.
+- **test31:** skips on the guest fixture (no collection for its folder leg), as before.
+
+### Review round 1 (Opus, two passes)
+
+- **Result:** 0 P1, 4 P2, 12 P3 (`docs/research/steven-rc1-review-r1-A.md`, `-r1-B.md`).
+- **Fixed in clone commit `1e07b3e0`** (fix agents F1 Opus, F2 Opus, F3 Sonnet; NuvioTVTests **947 / 0**):
+  - A-P2 hero sharpen fetch and adoption wait for rows at rest;
+  - B-P2-1 `.legacy` lookups refuse card-sized decodes, with a card-size fallback;
+  - B-P2-2 a playing tile is kept out of the Soft ramp (inset from the same environment values; the fade is held when the row can't scroll);
+  - B-P2-3 CW/Upcoming titles sit outside the mask;
+  - P3s: uncover delay 1.2 s after a push, morph-pass cancel, art prefetch dwell/cancel, the token kept on a slow listener, season posters decoded at card size.
+- **Declined with reasons:**
+  - A-6 test85/86 oracles read the model's own telemetry;
+  - B-5 the ranking runs on the main actor once per selection (device check);
+  - B-7 / B-8 thin UI checks.
+
+### Review round 2 (Opus)
+
+- **Result:** all four round-1 P2s verified fixed. **New: 0 P1, 0 P2, 4 P3** (`docs/research/steven-rc1-review-r2.md`).
+- **The four P3s are being fixed:**
+  - hero/first-play logo lookups move to slot-sized requests;
+  - a late legacy backdrop replaces the card-size stand-in;
+  - `trailingFadeHeldFor` is cleared on disappear;
+  - a slow listener on a cache hit retries once and clears `activeKey`.
+- The stale "pending" comment is also being cleaned up.
+
+### String wave (2026-10-03 night)
+
+- `populate-localizable-xcstrings.py` found 27 new keys. A Sonnet agent translated 19 user-facing strings into fr / es / de / it / vi; the debug probe labels got identity copies (catalog convention); the empty `""` key is marked do-not-translate.
+- **Collision found and fixed.** The catalog already had a `"Released"` key used as a row label (fr "Date de sortie"). D1's status mapping now uses its own `detail.status.*` keys, with explicit English values in the catalog.
+- French status words: Sorti, Terminée, Série en cours, En cours, Annulé, En production, Prévu, Post-production, Rumeur, Pilote. Statuses shared by films and series take the default masculine.
+- The catalog diff is additive (+992 lines).
+
 - Previously: design phase running: spec A (`docs/research/steven-rc1-fix-spec-A-motion-trailers.md`: M3, R2, R1, M4, M5, B2) and spec B (`docs/research/steven-rc1-fix-spec-B-images-rows-detail.md`: I1, F, C, T1, A, Detail items, P).

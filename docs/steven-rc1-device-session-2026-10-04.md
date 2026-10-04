@@ -1,5 +1,7 @@
 # beta.19-rc1 fix batch: device session (Living Room Apple TV, **Test profile**)
 
+> **Result (2026-10-04, 00:00–01:20 ET):** T1 both legs stay off (no half-shown bar); F.5 failed → Off default; B1 passed; device pass 10/10. Found BUG-141 (mpv exit crash, P0, since July), BUG-142 (0m / ★ N/A), BUG-143 (logged). Full record: OUTCOME "Device session" in `docs/steven-beta19-rc1-verdict-batch-plan-2026-10-02.md`.
+
 **When:** 2026-10-04, with Christian at the remote. About 35 minutes.
 
 **Build:** dev build of the batch tip `d4f4b4cc` (prebuilt in `~/Claude/Projects/NuvioMobile-steven-rc1-device`), installed as `com.youngchris29.NuvioTV` at the start of the session. I start every launch from the Mac with `--console`, so the probe lines stream to me. Photos are only needed where a step says so.

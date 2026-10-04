@@ -478,4 +478,60 @@ Dev build with `-debug.homeScrollProbe YES -debug.pinnedRowSettleProbe YES -debu
 - Apple TV build of `d4f4b4cc` in `~/Claude/Projects/NuvioMobile-steven-rc1-device` (worktree of the clone), not installed yet.
 - Branch `claude/steven-beta19-rc1-verdict` pushed to origin as a backup (not merged).
 
+### Device session (2026-10-04, 00:00–01:20 ET, Living Room Apple TV, Test profile)
+
+Checklist `docs/steven-rc1-device-session-2026-10-04.md`; console logs in the session scratchpad (`dev-t1-*`, `dev-f5-*`, `dev-b1`, `dev-pass`, `dev-pass2`, `dev-pass3`).
+
+- **YouTube pre-check:** extraction worked again from this network.
+- **T1 (BUG-66):** the bar never went half-shown on this TV. Leg 0 read `exp` on the hero and `min` on the rows; leg 1 relinked without harm; leg 2 never fired. The small nudge Christian saw on leg 2's launch was the existing settle corrector. **Decision: both legs stay off**; Steven gets a Developer picker to try them.
+- **F.5 (FEAT-54) FAILED:** Soft against Off, vertical walk p95 +1.1 ms and +6 dropped frames, steady phase +4 dropped, past the 1.0 ms / max(2, 10 %) bar. **Christian: "Follow the rule: Off default."** Soft stays one tap away in Appearance.
+- **B1 (BUG-131) PASSED:** after the Infuse hand-off the console showed `health … alive=0` → `dead` → `rebuild prefer=8230` → `ready port=8230`, then both trailers attached ("both trailers play after coming back from Infuse"). A second Infuse round trip later in the session did the same.
+- **Device pass 10/10:**
+  1. Hero walks at Large and Medium+: never two titles, no title-less hero (one logo-less title fell back to a text title), 52 presents.
+  2. Inline trailers start exactly 1.00 s after rest (`restToStart=1.00 via=rest`, waits of 1.3–1.7 s for a row still moving); five mid-morph exits ran a clean shrink + dissolve; the ring keeps the poster colour.
+  3. Trailer Start Delay: Automatic by default; 3 s gave `delay=3 restToStart=3.00`.
+  4. Trailer Location Hero: `host=hero`, Play/Pause toggles sound.
+  5. *The End of Oak Street*: backdrop decoded at 3840×2160 (metahub large), hero originals at 3072×1728, sharpen cross-fade smooth (photo in the session).
+  6. Fades gradual on Home, Detail (incl. Episodes) and Search; the Appearance picker switches.
+  7. Folder page with a Test collection imported on the phone (`test-collection-1004`): title rises and pins, chips under it, Back restores focus. Christian removes the collection from Test afterwards.
+  8. Lighter Cinematic scrim, glass stable on scroll (photos of *Monstre* and Oak Street).
+  9. Auto-Play Best on *Lizzie Borden*: 9 candidates, picked the 1080p link (best in a list with no HDR / DV), handed to Infuse.
+  10. Native SDR file → "Preparing playback…"; Dune DV P7 MEL → 8.1 → "Preparing Dolby Vision…".
+- **Memory:** `[ArtworkStore] pools avail` never below 1.7 GB.
+- **Found:**
+  - **BUG-141 (P0, since July):** SIGABRT leaving the mpv player after three failed loads (`objc_initWeak` under `readEvents()` from `mp_shutdown_clients`). Fixed after the session.
+  - **BUG-142:** "0m" and "★ N/A" on an unreleased film's meta line. Fixed after the session.
+  - **BUG-143 (logged):** between 01:04 and 01:15 the app could not reach TorBox's CDN ("No route to host"), and every link tried went into the 8 h rejected-link memory. Cleared after a relaunch; cause unknown (network or app state).
+  - The Auto-Play pick line had no rank facts, so the log couldn't show why a link won. Added after the session.
+  - Test's add-on list changed to AIOMetadata when Test was opened on the phone (inside Test, nothing to undo).
+
+### Post-session fixes (2026-10-04, `ef029ed4` + review fixes `7e936b2c`, `34ce8552`, `7f8d0790`)
+
+Christian folded three findings into the batch ("mpv exit crash, 0m / N/A meta line, Auto-Play pick log"; network-aware link memory stays a follow-up, BUG-143), plus the two planned changes:
+
+- **BUG-141 (P0):** `MPVWakeupRelay` as the wakeup callback context (its closure captured `[weak self]` at setup, so a late wake only loads the reference), and `destroyPlayer` calls `mpv_set_wakeup_callback(ctx, nil, nil)` before `mpv_terminate_destroy`. `MPVWakeupRelayTests` (4) fire the callback from an `NSObject` owner's `deinit`. The phone app's `MPVPlayerBridge.swift` has the same pattern: upstream-report candidate.
+- **BUG-142:** `tmdbKnownRuntimeMinutes` / `tmdbKnownVoteAverage` (TMDB 0 is unknown; a 0 film runtime no longer hides a series' episode run time) and `knownImdbRating` (drops "N/A", "NA", "-", ≤ 0) at both add-on parse sites. `KnownImdbRatingTest`, `TmdbKnownValuesTest`. Upstream-report candidate.
+- **Pick log:** `[AutoPlay] pick #n … res=1080 hdr=0 cached=1 size=2.5GB` (`Policy.rankSummary`, a defaulted `Dependencies.rankSummary`).
+- **F:** `RowEdgeFadeSetting.defaultValue = .off`, description "… Off by default." in 5 languages. Migration of the old A/B per Christian ("carry Soft and System, drop Hard"): 1 → Soft, 2 → System, 3 → Off, 0 → default (`legacySetting`).
+- **T1:** Developer "Tab Bar Rest Fix (A/B)" picker (Off / Relink / Snap to Top) over `debug.tabBarRestFix`, launch-latched, both legs off by default; 5 new strings in 5 languages.
+
+**Gates on `ef029ed4`:** NuvioTVTests **972 / 0**, jvm **1391 / 0**, K/N **1409 / 0**, composeApp **435 / 0**, Debug + Release sim green. Branch pushed as a backup, not merged.
+
+**Review round 4 (Opus, over `ef029ed4`; Codex on its limit until 10-29):** 0 P1, 2 P2, 5 P3, all fixed in `7e936b2c`:
+- P2-2: the wakeup's weak load on mpv's thread could make that thread the controller's final releaser, running `deinit` inside the callback and re-taking the wakeup lock it held (rare deadlock, pre-existing). The relay is now `nonisolated` + `@unchecked Sendable`, carries `eventQueue`, and its callback only hops there; `readEvents` became `drainEvents`, run on `eventQueue`. Tests fire from a background thread and from a queued wake that outlives the owner.
+- P2-1: "0.0" still reached the meta line through a Saga / More Like This preview. TMDB `formatRating()` returns null for ≤ 0 (all four callers); the four collection-resolver sites and Trakt list sources skip 0 too.
+- P3: stale "Soft by default" comments (three places), pick-line trailing space; the relay is no longer implicitly `@MainActor`. Process note: in this clone MPVKit is a symlink over the submodule gitlink, so `git add -A` staged it as a type change (caught and amended out of `ef029ed4`); stage by explicit paths.
+
+**Gates on `7e936b2c`:** NuvioTVTests **972 / 0**, jvm **1392 / 0**, K/N **1410 / 0**, composeApp **435 / 0**, Debug + Release sim green. Pushed as a backup, not merged.
+
+**Review round 5 (Opus, over `d4f4b4cc..7e936b2c`):** 0 P1, 1 P2, 2 P3. The BUG-141 relay was found clean. Fixed in `34ce8552`:
+- P2-1: Detail falls back to the preview's rating, and Trakt related titles, Trakt library items (raw double, "7.83412") and synced library rows still produced "0.0"; an "N/A" saved before the parse fix rode the same path. New `tenPointRatingText` (one decimal, null for ≤ 0) for both Trakt sites, and `LibraryItem.toMetaPreview` runs the rating through `knownImdbRating`.
+- P3: six more comments still called Soft the default; the phone app's `MPVPlayerBridge.swift` keeps the old wakeup shape (upstream-report candidate, not shipped on tvOS).
+
+**Gates on `34ce8552`:** NuvioTVTests **972 / 0**, jvm **1395 / 0**, K/N **1413 / 0**, composeApp **435 / 0**, Debug + Release sim green. Pushed as a backup.
+
+**Review round 6 (Opus, over `7e936b2c..34ce8552` plus an end-to-end sweep of every `imdbRating` producer and display site): CLEAN, 0 P1 / 0 P2.** P3-1 (an import left unused) fixed in `7f8d0790`; P3-2 accepted: a Trakt library snapshot cached by an older build can show an unrounded rating until the first Trakt refresh, which runs at launch. The sweep also confirmed no sync churn (the library preview filter is display-only; stored items and pushes are unchanged).
+
+**Tip `7f8d0790`**, pushed as a backup, not merged. Next: merge (ff `tvos-shared-extraction`), cut beta.19-rc2, Steven's DM, each on Christian's go.
+
 - Previously: design phase running: spec A (`docs/research/steven-rc1-fix-spec-A-motion-trailers.md`: M3, R2, R1, M4, M5, B2) and spec B (`docs/research/steven-rc1-fix-spec-B-images-rows-detail.md`: I1, F, C, T1, A, Detail items, P).

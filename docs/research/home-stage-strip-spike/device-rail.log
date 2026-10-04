@@ -1,0 +1,143 @@
+16:07:08.620 observers started
+16:07:08.620 rail mount armed=0 focused=- tab=0 mode=fail
+16:07:08.635 view appear mech=a2 rail=fail sidebar=1 pageSeconds=0.5 noZoom=0
+16:07:08.635 config mech=a2 P=515.5 H=559.5 rows=0 pageSeconds=0.5
+16:07:08.656 focus → nil
+16:07:08.688 config mech=a2 P=515.5 H=559.5 rows=1 pageSeconds=0.5
+16:07:08.693 marker attached mech=a2
+16:07:08.702 focus → UIKitFocusableViewResponderItem frame=196,682,360,247 label=- id=-
+16:07:08.837 baseline y=520.5 P=515.5 H=559.5 rows=1
+16:07:10.379 config mech=a2 P=515.5 H=559.5 rows=9 pageSeconds=0.5
+16:07:26.108 focus → UIKitFocusableViewResponderItem frame=196,1134,220,374 label=- id=-
+16:07:26.771 seg p=1 k=1 start=+46 dur=516 from=520.5 to=5.0 travel=-515.5
+16:07:28.173 PRESS #1 0→1 mech=a2 moves=1 settle=563 travel=-515.5 afterRest=0 residual=0.0 src=vfocus-down key=com.linvo.cinemeta:movie:top close=idle
+16:07:28.292 focus → UIKitFocusableViewResponderItem frame=811,618,220,374 label=- id=-
+16:07:28.949 focus → UIKitFocusableViewResponderItem frame=692,618,220,374 label=- id=-
+16:07:29.626 focus → UIKitFocusableViewResponderItem frame=940,618,220,374 label=- id=-
+16:07:29.808 PRESS #2 1→1 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=vfocus-up key=- close=idle
+16:07:32.186 focus → UIKitFocusableViewResponderItem frame=692,618,220,374 label=- id=-
+16:07:40.304 focus → UIKitFocusableViewResponderItem frame=444,618,220,374 label=- id=-
+16:07:40.623 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+16:07:40.921 rail capture return item=UIKitFocusableViewResponderItem armed=0 focused=- tab=0 mode=fail
+16:07:40.921 rail arm reason=moveFail-left armed=1 focused=- tab=0 mode=fail
+16:07:40.921 moveFail heading=left
+16:07:40.943 focus → UIKitFocusableViewResponderItem frame=28,316,60,60 label=- id=-
+16:07:40.948 rail focus -→0 armed=1 focused=0 tab=0 mode=fail
+16:07:40.948 home railFocused note=1
+16:07:41.154 rail contained heading=left armed=1 focused=0 tab=0 mode=fail
+16:07:41.154 moveFail heading=left
+16:07:42.454 PRESS #3 1→1 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=vfocus-up key=- close=idle
+16:07:55.378 rail contained heading=up armed=1 focused=0 tab=0 mode=fail
+16:07:55.379 moveFail heading=up
+16:07:56.712 rail contained heading=up armed=1 focused=0 tab=0 mode=fail
+16:07:56.713 moveFail heading=up
+16:07:57.545 focus → UIKitFocusableViewResponderItem frame=28,390,276,60 label=- id=-
+16:07:57.559 rail focus 0→1 armed=1 focused=1 tab=0 mode=fail
+16:07:57.559 home railFocused note=1
+16:07:57.997 focus → UIKitFocusableViewResponderItem frame=28,464,276,60 label=- id=-
+16:07:58.008 rail focus 1→2 armed=1 focused=2 tab=0 mode=fail
+16:07:58.008 home railFocused note=1
+16:07:58.263 focus → UIKitFocusableViewResponderItem frame=28,538,276,60 label=- id=-
+16:07:58.274 rail focus 2→3 armed=1 focused=3 tab=0 mode=fail
+16:07:58.274 home railFocused note=1
+16:07:58.507 focus → UIKitFocusableViewResponderItem frame=28,612,276,60 label=- id=-
+16:07:58.519 rail focus 3→4 armed=1 focused=4 tab=0 mode=fail
+16:07:58.519 home railFocused note=1
+16:07:58.792 rail contained heading=down armed=1 focused=4 tab=0 mode=fail
+16:07:58.793 moveFail heading=down
+16:07:59.131 rail contained heading=down armed=1 focused=4 tab=0 mode=fail
+16:07:59.131 moveFail heading=down
+16:08:00.498 rail contained heading=down armed=1 focused=4 tab=0 mode=fail
+16:08:00.498 moveFail heading=down
+16:08:06.138 rail exit via=right armed=1 focused=4 tab=0 mode=fail
+16:08:06.138 home rail exit -> focus row 1 com.linvo.cinemeta:movie:top
+16:08:06.138 moveFail heading=right
+16:08:06.188 focusRequest row=com.linvo.cinemeta:movie:top gen=1
+16:08:06.212 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+16:08:06.216 rail focus 4→- armed=1 focused=- tab=0 mode=fail
+16:08:06.216 rail disarm (focus left the rail) armed=0 focused=- tab=0 mode=fail
+16:08:06.216 home railFocused note=0
+16:08:07.729 PRESS #4 1→1 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=vfocus-down key=- close=idle
+16:08:12.562 focus → UIKitFocusableViewResponderItem frame=811,618,220,374 label=- id=-
+16:08:12.611 focus → UIKitFocusableViewResponderItem frame=1059,618,220,374 label=- id=-
+16:08:12.663 focus → UIKitFocusableViewResponderItem frame=1307,618,220,374 label=- id=-
+16:08:14.005 focus → UIKitFocusableViewResponderItem frame=692,618,220,374 label=- id=-
+16:08:14.084 focus → UIKitFocusableViewResponderItem frame=444,618,220,374 label=- id=-
+16:08:14.130 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+16:08:15.173 rail capture return item=UIKitFocusableViewResponderItem armed=0 focused=- tab=0 mode=fail
+16:08:15.173 rail arm reason=moveFail-left armed=1 focused=- tab=0 mode=fail
+16:08:15.173 moveFail heading=left
+16:08:15.230 focus → UIKitFocusableViewResponderItem frame=28,316,60,60 label=- id=-
+16:08:15.234 rail focus -→0 armed=1 focused=0 tab=0 mode=fail
+16:08:15.234 home railFocused note=1
+16:08:16.597 rail exit via=right armed=1 focused=0 tab=0 mode=fail
+16:08:16.597 home rail exit -> focus row 1 com.linvo.cinemeta:movie:top
+16:08:16.598 moveFail heading=right
+16:08:16.647 focusRequest row=com.linvo.cinemeta:movie:top gen=2
+16:08:16.674 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+16:08:16.674 PRESS #5 1→1 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=vfocus-up key=- close=press
+16:08:16.680 rail focus 0→- armed=1 focused=- tab=0 mode=fail
+16:08:16.681 rail disarm (focus left the rail) armed=0 focused=- tab=0 mode=fail
+16:08:16.681 home railFocused note=0
+16:08:17.575 rail capture return item=UIKitFocusableViewResponderItem armed=0 focused=- tab=0 mode=fail
+16:08:17.575 rail arm reason=moveFail-left armed=1 focused=- tab=0 mode=fail
+16:08:17.575 moveFail heading=left
+16:08:17.608 focus → UIKitFocusableViewResponderItem frame=28,316,60,60 label=- id=-
+16:08:17.608 PRESS #6 1→1 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=vfocus-down key=- close=press
+16:08:17.613 rail focus -→0 armed=1 focused=0 tab=0 mode=fail
+16:08:17.614 home railFocused note=1
+16:08:18.276 rail exit via=right armed=1 focused=0 tab=0 mode=fail
+16:08:18.276 home rail exit -> focus row 1 com.linvo.cinemeta:movie:top
+16:08:18.276 moveFail heading=right
+16:08:18.312 focusRequest row=com.linvo.cinemeta:movie:top gen=3
+16:08:18.336 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+16:08:18.336 PRESS #7 1→1 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=vfocus-up key=- close=press
+16:08:18.339 rail focus 0→- armed=1 focused=- tab=0 mode=fail
+16:08:18.339 rail disarm (focus left the rail) armed=0 focused=- tab=0 mode=fail
+16:08:18.339 home railFocused note=0
+16:08:19.353 focus → UIKitFocusableViewResponderItem frame=444,618,220,374 label=- id=-
+16:08:19.385 focus → UIKitFocusableViewResponderItem frame=692,618,220,374 label=- id=-
+16:08:19.388 focus → UIKitFocusableViewResponderItem frame=940,618,220,374 label=- id=-
+16:08:19.443 focus → UIKitFocusableViewResponderItem frame=1188,618,220,374 label=- id=-
+16:08:19.841 PRESS #8 1→1 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=vfocus-down key=- close=idle
+16:08:20.549 focus → UIKitFocusableViewResponderItem frame=940,618,220,374 label=- id=-
+16:08:20.581 focus → UIKitFocusableViewResponderItem frame=692,618,220,374 label=- id=-
+16:08:20.612 focus → UIKitFocusableViewResponderItem frame=444,618,220,374 label=- id=-
+16:08:20.712 focus → UIKitFocusableViewResponderItem frame=196,618,220,374 label=- id=-
+16:08:24.286 focusRequest row=continue-watching gen=4
+16:08:24.318 focus → UIKitFocusableViewResponderItem frame=196,199,360,247 label=- id=-
+16:08:25.646 seg p=9 k=1 start=+120 dur=1240 from=5.0 to=520.5 travel=515.5
+16:08:27.048 PRESS #9 1→0 mech=a2 moves=1 settle=1360 travel=515.5 afterRest=0 residual=0.0 src=menu key=continue-watching close=idle
+16:08:33.151 menu at row 0 -> chrome.requestReveal()
+16:08:33.155 rail capture return item=UIKitFocusableViewResponderItem armed=0 focused=- tab=0 mode=fail
+16:08:33.155 rail arm reason=revealRequest armed=1 focused=- tab=0 mode=fail
+16:08:33.186 focus → UIKitFocusableViewResponderItem frame=28,316,60,60 label=- id=-
+16:08:33.192 rail focus -→0 armed=1 focused=0 tab=0 mode=fail
+16:08:33.192 home railFocused note=1
+16:08:34.655 PRESS #10 0→0 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=menu key=- close=idle
+16:08:38.981 rail menu armed=1 focused=0 tab=0 mode=fail
+16:08:38.981 rail exit via=menu armed=1 focused=0 tab=0 mode=fail
+16:08:38.982 home rail exit -> focus row 0 continue-watching
+16:08:39.030 focusRequest row=continue-watching gen=5
+16:08:39.052 focus → UIKitFocusableViewResponderItem frame=196,682,360,247 label=- id=-
+16:08:39.055 rail focus 0→- armed=1 focused=- tab=0 mode=fail
+16:08:39.055 rail disarm (focus left the rail) armed=0 focused=- tab=0 mode=fail
+16:08:39.055 home railFocused note=0
+16:08:40.561 PRESS #11 0→0 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=vfocus-down key=- close=idle
+16:08:43.293 menu at row 0 -> chrome.requestReveal()
+16:08:43.297 rail capture return item=UIKitFocusableViewResponderItem armed=0 focused=- tab=0 mode=fail
+16:08:43.297 rail arm reason=revealRequest armed=1 focused=- tab=0 mode=fail
+16:08:43.328 focus → UIKitFocusableViewResponderItem frame=28,316,60,60 label=- id=-
+16:08:43.335 rail focus -→0 armed=1 focused=0 tab=0 mode=fail
+16:08:43.335 home railFocused note=1
+16:08:44.008 focus → UIKitFocusableViewResponderItem frame=28,390,276,60 label=- id=-
+16:08:44.021 rail focus 0→1 armed=1 focused=1 tab=0 mode=fail
+16:08:44.021 home railFocused note=1
+16:08:44.734 rail select Search different=1 armed=1 focused=1 tab=1 mode=fail
+16:08:44.812 focus → nil
+16:08:44.816 rail focus 1→- armed=0 focused=- tab=1 mode=fail
+16:08:44.816 home railFocused note=0
+16:08:44.865 focus → TVTextField frame=215,241,1541,71 label=- id=-
+16:08:45.007 PRESS #12 0→0 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=menu key=- close=idle
+16:08:45.803 marker detached
+16:08:45.848 view disappear

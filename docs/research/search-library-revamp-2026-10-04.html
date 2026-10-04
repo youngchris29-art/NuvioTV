@@ -1,0 +1,815 @@
+<title>NuvioTV Search &amp; Library Revamp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a long-form board. Each option = a 16:9 "screen" mockup beside its notes; screens use container units so they scale like a TV. */
+:root{
+  --bg:#0d1016; --panel:#151a23; --panel-2:#1c2330; --line:#2a3242;
+  --fg:#e9edf3; --muted:#9aa5b6; --faint:#6b7588;
+  --accent:#f0b35c; --accent-ink:#1a1206; --good:#7fd1a8; --warn:#f08a6c;
+  --display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body:"IBM Plex Sans", "Helvetica Neue", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme:dark;
+}
+html,body{background:var(--bg);color:var(--fg)}
+body{font-family:var(--body);font-size:16px;line-height:1.55;padding-inline:20px;padding-block:0 64px}
+.wrap{max-width:1180px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.1;margin:0}
+h1{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:700;letter-spacing:-.02em}
+h2{font-size:clamp(1.6rem,3.2vw,2.2rem);font-weight:700;letter-spacing:-.01em}
+h3{font-size:1.3rem;font-weight:700}
+p{margin:0}
+.lede{max-width:68ch;color:var(--muted);font-size:1.08rem}
+.eyebrow{font-family:var(--mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+header.top{padding-block:56px 32px;display:grid;gap:16px;border-bottom:1px solid var(--line)}
+.meta-strip{display:flex;flex-wrap:wrap;gap:8px 20px;font-family:var(--mono);font-size:.8rem;color:var(--faint)}
+nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+nav.toc a{font-family:var(--mono);font-size:.8rem;color:var(--fg);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+nav.toc a:hover,nav.toc a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+section{padding-block:48px 8px;display:grid;gap:24px}
+.sec-head{display:grid;gap:10px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;min-width:0}
+.box h3{font-size:1.1rem}
+ul{margin:0;padding-left:1.1em;display:grid;gap:6px}
+li{min-width:0}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+code,.mono{font-family:var(--mono);font-size:.85em}
+.tag{display:inline-block;font-family:var(--mono);font-size:.72rem;padding:2px 8px;border-radius:6px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.tag.fix{border-color:#3c5a4b;color:var(--good)}
+.tag.cost{border-color:#5a4a33;color:var(--accent)}
+.tag.risk{border-color:#5a3a33;color:var(--warn)}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+
+/* comparison table */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;min-width:820px;font-size:.9rem}
+th,td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--line)}
+th{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);background:var(--panel)}
+td:first-child{font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.src{font-family:var(--mono);font-size:.7rem;color:var(--faint)}
+
+/* option layout */
+.option{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:24px;align-items:start;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px}
+@media (max-width:860px){.option{grid-template-columns:1fr}}
+.option .notes{display:grid;gap:12px;min-width:0}
+.opt-id{font-family:var(--display);font-weight:700;color:var(--accent);font-size:1rem;letter-spacing:.02em}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){.pc{grid-template-columns:1fr}}
+.pc h4{margin:0 0 4px;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.pick{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.pick-badge{justify-self:start;background:var(--accent);color:var(--accent-ink);font-family:var(--mono);font-size:.72rem;font-weight:500;padding:3px 10px;border-radius:999px}
+
+/* ---------- TV mockups ---------- */
+.tv{position:relative;aspect-ratio:16/9;max-width:100%;border-radius:10px;overflow:hidden;container-type:inline-size;background:#05070a;box-shadow:0 0 0 1px #2a3242,0 18px 40px -20px #000;font-family:var(--body);color:#fff}
+.tv *{box-sizing:border-box}
+.cap{font-family:var(--mono);font-size:.72rem;color:var(--faint);margin-top:8px}
+.bd{position:absolute;inset:0}
+.bd.warm{background:radial-gradient(60% 70% at 72% 38%,#7a4a2c 0%,#3a2318 40%,transparent 70%),radial-gradient(40% 50% at 88% 70%,#5b3b2a,transparent 70%),linear-gradient(120deg,#1b120d,#2a1a12 60%,#120c09)}
+.bd.cool{background:radial-gradient(55% 65% at 70% 40%,#2c5a7a 0%,#173148 45%,transparent 72%),radial-gradient(35% 45% at 90% 75%,#36506b,transparent 70%),linear-gradient(120deg,#0b1219,#122233 60%,#081018)}
+.bd.green{background:radial-gradient(55% 65% at 72% 40%,#3d5b3a 0%,#1f3220 45%,transparent 72%),linear-gradient(120deg,#0c120c,#162418 60%,#0a0f0a)}
+.bd.ambient{background:radial-gradient(70% 90% at 30% 40%,#6b2f4a 0%,#3a1a2c 45%,#15090f 80%)}
+.scrimL{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.85) 0%,rgba(0,0,0,.55) 38%,rgba(0,0,0,.05) 70%)}
+.scrimB{position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.85) 100%)}
+.blurred{filter:blur(2px) brightness(.55)}
+.logo{font-family:var(--display);font-weight:700;letter-spacing:-.02em;line-height:.9;text-transform:uppercase}
+.mline{font-size:1.25cqw;color:rgba(255,255,255,.82);display:flex;gap:.6cqw;align-items:center;flex-wrap:wrap}
+.chip{border:1px solid rgba(255,255,255,.45);border-radius:.3cqw;padding:0 .35cqw;font-size:.9cqw;font-family:var(--mono)}
+.syn{font-size:1.15cqw;line-height:1.4;color:rgba(255,255,255,.86)}
+.btns{display:flex;gap:.8cqw;align-items:center}
+.play{background:#fff;color:#111;border-radius:99px;padding:.7cqw 1.8cqw;font-size:1.25cqw;font-weight:600;white-space:nowrap}
+.rb{width:3.1cqw;height:3.1cqw;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;font-size:1.3cqw}
+.rowlbl{font-size:1.15cqw;font-weight:600}
+.row{display:flex;gap:.9cqw}
+.card{border-radius:.5cqw;background:linear-gradient(160deg,#3b4a5e,#1d2531)}
+.card.land{width:13cqw;aspect-ratio:16/9}
+.card.post{width:7cqw;aspect-ratio:2/3}
+.card.focus{outline:.25cqw solid #fff;outline-offset:.2cqw;transform:scale(1.06)}
+.ava{width:5cqw;height:5cqw;border-radius:50%;background:linear-gradient(160deg,#9b8a7a,#4a3f36)}
+.credits{font-size:1cqw;line-height:1.45;color:rgba(255,255,255,.7);text-align:right}
+.credits b{color:#fff;font-weight:600}
+.glass{background:rgba(255,255,255,.08);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14);border-radius:1.2cqw}
+.tabs{display:flex;gap:2.2cqw;font-size:1.1cqw;font-weight:600;color:rgba(255,255,255,.55)}
+.tabs .on{color:#fff;position:relative}
+.tabs .on::after{content:"";position:absolute;left:0;right:0;bottom:-.6cqw;height:.25cqw;border-radius:.2cqw;background:#fff}
+.hint{position:absolute;font-family:var(--mono);font-size:.85cqw;color:rgba(255,255,255,.55)}
+.badge-row{display:flex;gap:.4cqw}
+.rate{display:flex;gap:1.2cqw;font-size:1cqw;color:rgba(255,255,255,.8)}
+.rate b{color:#fff}
+
+/* settings mockups */
+.set{position:absolute;inset:0;background:linear-gradient(160deg,#121722,#0b0e14)}
+.s-title{position:absolute;top:4cqw;left:6cqw;font-family:var(--display);font-weight:700;font-size:2.4cqw}
+.s-list{display:grid;gap:.6cqw}
+.s-row{display:flex;justify-content:space-between;align-items:center;padding:.9cqw 1.3cqw;border-radius:.8cqw;background:rgba(255,255,255,.06);font-size:1.15cqw;color:rgba(255,255,255,.9)}
+.s-row .v{color:rgba(255,255,255,.55);font-size:1.05cqw}
+.s-row.f{background:#fff;color:#111;transform:scale(1.03)}
+.s-row.f .v{color:#555}
+.s-row.hd{background:none;padding:.4cqw .2cqw 0;font-size:.85cqw;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.s-cat{display:flex;gap:.8cqw;align-items:center;padding:.8cqw 1.1cqw;border-radius:.8cqw;font-size:1.15cqw;color:rgba(255,255,255,.75)}
+.s-cat.on{background:rgba(255,255,255,.14);color:#fff}
+.s-cat .ic{width:1.6cqw;height:1.6cqw;border-radius:.4cqw;background:var(--accent)}
+.s-grp{font-family:var(--mono);font-size:.8cqw;letter-spacing:.12em;color:rgba(255,255,255,.4);padding:.6cqw 1.1cqw 0}
+.toggle{width:2.8cqw;height:1.6cqw;border-radius:99px;background:#34c759;position:relative}
+.toggle::after{content:"";position:absolute;right:.2cqw;top:.2cqw;width:1.2cqw;height:1.2cqw;border-radius:50%;background:#fff}
+.preview{border-radius:1cqw;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+.tile{border-radius:1.2cqw;padding:1.4cqw;background:rgba(255,255,255,.07);display:grid;gap:.5cqw;align-content:start}
+.tile .t{font-family:var(--display);font-weight:700;font-size:1.5cqw}
+.tile .st{font-size:.95cqw;color:rgba(255,255,255,.6)}
+.tile.f{background:#fff;color:#111;transform:scale(1.04)}
+.tile.f .st{color:#555}
+.dot{display:inline-block;width:.8cqw;height:.8cqw;border-radius:50%;background:#34c759;margin-right:.4cqw;vertical-align:middle}
+
+/* IA table */
+.ia{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:760px){.ia{grid-template-columns:1fr}}
+.ia ol{margin:0;padding-left:1.3em;display:grid;gap:8px}
+.ia li span{color:var(--muted);font-size:.9rem}
+
+.reco{background:linear-gradient(135deg,#221a10,#151a23 60%);border:1px solid #5a4a33;border-radius:18px;padding:24px;display:grid;gap:14px}
+.q{display:grid;gap:10px;counter-reset:q}
+.q div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+a{color:var(--accent)}
+.sources{columns:2 320px;column-gap:24px;font-size:.85rem}
+.sources li{break-inside:avoid;margin-bottom:6px}
+@media (prefers-reduced-motion:no-preference){.card.focus,.s-row.f,.tile.f{transition:transform .2s}}
+</style>
+<style>
+/* Home-board additions */
+.tabbar{position:absolute;top:2.4cqw;left:50%;transform:translateX(-50%);display:flex;gap:.3cqw;padding:.35cqw;border-radius:99px;background:rgba(255,255,255,.1);font-size:.95cqw;color:rgba(255,255,255,.75)}
+.tabbar span{padding:.35cqw 1cqw;border-radius:99px}
+.tabbar .on{background:rgba(255,255,255,.9);color:#111}
+.dots{display:flex;gap:.4cqw}
+.dots i{width:.6cqw;height:.6cqw;border-radius:50%;background:rgba(255,255,255,.4);display:block}
+.dots i.on{background:#fff;width:1.6cqw;border-radius:.3cqw}
+.strip{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.75) 18%)}
+.cw{width:15cqw;aspect-ratio:16/9;border-radius:.6cqw;background:linear-gradient(160deg,#4a5a6e,#222b38);position:relative;overflow:hidden}
+.cw::after{content:"";position:absolute;left:0;bottom:0;height:.35cqw;width:40%;background:#f0b35c}
+.cw.focus{outline:.25cqw solid #fff;outline-offset:.2cqw;transform:scale(1.05)}
+.exp{width:24cqw;aspect-ratio:16/9;border-radius:.7cqw;background:radial-gradient(70% 90% at 70% 40%,#7a4a2c,#2a1a12);outline:.25cqw solid #fff;outline-offset:.2cqw;position:relative;display:flex;align-items:flex-end;padding:1cqw}
+.pill-rail{position:absolute;left:1.6cqw;top:50%;transform:translateY(-50%);display:grid;gap:1.1cqw;padding:1cqw .8cqw;border-radius:99px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18)}
+.pill-rail i{width:1.6cqw;height:1.6cqw;border-radius:.4cqw;background:rgba(255,255,255,.7);display:block}
+.pill-rail i.on{background:#fff;box-shadow:0 0 0 .3cqw rgba(255,255,255,.25)}
+.feat{width:88cqw;height:14cqw;border-radius:1.2cqw;background:radial-gradient(60% 120% at 75% 50%,#2c5a7a,#0e1a26 70%);position:relative;padding:1.6cqw;display:grid;align-content:center;gap:.6cqw}
+.chart{display:grid;gap:8px}
+.bar{display:grid;grid-template-columns:minmax(0,15ch) 1fr auto;gap:10px;align-items:center;font-size:.85rem}
+.bar .track{height:12px;border-radius:6px;background:var(--panel-2);overflow:hidden}
+.bar .fill{height:100%;background:var(--accent);border-radius:6px}
+.bar .fill.alt{background:#6d7c95}
+.bar .n{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--muted);font-size:.8rem}
+.twin{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:520px){.twin{grid-template-columns:1fr}}
+.posterrow{display:flex;gap:.9cqw}
+.posterrow .card.post{width:9.5cqw}
+.num{font-family:var(--display);font-weight:700;font-size:4cqw;color:rgba(255,255,255,.85);line-height:1;margin-right:-1.4cqw;align-self:flex-end;-webkit-text-stroke:.1cqw rgba(0,0,0,.4)}
+</style>
+
+<style>
+/* Search & Library board additions. Mockups stay dark: they are TV screens. */
+.tv{--acc:#d23a52}
+.bd.ink{background:radial-gradient(80% 90% at 82% 8%,#1c2636 0%,#0b0f16 58%,#06080c 100%)}
+.mix>:nth-child(6n+1){background:linear-gradient(160deg,#5b6f8a,#1d2531)}
+.mix>:nth-child(6n+2){background:linear-gradient(160deg,#8a5b4a,#2a1a14)}
+.mix>:nth-child(6n+3){background:linear-gradient(160deg,#4a7a6a,#14261f)}
+.mix>:nth-child(6n+4){background:linear-gradient(160deg,#7a5a8a,#221a2c)}
+.mix>:nth-child(6n+5){background:linear-gradient(160deg,#8a7a4a,#2a2414)}
+.mix>:nth-child(6n){background:linear-gradient(160deg,#4a5a8a,#141a2c)}
+.card{position:relative}
+.dim{color:rgba(255,255,255,.5);font-weight:400}
+.field{display:flex;align-items:center;gap:.7cqw;height:3.8cqw;padding:0 1.5cqw;border-radius:99px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);font-size:1.3cqw;color:#fff}
+.field .ph{color:rgba(255,255,255,.45)}
+.field .mag{width:1.15cqw;height:1.15cqw;border:.18cqw solid rgba(255,255,255,.6);border-radius:50%;flex:none}
+.field .caret{width:.15cqw;height:1.7cqw;background:#fff;margin-left:-.4cqw}
+.field .mic{margin-left:auto;font-size:.85cqw;color:rgba(255,255,255,.45);font-family:var(--mono)}
+.field.sm{height:3cqw;font-size:1.1cqw}
+.kbl{display:flex;gap:.2cqw;font-family:var(--mono);font-size:1.05cqw;color:rgba(255,255,255,.62);align-items:center}
+.kbl span{min-width:1.95cqw;text-align:center;padding:.35cqw .15cqw;border-radius:.3cqw}
+.kbl span.f{background:#fff;color:#111;transform:scale(1.2)}
+.kbl span.w{padding-inline:.6cqw;font-size:.82cqw}
+.kbg{display:grid;grid-template-columns:repeat(6,1fr);gap:.35cqw;font-family:var(--mono);font-size:1.2cqw;color:rgba(255,255,255,.75)}
+.kbg span{aspect-ratio:1;display:grid;place-items:center;border-radius:.35cqw;background:rgba(255,255,255,.06)}
+.kbg span.f{background:#fff;color:#111;transform:scale(1.12)}
+.kbx{display:grid;grid-template-columns:2fr 1fr 1fr;gap:.35cqw;font-family:var(--mono);font-size:.82cqw;color:rgba(255,255,255,.7)}
+.kbx span{padding:.6cqw 0;text-align:center;border-radius:.35cqw;background:rgba(255,255,255,.06)}
+.sugg{display:flex;gap:.6cqw;flex-wrap:wrap;align-items:center}
+.pill{border-radius:99px;padding:.45cqw 1.15cqw;font-size:.98cqw;background:rgba(255,255,255,.1);color:rgba(255,255,255,.88);white-space:nowrap}
+.pill.on{background:var(--acc);color:#fff}
+.pill.f{background:#fff;color:#111;transform:scale(1.07);box-shadow:0 .4cqw 1cqw rgba(0,0,0,.5)}
+.pill.dd::after{content:" \25BE";opacity:.6}
+.pill.q{font-style:italic}
+.sep{width:1px;height:2cqw;background:rgba(255,255,255,.18)}
+.ctx{font-family:var(--mono);font-size:.85cqw;color:rgba(255,255,255,.5)}
+.pgrid{display:grid;gap:1.1cqw .9cqw}
+.pgrid>.card{width:auto;aspect-ratio:2/3;border-radius:.5cqw}
+.toprez{width:21cqw;aspect-ratio:16/9;border-radius:.6cqw;background:radial-gradient(70% 90% at 70% 35%,#b0763e,#3a2414 70%);position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:.3cqw;padding:1cqw;outline:.25cqw solid #fff;outline-offset:.2cqw;transform:scale(1.04)}
+.mini{font-size:.85cqw;color:rgba(255,255,255,.8)}
+.tick{position:absolute;top:.35cqw;right:.35cqw;width:1.25cqw;height:1.25cqw;border-radius:50%;background:rgba(255,255,255,.92);color:#111;font-size:.75cqw;display:grid;place-items:center;font-weight:700}
+.pbar{position:absolute;left:.35cqw;right:.35cqw;bottom:.35cqw;height:.3cqw;border-radius:.2cqw;background:rgba(255,255,255,.25);overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--acc)}
+.newb{position:absolute;top:.35cqw;left:.35cqw;font-size:.6cqw;font-family:var(--mono);background:var(--acc);color:#fff;padding:.05cqw .35cqw;border-radius:.25cqw;letter-spacing:.04em}
+.scr-t{font-family:var(--display);font-weight:700;font-size:2.2cqw}
+.srcb{font-family:var(--mono);font-size:.72cqw;letter-spacing:.18em;border:1px solid rgba(255,255,255,.3);border-radius:.3cqw;padding:.1cqw .5cqw;color:rgba(255,255,255,.7)}
+.gtile{position:relative;aspect-ratio:2/3;border-radius:.7cqw;overflow:hidden;display:flex;align-items:flex-end;padding:.9cqw}
+.gtile::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.65))}
+.gtile b{position:relative;font-family:var(--display);font-weight:700;font-size:1.35cqw;line-height:1.05}
+.gtile.f{outline:.25cqw solid #fff;outline-offset:.2cqw;transform:scale(1.05)}
+.srcl{border-radius:1.2cqw;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:.8cqw .7cqw;display:grid;gap:.15cqw;align-content:start}
+.srcl .g{font-family:var(--mono);font-size:.7cqw;letter-spacing:.14em;color:rgba(255,255,255,.4);padding:.65cqw .6cqw .15cqw}
+.srcl .it{display:flex;justify-content:space-between;padding:.45cqw .7cqw;border-radius:.6cqw;font-size:1.02cqw;color:rgba(255,255,255,.85)}
+.srcl .it span{font-family:var(--mono);font-size:.82cqw;color:rgba(255,255,255,.45)}
+.srcl .it.sel{background:rgba(255,255,255,.14)}
+.srcl .it.f{background:#fff;color:#111;transform:scale(1.04)}
+.srcl .it.f span{color:#555}
+.sheet{position:absolute;right:2.5cqw;top:2.5cqw;bottom:2.5cqw;width:30cqw;padding:1.7cqw;border-radius:1.6cqw;background:rgba(30,34,44,.78);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.14);display:grid;gap:.6cqw;align-content:start}
+.sheet .t{font-family:var(--display);font-weight:700;font-size:1.7cqw;margin-bottom:.3cqw}
+.frow{display:flex;justify-content:space-between;align-items:center;gap:1cqw;padding:.7cqw 1cqw;border-radius:.7cqw;background:rgba(255,255,255,.06);font-size:1cqw}
+.frow .v{color:rgba(255,255,255,.62);font-size:.92cqw}
+.frow.f{background:#fff;color:#111;transform:scale(1.03)}
+.frow.f .v{color:#555}
+.inc{color:#7fd1a8}
+.exc{color:#f08a6c}
+.toggle.off{background:rgba(255,255,255,.25)}
+.toggle.off::after{right:auto;left:.2cqw}
+.vall{width:7cqw;aspect-ratio:2/3;border-radius:.5cqw;border:1px dashed rgba(255,255,255,.3);display:grid;place-items:center;font-size:.9cqw;color:rgba(255,255,255,.7);text-align:center}
+.seg{display:flex;font-size:.9cqw;border-radius:99px;background:rgba(255,255,255,.08);padding:.25cqw}
+.seg span{padding:.3cqw .9cqw;border-radius:99px;color:rgba(255,255,255,.7)}
+.seg .on{background:rgba(255,255,255,.9);color:#111}
+.segbar{display:flex;gap:.4cqw;padding:.35cqw;border-radius:99px;background:rgba(255,255,255,.08);font-size:1cqw;width:max-content}
+.segbar span{padding:.4cqw 1.1cqw;border-radius:99px;color:rgba(255,255,255,.72)}
+.segbar .on{background:rgba(255,255,255,.92);color:#111}
+.segbar i{font-style:normal;opacity:.55;margin-left:.35cqw;font-family:var(--mono);font-size:.8cqw}
+.epc{width:16cqw;aspect-ratio:16/9;border-radius:.6cqw;position:relative;padding:.8cqw;display:flex;flex-direction:column;justify-content:flex-end;gap:.15cqw;font-size:.85cqw;color:rgba(255,255,255,.82)}
+.epc b{font-size:1.1cqw;color:#fff}
+.epc.f{outline:.25cqw solid #fff;outline-offset:.2cqw;transform:scale(1.05)}
+.calc{border-radius:.6cqw;background:rgba(255,255,255,.07);padding:.7cqw 1cqw;display:grid;gap:.15cqw;font-size:.9cqw;min-width:15cqw;color:rgba(255,255,255,.85)}
+.calc b{font-family:var(--mono);font-size:.72cqw;color:#f28a9b;letter-spacing:.08em;font-weight:500}
+.mono-av{width:6cqw;display:grid;gap:.4cqw;justify-items:center;font-size:.8cqw;color:rgba(255,255,255,.75)}
+.mono-av i{width:5.4cqw;height:5.4cqw;border-radius:50%;background:linear-gradient(160deg,#9b8a7a,#4a3f36);display:block}
+.dimlayer{position:absolute;inset:0;background:rgba(0,0,0,.4)}
+.hig td:first-child{font-family:var(--mono);font-weight:500}
+.hig table{min-width:0}
+.mini-table{overflow-x:auto}
+.mini-table table{min-width:420px}
+.order{counter-reset:o;display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.order li{display:grid;grid-template-columns:2.2em 1fr;gap:10px;align-items:start}
+.order li::before{counter-increment:o;content:counter(o);font-family:var(--display);font-weight:700;color:var(--accent);font-size:1.3rem;line-height:1.2}
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <span class="eyebrow">Brainstorm · 4 October 2026 · no code</span>
+  <h1>NuvioTV Search &amp; Library Revamp</h1>
+  <p class="lede">This board compares NuvioTV's Search, Discover and Library screens with the official Nuvio apps, the other Apple TV ports of Nuvio, VortX and Stremio, the big streaming apps (Apple TV app, Netflix, Prime Video, Disney+, HBO Max) and the media-centre apps (Infuse, Plex, Swiftfin). It sets out three directions for Search, three for Discover and four for Library, plus smaller pieces you can mix in, and ends with a recommendation and the questions only you can answer. Each direction has a rough mockup, what it fixes and what it costs.</p>
+  <div class="meta-strip"><span>7 Nuvio/Stremio clients, read from source</span><span>10 tvOS apps</span><span>Apple HIG + WWDC26 search session</span><span>NuvioTV at beta.19-rc2 (7e71ba87)</span></div>
+  <nav class="toc" aria-label="Sections">
+    <a href="#today">Today</a><a href="#facts">Four facts</a><a href="#landscape">What others do</a><a href="#search">Search</a><a href="#grouping">Results</a><a href="#discover">Discover</a><a href="#library">Library</a><a href="#modules">Add-ons</a><a href="#nav">Navigation</a><a href="#reco">Recommendation</a><a href="#questions">Questions</a><a href="#sources">Sources</a>
+  </nav>
+</header>
+
+<section id="today">
+  <div class="sec-head"><span class="eyebrow">Starting point</span><h2>What NuvioTV does today</h2>
+  <p class="lede small">Read from <span class="mono">SearchView.swift</span>, <span class="mono">SearchViewModel.swift</span>, <span class="mono">LibraryView.swift</span>, <span class="mono">LibraryViewModel.swift</span> and the shared Kotlin repositories behind them.</p></div>
+  <div class="grid2">
+    <div class="box"><h3>Search</h3><ul class="small">
+      <li>A plain text field in a glass pill. Selecting it opens the full-screen system keyboard, which covers the results, so results show only after you press Done. There is no live search.</li>
+      <li>One row per add-on search catalog, headed "Search • Movies". The add-on's name is never shown, so two add-ons with a catalog called "Search" give identical headers.</li>
+      <li>The same film appears once per add-on. There is no TMDB search and no people.</li>
+      <li>Up to 10 recent searches as chips, saved when you press Done, on this Apple TV only.</li>
+      <li>"No results." covers three different cases: no add-ons, every search source turned off, and a real empty search.</li>
+    </ul></div>
+    <div class="box"><h3>Discover</h3><ul class="small">
+      <li>Sits under the empty search field. Hide Discover (UX-8) turns it off.</li>
+      <li>Three full chip rows (type, catalog, genre) above a paged poster grid, about six posters per row at Medium.</li>
+      <li>Add-on catalogs only. TMDB's discover filters exist, but only in the collection-folder editor.</li>
+      <li>Remembers the catalog per profile, but not the genre.</li>
+    </ul></div>
+    <div class="box"><h3>Library</h3><ul class="small">
+      <li>One flat poster grid from the single Library Source picked in Settings (Nuvio, Trakt, Simkl or MDBList), with five sort chips. The first is labelled "Trakt Order" even for Simkl and MDBList.</li>
+      <li>No type filter, no lists, no watched or progress badges. The hold menu offers only Remove.</li>
+      <li>A Trakt, Simkl or MDBList library reads "Your library is empty" while it loads or after a failed sync, with no Retry.</li>
+      <li>A Saved / Debrid Cloud switch appears when a debrid provider is connected. Cloud is a plain settings-style list.</li>
+      <li>The grid doesn't page. BUG-69 was a login crash on a 10,000-title library.</li>
+    </ul></div>
+    <div class="box"><h3>Already built, never shown on tvOS</h3><ul class="small">
+      <li>Library <b>sections</b>: the Trakt watchlist and personal lists; Simkl's Watching, Plan to Watch, On Hold, Completed and Dropped; MDBList lists.</li>
+      <li>A <b>rows-or-grid</b> layout mode (mobile's one-row-per-list Library), and a type filter.</li>
+      <li>A controller to <b>create, rename and delete lists</b>.</li>
+      <li><b>Loading, error and offline</b> states for the library.</li>
+      <li>TMDB <b>discover</b> (used by collection folders) and the <b>person page</b>.</li>
+    </ul><p class="small muted">Most of the Library revamp is screen work. The data is already in shared code.</p></div>
+    <div class="box"><h3>What testers have asked for</h3><ul class="small">
+      <li><b>FEAT-37</b> (Steven): results while typing, as in official Nuvio. Still an open product call.</li>
+      <li><b>FEAT-10</b> and <b>UX-8</b>: pick which catalogs search uses, and hide Discover. Both shipped. Any rebuild keeps them.</li>
+      <li><b>BUG-47/48, UX-13</b>: Back from See All and the grid's scroll position. Fixed; a rebuild must not bring them back.</li>
+      <li><b>FEAT-30 / FEAT-45</b>: a sidebar or icon rail, which changes where Search and Library live.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section id="facts">
+  <div class="sec-head"><span class="eyebrow">Worth knowing before choosing</span><h2>Four facts that shape every option</h2></div>
+  <div class="grid2">
+    <div class="box"><h3>1 · The keyboard decides how live search can be</h3><p class="small">The system search field (<span class="mono">.searchable</span>) gives results under the keyboard as you type, Siri dictation, typing on an iPhone, and the viewer's own keyboard choice. Our HIG contract bans it because of a keyboard-bleed bug inside a TabView. <b>bobsupra's NuvioTVOS and VortX both ship it on tvOS 26</b>: they put it in its own NavigationStack and hide the tab bar while searching. Swiftfin and Plex also use the native field; Plex moved back to it after its custom field lost dictation and iPhone typing. A one-day spike would tell us whether the ban can go.</p></div>
+    <div class="box"><h3>2 · Two keyboards, chosen in Apple TV Settings</h3><p class="small">Siri Remote owners get a single row across the top unless they pick Grid in Settings › General › Keyboard Layout. Grid is a 6-column block docked on the left with results beside it. A native search screen has to look right in both. bobsupra detects which one is showing and lays out around it. An Apple engineer said in 2022 that only Apple's own apps can make the grid keyboard slide away, so third-party results always share the width.</p></div>
+    <div class="box"><h3>3 · Add-on search is noisy</h3><p class="small">Each add-on returns its own list, so one film can appear in four rows, and stream-only add-ons flood the results with single releases. Merging needs ranking. Orivio searches metadata add-ons first, caps each catalog at 40 results and each stream-only add-on at 8, and removes duplicates by id.</p></div>
+    <div class="box"><h3>4 · The rail takes the left edge</h3><p class="small">With FEAT-45's rail set to Always Visible, 116 pt of every screen is reserved, and Left from the leftmost item enters the rail. Any design with its own left column (a grid keyboard, a Library list column) puts two columns side by side. Apple's own TV app pairs its floating sidebar with a category list in Library.</p></div>
+  </div>
+  <div class="box hig"><h3>Apple's grid sizes for 1920 × 1080, 40 pt gutters</h3>
+    <div class="mini-table"><table>
+      <thead><tr><th>Columns</th><th>Item width</th><th>NuvioTV today</th></tr></thead>
+      <tbody>
+        <tr><td>6</td><td>260 pt</td><td>Apple TV app's Browse tiles on tvOS 26</td></tr>
+        <tr><td>7</td><td>217 pt</td><td>Medium posters are 220 pt with 28 pt gaps</td></tr>
+        <tr><td>8</td><td>184 pt</td><td>Small posters are 183 pt; Apple's Library posters are about 200 pt</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small muted">Safe area is 60 pt top and bottom and 80 pt at the sides. Rows with titles need extra vertical room for the focus lift.</p>
+  </div>
+</section>
+
+<section id="landscape">
+  <div class="sec-head"><span class="eyebrow">Research</span><h2>What the others do</h2>
+  <p class="lede small"><span class="mono">src</span> = read from source code. The rest comes from screenshots, help pages, release notes or reviews.</p></div>
+  <h3>Nuvio and Stremio clients</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>App</th><th>Search</th><th>Discover</th><th>Library</th><th>Worth taking</th></tr></thead>
+    <tbody>
+      <tr><td>Official NuvioTV<br><span class="src">Android TV · src</span></td><td>Discover button, mic and field in one row. Results 350 ms after typing stops, one row per catalog with the add-on's name. <b>Old results stay while you type</b>, with one skeleton row for slow add-ons ("swapping them reads as flicker"). Idle: 8 recent searches with ×, and Clear history.</td><td>Type, Catalog and Genre dropdowns, a context line "add-on · type · genre", grid ending in Load more. Placement is a setting: off, in Search, or its own sidebar item.</td><td>Source badge (TRAKT, SIMKL…). One picker row: <b>List, Type, Sort, Genre and Year with counts, Watched</b>. Simkl statuses appear as lists. Manage Lists for Trakt. Provider-specific empty states.</td><td>Picker row with counts; no-flicker typing</td></tr>
+      <tr><td>Nuvio mobile<br><span class="src">cmp-rewrite · src</span></td><td>Idle page: recent searches, then Discover inline. A search is saved only once it returns results. Rows per catalog with skeletons.</td><td>Three dropdown chips, grid that loads as you scroll.</td><td><b>Rows</b> (one per list, each with View all) or <b>Grid</b> with Section and Sort chips. A dissolve when you remove a title.</td><td>Rows/Grid switch (in shared code)</td></tr>
+      <tr><td>Orivio<br><span class="src">Apple TV · src</span></td><td>Glass pill field and a round Discover button. Results <b>merged and split into Movies and Shows</b>, ranked by add-on capability. Idle: an 18-poster Trending grid. Rows fade under the field instead of being cut.</td><td>Three dropdowns. Menu scrolls back to the first poster, a second Menu leaves.</td><td>One chip row: All, Movies, Shows, Plex, Jellyfin, Cloud. Sort pill (Added, Name, Recently Watched). Count line "12 movies · 8 shows".</td><td>Ranking, count line, Recently Watched sort</td></tr>
+      <tr><td>bobsupra NuvioTVOS<br><span class="src">Apple TV · src</span></td><td>Four styles. Default "Netflix": <b>native single-row keyboard</b>, type chips with "N results", titles as text on the left and posters on the right. "Grid": <b>the system grid keyboard docked left</b>, suggestion chips, a "“query”" chip first. Recent chips with Clear.</td><td>Menu pills Type, Popular and All Genres over 7 columns.</td><td>Pills that show their value: "Sort: Date Added", "Group: Type", "Content: All", "Genre:", an MDBList list pill. Group headers, watched ticks.</td><td>Native search in both keyboard layouts</td></tr>
+      <tr><td>Cb541 NuvioTVOS<br><span class="src">Apple TV · src</span></td><td>One chip row that shows Recent when the field is empty and Suggestions while typing. Rows per catalog.</td><td>Labelled chip rows, grid.</td><td>Filter row: All, Movies, Series, Continue Watching, Collections. Remembers the chip.</td><td>One row, two meanings</td></tr>
+      <tr><td>VortX<br><span class="src">Apple TV · src + shot</span></td><td><span class="mono">.searchable</span> with typed suggestions. Synced recent chips, saved when you open a result. Chips for <b>"Play a link or magnet"</b> and <b>"Debrid Cloud"</b>. Rows Movies, Series, Other.</td><td>Living backdrop of the focused title. "Filters (n)" opens a sheet: genre include/exclude, decade, age rating, runtime, seasons, upcoming only. <b>Loads more pages until 18 titles match.</b></td><td>Living backdrop. Type segments shown only when non-empty. <b>Smart filters</b> Unwatched, In Progress, Watched, Short: combinable, shown only when they would split the set.</td><td>Filters sheet, smart filters</td></tr>
+      <tr><td>Stremio<br><span class="src">web + Lite for Apple TV · src</span></td><td>"Search or paste link". History and suggestions in a dropdown. One row per add-on catalog.</td><td>Dropdowns plus an "All filters" sheet. <b>A preview panel beside the grid.</b> An Install add-on button when a catalog's add-on is missing.</td><td>Type select and sort (Last watched, Name, Times watched, Watched, Not watched). New-episode badges.</td><td>Side preview panel, paste a link</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Big tvOS apps</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>App</th><th>Search</th><th>Browse</th><th>Library / Watchlist</th><th>Worth taking</th></tr></thead>
+    <tbody>
+      <tr><td>Apple TV app<br><span class="src">tvOS 26/27</span></td><td>System field ("Movies, Shows, Cast, and More", "Hold mic to dictate") with the linear keyboard on top. Categorized results under it.</td><td><b>Before typing, a "Browse" grid of category tiles</b>: landscape 4 across on tvOS 18, portrait 6 across on tvOS 26. Genius Browse (26.4) adds mood collections.</td><td><b>Split view</b>: a category list on the left (Recent Purchases, Movies, TV Shows, 4K HDR, then Genres) beside a poster grid. Watchlist is a Home row; hold to add or remove.</td><td>Browse tiles, split Library</td></tr>
+      <tr><td>Netflix 3.0<br><span class="src">Aug 2025</span></td><td>Keyboard and a suggestion list on the left, a live cover grid on the right. People open a gallery of their titles.</td><td>The Categories menu was removed: <b>genres now live in Search</b>.</td><td>"My Netflix": My List, Continue Watching, Reminders, watched trailers. Labels on focused cards ("#1 in TV Shows").</td><td>Genres inside Search</td></tr>
+      <tr><td>Prime Video<br><span class="src">2024 redesign</span></td><td><b>A 6-column grid keyboard on the left</b>, query-completion chips across the top, filter chips (Free to me, Genre, Video Quality), 3-column landscape results.</td><td>Genre exploration when the field is empty.</td><td>My Stuff: Watchlist, purchases, channels, downloads. Badges for included vs. rent/buy.</td><td>Completion + filter chips</td></tr>
+      <tr><td>Disney+ / HBO Max</td><td>Search first in a left rail (Disney+), an icon in a left menu (HBO Max). HBO searches cast, genre and episode titles.</td><td>Service tabs (Disney+), Categories (HBO Max).</td><td>Watchlist in the rail; hold to remove. HBO's My List sorts Newest, A–Z, Z–A.</td><td>Badges: New Series, Season Finale</td></tr>
+      <tr><td>Infuse 8.5<br><span class="src">Jul 2026</span></td><td>Results grouped into movies, shows, episodes, collections and people.</td><td>Smart Filters per type (genre, rating, year, unwatched…), <b>only one at a time</b>; open request since 2019.</td><td>Letter bar (8.1) that appears only on fast scrolls in Title sort. Any filter can be pinned to Home. Orange corner for unwatched. Trakt lists not synced.</td><td>Grouped results, pin a filter to Home</td></tr>
+      <tr><td>Plex<br><span class="src">2025 → Sep 2026</span></td><td>Native search, recent searches, universal across services and libraries.</td><td>Discover rows like "Trending on your services".</td><td>Top tabs in 2025 drew a backlash ("more clicks", scroll back up to switch library). <b>Aug 2026: a collapsible left sidebar with pinned libraries and My Lists came back.</b> Jump bar, filters remembered per library, a clear-filters button.</td><td>Pinned sources sidebar; a warning about top tabs</td></tr>
+      <tr><td>Swiftfin<br><span class="src">Jellyfin · src</span></td><td><span class="mono">.searchable</span>, live after 0.5 s. A filter track above results. Grouped by type, then People. Idle: about 10 suggested titles.</td><td>—</td><td>A narrow column of filter icons on the screen edge, each opening a list; Reset when active. A letter rail that <b>filters</b> to a letter, compressed with dots. Grid/list and poster/landscape per library. Maintainer: tvOS focus is "a nightmare" for filters.</td><td>Letter rail, per-library display</td></tr>
+      <tr><td>Channels · Emby</td><td>Sectioned results (Channels).</td><td>Rows by recency with genre and decade filters (Channels).</td><td>Rule-based collections (Channels). Emby promised a letter jump in July 2026, five years after it was asked for.</td><td>Filters that become rows</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid2">
+    <div class="box"><h3>Patterns that keep coming up</h3><ul class="small">
+      <li>Search is live, 0.3–0.5 s after the last letter, and the old results stay until new ones arrive.</li>
+      <li>Something to browse before typing: recent searches, then genre or category tiles, then trending.</li>
+      <li>Results grouped by type with the best match first, and people as round portraits.</li>
+      <li>Filters are pills that show their current value and open a menu or a sheet, with a count of active filters and a Clear.</li>
+      <li>A Library that shows all your lists at once: a left list (Apple TV app, Plex 2026) or one row per list (Nuvio mobile).</li>
+      <li>State on the card: watched tick, progress bar, new-episode badge.</li>
+      <li>Editing is press-and-hold, never a separate edit mode.</li>
+    </ul></div>
+    <div class="box"><h3>Anti-patterns</h3><ul class="small">
+      <li>A custom search field that drops dictation and iPhone typing (Plex's 2025 preview).</li>
+      <li>Results that swap on every key press (official NuvioTV keeps them still on purpose).</li>
+      <li>Source switching at the top of a long page, so you scroll back up to change list (Plex 2025, reverted).</li>
+      <li>One filter at a time (Infuse), filters not remembered (Plex preview), focus lost after a filter change.</li>
+      <li>No letter jump in a 1,000-title library, or one that hides until you scroll fast.</li>
+      <li>Search flooded by stream-only add-ons (the problem Orivio's ranking fixes).</li>
+      <li>"Empty" shown while a synced library is still loading (NuvioTV today).</li>
+    </ul></div>
+  </div>
+</section>
+
+<section id="search">
+  <div class="sec-head"><span class="eyebrow">Search</span><h2>Three directions</h2>
+  <p class="lede small">All three answer FEAT-37 with results while typing. They differ in who draws the keyboard and how the results are shown.</p></div>
+
+  <article class="option pick">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: native search with a single-row keyboard at the top, suggestion chips, a top result card, movie and people rows below">
+        <div class="bd ink"></div>
+        <div style="position:absolute;left:6cqw;right:6cqw;top:3cqw;display:grid;gap:1.1cqw">
+          <div class="field"><span class="mag"></span>dune<span class="caret"></span><span class="mic">hold mic to dictate</span></div>
+          <div class="kbl"><span class="w">123</span><span>a</span><span>b</span><span>c</span><span>d</span><span class="f">e</span><span>f</span><span>g</span><span>h</span><span>i</span><span>j</span><span>k</span><span>l</span><span>m</span><span>n</span><span>o</span><span>p</span><span>q</span><span>r</span><span>s</span><span>t</span><span>u</span><span>v</span><span>w</span><span>x</span><span>y</span><span>z</span><span class="w">space</span><span class="w">delete</span></div>
+          <div class="sugg"><span class="pill q">“dune”</span><span class="pill">dune part two</span><span class="pill">dune prophecy</span><span class="pill">dune 1984</span></div>
+        </div>
+        <div style="position:absolute;left:6cqw;top:18.5cqw;display:grid;gap:1.4cqw">
+          <div style="display:flex;gap:2cqw;align-items:flex-end">
+            <div style="display:grid;gap:.7cqw"><div class="rowlbl">Top result</div><div class="toprez" style="outline:none;transform:none"><span class="logo" style="font-size:1.9cqw">Dune: Part Two</span><span class="mini">Movie · 2024 · 2h 46m · IMDb 8.5</span></div></div>
+            <div style="display:grid;gap:.7cqw"><div class="rowlbl">Movies <span class="dim">· 7</span></div><div class="row mix"><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div></div></div>
+          </div>
+          <div style="display:flex;gap:3cqw">
+            <div style="display:grid;gap:.7cqw"><div class="rowlbl">Series <span class="dim">· 2</span></div><div class="row mix"><div class="card post"></div><div class="card post"></div></div></div>
+            <div style="display:grid;gap:.7cqw"><div class="rowlbl">People <span class="dim">· 3</span></div><div class="row"><div class="mono-av"><i></i>Denis Villeneuve</div><div class="mono-av"><i></i>Timothée Chalamet</div><div class="mono-av"><i></i>Zendaya</div></div></div>
+          </div>
+        </div>
+      </div>
+      <p class="cap">S1 with the single-row keyboard. With the Grid keyboard set in Apple TV Settings, the same screen puts the keyboard on the left and the rows on the right (S2's layout).</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">S1 · Native Search</span>
+      <span class="pick-badge">My pick</span>
+      <p class="small">Swap today's text field for the system search field, hosted the way bobsupra and VortX do it. Results update about 350 ms after each letter, under the keyboard. The viewer's keyboard setting picks the layout: one row across the top with results below, or the grid on the left with results to the right. Results are grouped by type: a <b>Top result</b> (wide card with the logo), <b>Movies</b>, <b>Series</b>, then <b>People</b> from TMDB, which open the person page we already have. Suggestion chips start with the typed text in quotes, then title completions.</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>Answers FEAT-37 with the least custom code.</li><li>Dictation, typing on an iPhone, the viewer's keyboard choice and every alphabet come free.</li><li>What Apple, Swiftfin, VortX, bobsupra and (after backtracking) Plex do.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>Needs a one-day spike to lift the HIG contract's ban.</li><li>Has to look right with both keyboards, and with the grid one the results never get the full width.</li><li>The system owns the field's look, so Open Sans won't reach it.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">answers FEAT-37</span><span class="tag fix">dictation + iPhone keyboard</span><span class="tag cost">effort: medium</span><span class="tag risk">spike can fail</span></div>
+    </div>
+  </article>
+
+  <article class="option">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: a letter grid on the left, suggestion chips, type chips and a live poster grid on the right">
+        <div class="bd ink"></div>
+        <div style="position:absolute;left:4cqw;top:4cqw;width:24cqw;display:grid;gap:1cqw">
+          <div class="field sm"><span class="mag"></span>dun<span class="caret"></span></div>
+          <div class="kbg"><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span><span>i</span><span>j</span><span>k</span><span>l</span><span>m</span><span class="f">n</span><span>o</span><span>p</span><span>q</span><span>r</span><span>s</span><span>t</span><span>u</span><span>v</span><span>w</span><span>x</span><span>y</span><span>z</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>0</span></div>
+          <div class="kbx"><span>space</span><span>delete</span><span>clear</span></div>
+          <div class="pill" style="justify-self:start;font-size:.85cqw">Dictate or type on iPhone</div>
+        </div>
+        <div style="position:absolute;left:32cqw;right:4cqw;top:4cqw;display:grid;gap:1.2cqw">
+          <div class="sugg"><span class="pill q">“dun”</span><span class="pill">Dune</span><span class="pill">Dunkirk</span><span class="pill">Dune: Prophecy</span><span class="pill">The Dunwich Horror</span></div>
+          <div class="sugg"><span class="pill on">All</span><span class="pill">Movies</span><span class="pill">Series</span><span class="pill">People</span><span class="dim" style="font-size:.95cqw">24 results</span></div>
+          <div class="pgrid mix" style="grid-template-columns:repeat(6,1fr)"><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div></div>
+        </div>
+      </div>
+      <p class="cap">S2 · results fill in with each letter. Right moves into the grid; Left from column 1 goes back to the last letter.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">S2 · Split Search</span>
+      <p class="small">The layout Netflix, Prime Video and YouTube use, built by us. A 6-column letter grid docked on the left, the same for everyone, with suggestion chips, type chips with a result count, and a live poster grid on the right. A "Dictate or type on iPhone" key opens the system keyboard for what a custom keyboard can't do. This is also the fallback if S1's spike fails.</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>Doesn't depend on the system search field or the ban.</li><li>Results are on screen the whole time, in one layout we design and test.</li><li>Familiar to anyone who uses Netflix or Prime.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>We own the keyboard: focus, accents, numbers, other alphabets.</li><li>Dictation and iPhone typing are one press away instead of always on.</li><li>With the rail visible, the keyboard becomes a second left column.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">answers FEAT-37</span><span class="tag cost">effort: high</span><span class="tag risk">keyboard edge cases</span></div>
+    </div>
+  </article>
+
+  <article class="option">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: search field collapsed at the top, the focused result shown large in a stage, one row of results in a strip below">
+        <div class="bd warm" style="clip-path:inset(0 0 44% 0)"></div>
+        <div style="position:absolute;inset:0 0 44% 0;background:linear-gradient(90deg,rgba(0,0,0,.9) 0%,rgba(0,0,0,.6) 30%,rgba(0,0,0,0) 60%),linear-gradient(180deg,transparent 60%,#05070a 100%)"></div>
+        <div class="field sm" style="position:absolute;left:6cqw;top:2.6cqw;width:24cqw"><span class="mag"></span>dune</div>
+        <div style="position:absolute;left:6cqw;top:8.5cqw;width:42cqw;display:grid;gap:.8cqw">
+          <div class="logo" style="font-size:4cqw">Dune</div>
+          <div class="mline">Movie · 2021 · 2h 35m <span class="chip">PG-13</span> IMDb 8.0</div>
+          <div class="mline" style="color:rgba(255,255,255,.55)">Found in Cinemeta and TMDB Addon</div>
+          <div class="syn">Paul Atreides, a brilliant and gifted young man born into a great destiny beyond his understanding, must travel to the most dangerous planet in the universe.</div>
+        </div>
+        <div class="strip" style="height:46%"></div>
+        <div style="position:absolute;left:6cqw;top:57%;display:grid;gap:1cqw">
+          <div class="rowlbl">Movies <span class="dim">· 7 results</span></div>
+          <div class="posterrow mix"><div class="card post focus"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div></div>
+        </div>
+        <div style="position:absolute;left:6cqw;bottom:1.2cqw;font-size:1.1cqw;font-weight:600;color:rgba(255,255,255,.45)">Series · 2</div>
+      </div>
+      <p class="cap">S3 · Down from the keyboard folds it into the field. Up goes back to typing.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">S3 · Stage Search</span>
+      <p class="small">Results in Home's Stage &amp; Strip language. Typing works as in S1 or S2. When you press Down into the results, the keyboard folds into a field at the top, the stage shows the focused result (art, logo, year, type, runtime, rating, and which add-ons found it), and the strip pages Top result, Movies, Series and People one row per press.</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>Tells same-name titles apart at a glance: the 1984 and 2021 films, a film and its series.</li><li>Matches the new Home; the stage's background trailer works here too.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>One row of results on screen, so slower when you know what you want.</li><li>Needs Home's stage built first.</li><li>Two states (typing, browsing) to keep straight.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">consistent with Home</span><span class="tag cost">effort: high, after Home</span><span class="tag risk">fewer results on screen</span></div>
+    </div>
+  </article>
+</section>
+
+<section id="grouping">
+  <div class="sec-head"><span class="eyebrow">Search · a separate decision</span><h2>How results are grouped</h2>
+  <p class="lede small">Any of the three directions can use any of these.</p></div>
+  <div class="grid2">
+    <div class="box pick"><span class="pick-badge">My pick, as the default</span><h3>By type, merged</h3><p class="small">One row per type: Top result, Movies, Series, Collections, People. Duplicates are merged by id. Add-ons are ranked: metadata add-ons first, stream-only add-ons last and capped. The add-on that found a title shows on the stage (S3) or in the focused card's subtitle. What Orivio, VortX, Swiftfin, Infuse 8.5 and the Apple TV app do.</p></div>
+    <div class="box"><h3>By add-on (today)</h3><p class="small">Keep it as a setting, "Group results by add-on", for people who search one add-on on purpose. Print the add-on's name in the header ("Cinemeta · Movies") so identical catalog names can be told apart. Stremio and official NuvioTV do this, and the Search Sources toggles (FEAT-10) still apply.</p></div>
+    <div class="box"><h3>One grid with type chips</h3><p class="small">"All · Movies · Series · People — 24 results" above one poster grid (bobsupra, Prime Video). The densest option, and the natural fit for S2. People need their own chip, since portraits don't sit well in a poster grid.</p></div>
+  </div>
+</section>
+
+<section id="discover">
+  <div class="sec-head"><span class="eyebrow">Discover</span><h2>Three directions</h2>
+  <p class="lede small">Discover is the empty state of Search today. D1 and D2 combine well: D2 as the page you land on, D1's bar on every grid behind it.</p></div>
+
+  <article class="option">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: one row of filter pills under the search field, a context line, and a poster grid">
+        <div class="bd ink"></div>
+        <div class="tabbar"><span>Home</span><span class="on">Search</span><span>Library</span><span>Add-ons</span><span>Settings</span></div>
+        <div style="position:absolute;left:6cqw;right:6cqw;top:7.5cqw;display:grid;gap:1.1cqw">
+          <div class="field"><span class="mag"></span><span class="ph">Search movies, shows and people</span></div>
+          <div class="sugg"><span class="pill dd">Movies</span><span class="pill dd f">Popular · Cinemeta</span><span class="pill dd">Drama</span><span class="pill">Filters (2)</span></div>
+          <div class="ctx">Cinemeta · Movies · Drama · 1990–2009 · rated 7+</div>
+          <div class="pgrid mix" style="grid-template-columns:repeat(7,1fr)"><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div></div>
+        </div>
+      </div>
+      <p class="cap">D1 · three chip rows become one row of pills.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">D1 · One Filter Bar</span>
+      <p class="small">The three chip rows become one row of pills that show their value, <b>Movies ▾ · Popular · Cinemeta ▾ · Drama ▾ · Filters (2)</b>, each opening a native menu. A context line under it repeats the choice. The grid starts about 200 pt higher, so a whole extra row of posters fits. The genre is remembered as well as the catalog.</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>The cheapest change here.</li><li>Matches official NuvioTV, Nuvio mobile, Orivio and bobsupra.</li><li>Native menus mean system focus and no custom chip rows to tune.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>Options hide in menus until you open one.</li><li>Still one long grid with nothing to orient you.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">more posters on screen</span><span class="tag cost">effort: low</span></div>
+    </div>
+  </article>
+
+  <article class="option pick">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: empty search page with recent search chips and a row of large portrait genre tiles, with a trending row below">
+        <div class="bd ink"></div>
+        <div class="tabbar"><span>Home</span><span class="on">Search</span><span>Library</span><span>Add-ons</span><span>Settings</span></div>
+        <div style="position:absolute;left:6cqw;right:6cqw;top:7.5cqw;display:grid;gap:1.2cqw">
+          <div class="field"><span class="mag"></span><span class="ph">Search movies, shows and people</span></div>
+          <div class="sugg"><span class="dim" style="font-size:.95cqw;margin-right:.4cqw">Recent</span><span class="pill">severance</span><span class="pill">the bear</span><span class="pill">nolan</span><span class="pill">studio ghibli</span></div>
+          <div style="display:grid;gap:.8cqw"><div class="rowlbl">Browse</div>
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1cqw">
+              <div class="gtile f" style="background:linear-gradient(160deg,#b4473a,#3a1410)"><b>Action</b></div>
+              <div class="gtile" style="background:linear-gradient(160deg,#c49a3a,#3a2a10)"><b>Comedy</b></div>
+              <div class="gtile" style="background:linear-gradient(160deg,#3a7ab4,#10243a)"><b>Sci-Fi</b></div>
+              <div class="gtile" style="background:linear-gradient(160deg,#b43a8a,#3a1030)"><b>Anime</b></div>
+              <div class="gtile" style="background:linear-gradient(160deg,#4a4a5a,#121218)"><b>Horror</b></div>
+              <div class="gtile" style="background:linear-gradient(160deg,#2f8f6a,#0e2a20)"><b>Your services</b></div>
+              <div class="gtile" style="background:linear-gradient(160deg,#7a6aa8,#201a34)"><b>1990s</b></div>
+            </div>
+          </div>
+          <div style="display:grid;gap:.7cqw"><div class="rowlbl">Trending this week</div><div class="row mix"><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div></div></div>
+        </div>
+      </div>
+      <p class="cap">D2 · what you see before typing. A tile opens a grid with D1's bar already set.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">D2 · Browse Landing</span>
+      <span class="pick-badge">My pick, with D1</span>
+      <p class="small">The empty Search page becomes a browse page, as in the Apple TV app (Apple's WWDC26 search session uses it as the example) and Netflix, which moved its genres into Search. Recent searches, then large tiles for genres, decades and your collection folders (service logos included), then a Trending row. A tile opens a grid with D1's bar already set. Hide Discover still hides the tiles.</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>Answers "what's in here?" before anyone types, which matters when typing on a remote is slow.</li><li>Reuses collection folders; big tiles are easy targets.</li><li>Portrait tiles at Apple's 6–7 column sizes fit the poster system we have.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>Needs art for each tile (taken from the top title in that genre).</li><li>With several add-ons, which catalog backs "Action" is a product call.</li><li>One more step before the grid.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">HIG: browse before typing</span><span class="tag cost">effort: medium</span><span class="tag risk">tile art per genre</span></div>
+    </div>
+  </article>
+
+  <article class="option">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: the focused title's backdrop and details in the top half, a strip of posters below, and a filters sheet open on the right">
+        <div class="bd cool" style="clip-path:inset(0 0 46% 0)"></div>
+        <div style="position:absolute;inset:0 0 46% 0;background:linear-gradient(90deg,rgba(0,0,0,.9) 0%,rgba(0,0,0,.55) 32%,rgba(0,0,0,0) 62%),linear-gradient(180deg,transparent 60%,#05070a 100%)"></div>
+        <div style="position:absolute;left:6cqw;top:6cqw;width:36cqw;display:grid;gap:.8cqw">
+          <div class="logo" style="font-size:4cqw">Heat</div>
+          <div class="mline">Movie · 1995 · 2h 50m <span class="chip">R</span> IMDb 8.3</div>
+          <div class="syn">A group of high-end professional thieves start to feel the heat from the LAPD when they unknowingly leave a clue at their latest heist.</div>
+        </div>
+        <div class="strip" style="height:48%"></div>
+        <div style="position:absolute;left:6cqw;top:54%;display:grid;gap:1cqw">
+          <div class="sugg"><span class="pill dd">Movies</span><span class="pill dd">Top · TMDB</span><span class="pill on">Filters (3)</span></div>
+          <div class="posterrow mix"><div class="card post"></div><div class="card post focus"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div></div>
+        </div>
+        <div class="dimlayer"></div>
+        <div class="sheet">
+          <div class="t">Filters</div>
+          <div class="frow"><span>Genres</span><span class="v"><b class="inc">+ Crime</b> &nbsp;<b class="exc">− Horror</b></span></div>
+          <div class="frow f"><span>Decade</span><span class="v">1990s – 2000s</span></div>
+          <div class="frow"><span>Rating</span><span class="v">7 and up</span></div>
+          <div class="frow"><span>Runtime</span><span class="v">Any</span></div>
+          <div class="frow"><span>Upcoming only</span><span class="toggle off"></span></div>
+          <div class="frow"><span>Source</span><span class="v">TMDB</span></div>
+          <div class="ctx" style="margin-top:.4cqw">38 shown · Clear</div>
+        </div>
+      </div>
+      <p class="cap">D3 · the filters sheet open over a living backdrop.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">D3 · Living Discover</span>
+      <p class="small">VortX's living backdrop plus its filter sheet. The top half shows the focused poster's art and details, and the pills and posters live in the bottom strip. "Filters" opens a glass sheet: genres you can include or exclude, a decade range, a minimum rating, runtime, upcoming only, and the source. When filters leave the grid sparse, more pages load until it fills. TMDB can be a source here, since the collection-folder editor already has TMDB discover.</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>The richest browsing, with the same stage language as Home.</li><li>TMDB filters do what add-on catalogs can't (decade, rating, exclusions).</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>Fewer posters on screen.</li><li>Filtering on the device needs care with paging.</li><li>The most work of the three.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">real filtering</span><span class="tag cost">effort: high</span><span class="tag risk">fewer posters on screen</span></div>
+    </div>
+  </article>
+</section>
+
+<section id="library">
+  <div class="sec-head"><span class="eyebrow">Library</span><h2>Four directions</h2>
+  <p class="lede small">L1's grid is the building block of L2 and L3, so building it first wastes nothing.</p></div>
+
+  <article class="option">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: Library title with a count line and source badge, one row of list, type, sort and smart filter pills, and a poster grid with badges">
+        <div class="bd ink"></div>
+        <div class="tabbar"><span>Home</span><span>Search</span><span class="on">Library</span><span>Add-ons</span><span>Settings</span></div>
+        <div style="position:absolute;left:6cqw;right:6cqw;top:7.5cqw;display:grid;gap:1.1cqw">
+          <div style="display:flex;align-items:baseline;gap:1.2cqw"><span class="scr-t">Library</span><span class="dim" style="font-size:1.05cqw">31 movies · 17 series</span><span class="srcb">TRAKT</span></div>
+          <div class="sugg"><span class="pill dd f">Watchlist</span><span class="sep"></span><span class="pill on">All</span><span class="pill">Movies</span><span class="pill">Series</span><span class="sep"></span><span class="pill dd">Recently added</span><span class="pill">Unwatched</span><span class="pill">In progress</span></div>
+          <div class="pgrid mix" style="grid-template-columns:repeat(8,1fr)">
+            <div class="card"><span class="newb">NEW EP</span></div><div class="card"><span class="pbar"><i style="width:40%"></i></span></div><div class="card"></div><div class="card"><span class="tick">✓</span></div><div class="card"></div><div class="card"><span class="pbar"><i style="width:75%"></i></span></div><div class="card"></div><div class="card"><span class="tick">✓</span></div>
+            <div class="card"></div><div class="card"></div><div class="card"><span class="newb">NEW EP</span></div><div class="card"></div><div class="card"><span class="tick">✓</span></div><div class="card"></div><div class="card"></div><div class="card"></div>
+          </div>
+        </div>
+      </div>
+      <p class="cap">L1 · the list picker is the first pill. Smart filters only appear when they would change the grid.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">L1 · Filter Bar Grid</span>
+      <p class="small">Today's grid, finished. A header with a count line and a source badge. One row: a <b>List</b> pill (Watchlist, your Trakt lists, Simkl's statuses, MDBList lists), type segments shown only when they're not empty, a <b>Sort</b> pill (List order, Recently added, Recently watched, Title, Year, Rating), and VortX's smart chips. Cards get watched ticks, progress bars and new-episode badges. The hold menu gets Mark watched and Move to list. Loading, error with Retry, and provider-specific empty states. The grid pages.</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>Uses the shared sections, states and filters as they are.</li><li>Fixes every Library gap in the code read.</li><li>Parity with official NuvioTV.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>Lists stay hidden in a menu.</li><li>Still one grid; a 600-title watchlist needs the letter rail.</li><li>A long pill row needs care with focus (Swiftfin's warning).</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">loading/error states</span><span class="tag fix">lists + badges</span><span class="tag cost">effort: low–medium</span></div>
+    </div>
+  </article>
+
+  <article class="option">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: Library as rows, continue watching cards, a Trakt watchlist row with a view all tile, and a Simkl plan to watch row, with a rows or grid switch">
+        <div class="bd ink"></div>
+        <div class="tabbar"><span>Home</span><span>Search</span><span class="on">Library</span><span>Add-ons</span><span>Settings</span></div>
+        <div class="seg" style="position:absolute;right:6cqw;top:8cqw"><span class="on">Rows</span><span>Grid</span></div>
+        <div style="position:absolute;left:6cqw;top:7.5cqw;display:grid;gap:1.3cqw">
+          <span class="scr-t">Library</span>
+          <div style="display:grid;gap:.7cqw"><div class="rowlbl">Continue Watching</div><div class="row"><div class="cw focus"></div><div class="cw"></div><div class="cw"></div><div class="cw"></div><div class="cw"></div></div></div>
+          <div style="display:grid;gap:.7cqw"><div class="rowlbl">Watchlist <span class="dim">· Trakt · 48</span></div><div class="row mix"><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="vall">View all</div></div></div>
+          <div style="display:grid;gap:.7cqw"><div class="rowlbl">Plan to Watch <span class="dim">· Simkl · 31</span></div><div class="row mix"><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div><div class="card post"></div></div></div>
+        </div>
+      </div>
+      <p class="cap">L2 · one row per list. View all opens L1's grid for that list.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">L2 · Shelves</span>
+      <p class="small">Library opens on rows, one per list: Continue Watching, the Trakt watchlist, each personal list, Simkl's Watching and Plan to Watch, MDBList lists, your collection. Each row ends in <b>View all</b>, which opens L1's grid for that list. A Rows/Grid switch in the header uses the shared layout mode, as on mobile. The rows can use Home's strip.</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>Every list is visible at once.</li><li>Parity with Nuvio mobile; looks like Home.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>Slow for finding one title among hundreds.</li><li>Many lists make a long page, with the Plex problem of scrolling back up.</li><li>Continue Watching repeats Home.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">mobile parity</span><span class="tag cost">effort: medium</span><span class="tag risk">long pages</span></div>
+    </div>
+  </article>
+
+  <article class="option pick">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: a left column of sources and lists grouped by provider with counts, and the selected list's poster grid on the right">
+        <div class="bd ink"></div>
+        <div class="tabbar"><span>Home</span><span>Search</span><span class="on">Library</span><span>Add-ons</span><span>Settings</span></div>
+        <div class="srcl" style="position:absolute;left:3.5cqw;top:7.5cqw;bottom:2.5cqw;width:22cqw">
+          <div class="g">NUVIO</div><div class="it">Saved <span>212</span></div>
+          <div class="g">TRAKT</div><div class="it f">Watchlist <span>48</span></div><div class="it">Collection <span>130</span></div><div class="it">Oscars 2026 <span>23</span></div>
+          <div class="g">SIMKL</div><div class="it">Watching <span>6</span></div><div class="it">Plan to Watch <span>31</span></div><div class="it">Completed <span>402</span></div>
+          <div class="g">MDBLIST</div><div class="it">Best horror 2026 <span>50</span></div>
+          <div class="g">DEBRID CLOUD</div><div class="it">Real-Debrid <span>17</span></div>
+        </div>
+        <div style="position:absolute;left:28.5cqw;right:4cqw;top:7.5cqw;display:grid;gap:1.1cqw">
+          <div style="display:flex;gap:1cqw;align-items:baseline"><span class="scr-t">Watchlist</span><span class="dim" style="font-size:1.05cqw">Trakt · 31 movies · 17 series</span></div>
+          <div class="sugg"><span class="pill on">All</span><span class="pill">Movies</span><span class="pill">Series</span><span class="sep"></span><span class="pill dd">List order</span><span class="pill">Unwatched</span></div>
+          <div class="pgrid mix" style="grid-template-columns:repeat(6,1fr)"><div class="card"><span class="pbar"><i style="width:30%"></i></span></div><div class="card"></div><div class="card"><span class="newb">NEW EP</span></div><div class="card"></div><div class="card"><span class="tick">✓</span></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"><span class="tick">✓</span></div><div class="card"></div><div class="card"></div></div>
+        </div>
+      </div>
+      <p class="cap">L3 · Apple TV app's Library layout. Up and Down in the column switch lists without leaving the screen.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">L3 · Split Library</span>
+      <span class="pick-badge">My pick, built on L1</span>
+      <p class="small">A left column lists every connected source and list, grouped by provider with counts: Nuvio (Saved), Trakt (Watchlist, Collection, your lists), Simkl (its statuses), MDBList, Debrid Cloud. The right side is L1's grid for the selected list. This is the Apple TV app's own Library layout and what Plex went back to in August 2026. Focus in the column switches lists in place; Right enters the grid.</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>Changing lists never means scrolling back up.</li><li>Shows every provider at once, not only the one Library Source.</li><li>Debrid Cloud becomes just another source.</li><li>Apple's own pattern, and the tab bar stays pinned on split views.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>About a quarter of the width goes to the column, so 6 posters across instead of 8.</li><li>Next to an Always Visible rail, two left columns.</li><li>Users who only use Nuvio's Saved list get a column with one row (collapse it then).</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">all lists, one press away</span><span class="tag fix">Apple TV app pattern</span><span class="tag cost">effort: medium</span><span class="tag risk">rail + column</span></div>
+    </div>
+  </article>
+
+  <article class="option">
+    <div>
+      <div class="tv" role="img" aria-label="Mockup: a segmented bar of watch states, wide episode cards with new episode badges and progress, and an upcoming schedule row">
+        <div class="bd ink"></div>
+        <div class="tabbar"><span>Home</span><span>Search</span><span class="on">Library</span><span>Add-ons</span><span>Settings</span></div>
+        <div style="position:absolute;left:6cqw;right:6cqw;top:7.5cqw;display:grid;gap:1.4cqw">
+          <div class="segbar"><span class="on">Up Next<i>9</i></span><span>Watching<i>6</i></span><span>Not Started<i>31</i></span><span>Finished<i>402</i></span><span>Dropped<i>4</i></span></div>
+          <div class="row mix">
+            <div class="epc f"><span class="newb">NEW EPISODE</span><b>Andor</b>S2 E5 · 3 left<span class="pbar"><i style="width:62%"></i></span></div>
+            <div class="epc"><b>The Bear</b>S4 E2 · 8 left<span class="pbar"><i style="width:20%"></i></span></div>
+            <div class="epc"><span class="newb">NEW EPISODE</span><b>Slow Horses</b>S5 E1 · 6 left</div>
+            <div class="epc"><b>Severance</b>S2 E8 · 2 left<span class="pbar"><i style="width:80%"></i></span></div>
+            <div class="epc"><b>Shōgun</b>S1 E4 · 6 left</div>
+          </div>
+          <div style="display:grid;gap:.8cqw"><div class="rowlbl">Upcoming</div>
+            <div class="row"><div class="calc"><b>TUE 7</b>Andor · S2 E6</div><div class="calc"><b>THU 9</b>The Bear · S4 E3</div><div class="calc"><b>FRI 10</b>Slow Horses · S5 E2</div><div class="calc"><b>MON 13</b>Severance · S3 E1</div><div class="calc"><b>WED 15</b>Shōgun · S2 E1</div></div>
+          </div>
+          <div style="display:grid;gap:.8cqw"><div class="rowlbl">Recently finished</div><div class="row mix"><div class="card post"><span class="tick">✓</span></div><div class="card post"><span class="tick">✓</span></div><div class="card post"><span class="tick">✓</span></div><div class="card post"><span class="tick">✓</span></div><div class="card post"><span class="tick">✓</span></div><div class="card post"><span class="tick">✓</span></div><div class="card post"><span class="tick">✓</span></div><div class="card post"><span class="tick">✓</span></div><div class="card post"><span class="tick">✓</span></div><div class="card post"><span class="tick">✓</span></div></div></div>
+        </div>
+      </div>
+      <p class="cap">L4 · example titles and dates, for layout only.</p>
+    </div>
+    <div class="notes">
+      <span class="opt-id">L4 · Watch-State Board</span>
+      <p class="small">Library as a tracker. Segments come from Trakt progress or Simkl statuses: Up Next, Watching, Not Started, Finished, Dropped. Series show as wide cards with "S2 E5 · 3 left" and a new-episode badge. An Upcoming row lists the next airings, like the Nuvio mobile fork's Library Calendar. Movies live under Not Started and Finished.</p>
+      <div class="pc">
+        <div><h4>For</h4><ul class="small"><li>Turns the Library into "what do I watch next".</li><li>Uses Simkl's statuses as they are.</li></ul></div>
+        <div><h4>Against</h4><ul class="small"><li>Overlaps Home's Continue Watching.</li><li>Needs episode data for every series, so heavier loading.</li><li>A new feature more than a revamp.</li></ul></div>
+      </div>
+      <div class="tags"><span class="tag fix">next-episode focus</span><span class="tag cost">effort: high</span><span class="tag risk">overlaps Home</span></div>
+    </div>
+  </article>
+</section>
+
+<section id="modules">
+  <div class="sec-head"><span class="eyebrow">Mix and match</span><h2>Smaller pieces that work with any direction</h2></div>
+  <h3>Search and Discover</h3>
+  <div class="grid2">
+    <div class="box"><h3>Typing without flicker</h3><p class="small muted">Keep the old results until the new ones arrive, and show one skeleton row only for add-ons that are still answering. Official NuvioTV does this on purpose after finding that swapping rows on every key "reads as flicker" on a remote.</p></div>
+    <div class="box"><h3>Suggestions</h3><p class="small muted">A first chip with the typed text in quotes that submits it as is (bobsupra), then title completions from the add-ons' search catalogs (official NuvioTV ranks up to 8). The system's suggestion list only takes plain text, so chips are ours to draw.</p></div>
+    <div class="box"><h3>People</h3><p class="small muted">TMDB person search, shown as round portraits, opening the person page we already have. Apple's guidelines and Infuse 8.5, Swiftfin and Netflix all do this.</p></div>
+    <div class="box"><h3>Power-user chips</h3><p class="small muted">"Play a link or magnet" (typed or pasted from an iPhone) and "Debrid Cloud" next to the field, as VortX does. Stremio's field takes a pasted link too.</p></div>
+    <div class="box"><h3>Recent searches saved on intent</h3><p class="small muted">Save a query when you open one of its results (VortX) or when it returns results (mobile), not on every Done. Remove one with a hold, clear all with a button. Optional sync per profile.</p></div>
+    <div class="box"><h3>Specific empty states</h3><p class="small muted">"None of your add-ons can search", "All search sources are off" with a link to Settings, and "No results for ‘dnue’" with the query shown so typos are obvious (WWDC26).</p></div>
+    <div class="box"><h3>Menu goes to the top first</h3><p class="small muted">In a long grid, Menu scrolls back to the first poster; a second Menu leaves (Orivio).</p></div>
+    <div class="box"><h3>Filter sheet with auto-paging</h3><p class="small muted">VortX's sheet (include/exclude genres, decade, rating, runtime, upcoming), a count on the Filters pill, "38 shown · Clear", and more pages loaded until the grid has at least 18 titles.</p></div>
+    <div class="box"><h3>Missing add-on hint</h3><p class="small muted">When a remembered catalog's add-on was removed, say so and offer the Add-ons tab instead of an empty grid (Stremio's Install button).</p></div>
+  </div>
+  <h3>Library</h3>
+  <div class="grid2">
+    <div class="box"><h3>Smart filters</h3><p class="small muted">Unwatched, In progress, Watched, Short (under 100 minutes). They combine, and each appears only when it would change the grid (VortX). The answer to Infuse's long-standing "one filter at a time" complaint.</p></div>
+    <div class="box"><h3>Letter rail</h3><p class="small muted">For long lists in Title sort. Decide whether a letter jumps (Infuse, Plex) or filters (Swiftfin). Compress with dots when the alphabet doesn't fit, and keep it visible rather than only on fast scrolls.</p></div>
+    <div class="box"><h3>State on the card</h3><p class="small muted">Watched tick, progress bar, "New episode", a finished-series mark. Mobile already shows watched badges; tvOS shows none.</p></div>
+    <div class="box"><h3>Full hold menu</h3><p class="small muted">Mark watched, Move to list, Remove (with the mobile dissolve). Play/Pause on a poster plays without opening the page (Orivio).</p></div>
+    <div class="box"><h3>Manage lists on the TV</h3><p class="small muted">Create, rename and delete Trakt and MDBList lists. The controller exists in shared code; official NuvioTV has the screens.</p></div>
+    <div class="box"><h3>Remember the view</h3><p class="small muted">Sort, filters and type per list, per profile (Plex, Swiftfin). A clear-filters pill whenever any filter is on.</p></div>
+    <div class="box"><h3>Pin a list to Home</h3><p class="small muted">Any list or filtered view becomes a Home row (Infuse Favorites, Channels). Fits Home's strip with no new layout.</p></div>
+    <div class="box"><h3>Count line and source badge</h3><p class="small muted">"31 movies · 17 series" (Orivio) and TRAKT / SIMKL / MDBLIST (official NuvioTV), so people know what they're looking at.</p></div>
+    <div class="box"><h3>Grid density</h3><p class="small muted">Poster or landscape cards and the column count per list, using Apple's 6/7/8-column sizes (Swiftfin).</p></div>
+  </div>
+</section>
+
+<section id="nav">
+  <div class="sec-head"><span class="eyebrow">Navigation chrome</span><h2>How these screens meet the tab bar or the rail</h2></div>
+  <div class="grid2">
+    <div class="box"><h3>With Tabs (today's default)</h3><ul class="small">
+      <li>S1 hides the tab bar while the keyboard is up, as bobsupra does; Menu brings it back.</li>
+      <li>Apple pins the tab bar on split-view screens, so on L3 a bar that stays visible (BUG-66's symptom) is the expected behaviour.</li>
+      <li>A filter row directly under the tab bar (L1, D1) needs room for the focus lift, or the first pill clips.</li>
+    </ul></div>
+    <div class="box"><h3>With the rail (FEAT-45)</h3><ul class="small">
+      <li>Left from the first pill, the keyboard's left column or the Library column enters the rail. That's the spike's "failed Left" rule, so nothing new is needed.</li>
+      <li>S2 and L3 add a second left column. Apple's tvOS 26 TV app has the same pair (floating sidebar plus the Library list), so it reads as normal, but Hide While Browsing suits these two screens better than Always Visible.</li>
+      <li>tvOS's search tab role (<span class="mono">Tab(role: .search)</span>, tvOS 18+) is worth trying in the S1 spike, in case it changes where the system puts the field.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section id="reco">
+  <div class="sec-head"><span class="eyebrow">For you to overrule</span><h2>Recommendation</h2></div>
+  <div class="reco">
+    <p><b>Search: S1 · Native Search</b>, with results grouped by type and add-ons ranked as in Orivio, People from TMDB, and per-add-on rows kept as a setting. It's the only direction that gives dictation, iPhone typing and the viewer's own keyboard for free, and Plex, which tried a custom field, went back to the native one. <b>Start with a one-day spike</b>: the system search field in its own NavigationStack inside our TabView, tried with both keyboard layouts, dictation, iPhone typing and the rail. If it fails, S2 is the fallback. Keep S3 for after Home's stage ships, as a second step for the results view.</p>
+    <p><b>Discover: D2 as the empty Search page, with D1's bar on every grid behind it.</b> Recent searches, genre, decade and collection tiles, then a Trending row. D3's filter sheet and TMDB as a source can come later, without changing the layout.</p>
+    <p><b>Library: L3 · Split Library, built in two steps.</b> First L1's grid with everything it lacks: the shared sections, badges, a full hold menu, smart filters, loading and error states, and paging. Then the list column. The Rows/Grid switch (L2) can be an option later, since shared code already has the layout mode. L4 is a separate feature, not part of this revamp.</p>
+    <ul class="order small">
+      <li><span><b>Library step 1 (L1).</b> Lowest risk, the biggest gaps, nearly all the data already in shared code.</span></li>
+      <li><span><b>The search-field spike.</b> One day, and it decides S1 or S2.</span></li>
+      <li><span><b>Search and Discover together</b> (S1 or S2, the grouping, D2 + D1), since they share the page.</span></li>
+      <li><span><b>Library step 2 (L3's column)</b>, once the rail settings are settled.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="questions">
+  <div class="sec-head"><span class="eyebrow">Your calls</span><h2>Questions only you can answer</h2></div>
+  <div class="q small">
+    <div><b>Run the one-day search-field spike?</b> It is the only way to know whether the HIG contract's ban still holds on tvOS 26/27.</div>
+    <div><b>Group search results by type by default?</b> Or keep today's per-add-on rows as the default and offer type grouping as the option?</div>
+    <div><b>What goes on the empty Search page?</b> Browse tiles (D2), Orivio's Trending grid, or today's Discover grid?</div>
+    <div><b>Should Library show every connected provider's lists,</b> or keep the single Library Source picked in Settings?</div>
+    <div><b>Split Library (L3) or Shelves (L2) as the default?</b></div>
+    <div><b>Where does Debrid Cloud live?</b> A source in the Library column, a chip next to the search field, or both?</div>
+  </div>
+</section>
+
+<section id="sources">
+  <div class="sec-head"><span class="eyebrow">Where this came from</span><h2>Sources</h2></div>
+  <ul class="sources">
+    <li>NuvioTV code at beta.19-rc2: <span class="mono">SearchView.swift</span>, <span class="mono">SearchViewModel.swift</span>, <span class="mono">LibraryView.swift</span>, <span class="mono">LibraryViewModel.swift</span>, <span class="mono">CloudLibraryUI.swift</span>, shared <span class="mono">SearchRepository.kt</span>, <span class="mono">LibraryDisplaySettings.kt</span>; <span class="mono">docs/design/hig-hybrid-contract.md</span>; <span class="mono">docs/beta-feedback-tracker.md</span>; <span class="mono">docs/home-redesign-decisions-2026-10-03.md</span></li>
+    <li><a href="https://github.com/NuvioMedia/NuvioTV">NuvioMedia/NuvioTV</a> (dev, 4a91028) · <a href="https://github.com/NuvioMedia/NuvioWeb">NuvioWeb</a> · <a href="https://github.com/NuvioMedia/NuvioMobile/tree/cmp-rewrite">NuvioMobile cmp-rewrite</a></li>
+    <li><a href="https://github.com/prehakanson-art/OrivioTVAppleTV">Orivio</a> · <a href="https://github.com/bobsupra/NuvioTVOS">bobsupra/NuvioTVOS</a> · <a href="https://github.com/Cb541/NuvioTVOS">Cb541/NuvioTVOS</a> · <a href="https://github.com/dcoscolin/StremioPowerUp2026">StremioPowerUp2026</a></li>
+    <li><a href="https://github.com/VortXTV/VortX">VortX</a>, screenshots: <a href="https://raw.githubusercontent.com/VortXTV/VortX/main/docs/screenshots/discover.png">Discover</a>, <a href="https://raw.githubusercontent.com/VortXTV/VortX/main/docs/screenshots/library.png">Library</a></li>
+    <li><a href="https://github.com/Stremio/stremio-web">stremio-web</a> · <a href="https://blog.stremio.com/stremio-lite-for-apple-tv-tvos-is-now-in-app-store/">Stremio Lite for Apple TV</a></li>
+    <li><a href="https://github.com/jellyfin/Swiftfin">Swiftfin</a> (fda1c4a3) · <a href="https://github.com/jellyfin/Swiftfin/issues/680">Swiftfin #680</a></li>
+    <li>Apple: <a href="https://developer.apple.com/videos/play/wwdc2026/292/">WWDC26 Design intuitive search experiences</a> · <a href="https://developer.apple.com/videos/play/wwdc2025/323/">WWDC25 Build a SwiftUI app with the new design</a> · <a href="https://developer.apple.com/forums/thread/714275">Forums: grid keyboard results</a> · <a href="https://support.apple.com/guide/tv/atvb59b423ba/26/tvos/26">Apple TV app sidebar, tvOS 26</a> · <a href="https://support.apple.com/guide/tv/atvb7d7bec9f/tvos">Search on Apple TV</a> · <a href="https://www.macrumors.com/2026/03/18/tvos-26-4-genius-browse-mode/">Genius Browse</a></li>
+    <li>Apple HIG: <a href="https://developer.apple.com/design/human-interface-guidelines/searching">Searching</a> · <a href="https://developer.apple.com/design/human-interface-guidelines/virtual-keyboards">Virtual keyboards</a> · <a href="https://developer.apple.com/design/human-interface-guidelines/layout">Layout</a> · <a href="https://developer.apple.com/design/human-interface-guidelines/lockups">Lockups</a></li>
+    <li>Netflix: <a href="https://www.macrumors.com/2025/08/13/netflix-rolls-out-redesigned-interface-apple-tv/">Apple TV redesign</a> · <a href="https://help.netflix.com/en/node/321880164349028">help: browsing by genre</a></li>
+    <li>Prime Video: <a href="https://www.aboutamazon.in/news/entertainment/introducing-the-newly-redesigned-prime-video-experience">redesigned experience</a> · Disney+: <a href="https://9to5mac.com/2025/10/02/disney-reveals-app-redesign-coming-soon-to-ios-and-tvos/">tvOS redesign</a> · HBO Max: <a href="https://help.hbomax.com/us-en/answer/detail/000002559">search</a>, <a href="https://help.hbomax.com/us/Answer/Detail/000002505">My List</a></li>
+    <li>Infuse: <a href="https://firecore.com/blog/18639">Smart Filters</a> · <a href="https://community.firecore.com/t/infuse-8-1-now-available/54038">8.1 letter bar</a> · <a href="https://community.firecore.com/t/infuse-8-5-smarter-streaming/60410">8.5 grouped search</a> · <a href="https://community.firecore.com/t/multiple-filters-at-the-same-time-from-library/19001">multiple filters request</a></li>
+    <li>Plex: <a href="https://forums.plex.tv/t/release-notes-for-plex-experience-preview-apple-tv/903004">preview release notes</a> · <a href="https://www.neowin.net/news/plex-reverts-tv-app-layout-after-intense-user-backlash/">sidebar returns</a> · <a href="https://initialcharge.net/2026/09/plex-apple-tv-update/">Initial Charge review</a> · <a href="https://www.pcworld.com/article/2585755/im-a-plex-media-server-user-heres-what-i-think-of-plexs-new-apple-tv-app.html">PCWorld</a></li>
+    <li>Others: <a href="https://getchannels.com/2020/07/22/channels-4-enhanced-browsing">Channels browsing</a> · <a href="https://emby.media/community/topic/95407-apple-tv-app-access-by-letter">Emby letter jump</a> · <a href="https://wccftech.com/how-to/how-to-switch-between-linear-and-grid-keyboards-on-apple-tv/amp/">linear vs grid keyboard</a></li>
+  </ul>
+</section>
+
+</div>

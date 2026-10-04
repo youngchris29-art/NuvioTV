@@ -1,0 +1,82 @@
+16:05:34.565 view appear mech=a2 rail=- sidebar=1 pageSeconds=0.5 noZoom=0
+16:05:34.565 config mech=a2 P=515.5 H=559.5 rows=0 pageSeconds=0.5
+16:05:34.921 config mech=a2 P=515.5 H=559.5 rows=1 pageSeconds=0.5
+16:05:34.925 observers started
+16:05:34.925 marker attached mech=a2
+16:05:34.933 focus → UIKitFocusableViewResponderItem frame=80,682,360,247 label=- id=-
+16:05:35.061 baseline y=520.5 P=515.5 H=559.5 rows=1
+16:05:37.816 config mech=a2 P=515.5 H=559.5 rows=7 pageSeconds=0.5
+16:05:46.647 config mech=a2 P=515.5 H=559.5 rows=9 pageSeconds=0.5
+16:05:48.293 focus → UIKitFocusableViewResponderItem frame=80,1134,220,374 label=- id=-
+16:05:48.975 seg p=1 k=1 start=+64 dur=515 from=520.5 to=5.0 travel=-515.5
+16:05:50.184 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+16:05:50.220 PRESS #1 0→1 mech=a2 moves=1 settle=580 travel=-515.5 afterRest=0 residual=0.0 src=vfocus-down key=com.linvo.cinemeta:movie:top close=row
+16:05:50.893 seg p=2 k=1 start=-44 dur=584 from=5.0 to=-510.5 travel=-515.5
+16:05:51.646 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+16:05:51.680 PRESS #2 1→2 mech=a2 moves=1 settle=540 travel=-515.5 afterRest=0 residual=0.0 src=row key=community.betterposters:movie:trakt-trending close=row
+16:05:52.361 seg p=3 k=1 start=+38 dur=510 from=-510.5 to=-1026.0 travel=-515.5
+16:05:53.424 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+16:05:53.460 PRESS #3 2→3 mech=a2 moves=1 settle=548 travel=-515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:series:top close=row
+16:05:54.113 seg p=4 k=1 start=-48 dur=601 from=-1026.0 to=-1541.5 travel=-515.5
+16:05:54.908 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+16:05:54.940 PRESS #4 3→4 mech=a2 moves=1 settle=553 travel=-515.5 afterRest=0 residual=0.0 src=row key=community.betterposters:series:trakt-trending close=row
+16:05:55.598 seg p=5 k=1 start=+31 dur=510 from=-1541.5 to=-2057.0 travel=-515.5
+16:05:56.723 focus → UIKitFocusableFillerItem frame=328,82,335,391 label=- id=-
+16:05:56.723 PRESS #5 4→5 mech=a2 moves=1 settle=541 travel=-515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:movie:imdbRating close=press
+16:05:56.807 focus → UIKitFocusableViewResponderItem frame=328,163,220,374 label=- id=-
+16:05:57.483 seg p=6 k=1 start=-7 dur=667 from=-2057.0 to=-1541.5 travel=515.5
+16:05:58.083 focus → UIKitFocusableFillerItem frame=328,82,220,391 label=- id=-
+16:05:58.173 focus → UIKitFocusableViewResponderItem frame=328,163,220,374 label=- id=-
+16:05:58.205 PRESS #6 5→4 mech=a2 moves=1 settle=660 travel=515.5 afterRest=0 residual=moving src=vfocus-up key=community.betterposters:series:trakt-trending close=row
+16:05:58.851 seg p=7 k=1 start=-78 dur=623 from=-1541.5 to=-1026.0 travel=515.5
+16:05:59.540 focus → UIKitFocusableFillerItem frame=328,82,358,391 label=- id=-
+16:05:59.693 focus → UIKitFocusableViewResponderItem frame=328,163,220,374 label=- id=-
+16:05:59.722 PRESS #7 4→3 mech=a2 moves=2 settle=moving travel=545.5 afterRest=1 residual=moving src=row key=com.linvo.cinemeta:series:top close=row
+16:06:00.370 seg p=7 k=2 start=+1329 dur=734 from=-1026.0 to=-510.5 travel=515.5
+16:06:00.824 focus → UIKitFocusableFillerItem frame=328,82,220,391 label=- id=-
+16:06:00.909 focus → UIKitFocusableViewResponderItem frame=328,163,220,374 label=- id=-
+16:06:00.934 PRESS #8 3→2 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=moving src=row key=community.betterposters:movie:trakt-trending close=row
+16:06:01.588 seg p=9 k=1 start=-70 dur=623 from=-510.5 to=5.0 travel=515.5
+16:06:02.093 focus → UIKitFocusableFillerItem frame=328,82,220,391 label=- id=-
+16:06:02.176 focus → UIKitFocusableViewResponderItem frame=80,226,360,247 label=- id=-
+16:06:02.194 PRESS #9 2→1 mech=a2 moves=1 settle=553 travel=515.5 afterRest=0 residual=moving src=row key=com.linvo.cinemeta:movie:top close=row
+16:06:02.839 seg p=10 k=1 start=-64 dur=608 from=5.0 to=520.5 travel=515.5
+16:06:03.783 moveFail heading=up
+16:06:04.240 PRESS #10 1→0 mech=a2 moves=1 settle=544 travel=515.5 afterRest=0 residual=0.0 src=row key=continue-watching close=idle
+16:06:07.729 focus → UIKitFocusableViewResponderItem frame=80,1134,220,374 label=- id=-
+16:06:08.220 focus → UIKitFocusableViewResponderItem frame=80,1147,220,374 label=- id=-
+16:06:08.261 PRESS #11 0→1 mech=a2 moves=1 settle=moving travel=-494.5 afterRest=0 residual=moving src=vfocus-down key=com.linvo.cinemeta:movie:top close=row
+16:06:08.912 seg p=11 k=1 start=+44 dur=1038 from=520.5 to=-510.5 travel=-1031.0
+16:06:09.762 PRESS #12 1→2 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=row key=community.betterposters:movie:trakt-trending close=idle
+16:06:13.963 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+16:06:14.041 focus → UIKitFocusableFillerItem frame=328,1318,220,415 label=- id=-
+16:06:14.041 PRESS #13 2→3 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=515.5 src=row key=com.linvo.cinemeta:series:top close=press
+16:06:14.240 focus → UIKitFocusableViewResponderItem frame=328,891,220,374 label=- id=-
+16:06:14.901 seg p=14 k=1 start=+47 dur=713 from=-510.5 to=-1026.0 travel=-515.5
+16:06:14.989 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+16:06:14.989 PRESS #14 3→3 mech=a2 moves=1 settle=759 travel=-515.5 afterRest=0 residual=0.0 src=vfocus-down key=- close=press
+16:06:15.691 focus → UIKitFocusableViewResponderItem frame=328,1134,220,374 label=- id=-
+16:06:15.697 seg p=15 k=1 start=-6 dur=601 from=-1026.0 to=-1541.5 travel=-515.5
+16:06:15.735 PRESS #15 3→4 mech=a2 moves=1 settle=595 travel=-515.5 afterRest=0 residual=0.0 src=vfocus-down key=community.betterposters:series:trakt-trending close=row
+16:06:16.385 seg p=16 k=1 start=-51 dur=601 from=-1541.5 to=-2057.0 travel=-515.5
+16:06:16.721 focus → UIKitFocusableViewResponderItem frame=328,103,220,374 label=- id=-
+16:06:16.721 PRESS #16 4→5 mech=a2 moves=1 settle=550 travel=-515.5 afterRest=0 residual=0.0 src=row key=com.linvo.cinemeta:movie:imdbRating close=press
+16:06:16.747 focus → nil
+16:06:16.772 focus → UIKitFocusableFillerItem frame=0,82,1920,391 label=- id=-
+16:06:16.825 focus → UIKitFocusableViewResponderItem frame=824,163,220,374 label=- id=-
+16:06:17.257 focus → UIKitFocusableFillerItem frame=824,28,220,391 label=- id=-
+16:06:17.301 focus → UIKitFocusableFillerItem frame=824,-477,220,415 label=- id=-
+16:06:17.301 PRESS #17 5→4 mech=a2 moves=1 settle=moving travel=461.5 afterRest=0 residual=moving src=vfocus-up key=community.betterposters:series:trakt-trending close=press
+16:06:17.396 focus → UIKitFocusableFillerItem frame=824,-903,220,415 label=- id=-
+16:06:17.691 focus → UIKitFocusableViewResponderItem frame=824,226,220,374 label=- id=-
+16:06:17.691 PRESS #18 4→4 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=moving src=vfocus-up key=- close=press
+16:06:17.806 focus → UIKitFocusableFillerItem frame=824,-257,220,391 label=- id=-
+16:06:17.994 focus → UIKitFocusableViewResponderItem frame=856,261,360,247 label=- id=-
+16:06:17.994 PRESS #19 4→1 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=moving src=vfocus-down key=com.linvo.cinemeta:movie:top close=press
+16:06:18.655 seg p=17 k=1 start=+58 dur=1774 from=-2057.0 to=520.5 travel=2577.5
+16:06:18.877 moveFail heading=up
+16:06:19.513 PRESS #20 1→0 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=vfocus-down key=continue-watching close=idle
+16:06:20.404 focus → UIKitFocusableViewResponderItem frame=468,682,360,247 label=- id=-
+16:06:20.717 focus → UIKitFocusableViewResponderItem frame=80,682,360,247 label=- id=-
+16:06:21.039 moveFail heading=left
+16:06:21.908 PRESS #21 0→0 mech=a2 moves=0 settle=0 travel=0.0 afterRest=0 residual=0.0 src=vfocus-down key=- close=idle

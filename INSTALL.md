@@ -4,7 +4,7 @@ This guide walks you through installing NuvioTV on your Apple TV using a free Ap
 
 ## What You Need
 
-- An **Apple TV HD or Apple TV 4K** running **tvOS 26+**
+- An **Apple TV 4K** running **tvOS 26 or later**
 - A **Mac or Windows** computer
 - A **free Apple ID** (your normal one works; some people prefer a separate one just for sideloading. Create one at [account.apple.com](https://account.apple.com))
 - **Sideloadly**, the tool that installs the app ([download here](https://sideloadly.io/))

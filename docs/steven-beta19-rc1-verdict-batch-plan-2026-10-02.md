@@ -538,6 +538,6 @@ Christian folded three findings into the batch ("mpv exit crash, 0m / N/A meta l
 
 - `tvos-shared-extraction` fast-forwarded `284fd764` → `7f8d0790` (12 commits), pushed; `claude/steven-beta19-rc1-verdict` deleted on origin.
 - beta.19-rc2 CUT 2026-10-04: build 134 `7e71ba87`, tag `tvos-v0.3.0-beta.19-rc2` pushed, outer pointer `b7f84b6`; IPA 28,201,295 B at https://litter.catbox.moe/3asje5.ipa (litterbox 72 h, until ~10-07 06:50 ET, size verified). Cut by `scripts/cut-rc.sh beta.19-rc2` (preflight all ok; build 5 m 46 s; stamp check passed: tag, sha `7e71ba87`, build 134).
-- Steven's DM drafted, 5/5 per bubble: `docs/comms-dm-drafts-2026-10-04-beta19-rc2.md`. Not sent.
+- Steven's DM SENT 2026-10-04 6:58 AM ET on Christian's go, 5/5 per bubble, both verified in the room: `docs/comms-dm-drafts-2026-10-04-beta19-rc2.md`.
 
 - Previously: design phase running: spec A (`docs/research/steven-rc1-fix-spec-A-motion-trailers.md`: M3, R2, R1, M4, M5, B2) and spec B (`docs/research/steven-rc1-fix-spec-B-images-rows-detail.md`: I1, F, C, T1, A, Detail items, P).

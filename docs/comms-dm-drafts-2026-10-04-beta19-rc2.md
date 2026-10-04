@@ -1,7 +1,7 @@
 # DM draft, beta.19-rc2 (2026-10-04)
 
 To: u/mrStevenx3 (Reddit chat)
-Status: DRAFT, not sent. Send only on Christian's go.
+Status: SENT 2026-10-04 6:58 AM ET on Christian's go ("send it"), via the ego-browser "reddit chat steven" session: two bubbles (2,220 and 913 chars), each verified complete in the room, in order. Steven had sent nothing since his rc1 verdict notes of 2026-10-02.
 Build 134, commit `7e71ba87`, tag `tvos-v0.3.0-beta.19-rc2`. IPA 28,201,295 B (sha256 162cfea0a0830e8f…), copy `~/Downloads/NuvioTV-beta19-rc2.ipa`, litterbox (72 h, until ~2026-10-07 06:50 ET), content-length verified.
 Lint: 5/5 CLEAN on each bubble (deslop.py; one rule-of-three reshaped in bubble 1). Cleanse skipped: Codex usage limit (until 10-29).
 
@@ -41,7 +41,7 @@ Bubble 2:
 ```
 Your questions:
 - Prepare Links for Instant Playback: with AllDebrid on fiber the gain is small. It only skips the 1 to 3 s link step when you press Play on one of the first few links after the list has been open a few seconds, and it uses your link allowance. Fine to leave it Off.
-- Trailer Max FPS, Trailer Buffer and the Letterbox switch: leave them on Auto unless I ask.
+- Trailer Max FPS, Trailer Buffer and the Letterbox Probe switch, now under Developer: leave them as they are (Auto, Auto, off) unless I ask.
 - Open Sans has no size control: the system font follows the tvOS text size, but Open Sans is a font we ship, and the layout is measured at its normal size.
 - Dolby Vision and Atmos: Dolby Vision plays in the built-in player. Atmos only survives in Dolby Digital Plus. TrueHD and DTS become 5.1, so Infuse is the better player for those.
 - The striped Netflix tile is an animated cover, not a bug.

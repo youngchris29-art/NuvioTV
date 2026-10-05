@@ -738,6 +738,13 @@ Gates on `210d51a2`: NuvioTVTests **1223 / 0**, Debug + Release. The walks show 
 
 **A flaky wash test** (`drain()`'s fixed yields) failed once in that gate and was fixed in `c02b0333` by waiting for the condition: 105/105 over 5 iterations, suite 1263 / 0.
 
+**Wave 3 and review round 1 STARTED 2026-10-05** on Christian's go ("yes, start the tests and review"), as three agents in parallel:
+- **W3 (Opus):** the UI tests; the only agent editing files.
+- **Review r1a (Opus, read-only):** stage, strip, wash and swap.
+- **Review r1b (Opus, read-only):** folder page, settings and rail.
+
+Both reviews run over `d68b9d61..c02b0333`. The estimate is about 2–2.5M tokens. When W3 lands, the main session runs the full UI suite, applies the fixes, then runs review round 2 over the fixes and the tests.
+
 **Wave 2 is complete.** Branch tip `c02b0333`, local only. **Next, on Christian's go:**
 1. W3, tests (Opus): Classic legs get `-home_layout classic`; the Stage, folder and rail legs; the test93 port and test52 deletion per W2-D's list; fixture seeding for Large posters and a folder; the Continue Watching seed knob.
 2. Opus read-only review rounds until there are no P1/P2.

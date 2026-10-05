@@ -702,6 +702,29 @@ Three agents in parallel on disjoint files, with ownership checked against P1 §
 
 W2-D (the rail) starts after all three land. W2-C phase 2, the translation scripts, runs once at the very end.
 
+**Wave 2 landed 2026-10-05:** `0cf9567a`, 14 files, +2,654 / −62. It compiled clean on the first try. NuvioTVTests **1216 / 0** (+64). Debug + Release green, with no new warnings over the `d68b9d61` baseline. The agents' own calls:
+- **W2-A:** the rest that arms the trailer must be on the committed focus title, so a See All tile, an art-less folder or a cold resolve can't arm the previous title. Its scope expanded once: `StripPager.swift`, private methods only, for #16.
+- **W2-B:**
+  - Rows are keyed by section key, so they page.
+  - A failed row is never removed mid-glide.
+  - **Product call:** folder rows show In Row previews even with Trailer Location = Background, because the folder page never plays a background trailer.
+- **W2-C:** six strings at 5/5.
+
+**The end-of-Wave-2 simulator walk found four focus bugs.** All were fixed in `210d51a2`; the evidence is under `docs/research/home-stage-strip-sim-evidence/`, as `folderpage-*`, `memory-*` and the folder overview sheet.
+1. **Up landed on the remembered card and lost it about 30 ms later.** The strip's `LazyVStack` rebuilt the row ABOVE the focused one while focus landed. Focus went to nil, then the engine re-entered the row through its focus section at the card nearest the screen centre. An A/B pinned it: the spike's clip changed nothing, and an eager `VStack` fixed it.
+   - **Fix:** an eager stack of page frames that mounts real rows only inside `StripMountWindow` (focused row ±2). A long programmatic glide keeps every row it passes until the page ends, and a far request moves the window first.
+   - With that, per-row memory holds on Down/Up on Home and on the folder page, so **gate G-F passes** and memory stays on.
+2. **One Down paged twice on the folder page.** A focus request that never landed stayed live in the environment, and its row re-applied it on remount.
+   - **Fix:** requests expire after their last rung, or as soon as another row takes focus after the in-flight window. The strip then follows the row that holds focus.
+3. **The folder page opened on its second row** when that source loaded first.
+   - **Fix:** `FolderRowsPlan.initialFocusTarget` waits for an earlier row that is still loading, with a 2 s ceiling.
+4. **The folder Edit band kept a full-width focus section while faded out,** which caught Up from lower rows.
+   - **Fix:** it is a focus section only while active.
+
+Gates on `210d51a2`: NuvioTVTests **1223 / 0**, Debug + Release. The walks show Up landing on the remembered card (Home "The Simpsons", folder "Backrooms"), one page per press, and the folder opening on row 0. Medium paging is one motion, settles in 409 ms, with nothing after rest.
+
+**W2-D (the rail) started 2026-10-05** (Opus, P4), the only agent in the tree. It implements P4's content gate (a UIKit interaction flag) and P4's fallback (per-tab `.disabled`), selectable by `-debug.railGate uikit|perTab` for a simulator A/B.
+
 ### Spike verdict (feeds P1 and P4)
 
 **Paging mechanism: (a), as a2.** A vertical `ScrollView`; each row in a page frame of height P = rowHeight + 2·lift, top-aligned; `.scrollTargetLayout()` + `.scrollTargetBehavior(.viewAligned)`; a trailing clear spacer of `peek`; `.scrollPosition(id:anchor: .top)` driven by the focused row's key with a 0.5 s ease-out. The focus engine moves focus, and the app's position animation overrides the engine's slower scroll. On hardware that is one motion per press, exactly on the boundary, nothing after. Tune the duration on device in Wave 2 (0.5 s now; the plan's range is 0.45–0.6 s).

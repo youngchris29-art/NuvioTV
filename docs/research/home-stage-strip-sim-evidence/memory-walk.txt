@@ -1,0 +1,14 @@
+home-start: 9:Home
+home-enter-strip: 9:ZZFolderRowsFolder
+home-row1: 9:Lanterns
+home-row1-right: 9:Animal Control
+home-row1-right2: 9:The Simpsons
+home-row2: 9:The Love Hypothesis
+home-back-up: 9:The Simpsons
+home-up-to-row0: 9:ZZFolderRowsFolder
+folder-open: 9:Unabomber
+folder-right: 9:The Love Hypothesis
+folder-right2: 9:Backrooms
+folder-down: 9:East of Eden
+folder-back-up: 9:Backrooms
+folder-up-again: 1:

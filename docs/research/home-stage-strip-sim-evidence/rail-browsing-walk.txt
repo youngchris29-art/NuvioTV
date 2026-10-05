@@ -1,0 +1,5 @@
+launch: focus=Lanterns | rail_state armed=0 expanded=0 focused=-1 reason=- gated=0 vis=browsing shown=1 tab=0 route=- inset=0 gmode=uikit
+down: focus=The Love Hypothesis | rail_state armed=0 expanded=0 focused=-1 reason=- gated=0 vis=browsing shown=0 tab=0 route=- inset=0 gmode=uikit
+down2: focus=East of Eden | rail_state armed=0 expanded=0 focused=-1 reason=- gated=0 vis=browsing shown=0 tab=0 route=- inset=0 gmode=uikit
+up: focus=The Love Hypothesis | rail_state armed=0 expanded=0 focused=-1 reason=- gated=0 vis=browsing shown=0 tab=0 route=- inset=0 gmode=uikit
+up2: focus=Lanterns | rail_state armed=0 expanded=0 focused=-1 reason=- gated=0 vis=browsing shown=1 tab=0 route=- inset=0 gmode=uikit

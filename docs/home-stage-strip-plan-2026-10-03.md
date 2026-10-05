@@ -723,7 +723,26 @@ W2-D (the rail) starts after all three land. W2-C phase 2, the translation scrip
 
 Gates on `210d51a2`: NuvioTVTests **1223 / 0**, Debug + Release. The walks show Up landing on the remembered card (Home "The Simpsons", folder "Backrooms"), one page per press, and the folder opening on row 0. Medium paging is one motion, settles in 409 ms, with nothing after rest.
 
-**W2-D (the rail) started 2026-10-05** (Opus, P4), the only agent in the tree. It implements P4's content gate (a UIKit interaction flag) and P4's fallback (per-tab `.disabled`), selectable by `-debug.railGate uikit|perTab` for a simulator A/B.
+**W2-D (the rail) landed 2026-10-05:** `db4f423c`, 27 files, +2,450 / −1,147, compiled clean on the first try. `SidebarOverlay.swift` is retired, and `HiddenTabBarFocusBlocker` moved to its own file with S1's redirect now opening the rail. NuvioTVTests **1263 / 0** (+40), Debug + Release, no new warnings.
+
+**Simulator A/B and walk** (`RailGateEvidenceTests`; evidence `rail-*` and `00-overview-rail-*.jpg`):
+- `uikit` and `perTab` behaved identically, so **`uikit` (P4's primary) stays the default**.
+- Left mid-row stays in the row, and Left from card 0 opens the rail, gated.
+- Six Downs and six Ups stay inside the rail.
+- Right returns to the exact card.
+- Menu at row 2 pages to row 0's card, and Menu at row 0 opens the rail.
+- Select on Search lands on the keyboard. Menu from the keyboard opens the rail (`reason=hiddenBarRedirect`), and Right returns to the keyboard.
+- Hide While Browsing: shown at row 0 with no inset, hidden at row ≥ 1, back at the top.
+
+**One finding, fixed in `577b0fc3`:** `.borderless` items draw no focus platter on the glass panel. A focused text row (the profile row) looked unfocused, and icon rows got a white blob behind the glyph alone. `RailItemButtonStyle` restores FEAT-30's documented carve-out, a white capsule with dark content, with `isFocused` taken from the rail's `@FocusState`. The design contract's Buttons row is updated, with before/after evidence in `rail-focus-before-borderless.jpg` and `rail-focus-after-capsule.jpg`.
+
+**A flaky wash test** (`drain()`'s fixed yields) failed once in that gate and was fixed in `c02b0333` by waiting for the condition: 105/105 over 5 iterations, suite 1263 / 0.
+
+**Wave 2 is complete.** Branch tip `c02b0333`, local only. **Next, on Christian's go:**
+1. W3, tests (Opus): Classic legs get `-home_layout classic`; the Stage, folder and rail legs; the test93 port and test52 deletion per W2-D's list; fixture seeding for Large posters and a folder; the Continue Watching seed knob.
+2. Opus read-only review rounds until there are no P1/P2.
+3. Gate 2.
+4. The device pass: Tabs for steps 1–13 with the tab-bar probe, Rail for 14–15.
 
 ### Spike verdict (feeds P1 and P4)
 

@@ -625,6 +625,18 @@ So at the base, 10 of the 23 legs can't check anything on FA87. W3 should seed a
 
 **Next:** the design phase, with P1 (Stage + Strip), P2 (Ambient + Collections + Settings) and P4 (Rail) as Opus Plan agents working from the spike verdict below, then the P3 critique and Christian's skim of the geometry table and swap timeline. That's 4 Opus agents, inside the plan's roster.
 
+### Design phase (2026-10-05)
+
+On Christian's go ("yes, start the design phase"), four Opus agents ran. They read the code and wrote docs only.
+
+- **P1 Stage + Strip:** `docs/research/home-stage-strip-spec-P1-stage-strip.md`. Strip heights, titles on, zoom on: Small 504.5, Medium 559.5 (the spike's exact numbers), Medium+ 580.5, Large 633. Every preset fits, and a synced custom width ≥ 165 dp does not. The swap pause is anchored on the last focus move and never ends before the strip's glide does: Right → swap at 0.60 s, Down → 0.65 s, held Down → one swap at rest.
+- **P2 Ambient + Collections + Settings:** `docs/research/home-stage-strip-spec-P2-ambient-collections-settings.md`. The wash is blurred once per title off the main thread from a ≤ 256 px decode. Folders need no `shared/` change, since the repository already loads every tab. Home Layout and Ambient Background go in a new Layout section.
+- **P4 Rail:** `docs/research/home-stage-strip-spec-P4-rail.md`. Right returns to the tab on screen and Select switches tabs. Content is gated through one UIKit interaction flag on the tab controller, with per-tab `.disabled` as the fallback. The inset is 116 pt. `"sidebar"` migrates to `"rail"` once, device-local.
+- **P3 critique:** `docs/research/home-stage-strip-spec-P3-critique.md`. **FIX FIRST:** 2 P1 (W1-A and W1-C both create `HomeLayout.swift`; P2's seams are missing from W1-A's scope, so W2-A and W2-B would edit the same files), 12 P2, 9 P3, and 7 questions for Christian with recommendations.
+- **Cost:** about 1.9M tokens across the four agents, roughly double the 1M estimate given before the go. The specs ran 5,600–7,200 words each.
+
+**Next:** Christian answers the 7 questions and skims P1's geometry table (§2) and swap timeline (§4.4). Then one Opus agent folds the critique's P1/P2 fixes and his answers into the three specs, and Wave 1 starts.
+
 ### Spike verdict (feeds P1 and P4)
 
 **Paging mechanism: (a), as a2.** A vertical `ScrollView`; each row in a page frame of height P = rowHeight + 2·lift, top-aligned; `.scrollTargetLayout()` + `.scrollTargetBehavior(.viewAligned)`; a trailing clear spacer of `peek`; `.scrollPosition(id:anchor: .top)` driven by the focused row's key with a 0.5 s ease-out. The focus engine moves focus, and the app's position animation overrides the engine's slower scroll. On hardware that is one motion per press, exactly on the boundary, nothing after. Tune the duration on device in Wave 2 (0.5 s now; the plan's range is 0.45–0.6 s).

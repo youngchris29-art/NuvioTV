@@ -402,6 +402,7 @@ The focus engine is the risk. Spike two mechanisms behind a debug arg on a throw
 - Changes to the tab shell in `ContentView.swift`/`MainTabView`: migration, rail overlay, insets, Menu routing.
 - The Navigation and Rail pickers in `AppearanceSettingsPane.swift`.
 - Retire `SidebarOverlay.swift` (keep `HiddenTabBarFocusBlocker`).
+  - **Carry Search S1's W2 into the rail** (`docs/search-s1-native-search-plan-2026-10-04.md`). The blocker's `onFocusLandedInHiddenBar` callback must open and focus the rail. tvOS's search container moves focus into the hidden bar on Menu, and nothing else catches it. The rail's Right exit and its post-select hand-off must wait up to 2.5 s for Search's system keyboard, which arrives 1–2 s after the tab opens. `test93SidebarMenuFromSearchKeyboard` is the canary; port it to the rail.
 - Stage hook: hide-while-browsing driven by the strip's row index.
 - Unit tests: migration plus inset math.
 

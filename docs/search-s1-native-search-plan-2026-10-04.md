@@ -1,6 +1,6 @@
 # Search S1 · Native Search (2026-10-04)
 
-**Status: W1 BUILT 2026-10-04 (night); W2, W4, W5 next.** D1, D3 and D5 were approved by Christian after Wave 0 ("D1, D3, D5 approved, start W1"). W1 is `8b0710b6` on NuvioMobile `claude/search-s1`, in the clone `~/Claude/Projects/NuvioMobile-search-s1` off `dad2bed5`. It is committed locally and not pushed or merged. Gates on W1: NuvioTVTests 1004 / 0 (990 + 14 new policy tests) and `test92SearchLiveResults` PASS on FA87 (tvOS 26.5). Its screenshots show rows under the Linear keyboard with no submit, and "severance" saved to Recent after opening a result. Not yet: W2, W4 (six UI tests still drive the old `TextField`), W5, a Release build and the device pass. Wave 0 settled D2 and D4 and the tvOS 26 rule (see [Wave 0 outcome](#wave-0-outcome-2026-10-04) below), and the W1–W4 specs here are revised to match. Written from:
+**Status: W1, W2, W4, W5 BUILT 2026-10-04 (night); device pass in the Test profile next, then Christian's merge/cut call.** D1, D3 and D5 were approved by Christian after Wave 0 ("D1, D3, D5 approved, start W1"; "start W2, W4 and W5"). The branch is NuvioMobile `claude/search-s1` in the clone `~/Claude/Projects/NuvioMobile-search-s1`, off `dad2bed5`. It has six commits, `8b0710b6` (W1) through `d68b9d61` (reviews r3–r6), committed locally and not pushed or merged. Review r6 was CLEAN. Gates on the tip: NuvioTVTests 1042 / 0, every migrated UI leg plus test92 and test93 on FA87, and a Release simulator build. Details are in [Build record](#build-record-2026-10-04-night). Wave 0 settled D2 and D4 and the tvOS 26 rule (see [Wave 0 outcome](#wave-0-outcome-2026-10-04) below), and the W1–W4 specs here are revised to match. Written from:
 
 - the search-field spike, run 2026-10-04 on the Living Room Apple TV (`docs/research/search-field-spike-2026-10-04/README.md`, its logs and photos);
 - the revamp board's S1 direction (`docs/research/search-library-revamp-2026-10-04.html`, "S1 · Native Search" and "Recommendation");
@@ -102,7 +102,8 @@ NuvioMobile clone `~/Claude/Projects/NuvioMobile-search-s1`, branch `claude/sear
    - `import Combine`. The rig's `SearchView` in `wave0-rig.patch` is the reference.
 3. **Keep the old rows while the next ones load.**
    - `SearchRepository` publishes `isLoading = true` with empty sections at the start of every new query (`SearchRepository.kt` L150), so live typing would blank the page on every letter.
-   - `SearchViewModel`'s `uiState` watcher keeps the current `sections` while a newer query is loading. It swaps in the new rows when that search finishes, or 1 s after its first row arrives (U6 mode 2), and clears to the empty message only when the newer query settles empty. Swapping on the first new row (mode 1) collapsed the page on every letter.
+   - `SearchViewModel`'s `uiState` watcher keeps the current `sections` while a newer query is loading. It swaps in the new rows when that search finishes (U6 mode 2), and clears to the empty message only when the newer query settles empty. Swapping on the first new row (mode 1) collapsed the page on every letter.
+   - *As built (reviews r1/r2):* another query's rows stay at most 1 s after the new search starts, released by a timer even when nothing more is emitted. A same-query restart (manifest refresh, Retry) keeps its rows until the new emission contains every shown section or the search settles. The view model passes the relation (same search, same-query restart, other query) from the query on screen and section-key containment.
    - "Searching…" shows only when there are no rows to keep.
    - The rule goes in a pure `SearchRowsHold` helper so it can be unit-tested.
 4. **Recent Searches on open (D5).**
@@ -171,6 +172,37 @@ New tests:
 - **Tracker.** FEAT-37 → BUILT, pointing at this plan.
 - **Release notes / Steven's DM.** "Search shows results while you type; dictation and typing from your iPhone work; a search is saved to Recent when you open one of its results." Say how Sidebar mode behaves, whichever D2 path ships. Run SlopMonster before showing either.
 
+**W5 done 2026-10-04 (night):**
+
+- **Design contract.** A **Search** row added to "Where the system wins", spelling out the structure. The `.searchable` line in "Explicitly out" now says why the ban went.
+- **Tracker.** FEAT-37 is 🛠 BUILT (not merged or cut).
+- **Settings copy.** Re-read, and both strings are still accurate with the system field, so they're unchanged. S1 adds no new strings: the prompt reuses the existing translated key.
+- **Release-note line, deslop 5/5.** The Codex cleanse was skipped: the line is short and clean, and Codex is over quota until 10-29. Use it in the cut's highlights, and adapt it for Steven's DM through the loop again:
+
+  > Search shows results while you type. It now uses the Apple TV's own search field, so the rows update under the keyboard after each letter, with no Done to press. Siri dictation works (hold the mic button), you can type from your iPhone, and the keyboard follows your Apple TV's Linear or Grid setting. A search goes into Recent Searches when you open one of its results. In Sidebar mode, Menu from the keyboard opens the sidebar, and Right takes you back.
+
+## Build record (2026-10-04, night)
+
+NuvioMobile `claude/search-s1` in the clone `~/Claude/Projects/NuvioMobile-search-s1`, off `dad2bed5`. It is local and not pushed. ⚠️ MPVKit is a symlink over the gitlink in this clone, so stage by explicit paths and never `git add -A`; `git status` errors there for the same reason.
+
+| Commit | What |
+|---|---|
+| `8b0710b6` | **W1.** `.searchable` on the results `ScrollView` in Search's own `NavigationStack(path:)`. The query lives in `SearchQueryBox`, with `SearchViewOwner` holding the model and the box (A2 shape). `SearchRowsHold` and `SearchHistoryOnOpen` are in `SearchPolicies.swift`, and Recent is recorded on push. The `TextField` and the stale comments are gone. |
+| `c0a33cae` | **W2.** `HiddenTabBarRedirect.shouldReveal` is a pure rule with 4 tests. The blocker's focus observer calls `onFocusLandedInHiddenBar` when the next item is in the blocked bar or is a `UITabBarButton`, and the overlay calls `chrome.requestReveal()`. The panel gets an app-handled Right, `onMoveCommand(.right)` → `handOffFocusToContent()`, which lands on the tab's default focus. |
+| `7ebe0b6a` | **W4.** test19/23/24/29/31 (Search leg)/52 and `DetailScrollProbeTests`' helpers drive `app.searchFields` and the inline keyboard. There are new helpers for the keyboard's late arrival and the field value's ", Press ￼ to change keyboards" hint. New `test93SidebarMenuFromSearchKeyboard`. test92 rotates queries that aren't already Recent. |
+| `b51a4bb2` | **Review r1** (Opus, read-only, over `dad2bed5..7ebe0b6a`): 0 P1, 1 P2, 10 P3. P2: the hold's 1 s limit was only checked on an emission, and a catalog with no matches emits nothing, so a slow add-on kept the old rows up for 60 s. Now a generation-guarded tick fires at the deadline. P3-5 is accepted: Right lands on the tab's default focus, not where focus was. Every other P3 is fixed. |
+| `2a374e0c` | **Review r2** (over `b51a4bb2`): 0 P1, 1 P2, 6 P3. P2: the loop guard was stamped on every redirect, so a second Menu within 1.5 s stranded focus again. Now only a failed rescue stamps it, and test93 gained a second-Menu leg. The P3s: a same-query restart keeps its rows, the relation comes from the view model instead of parsing keys, the tick reschedules only while its deadline is ahead, and test19 asserts its typing. P3-6 was notes only. The gate's own find: after picking Search in the sidebar, the hand-off gave up at 1.0 s and re-armed the panel before the system keyboard arrived (1–2 s), so the ladder now runs to 2.5 s. The UI helper also no longer mistakes a sidebar row for the tab bar, since they share labels. |
+| `d68b9d61` | **Reviews r3–r6** (one commit). The hold went through three more P2s, all one race family. When a Kotlin job is cancelled, it can still write after the next search starts: a `StateFlow` write isn't a suspension point, and `activeJob?.cancel()` is cooperative.<br>• **r3 P2:** the hold labelled the shown rows with the query that was active when they were taken, so a deadline tick or a late write could pass the previous query's rows off as the new one's, with no bound. Now the label is read off the rows themselves (each search section's `CatalogTargetAddon.search`, put there by BUG-48).<br>• **r4 P2:** a late write could still reach the screen, or be what a hold released to. Now emissions labelled with another query are dropped, and the tick releases to nothing ("Searching…") when the last accepted emission is stale.<br>• **r5 P2:** with no hold running, a swallowed start state meant no hold ever began. Now the typing debounce reports each search start to the hold (`searchStarted`), and the bound runs from there.<br>• **P3s:** a restart hold that turns into another query's hold starts its clock then; `searchStarted` keeps the clock while typing continues; queries compare trimmed like Kotlin's `trim()` (U+001C–1F) and case-insensitive; the long hand-off ladder applies to Search only (`SidebarHandOffLadder`); the failed-rescue guard is a tested `StrandedRescueGuard`; stale test comments are fixed, and test93 now settles 3 s.<br>• **Accepted:** a late settled-empty write from a cancelled search has no rows to label, so it can flash "No results." until the active search's next write (microseconds of window; it corrects itself). The root fix is a request id on `SearchUiState` with compare-and-set writes in `SearchRepository`, which is `shared/`, outside this batch.<br>• **r6: CLEAN** (0 P1, 0 P2). Fixed P3s: a dropped stale emission re-arms the hold's tick (a tab switch inside the 1 s window could leave it unarmed), plus two more policy tests. Two clarity-only P3s were declined: a narrower `searchStarted` signature, and a helper for the tick's stale substitution. |
+
+**Gates on `d68b9d61` (the tip):**
+
+- NuvioTVTests 1042 / 0: 990 at the base plus 52 new (26 hold, 9 hold relation, 2 row label, 7 history, 4 redirect, 2 rescue guard, 2 hand-off ladder).
+- On FA87 (tvOS 26.5): test19/23/24/29/52/93 PASS. test92 PASS 2/2 after its Recent check changed to "the query is the first chip": the gate run before that skipped it, because every fixed candidate was already a Recent Search on the reused fixture. test31 SKIPs at Leg C because the guest fixture has no collection folder. That is environmental and happens before its Search leg.
+- Release simulator build (FA87 destination) is green.
+- The earlier tips' gates (`2a374e0c` and the round 3–5 trees) were also green. The `2a374e0c` gate found the Sidebar hand-off giving up before Search's keyboard arrived, and test52/test93 passed 2/2 once the hand-off wait was longer; the sim log showed the redirect firing on both Menus with no re-arm.
+- **Not run:** test92 on a tvOS 27.0 simulator. The build stalled for 16 min in `CompileAssetCatalogVariant thinned` for 406CA4AC and was stopped. Two 27.0 runtimes are installed (24J5305f and 24J360), which may be the cause. It is still owed and treated as environmental.
+- Debug device build: at the device pass.
+
 ## Gates
 
 - `NuvioTVTests`, all green, including the new unit tests.
@@ -189,7 +221,7 @@ The TV's keyboard is on **Grid**. Changing the layout in tvOS Settings terminate
 5. **Dictation.** Say "the bear".
 6. **Recent Searches.** Opening a "dune" result adds the chip. Partial queries never appear.
 7. **Tabs mode.** Menu from the keyboard goes to the tab bar. Home shows no keyboard. Search is intact on return. On Grid the bar stays put while the results scroll (D4: accepted); on Linear it scrolls off.
-8. **Sidebar mode.** Menu from the keyboard opens the sidebar with focus on its row. Right, or picking the Search row, comes back to the keyboard. Nothing invisible ever holds focus, on Search or any other tab.
+8. **Sidebar mode.** Menu from the keyboard opens the sidebar with focus on its row. Right, or picking the Search row, comes back to Search (picking the row can take up to 2 s while the keyboard arrives; the sidebar must not reopen over it). A second Menu right after opens the sidebar again. Nothing invisible ever holds focus, on Search or any other tab.
 9. **Stress.** Open and close Detail five times quickly.
 10. **Regressions.** See All → grid → Back (UX-13, BUG-47/48); Hide Discover on and off; Search Sources toggles; Retry on the error state.
 
@@ -198,7 +230,8 @@ The TV's keyboard is on **Grid**. Changing the layout in tvOS Settings terminate
 - ~~tvOS 26 bleeds~~ and ~~the echo fix doesn't hold~~: **retired by Wave 0** (U1: no bleed on 26.5; U2: the A0/A/A2 comparison isolates the cause and the fix). The tvOS 26 check was the simulator, not a 26 device; any tvOS 26 tester report of a keyboard over Detail reopens it.
 - **Rail overlap.** Home Stage & Strip's W2-D retires most of `SidebarOverlay.swift` but keeps `HiddenTabBarFocusBlocker`, where W2's redirect lives. The merge order decides who adapts; the rail only changes the redirect's target.
 - **UI tests driving an inline keyboard** are new ground for the harness. The tvOS 27.0 simulator never reports `hasFocus`, so the primary UI legs stay on FA87 (26.5).
-- **Class-name detection** depends on private UIKit names: `UITabBarButton` for the redirect. If a tvOS update renames it, the redirect stops firing and Menu from the keyboard strands focus on the hidden bar again (Wave 0 run 4's state), with no crash. Test92's Sidebar leg is the canary.
+- **Class-name detection** depends on private UIKit names: `UITabBarButton` for the redirect. If a tvOS update renames it, the redirect stops firing and Menu from the keyboard strands focus on the hidden bar again (Wave 0 run 4's state), with no crash. `test93SidebarMenuFromSearchKeyboard` is the canary.
+- **Cancelled-search writes** (reviews r3–r5). The Swift side now drops or bounds them, but a settled-empty late write can still flash "No results." for a moment. The root fix, a request id on `SearchUiState`, belongs in a `shared/` batch, and it's an upstream-report candidate too: mobile's search has the same cancel-then-write shape.
 
 ## S1-b outline (separate plan, after the board's questions 2–3)
 
@@ -222,4 +255,4 @@ From the board's S1 direction and its mix-and-match pieces:
   - W5 in the main session.
 - **Concurrency.** Nothing here overlaps Home Stage & Strip's Wave 0/1 files (`HomeView.swift`, the strip and stage). The overlap is W2 and that batch's W2-D, both in `SidebarOverlay.swift`.
 
-**Next step:** Christian confirms D1 (split), D3 (bar stays visible while typing) and D5 (save to Recent on open); then W1–W5 on `claude/search-s1`.
+**Next step:** the device pass above in the **Test** profile (a Debug device build of `claude/search-s1` under `com.youngchris29.NuvioTV`), then Christian's call on merging into `tvos-shared-extraction` and cutting. Nothing is pushed until he says so.

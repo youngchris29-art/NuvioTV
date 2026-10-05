@@ -1,6 +1,6 @@
 # Home redesign, Stage & Strip: implementation plan (2026-10-03)
 
-**Status: APPROVED by Christian 2026-10-03 (including H9, the floating pill rail). No code written yet; runs in a local session on the Mac.**
+**Status: APPROVED by Christian 2026-10-03 (including H9, the floating pill rail). Wave 0 started 2026-10-05 on Christian's go ("start Home Stage Wave 0"): branch `claude/home-stage-strip` off `d68b9d61`; see [Wave 0](#wave-0-2026-10-05) in OUTCOME. No feature code yet.**
 
 **Sources:**
 - Decisions: `docs/home-redesign-decisions-2026-10-03.md` (H1–H6, revised to B).
@@ -601,6 +601,29 @@ The simulator's focus engine is known to park rows differently from the hardware
 - **Swipe momentum did not open the rail** (Christian: "rail didn't pop open on swipes"). Two left swipes that landed on card 0 by momentum (16:08:14.13 and 16:08:20.71) armed nothing. The rail did open twice during that step, 1.04 s and 2.4 s after a swipe had landed on card 0. Each was a fresh Left from card 0, the designed entry, and Christian closed each with Right.
 
 **Logs:** `docs/research/home-stage-strip-spike/device-a1.log`, `device-a2.log`, `device-rail.log` (StageSpike lines only).
+
+### Wave 0 (2026-10-05)
+
+**Dependencies:** both merged. The beta.19-rc1 fix batch is `7f8d0790` (shipped in beta.19-rc2). Its I1 per-view decode size and its F row edge-fade modifier are what this batch builds on. Row Edge Fade now defaults to Off after F.5 failed on device; the strip still uses F's modifier. The Detail + Settings revamp is `284fd764`. Since the plan was written, `tvos-shared-extraction` has also taken Library L1 (`422bb0c4`), the custom-poster port (`12b19ff5`) and Search S1 (`d68b9d61`). S1 changed `SidebarOverlay.swift` and `HiddenTabBarRedirect.swift`, so W2-D must carry the hidden-bar redirect and the Search hand-off wait into the rail. That note is under W2-D.
+
+**Branch:** `claude/home-stage-strip` off `tvos-shared-extraction` **`d68b9d61`** (base sha), in the clone `~/Claude/Projects/NuvioMobile-home-stage`. Push is disabled until merge. ⚠️ MPVKit is a symlink over the gitlink there, so stage by explicit paths and never `git add -A`. `local.properties` is copied for the API keys.
+
+**Baseline on `d68b9d61`** (FA87, tvOS 26.5, guest Cinemeta fixture; logs in the clone's `iosApp/build/hs0-*.log`):
+
+- NuvioTVTests **1042 / 0**. Debug and Release simulator builds are green.
+- The 23 Classic UI legs from W3's list ran unchanged in three runs, with a simulator reboot before each. `-home_layout classic` doesn't exist yet, so it was taken as a no-op.
+
+| Result | Legs |
+|---|---|
+| **PASS (13)** | test00z, 06, 08, 14, 22, 65, 67, 70; HeroOffLaunch test31D (it passes on FA87 now; it used to need F38F573A); HomeUpIntoHero test74; PinnedRowSettleRegime W5b; TabBarScrollLink test75, test76 |
+| **SKIP (9)**, fixture premises | test47, test48: Poster Size isn't Large (`w=220`). test54CollectionFrameProbeDriver: no folder tile on Home within 28 Downs. test58: the entry already landed on the last row. test61: the No Zoom reach-hold regime isn't set. test63: regime `fits=0`, not the BUG-112 regime. test64: the down walk got stuck on `cinemeta:movie:imdbRating`. test66: the shelf is already at the top with focus on the CTA. W5a: the Settings walk ends on "Import Badges" before reaching Appearance › Size, one of the stale Appearance legs left after the revamp re-sorted Settings. |
+| **FAIL (1)**, fixture premise | HeroFolderSwap test54: "Could not locate a collection-folder hero after 45 Down presses". The guest fixture has no collection folders, the same cause as the test54 skip and test31's Leg C skip; this leg fails instead of skipping. |
+
+So at the base, 10 of the 23 legs can't check anything on FA87. W3 should seed a Large-poster fixture and a collection folder, using the guest-sim seeding recipe from memory `bug38-collections-json-resolution`, before counting those legs as Classic coverage. It should also make HeroFolderSwap test54 skip on that premise like its sibling does.
+
+**Tracker:** FEAT-55 added (Home Stage & Strip, IN PROGRESS). FEAT-43 (H5 folders), FEAT-45 (H9 rail) and FEAT-53 (H3 ambient) are marked IN PROGRESS. FEAT-53's "decoded at 3840 px" is corrected: the wash decodes at ≤ 256 px, and 3840 px is for the stage art. BUG-87/88/89/121/122/126 are annotated "retired in Stage; Classic keeps the current behaviour".
+
+**Next:** the design phase, with P1 (Stage + Strip), P2 (Ambient + Collections + Settings) and P4 (Rail) as Opus Plan agents working from the spike verdict below, then the P3 critique and Christian's skim of the geometry table and swap timeline. That's 4 Opus agents, inside the plan's roster.
 
 ### Spike verdict (feeds P1 and P4)
 

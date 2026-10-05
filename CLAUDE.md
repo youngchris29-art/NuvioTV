@@ -3,6 +3,8 @@
 ## Upstream sync status (auto-checked daily against NuvioMedia/NuvioMobile)
 
 **Latest run 2026-10-04** (`docs/upstream-port-plan-2026-10-04.md`): upstream `7be1b56c` → `966a52b9` (7 commits). One recommended LOW–MED port: custom poster URL pattern validation + `%7B/%7D/%7C` decoding in `shared/.../CustomPosterUrlResolver.kt` (upstream `6ce99ef2`) — **MERGED 2026-10-04 afternoon** (`tvos-shared-extraction` `422bb0c4` → `12b19ff5`, pushed, not cut; jvm 1401 / K/N 1419 / NuvioTVTests 990; 2 upstream-report candidates in the doc's OUTCOME ADDENDUM). Upstream moved again to `057918d4` (`a9797ff8` MDBList library-list visibility, three shared MDBList files) — the 10-05 check's item. Everything else (Android engine switch, Compose stream-info overlay, refresh spinner, brightness, i18n) not applicable or optional polish. Older status below.
+**Latest run 2026-10-05** (`docs/upstream-port-plan-2026-10-05.md`): upstream `966a52b9` → `c2127769` (5 real commits). One recommended MEDIUM port: MDBList library list visibility (upstream `a9797ff8`; 3 shared Kotlin files + test apply cleanly, plus new tvOS Settings > Services toggle UI). Rest N/A (P2P engine/cache fix + engine 0.1.4 are composeApp-only, Android hero-trailer letterbox zoom). Older status below.
+
 
 **Prior run 2026-10-03** (`docs/upstream-port-plan-2026-10-03.md`): upstream `e2f8ac25` → `7be1b56c` (0.5.6 release, build 138; no `shared/` changes). One optional LOW port: auto-skip "Intro skipped to M:SS" toast (upstream #2137; tvOS auto-skip is silent today — wire in `NativePlayerScreen.skipSeek` + `MPVPlayerView.seekAbsolute` `.auto` paths; step-by-step plan in the doc). Tablet detail hero, Vietnamese i18n, version bump: not applicable. Older status below.
 

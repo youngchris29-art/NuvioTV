@@ -659,7 +659,39 @@ The agent's notes against the critique:
 - **Timing:** "Down → swap" is about 0.70 s now, with #15's quiet-clock gate.
 - **Size and cost:** the specs are now P1 9.2k, P2 8.0k and P4 6.6k words. The fix agent used 0.57M tokens, about 2.5M for the design phase in all.
 
-**Next:** Wave 1, with three agents in parallel on `claude/home-stage-strip`: W1-A (Opus, P1 §9.1), W1-B (Sonnet, P2 §1 wash) and W1-C (Sonnet, P2 §3 settings). Their files are disjoint. Agents edit only; the main session builds after all three land.
+### Wave 1 (2026-10-05)
+
+Three agents in parallel, each editing only its own files: W1-A (Opus, Stage + Strip), W1-B (Sonnet, ambient wash) and W1-C (Sonnet, `HomeLayout` + Home Screen pane). My W1-B brief said W1-C would define `AmbientWashSetting`, but P2 puts it in W1-B's file. W1-C caught the clash, and a correction reached W1-B before it finished.
+
+The main session mounted `AmbientWashLayer(feed: stage.swap.washFeed)` as Stage's layer 0. It also made `Theme.Spacing` and the seven hero constants `StripGeometry` reads `nonisolated` (15 new isolation warnings, now none; the four left in `Theme.swift` predate the batch).
+
+**The first compile was clean.** Committed as `bd64187a` on `claude/home-stage-strip`: 31 files, +6,501 / −151, local and not pushed.
+
+**Gate 1:**
+- NuvioTVTests **1152 / 0** (1042 + 110 new). Debug + Release simulator builds are green.
+- Screenshot harness `StageGate1EvidenceTests`: 12 legs, all run. Evidence is in `docs/research/home-stage-strip-sim-evidence/`, with two `00-overview-*` sheets plus per-config shots and probe lines, sent to Christian.
+
+| Config (FA87, sim fonts) | stage | strip | P | fits |
+|---|---|---|---|---|
+| Small, titles / no titles | 577.5 / 605 | 502.5 / 475 | 459.5 / 432 | 1 / 1 |
+| Medium, titles / no titles / No Zoom | 522.5 / 550 / 562.5 | 557.5 / 530 / 517.5 | 514.5 / 487 / 474.5 | 1 |
+| Medium+, titles / no titles | 501.5 / 529 | 578.5 / 551 | 535.5 / 508 | 1 |
+| Large, titles / no titles / No Zoom | 449 / 476.5 / 489 | 631 / 603.5 / 591 | 588 / 560.5 / 548 | 1 |
+
+These are within about 2 pt of P1's table; the simulator's heading font measures 37 pt against the table's 38. Large compresses the logo to the 110 slot as specced.
+
+**Paging, measured by the strip probe:**
+- Medium: `#1 0→1 vfocus-down moves=1 settle=508 trav=-514.5 aftRest=0 res=0.0`.
+- Large: `moves=1 settle=505 trav=-588.0 aftRest=0 res=0.0`.
+
+That's one motion of exactly one page and nothing after rest, matching the device spike. The stage swapped once to the new row's first title, the wash followed (`gen=2`), the tab bar is fully hidden at row 1, and the next heading peeks.
+
+**Findings:**
+1. **Launch focus sits on the tab bar** (`foc=-`) in Stage and in Classic, whose hero CTA isn't focused either. So it comes from the harness's profile-pick flow, not from Stage. The first Down enters the strip, and paging starts on the second. P1 assumed tvOS focuses the first card at launch; device step 1 checks it on hardware.
+2. **The folder shot is the stage presenting the seeded folder as the seed** (first row, first item), not a focused folder. The stage draws the folder's backdrop, text title, collection name and "4 sources" correctly.
+3. **No knob seeds Continue Watching,** so "CW present / empty" wasn't captured. The fixture had none, and W3 needs one.
+
+**Next:** Christian's design checkpoint on these screenshots, then Wave 2.
 
 ### Spike verdict (feeds P1 and P4)
 

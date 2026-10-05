@@ -691,7 +691,16 @@ That's one motion of exactly one page and nothing after rest, matching the devic
 2. **The folder shot is the stage presenting the seeded folder as the seed** (first row, first item), not a focused folder. The stage draws the folder's backdrop, text title, collection name and "4 sources" correctly.
 3. **No knob seeds Continue Watching,** so "CW present / empty" wasn't captured. The fixture had none, and W3 needs one.
 
-**Next:** Christian's design checkpoint on these screenshots, then Wave 2.
+**Design checkpoint PASSED 2026-10-05:** Christian, on the screenshots: "looks great, start wave 2".
+
+### Wave 2 (2026-10-05)
+
+Three agents in parallel on disjoint files, with ownership checked against P1 §9.2 and P2 §4.1 before launch:
+- **W2-A (Opus, P1 §9.2):** the background trailer (armed only from `StageStripHome`, so the folder page never plays one), Continue-Watching-aware stage copy, the add-on name after headings (`BrowseComponents` heading branch only), In Row verification, and `StageCopyTests`.
+- **W2-B (Opus, P2 §2):** the folder Rows page in `CollectionsUI.swift`, plus new `FolderRowsPage.swift` and `FolderRowsPlan.swift` (with the folder wash), consuming W1-A's seams, and three test files.
+- **W2-C (Sonnet, phase 1):** the SlopMonster pass on the 4 new descriptions and the 2 Home Screen category strings in `SettingsDescriptions.swift`.
+
+W2-D (the rail) starts after all three land. W2-C phase 2, the translation scripts, runs once at the very end.
 
 ### Spike verdict (feeds P1 and P4)
 

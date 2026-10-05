@@ -270,3 +270,64 @@ name. Two outcomes that reshape the plan:
    sim-gated despite finding 1. F3's 157-vs-0 recipe correction is likewise now
    measurement-backed on both instruments (sim + the 08-02 device capture), and the bonus
    76pt-vs-157 budget question hardened: the sim's expanded band is 157 too.
+
+---
+
+## 2026-10-02 addendum — H1 refined: it is the ASSOCIATION, not the band
+
+The tester's two beta.18 Tab Bar Geometry pane photos (`docs/research/steven-beta18-photos/
+2026-10-01-beta18-tab-bar-geometry-pane-{A-pinned,B-scrolls-off}.jpg`) show **two regimes on one
+device**: (A) the `UITabBar` frame never moves (`minY=46` the whole walk; `hidden` flips 1 then
+back 0 while scrolled down — UIKit's own auto-hide, undone when SwiftUI re-applies `.automatic`),
+and (B) the bar follows Home's rows ScrollView 1:1 (`minY` → −1431 and back). Same build, same
+pinned layout, same band. So H1's "pinned Home hands the band to the hero" is not the whole story:
+the band is identical in both photos; what differs is **which scroll view UIKit associates with
+the bar**. Nothing in the app ever called `setContentScrollView(_:for:)`, so UIKit runs its
+heuristic search ("when no content scroll view is set for an edge, UIKit uses a heuristic to search
+for a UIScrollView to track", `UIViewController.h`). At a cold launch the search runs before the
+pinned hero header mounts (the rows ScrollView's identity is deliberately kept across that mount)
+and finds the rows → regime B. After a tab switch it re-searches, the rows now sit below the hero
+and are not found → regime A. Christian's Apple TV caches the hero items before Home appears, so
+the header is mounted before the first search → always A.
+
+### What the beta.18 verdict wave (W3) does
+
+- `TabBarContentScrollLink` (new, `iosApp/NuvioTV/DesignSystem/TabBarContentScrollLink.swift`): a
+  zero-sized `UIViewRepresentable` in the BACKGROUND of Home's rows `LazyVStack`, mounted
+  unconditionally (BUG-112's identity rule). It finds the enclosing `UIScrollView`, climbs the
+  responder chain to the hosting controller and every `parent` up to (excluding) the
+  `UITabBarController`, and calls `setContentScrollView(rows, for: .top)` on each. Pinned container
+  only: `contentInsetAdjustmentBehavior = .never` (the pinned rows already carry inset 0, which the
+  settle corrector depends on; classic's load-bearing 157 is never touched). Re-asserted on
+  `didMoveToWindow` + a 0.3/1.0/2.5 s ladder, on every focus update (identity-guarded no-op), and
+  on `updateUIView` (the header-mount flip). Logs `[TabBarLink] linked …` once per mount.
+- About → "Tab Bar Scroll Link (A/B)" (`debug.bug66ContentScrollView`), DEFAULT ON, relaunch to
+  change.
+- `TabBarStateProbe` line format renamed to short keys (`y= h= a= hid= tbh= st= sel= trk= sd= sdt=
+  m= r=`), with `trk=` (what the SELECTED tab's controller reports for `contentScrollView(for:
+  .top)`: `rows`/`none`/`other`/`novc`), per-tab hysteresis latches (`sd=` selected, `sdt=` all
+  four), and new reasons `attach`, `tab`/`tab2` (0.6 s after a switch), `pop`. NSLog extras `ins=`
+  and `svh=`. Pinned rows log `[HomeScrollProbe] settle INSET-NONZERO inset=<n>` once if they ever
+  get a top inset.
+- Untouched, per the bans above: no scroll-driven `.toolbarVisibility`, no `.safeAreaInset` hero,
+  no hero-refocus completion scroll, no `tabBarObservedScrollView` write (read only, in the log).
+  The settle corrector, BUG-122's top-rest exemption, the hero layout and sidebar mode are
+  unchanged.
+
+### Hardware checklist (one pane photo per step)
+
+1. Cold launch, walk Home rows down → `r=attach trk=rows sel=0`; `y` falls below −114 with
+   `hid=0`; NSLog `ins=0`.
+2. Search → Home → walk → `r=tab2 sel=0 trk=rows`, same `y` shape as step 1.
+3. Detail push/pop → `r=pop trk=rows`.
+4. Theme change (shell remount) → a fresh `r=attach`.
+5. About toggle OFF, relaunch, repeat step 2 → `trk=none`, `y=46` the whole walk (regime A back).
+
+### Failure signatures
+
+- `trk=none` after step 2 → leg 2: also set `tabBarObservedScrollView` on the tab's top-level
+  controller (deprecated, tvOS-only).
+- `trk=rows` but `y=46` the whole walk → tracking is not the mechanism. Stop and re-trace.
+- `ins=157` → inset policy (b): the link pulled the bar's band into the rows' adjusted inset.
+- `BUDGET MISMATCH` / `UNEXPECTED-WITH-FIT` in the Home logs → safe-area coupling: the link moved
+  the pinned viewport the hero budget is sized against.

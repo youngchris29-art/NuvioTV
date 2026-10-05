@@ -1,0 +1,565 @@
+[TabBarLink] linked chain=NavigationStackHostingController<AnyView> > UIKitNavigationController(skip) > TabHostingController tab=UIKitTabBarController sv=HostingScrollView svh=1080 pinned=1 legacyObserved=rows adjBottom=0 adjTop=0 restFix=0
+[TabBarStateProbe] chain root=UIHostingController<ModifiedContent<LazyView<ModifiedContent<ContentView, _PreferenceWritingModifier<PreferredColorSchemeKey>>>, RootModifier>> tab=UIKitTabBarController selected=TabHostingController > UIKitNavigationController > NavigationStackHostingController<AnyView> legacyObserved=rows
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=---- m=cls r=arm svh=1080
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=---- m=cls r=attach svh=1080
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=---- m=cls r=tick svh=574
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=---- m=cls r=tab svh=574
+[SearchSpike] t=0.000 tab 1
+[SearchSpike] t=0.038 scanner armed variant=A
+[SearchSpike] t=0.054 kb none screen=search tab=1
+[SearchSpike] t=0.054 focus UITabBarButton screen=search tab=1
+[SearchSpike] t=0.054 tabbar y=46 h=68 onscreen=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=---- m=cls r=tab2 svh=574
+[TabBarLink] unlinked (left window) controllers=2
+[SearchSpike] t=1.106 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x135 | UIKeyboard grid 80,261 432x750 screen=search tab=1
+[SearchSpike] t=1.106 layout grid
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=---- m=cls r=tick svh=-
+[SearchSpike] t=118.559 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=119.606 focus UIKeyboard screen=search tab=1
+[SearchSpike] t=122.766 query 'd'
+[SearchSpike] t=123.346 results sections=1 loading=true
+[SearchSpike] t=123.395 results sections=2 loading=true
+[SearchSpike] t=123.426 results sections=3 loading=true
+[SearchSpike] t=123.471 results sections=6 loading=true
+[SearchSpike] t=123.551 results sections=8 loading=false
+[SearchSpike] t=126.739 query 'du'
+[SearchSpike] t=127.151 results sections=0 loading=true
+[SearchSpike] t=127.213 results sections=2 loading=true
+[SearchSpike] t=127.274 results sections=3 loading=true
+[SearchSpike] t=127.319 results sections=5 loading=true
+[SearchSpike] t=127.377 results sections=8 loading=false
+[SearchSpike] t=129.902 query 'dun'
+[SearchSpike] t=130.311 results sections=0 loading=true
+[SearchSpike] t=130.379 results sections=2 loading=true
+[SearchSpike] t=130.436 results sections=3 loading=true
+[SearchSpike] t=130.488 results sections=4 loading=true
+[SearchSpike] t=130.534 results sections=7 loading=true
+[SearchSpike] t=130.631 results sections=8 loading=false
+[SearchSpike] t=133.205 query 'dune'
+[SearchSpike] t=133.628 results sections=0 loading=true
+[SearchSpike] t=133.685 results sections=2 loading=true
+[SearchSpike] t=133.757 results sections=3 loading=true
+[SearchSpike] t=133.800 results sections=6 loading=true
+[SearchSpike] t=133.895 results sections=7 loading=true
+[SearchSpike] t=216.164 focus UIKitFocusableViewResponderItem screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=1 sdt=-1-- m=cls r=down svh=-
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=up svh=-
+[SearchSpike] t=245.992 focus UITabBarButton screen=search tab=1
+[SearchSpike] t=247.315 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=256.313 focus UIKeyboard screen=search tab=1
+[SearchSpike] t=300.520 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=302.968 screen detail appear
+[SearchSpike] t=302.986 kb none screen=detail tab=1
+[SearchSpike] t=302.986 tabbar none
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[TabBarStateProbe] y=-726 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[TabBarStateProbe] y=-1325 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[TabBarStateProbe] y=-1330 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[TabBarStateProbe] y=-2179 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[TabBarStateProbe] y=-2185 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[TabBarStateProbe] y=-1738 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[TabBarStateProbe] y=-1263 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[TabBarStateProbe] y=-1192 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[TabBarStateProbe] y=-2185 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[SearchSpike] t=335.192 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x135 | UIKeyboard grid 80,261 432x750 screen=detail tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=pop svh=-
+[SearchSpike] t=335.751 screen detail disappear
+[SearchSpike] t=335.755 focus nil screen=search tab=1
+[SearchSpike] t=336.024 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=336.025 tabbar y=46 h=68 onscreen=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[SearchSpike] t=1021.757 focus UIKitFocusableFillerItem screen=search tab=1
+[SearchSpike] t=1022.273 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=1022.528 focus UIKitFocusableFillerItem screen=search tab=1
+[SearchSpike] t=1022.779 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=1023.946 screen grid appear
+[SearchSpike] t=1024.088 kb none screen=grid tab=1
+[SearchSpike] t=1032.971 tabbar y=37 h=68 onscreen=1
+[SearchSpike] t=1033.234 tabbar y=-136 h=68 onscreen=0
+[SearchSpike] t=1033.494 tabbar y=-173 h=68 onscreen=0
+[TabBarStateProbe] y=-179 h=68 a=1.00 hid=0 tbh=0 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[SearchSpike] t=1033.758 tabbar y=-277 h=68 onscreen=0
+[SearchSpike] t=1034.009 tabbar y=-547 h=68 onscreen=0
+[SearchSpike] t=1034.262 tabbar y=-904 h=68 onscreen=0
+[SearchSpike] t=1034.514 tabbar y=-1086 h=68 onscreen=0
+[SearchSpike] t=1034.772 tabbar y=-1292 h=68 onscreen=0
+[SearchSpike] t=1035.029 tabbar y=-1401 h=68 onscreen=0
+[SearchSpike] t=1035.286 tabbar y=-1420 h=68 onscreen=0
+[SearchSpike] t=1035.550 tabbar y=-1424 h=68 onscreen=0
+[TabBarStateProbe] y=-1425 h=68 a=1.00 hid=0 tbh=0 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[SearchSpike] t=1035.815 tabbar y=-1425 h=68 onscreen=0
+[SearchSpike] t=1036.079 tabbar y=-1386 h=68 onscreen=0
+[SearchSpike] t=1036.338 tabbar y=-1348 h=68 onscreen=0
+[SearchSpike] t=1036.593 tabbar y=-1023 h=68 onscreen=0
+[SearchSpike] t=1036.846 tabbar y=-682 h=68 onscreen=0
+[SearchSpike] t=1037.116 tabbar y=-539 h=68 onscreen=0
+[SearchSpike] t=1037.382 tabbar y=-513 h=68 onscreen=0
+[SearchSpike] t=1037.634 tabbar y=-508 h=68 onscreen=0
+[TabBarStateProbe] y=-508 h=68 a=1.00 hid=0 tbh=0 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[SearchSpike] t=1037.902 tabbar y=-507 h=68 onscreen=0
+[TabBarStateProbe] y=-507 h=68 a=1.00 hid=0 tbh=0 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[SearchSpike] t=1045.267 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x135 | UIKeyboard grid 80,261 432x750 screen=grid tab=1
+[SearchSpike] t=1045.705 screen grid disappear
+[SearchSpike] t=1053.798 screen detail appear
+[SearchSpike] t=1053.966 kb none screen=detail tab=1
+[SearchSpike] t=1053.966 tabbar none
+[TabBarStateProbe] y=-266 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[SearchSpike] t=1056.470 screen person appear
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=pop svh=-
+[SearchSpike] t=1057.040 screen detail disappear
+[SearchSpike] t=1057.074 tabbar y=46 h=68 onscreen=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[SearchSpike] t=1058.047 screen detail appear
+[SearchSpike] t=1058.105 tabbar none
+[SearchSpike] t=1058.589 screen person disappear
+[SearchSpike] t=1059.395 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x135 | UIKeyboard grid 80,261 432x750 screen=search tab=1
+[TabBarStateProbe] y=-126 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[TabBarStateProbe] y=-126 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=pop svh=-
+[SearchSpike] t=1059.826 screen detail disappear
+[SearchSpike] t=1059.949 tabbar y=46 h=68 onscreen=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[SearchSpike] t=1116.600 focus UIKitFocusableFillerItem screen=search tab=1
+[SearchSpike] t=1117.119 focus UIKeyboard screen=search tab=1
+[SearchSpike] t=1133.391 query 'duneb'
+[SearchSpike] t=1133.802 results sections=0 loading=true
+[SearchSpike] t=1134.011 results sections=1 loading=true
+[SearchSpike] t=1134.729 results sections=2 loading=true
+[SearchSpike] t=1136.340 query 'dunebe'
+[SearchSpike] t=1136.739 results sections=0 loading=true
+[SearchSpike] t=1137.533 results sections=1 loading=true
+[SearchSpike] t=1138.996 results sections=2 loading=true
+[SearchSpike] t=1140.677 focus UITabBarButton screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=0 trk=none sd=0 sdt=-0-- m=cls r=tab svh=-
+[SearchSpike] t=1146.139 tab 0
+[SearchSpike] t=1146.207 kb none screen=search tab=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=-0-- m=cls r=tab2 svh=574
+[TabBarStateProbe] y=-273 h=68 a=1.00 hid=0 tbh=0 st=min off=319 ins=0 sel=0 trk=rows sd=1 sdt=10-- m=cls r=down svh=574
+[TabBarStateProbe] y=-474 h=68 a=1.00 hid=0 tbh=0 st=min off=520 ins=0 sel=0 trk=rows sd=1 sdt=10-- m=cls r=tick svh=574
+[TabBarStateProbe] y=-2456 h=68 a=1.00 hid=0 tbh=0 st=min off=2502 ins=0 sel=0 trk=rows sd=1 sdt=10-- m=cls r=tick svh=574
+[TabBarStateProbe] y=-2494 h=68 a=1.00 hid=0 tbh=0 st=min off=2540 ins=0 sel=0 trk=rows sd=1 sdt=10-- m=cls r=tick svh=574
+[TabBarStateProbe] y=-574 h=68 a=1.00 hid=0 tbh=0 st=min off=620 ins=0 sel=0 trk=rows sd=1 sdt=10-- m=cls r=tick svh=574
+[TabBarStateProbe] y=-108 h=68 a=1.00 hid=0 tbh=0 st=min off=154 ins=0 sel=0 trk=rows sd=0 sdt=00-- m=cls r=up svh=574
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=00-- m=cls r=tick svh=574
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=00-- m=cls r=tab svh=574
+[SearchSpike] t=1158.532 tab 1
+[SearchSpike] t=1158.550 scanner armed variant=A
+[SearchSpike] t=1158.601 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x135 | UIKeyboard grid 80,261 432x750 screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=00-- m=cls r=tab2 svh=574
+[TabBarLink] unlinked (left window) controllers=2
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=tick svh=-
+[SearchSpike] t=1242.493 focus UIKitFocusableViewResponderItem screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=1 sdt=01-- m=cls r=down svh=-
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=up svh=-
+[SearchSpike] t=1250.814 focus UIKeyboard screen=search tab=1
+[SearchSpike] t=1255.045 query 'dunebed'
+[SearchSpike] t=1255.449 results sections=0 loading=true
+[SearchSpike] t=1257.295 query 'dunebedu'
+[SearchSpike] t=1258.621 query 'dunebedun'
+[SearchSpike] t=1258.794 results sections=1 loading=true
+[SearchSpike] t=1258.984 results sections=0 loading=true
+[SearchSpike] t=1264.204 query 'dunebedu'
+[SearchSpike] t=1264.403 query 'dunebed'
+[SearchSpike] t=1264.599 query 'dunebe'
+[SearchSpike] t=1264.796 query 'duneb'
+[SearchSpike] t=1264.998 query 'dune'
+[SearchSpike] t=1265.202 query 'dun'
+[SearchSpike] t=1265.726 results sections=1 loading=true
+[SearchSpike] t=1265.777 results sections=3 loading=true
+[SearchSpike] t=1265.830 results sections=4 loading=true
+[SearchSpike] t=1265.933 results sections=7 loading=true
+[SearchSpike] t=1265.984 results sections=8 loading=false
+[SearchSpike] t=1267.976 query 'dune'
+[SearchSpike] t=1268.399 results sections=0 loading=true
+[SearchSpike] t=1268.458 results sections=2 loading=true
+[SearchSpike] t=1268.551 results sections=3 loading=true
+[SearchSpike] t=1268.609 results sections=4 loading=true
+[SearchSpike] t=1269.815 results sections=5 loading=true
+[SearchSpike] t=1269.920 results sections=6 loading=true
+[SearchSpike] t=1269.998 results sections=7 loading=true
+[SearchSpike] t=1273.060 focus UIKitFocusableViewResponderItem screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=1 sdt=01-- m=cls r=down svh=-
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=up svh=-
+[SearchSpike] t=1283.224 focus UITabBarButton screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=0 trk=none sd=0 sdt=00-- m=cls r=tab svh=-
+[SearchSpike] t=1284.910 tab 0
+[SearchSpike] t=1285.032 kb none screen=search tab=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=00-- m=cls r=tab2 svh=574
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=00-- m=cls r=tab svh=574
+[SearchSpike] t=1286.574 tab 1
+[SearchSpike] t=1286.589 scanner armed variant=A
+[SearchSpike] t=1286.688 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x135 | UIKeyboard grid 80,261 432x750 screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=00-- m=cls r=tab2 svh=574
+[SearchSpike] t=1287.481 focus UIKitFocusableViewResponderItem screen=search tab=1
+[TabBarLink] unlinked (left window) controllers=2
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=tick svh=-
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=1 sdt=01-- m=cls r=down svh=-
+[SearchSpike] t=1316.407 screen detail appear
+[SearchSpike] t=1316.556 kb none screen=detail tab=1
+[SearchSpike] t=1316.556 tabbar none
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=1 sdt=01-- m=cls r=tick svh=-
+[SearchSpike] t=1319.649 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x135 | UIKeyboard grid 80,261 432x750 screen=detail tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=1 sdt=01-- m=cls r=pop svh=-
+[SearchSpike] t=1320.148 screen detail disappear
+[SearchSpike] t=1320.207 tabbar y=46 h=68 onscreen=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=1 sdt=01-- m=cls r=tick svh=-
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=up svh=-
+[SearchSpike] t=1325.185 focus UITabBarButton screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=0 trk=none sd=0 sdt=00-- m=cls r=tab svh=-
+[SearchSpike] t=1326.294 tab 0
+[SearchSpike] t=1326.479 kb none screen=search tab=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=00-- m=cls r=tab2 svh=574
+[SearchSpike] t=1327.258 focus UIKitFocusableViewResponderItem screen=search tab=0
+[TabBarStateProbe] y=17 h=68 a=1.00 hid=0 tbh=0 st=exp off=30 ins=0 sel=0 trk=rows sd=0 sdt=00-- m=cls r=tick svh=574
+[TabBarStateProbe] y=-256 h=68 a=1.00 hid=0 tbh=0 st=min off=302 ins=0 sel=0 trk=rows sd=1 sdt=10-- m=cls r=down svh=574
+[TabBarStateProbe] y=-2444 h=68 a=1.00 hid=0 tbh=0 st=min off=2490 ins=0 sel=0 trk=rows sd=1 sdt=10-- m=cls r=tick svh=574
+[TabBarStateProbe] y=-1533 h=68 a=1.00 hid=0 tbh=0 st=min off=1579 ins=0 sel=0 trk=rows sd=1 sdt=10-- m=cls r=tick svh=574
+[TabBarStateProbe] y=-111 h=68 a=1.00 hid=0 tbh=0 st=min off=157 ins=0 sel=0 trk=rows sd=0 sdt=00-- m=cls r=up svh=574
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=00-- m=cls r=tick svh=574
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=00-- m=cls r=tab svh=574
+[SearchSpike] t=1334.396 tab 1
+[SearchSpike] t=1334.414 scanner armed variant=A
+[SearchSpike] t=1334.514 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x135 | UIKeyboard grid 80,261 432x750 screen=search tab=1
+[SearchSpike] t=1334.514 focus UITabBarButton screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=00-- m=cls r=tab2 svh=574
+[TabBarLink] unlinked (left window) controllers=2
+[SearchSpike] t=1335.570 focus UIKitFocusableViewResponderItem screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=tick svh=-
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=1 sdt=01-- m=cls r=down svh=-
+[SearchSpike] t=1422.288 focus UIKeyboard screen=search tab=1
+[SearchSpike] t=1424.709 query ''
+[SearchSpike] t=1424.772 results sections=0 loading=false
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=up svh=-
+[SearchSpike] t=1426.863 query 'T'
+[SearchSpike] t=1426.920 query 'The'
+[SearchSpike] t=1427.120 query 'The bear'
+[SearchSpike] t=1427.726 results sections=1 loading=true
+[SearchSpike] t=1427.871 results sections=2 loading=true
+[SearchSpike] t=1427.909 results sections=3 loading=true
+[SearchSpike] t=1428.116 results sections=4 loading=true
+[SearchSpike] t=1428.277 results sections=5 loading=true
+[SearchSpike] t=1428.553 results sections=6 loading=true
+[SearchSpike] t=1428.685 results sections=7 loading=true
+[SearchSpike] t=1430.092 results sections=8 loading=false
+[SearchSpike] t=1469.670 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=1471.487 focus UIKeyboard screen=search tab=1
+[SearchSpike] t=1482.825 query ''
+[SearchSpike] t=1482.871 results sections=0 loading=false
+[SearchSpike] t=1482.900 query 'The bear'
+[SearchSpike] t=1483.444 results sections=1 loading=true
+[SearchSpike] t=1483.505 results sections=6 loading=true
+[SearchSpike] t=1483.632 results sections=8 loading=false
+[SearchSpike] t=1483.993 query 'The bears'
+[SearchSpike] t=1484.172 query 'The bearss'
+[SearchSpike] t=1484.221 query 'The bears'
+[SearchSpike] t=1484.267 query 'The bearss'
+[SearchSpike] t=1484.303 query 'The bears'
+[SearchSpike] t=1484.712 results sections=0 loading=true
+[SearchSpike] t=1484.965 results sections=1 loading=true
+[SearchSpike] t=1485.020 results sections=2 loading=true
+[SearchSpike] t=1485.069 results sections=3 loading=true
+[SearchSpike] t=1485.264 results sections=4 loading=true
+[SearchSpike] t=1485.527 query ''
+[SearchSpike] t=1485.580 results sections=0 loading=true
+[SearchSpike] t=1486.825 query 'S'
+[SearchSpike] t=1487.292 query 'Se'
+[SearchSpike] t=1487.317 results sections=1 loading=true
+[SearchSpike] t=1487.364 results sections=2 loading=true
+[SearchSpike] t=1487.398 results sections=3 loading=true
+[SearchSpike] t=1487.474 results sections=4 loading=true
+[SearchSpike] t=1487.652 results sections=0 loading=true
+[SearchSpike] t=1487.691 results sections=1 loading=true
+[SearchSpike] t=1487.729 results sections=2 loading=true
+[SearchSpike] t=1487.882 results sections=3 loading=true
+[SearchSpike] t=1487.929 query 'Sev'
+[SearchSpike] t=1487.983 query 'Se'
+[SearchSpike] t=1487.983 results sections=4 loading=true
+[SearchSpike] t=1488.240 results sections=5 loading=true
+[SearchSpike] t=1488.873 results sections=6 loading=true
+[SearchSpike] t=1488.967 query 'See'
+[SearchSpike] t=1489.019 query 'Se'
+[SearchSpike] t=1489.050 query 'See'
+[SearchSpike] t=1489.082 query 'Se'
+[SearchSpike] t=1489.123 query 'See'
+[SearchSpike] t=1489.146 query 'Se'
+[SearchSpike] t=1489.286 results sections=7 loading=true
+[SearchSpike] t=1489.743 query 'Ser'
+[SearchSpike] t=1489.811 query 'Se'
+[SearchSpike] t=1489.828 query 'Ser'
+[SearchSpike] t=1489.899 query 'Se'
+[SearchSpike] t=1489.899 results sections=8 loading=false
+[SearchSpike] t=1494.264 query 'Sea'
+[SearchSpike] t=1494.326 query 'Se'
+[SearchSpike] t=1497.443 query 'Sev'
+[SearchSpike] t=1497.511 query 'Se'
+[SearchSpike] t=1497.528 query 'Sev'
+[SearchSpike] t=1497.563 query 'Se'
+[SearchSpike] t=1497.599 query 'Sev'
+[SearchSpike] t=1498.007 results sections=0 loading=true
+[SearchSpike] t=1498.067 results sections=1 loading=true
+[SearchSpike] t=1498.093 results sections=2 loading=true
+[SearchSpike] t=1498.138 results sections=3 loading=true
+[SearchSpike] t=1498.223 results sections=4 loading=true
+[SearchSpike] t=1498.989 results sections=5 loading=true
+[SearchSpike] t=1499.058 results sections=6 loading=true
+[SearchSpike] t=1499.282 results sections=7 loading=true
+[SearchSpike] t=1500.001 query 'Seve'
+[SearchSpike] t=1500.048 query 'Sev'
+[SearchSpike] t=1500.048 results sections=8 loading=false
+[SearchSpike] t=1500.113 query 'Seve'
+[SearchSpike] t=1500.164 query 'Sev'
+[SearchSpike] t=1500.208 query 'Seve'
+[SearchSpike] t=1500.244 query 'Sev'
+[SearchSpike] t=1500.278 query 'Seve'
+[SearchSpike] t=1500.316 query 'Sev'
+[SearchSpike] t=1502.036 query 'Seve'
+[SearchSpike] t=1502.457 results sections=0 loading=true
+[SearchSpike] t=1502.671 results sections=1 loading=true
+[SearchSpike] t=1502.742 results sections=2 loading=true
+[SearchSpike] t=1502.794 results sections=3 loading=true
+[SearchSpike] t=1502.824 results sections=4 loading=true
+[SearchSpike] t=1503.092 results sections=5 loading=true
+[SearchSpike] t=1503.440 results sections=6 loading=true
+[SearchSpike] t=1504.220 results sections=7 loading=true
+[SearchSpike] t=1504.301 results sections=8 loading=false
+[SearchSpike] t=1504.719 query 'Sever'
+[SearchSpike] t=1504.769 query 'Seve'
+[SearchSpike] t=1505.440 query 'Sever'
+[SearchSpike] t=1505.861 results sections=0 loading=true
+[SearchSpike] t=1505.926 results sections=2 loading=true
+[SearchSpike] t=1506.080 results sections=3 loading=true
+[SearchSpike] t=1506.163 results sections=4 loading=true
+[SearchSpike] t=1506.418 results sections=5 loading=true
+[SearchSpike] t=1506.645 results sections=6 loading=true
+[SearchSpike] t=1506.945 results sections=7 loading=false
+[SearchSpike] t=1507.102 query 'Severa'
+[SearchSpike] t=1507.176 query 'Sever'
+[SearchSpike] t=1507.217 query 'Severa'
+[SearchSpike] t=1507.604 results sections=0 loading=true
+[SearchSpike] t=1507.672 query 'Severaa'
+[SearchSpike] t=1507.731 query 'Severa'
+[SearchSpike] t=1507.748 query 'Severaa'
+[SearchSpike] t=1507.783 query 'Severa'
+[SearchSpike] t=1507.804 query 'Severaa'
+[SearchSpike] t=1507.807 results sections=1 loading=true
+[SearchSpike] t=1507.836 query 'Severa'
+[SearchSpike] t=1507.837 results sections=3 loading=true
+[SearchSpike] t=1507.944 results sections=4 loading=true
+[SearchSpike] t=1508.477 results sections=5 loading=true
+[SearchSpike] t=1508.927 results sections=6 loading=true
+[SearchSpike] t=1509.236 query 'Severan'
+[SearchSpike] t=1509.285 query 'Severa'
+[SearchSpike] t=1509.314 query 'Severan'
+[SearchSpike] t=1509.350 query 'Severa'
+[SearchSpike] t=1509.379 query 'Severan'
+[SearchSpike] t=1509.421 query 'Severa'
+[SearchSpike] t=1509.457 query 'Severan'
+[SearchSpike] t=1509.480 query 'Severa'
+[SearchSpike] t=1509.508 query 'Severan'
+[SearchSpike] t=1509.539 query 'Severa'
+[SearchSpike] t=1509.581 query 'Severan'
+[SearchSpike] t=1509.979 results sections=0 loading=true
+[SearchSpike] t=1510.200 results sections=1 loading=true
+[SearchSpike] t=1510.260 results sections=3 loading=true
+[SearchSpike] t=1510.853 results sections=4 loading=true
+[SearchSpike] t=1512.216 query 'Severanc'
+[SearchSpike] t=1512.269 query 'Severan'
+[SearchSpike] t=1512.305 query 'Severanc'
+[SearchSpike] t=1512.323 query 'Severan'
+[SearchSpike] t=1512.347 query 'Severanc'
+[SearchSpike] t=1512.373 query 'Severan'
+[SearchSpike] t=1512.402 query 'Severanc'
+[SearchSpike] t=1512.790 results sections=0 loading=true
+[SearchSpike] t=1513.009 results sections=1 loading=true
+[SearchSpike] t=1513.068 results sections=2 loading=true
+[SearchSpike] t=1513.794 results sections=3 loading=true
+[SearchSpike] t=1513.866 query 'Severance'
+[SearchSpike] t=1513.918 query 'Severanc'
+[SearchSpike] t=1513.942 query 'Severance'
+[SearchSpike] t=1513.965 query 'Severanc'
+[SearchSpike] t=1513.990 query 'Severance'
+[SearchSpike] t=1514.019 query 'Severanc'
+[SearchSpike] t=1514.040 query 'Severance'
+[SearchSpike] t=1514.072 query 'Severanc'
+[SearchSpike] t=1514.093 query 'Severance'
+[SearchSpike] t=1514.123 query 'Severanc'
+[SearchSpike] t=1514.140 query 'Severance'
+[SearchSpike] t=1514.164 query 'Severanc'
+[SearchSpike] t=1514.194 query 'Severance'
+[SearchSpike] t=1514.214 query 'Severanc'
+[SearchSpike] t=1514.236 query 'Severance'
+[SearchSpike] t=1514.259 query 'Severanc'
+[SearchSpike] t=1514.283 query 'Severance'
+[SearchSpike] t=1514.308 query 'Severanc'
+[SearchSpike] t=1514.332 query 'Severance'
+[SearchSpike] t=1514.356 query 'Severanc'
+[SearchSpike] t=1514.376 query 'Severance'
+[SearchSpike] t=1514.400 query 'Severanc'
+[SearchSpike] t=1514.424 query 'Severance'
+[SearchSpike] t=1514.447 query 'Severanc'
+[SearchSpike] t=1514.472 query 'Severance'
+[SearchSpike] t=1514.495 query 'Severanc'
+[SearchSpike] t=1514.527 query 'Severance'
+[SearchSpike] t=1514.546 query 'Severanc'
+[SearchSpike] t=1514.567 query 'Severance'
+[SearchSpike] t=1514.590 query 'Severanc'
+[SearchSpike] t=1514.615 query 'Severance'
+[SearchSpike] t=1514.637 query 'Severanc'
+[SearchSpike] t=1514.658 query 'Severance'
+[SearchSpike] t=1514.685 query 'Severanc'
+[SearchSpike] t=1514.706 query 'Severance'
+[SearchSpike] t=1514.729 query 'Severanc'
+[SearchSpike] t=1514.751 query 'Severance'
+[SearchSpike] t=1514.770 query 'Severanc'
+[SearchSpike] t=1514.792 query 'Severance'
+[SearchSpike] t=1514.819 query 'Severanc'
+[SearchSpike] t=1514.841 query 'Severance'
+[SearchSpike] t=1514.864 query 'Severanc'
+[SearchSpike] t=1514.888 query 'Severance'
+[SearchSpike] t=1514.908 query 'Severanc'
+[SearchSpike] t=1514.932 query 'Severance'
+[SearchSpike] t=1514.964 query 'Severanc'
+[SearchSpike] t=1514.989 query 'Severance'
+[SearchSpike] t=1515.006 query 'Severanc'
+[SearchSpike] t=1515.034 query 'Severance'
+[SearchSpike] t=1515.054 query 'Severanc'
+[SearchSpike] t=1515.076 query 'Severance'
+[SearchSpike] t=1515.102 query 'Severanc'
+[SearchSpike] t=1515.128 query 'Severance'
+[SearchSpike] t=1515.151 query 'Severanc'
+[SearchSpike] t=1515.172 query 'Severance'
+[SearchSpike] t=1515.199 query 'Severanc'
+[SearchSpike] t=1515.217 query 'Severance'
+[SearchSpike] t=1515.241 query 'Severanc'
+[SearchSpike] t=1515.258 query 'Severance'
+[SearchSpike] t=1515.283 query 'Severanc'
+[SearchSpike] t=1515.300 query 'Severance'
+[SearchSpike] t=1515.324 query 'Severanc'
+[SearchSpike] t=1515.348 query 'Severance'
+[SearchSpike] t=1515.371 query 'Severanc'
+[SearchSpike] t=1515.404 query 'Severance'
+[SearchSpike] t=1515.427 query 'Severanc'
+[SearchSpike] t=1515.451 query 'Severance'
+[SearchSpike] t=1515.478 query 'Severanc'
+[SearchSpike] t=1515.499 query 'Severance'
+[SearchSpike] t=1515.522 query 'Severanc'
+[SearchSpike] t=1515.546 query 'Severance'
+[SearchSpike] t=1515.565 query 'Severanc'
+[SearchSpike] t=1515.590 query 'Severance'
+[SearchSpike] t=1515.619 query 'Severanc'
+[SearchSpike] t=1515.643 query 'Severance'
+[SearchSpike] t=1515.666 query 'Severanc'
+[SearchSpike] t=1515.695 query 'Severance'
+[SearchSpike] t=1515.723 query 'Severanc'
+[SearchSpike] t=1515.745 query 'Severance'
+[SearchSpike] t=1515.765 query 'Severanc'
+[SearchSpike] t=1515.790 query 'Severance'
+[SearchSpike] t=1515.810 query 'Severanc'
+[SearchSpike] t=1515.853 query 'Severance'
+[SearchSpike] t=1515.853 results sections=4 loading=true
+[SearchSpike] t=1516.248 results sections=0 loading=true
+[SearchSpike] t=1516.289 results sections=1 loading=true
+[SearchSpike] t=1516.329 results sections=2 loading=true
+[SearchSpike] t=1516.453 results sections=3 loading=true
+[SearchSpike] t=1516.475 results sections=4 loading=true
+[SearchSpike] t=1519.521 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=1530.271 results sections=5 loading=true
+[SearchSpike] t=1531.194 results sections=6 loading=false
+[SearchSpike] t=1620.403 focus UIKitFocusableFillerItem screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=1 sdt=01-- m=cls r=down svh=-
+[SearchSpike] t=1620.674 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=1622.532 focus UIKeyboard screen=search tab=1
+[SearchSpike] t=1631.832 query ''
+[SearchSpike] t=1631.886 results sections=0 loading=false
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=up svh=-
+[SearchSpike] t=1652.872 focus UITabBarButton screen=search tab=1
+[SearchSpike] t=1654.682 focus nil screen=search tab=1
+[SearchSpike] t=1658.005 focus UITabBarButton screen=search tab=1
+[SearchSpike] t=1670.342 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=1671.116 focus UIKeyboard screen=search tab=1
+[SearchSpike] t=1672.742 query 'd'
+[SearchSpike] t=1673.344 results sections=1 loading=true
+[SearchSpike] t=1673.421 results sections=2 loading=true
+[SearchSpike] t=1673.451 results sections=6 loading=true
+[SearchSpike] t=1673.642 results sections=8 loading=false
+[SearchSpike] t=1674.772 query 'du'
+[SearchSpike] t=1675.181 results sections=0 loading=true
+[SearchSpike] t=1675.253 results sections=1 loading=true
+[SearchSpike] t=1675.276 results sections=2 loading=true
+[SearchSpike] t=1675.303 results sections=3 loading=true
+[SearchSpike] t=1675.384 results sections=4 loading=true
+[SearchSpike] t=1675.434 results sections=7 loading=true
+[SearchSpike] t=1675.514 results sections=8 loading=false
+[SearchSpike] t=1675.933 query 'dun'
+[SearchSpike] t=1676.337 results sections=0 loading=true
+[SearchSpike] t=1676.407 results sections=1 loading=true
+[SearchSpike] t=1676.437 results sections=2 loading=true
+[SearchSpike] t=1676.465 results sections=3 loading=true
+[SearchSpike] t=1676.541 results sections=4 loading=true
+[SearchSpike] t=1677.358 results sections=5 loading=true
+[SearchSpike] t=1677.478 results sections=8 loading=false
+[SearchSpike] t=1677.716 query 'dune'
+[SearchSpike] t=1678.103 results sections=0 loading=true
+[SearchSpike] t=1678.168 results sections=2 loading=true
+[SearchSpike] t=1678.231 results sections=3 loading=true
+[SearchSpike] t=1678.309 results sections=4 loading=true
+[SearchSpike] t=1679.374 results sections=5 loading=true
+[SearchSpike] t=1679.641 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=1679.645 results sections=7 loading=true
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=1 sdt=01-- m=cls r=down svh=-
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=up svh=-
+[SearchSpike] t=1685.726 focus UITabBarButton screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=0 trk=none sd=0 sdt=00-- m=cls r=tab svh=-
+[SearchSpike] t=1686.615 tab 0
+[SearchSpike] t=1686.772 kb none screen=search tab=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=00-- m=cls r=tab2 svh=574
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=00-- m=cls r=tab svh=574
+[SearchSpike] t=1687.334 tab 1
+[SearchSpike] t=1687.351 scanner armed variant=A
+[SearchSpike] t=1687.453 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x135 | UIKeyboard grid 80,261 432x750 screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=00-- m=cls r=tab2 svh=574
+[SearchSpike] t=1687.987 focus UIKitFocusableViewResponderItem screen=search tab=1
+[TabBarLink] unlinked (left window) controllers=2
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=tick svh=-
+[SearchSpike] t=1695.090 screen detail appear
+[SearchSpike] t=1695.118 kb none screen=detail tab=1
+[SearchSpike] t=1695.118 tabbar none
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=tick svh=-
+[SearchSpike] t=1695.892 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x135 | UIKeyboard grid 80,261 432x750 screen=detail tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=pop svh=-
+[SearchSpike] t=1696.410 screen detail disappear
+[SearchSpike] t=1696.441 tabbar y=46 h=68 onscreen=1
+[SearchSpike] t=1696.853 screen detail appear
+[SearchSpike] t=1696.945 kb none screen=detail tab=1
+[SearchSpike] t=1696.945 tabbar none
+[SearchSpike] t=1697.807 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x135 | UIKeyboard grid 80,261 432x750 screen=detail tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=pop svh=-
+[SearchSpike] t=1698.303 screen detail disappear
+[SearchSpike] t=1698.341 tabbar y=46 h=68 onscreen=1
+[SearchSpike] t=1698.527 screen detail appear
+[SearchSpike] t=1698.599 kb none screen=detail tab=1
+[SearchSpike] t=1698.599 tabbar none
+[SearchSpike] t=1699.491 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x135 | UIKeyboard grid 80,261 432x750 screen=detail tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=pop svh=-
+[SearchSpike] t=1700.058 screen detail disappear
+[SearchSpike] t=1700.258 screen detail appear
+[SearchSpike] t=1700.280 kb none screen=detail tab=1
+[SearchSpike] t=1701.180 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x135 | UIKeyboard grid 80,261 432x750 screen=detail tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=pop svh=-
+[SearchSpike] t=1701.592 screen detail disappear
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=tick svh=-
+[SearchSpike] t=1701.686 tabbar y=46 h=68 onscreen=1
+[SearchSpike] t=1702.506 focus UIKeyboard screen=search tab=1
+[SearchSpike] t=1704.928 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=1705.594 screen detail appear
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=tick svh=-
+[SearchSpike] t=1705.719 kb none screen=detail tab=1
+[SearchSpike] t=1705.719 tabbar none
+[SearchSpike] t=1706.230 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x135 | UIKeyboard grid 80,261 432x750 screen=detail tab=1
+[SearchSpike] t=1706.230 focus nil screen=detail tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=pop svh=-
+[SearchSpike] t=1706.761 screen detail disappear
+[SearchSpike] t=1706.784 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=1706.784 tabbar y=46 h=68 onscreen=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=tick svh=-

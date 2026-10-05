@@ -1,0 +1,10 @@
+[TabBarStateProbe] chain root=UIHostingController<ModifiedContent<LazyView<ModifiedContent<ContentView, _PreferenceWritingModifier<PreferredColorSchemeKey>>>, RootModifier>> tab=UIKitTabBarController selected=TabHostingController > UIKitNavigationController > NavigationStackHostingController<AnyView> legacyObserved=nil
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=0 trk=none sd=0 sdt=---- m=sb r=arm svh=-
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=---- m=sb r=tab svh=-
+[SearchSpike] t=0.000 tab 1
+[SearchSpike] t=0.047 scanner armed variant=-
+[SearchSpike] t=0.077 kb none screen=search tab=1
+[SearchSpike] t=0.077 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=0.077 tabbar none
+[SearchSpike] t=0.364 focus TVTextField screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=---- m=sb r=tab2 svh=-

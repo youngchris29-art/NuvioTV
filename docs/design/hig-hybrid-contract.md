@@ -14,6 +14,7 @@ MUST below, it doesn't merge.
 | **Text color** | `Theme.Palette.textPrimary/.textSecondary` (semantic `.primary`/`.secondary`). Never hex text colors. |
 | **Overlay surfaces** | `Theme.Surface` materials (or `.glass`/`.glassProminent` buttons, `glassEffect()`) for anything floating over content. Opaque `Palette.surface*` only for in-content fills. |
 | **Buttons** | System styles: `.card` (artwork), `.glass`/`.glassProminent` (actions over media), `.borderless`/`.bordered`/`.borderedProminent` (everything else). Custom `ButtonStyle`s exist only where a system style demonstrably can't express the shape (document why in the style file). *Carve-out (FEAT-30):* `SidebarItemButtonStyle` in `DesignSystem/SidebarOverlay.swift` draws a per-row white capsule for the focused item inside a `.glassEffect` panel — opt-in via the Appearance setting "Navigation: Sidebar" (device-local `sidebar_style` key, default **Top Tabs**). Neither system style can express this shape: `.borderless` is platter-free on tvOS (lift only, no fill), and `.glass`/`.glassProminent` render at the panel level, not a per-row pill inside one. System focus motion (lift/brighten) is otherwise unchanged. Default Top Tabs mode is byte-identical to today — this style has no call sites until the setting is on. |
+| **Search** | tvOS's system search field, `.searchable` (S1, 2026-10-04; `docs/search-s1-native-search-plan-2026-10-04.md`). It goes on the results container INSIDE the tab's own `NavigationStack`: never on the `TabView` (tvOS then wraps the whole tab shell in the search controller), and never inside a second, nested `NavigationStack` (value links stop pushing). The typed text lives in an `ObservableObject`, never `@State` (with `@State`, typing from an iPhone flickered between old and new text), and the view that carries `.searchable` must not observe the results. In Sidebar mode, focus that lands on the hidden system tab bar is redirected into the sidebar (`HiddenTabBarRedirect`). The field and keyboard look is the system's; Open Sans does not reach it, accepted. Verified on tvOS 26.5 (simulator) and 27.2 (Apple TV). |
 | **Alerts/confirms** | `.alert` / `.confirmationDialog`. No bespoke confirm overlays. |
 | **Remote grammar** | Menu = back, Play/Pause = media, swipe = focus/scrub. Never repurposed. |
 | **Motion** | System focus motion. Any remaining custom animation gates on Reduce Motion. |
@@ -32,7 +33,7 @@ MUST below, it doesn't merge.
 - Accent-colored focus rings (deleted in P1; reintroduced ONLY via the FEAT-14 opt-in carve-out under Focus indication — default OFF, single ring, contrast-guarded).
 - `posterFocusTilt` fake parallax (system `.card` provides the real thing).
 - Hard-coded text hex colors, fixed font point sizes at call sites (the FEAT-31 Open Sans carve-out's internal base size is DERIVED from the system's own preferred-font descriptor, never a literal — see Typography above).
-- `.searchable` (known tvOS keyboard-bleed bug inside TabView — keep TextField, restyled).
+- A custom search text field. This line used to ban `.searchable` for a keyboard-bleed bug; the 2026-10-04 spike and S1 Wave 0 found no bleed on tvOS 26.5 or 27.2 with the structure in the Search rule above, so Search now uses the system field.
 
 ## Token cheat-sheet (post-P0 Theme.swift)
 

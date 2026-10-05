@@ -1,0 +1,118 @@
+[SearchSpike] t=0.000 scanner armed variant=B
+[TabBarLink] linked chain=NavigationStackHostingController<AnyView> > UIKitNavigationController(skip) > TabHostingController tab=UIKitTabBarController sv=HostingScrollView svh=1080 pinned=1 legacyObserved=rows adjBottom=0 adjTop=0 restFix=0
+[SearchSpike] t=0.047 kb none screen=search tab=0
+[SearchSpike] t=0.047 focus UIKitFocusableViewResponderItem screen=search tab=0
+[SearchSpike] t=0.047 tabbar y=46 h=68 onscreen=1
+[TabBarStateProbe] chain root=UIHostingController<ModifiedContent<LazyView<ModifiedContent<ContentView, _PreferenceWritingModifier<PreferredColorSchemeKey>>>, RootModifier>> tab=UIKitTabBarController selected=TabHostingController > UIKitNavigationController > NavigationStackHostingController<AnyView> legacyObserved=rows
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=---- m=cls r=arm svh=1080
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=---- m=cls r=attach svh=1080
+[SearchSpike] t=0.298 focus UITabBarButton screen=search tab=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=---- m=cls r=tick svh=574
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=---- m=cls r=tab svh=574
+[SearchSpike] t=15.611 tab 1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=---- m=cls r=tab2 svh=574
+[TabBarLink] unlinked (left window) controllers=2
+[SearchSpike] t=16.696 kb _UISearchControllerTVKeyboardContainerView linear 0,213 1920x135 | UIKeyboard grid 80,317 432x750 screen=search tab=1
+[SearchSpike] t=16.696 layout grid
+[SearchSpike] t=16.962 kb _UISearchControllerTVKeyboardContainerView other 0,157 860x135 | UIKeyboard grid 80,261 432x750 screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=---- m=cls r=tick svh=-
+[SearchSpike] t=128.606 focus UIKeyboard screen=search tab=1
+[SearchSpike] t=130.768 query 'd'
+[SearchSpike] t=130.975 kb _UISearchControllerTVKeyboardContainerView other 498,157 780x135 | UIKeyboard grid 498,261 432x750 screen=search tab=1
+[SearchSpike] t=131.236 kb _UISearchControllerTVKeyboardContainerView other 396,157 780x135 | UIKeyboard grid 396,261 432x750 screen=search tab=1
+[SearchSpike] t=131.379 results sections=1 loading=true
+[SearchSpike] t=131.448 results sections=6 loading=true
+[SearchSpike] t=131.499 results sections=8 loading=false
+[SearchSpike] t=131.513 kb _UISearchControllerTVKeyboardContainerView other 0,157 860x135 | UIKeyboard grid 80,261 432x750 screen=search tab=1
+[SearchSpike] t=135.451 query 'du'
+[SearchSpike] t=135.846 results sections=0 loading=true
+[SearchSpike] t=135.919 results sections=2 loading=true
+[SearchSpike] t=135.979 results sections=3 loading=true
+[SearchSpike] t=136.032 results sections=7 loading=true
+[SearchSpike] t=136.073 results sections=8 loading=false
+[SearchSpike] t=138.322 query 'dun'
+[SearchSpike] t=138.730 results sections=0 loading=true
+[SearchSpike] t=138.775 kb _UISearchControllerTVKeyboardContainerView other 396,157 780x135 | UIKeyboard grid 396,261 432x750 screen=search tab=1
+[SearchSpike] t=138.790 results sections=1 loading=true
+[SearchSpike] t=138.813 results sections=2 loading=true
+[SearchSpike] t=138.855 results sections=3 loading=true
+[SearchSpike] t=138.914 results sections=6 loading=true
+[SearchSpike] t=138.951 results sections=7 loading=true
+[SearchSpike] t=138.983 results sections=8 loading=false
+[SearchSpike] t=139.027 kb _UISearchControllerTVKeyboardContainerView other 0,157 860x135 | UIKeyboard grid 80,261 432x750 screen=search tab=1
+[SearchSpike] t=142.188 query 'dune'
+[SearchSpike] t=142.593 results sections=0 loading=true
+[SearchSpike] t=142.667 results sections=2 loading=true
+[SearchSpike] t=142.716 results sections=3 loading=true
+[SearchSpike] t=142.754 results sections=6 loading=true
+[SearchSpike] t=142.825 results sections=7 loading=true
+[SearchSpike] t=287.977 focus UIKitFocusableViewResponderItem screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=1 sdt=-1-- m=cls r=down svh=-
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=up svh=-
+[SearchSpike] t=318.635 focus UITabBarButton screen=search tab=1
+[SearchSpike] t=319.688 focus UIKeyboard screen=search tab=1
+[SearchSpike] t=330.509 focus UITabBarButton screen=search tab=1
+[SearchSpike] t=331.831 focus UIKeyboard screen=search tab=1
+[SearchSpike] t=333.724 focus UIKitFocusableFillerItem screen=search tab=1
+[SearchSpike] t=333.987 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=336.327 focus UIKitFocusableFillerItem screen=search tab=1
+[SearchSpike] t=336.832 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=337.095 focus UIKeyboard screen=search tab=1
+[SearchSpike] t=475.250 focus UIKitFocusableFillerItem screen=search tab=1
+[SearchSpike] t=475.516 focus UIKitFocusableViewResponderItem screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=1 sdt=-1-- m=cls r=down svh=-
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=up svh=-
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=1 sdt=-1-- m=cls r=down svh=-
+[SearchSpike] t=504.394 focus UIKitFocusableFillerItem screen=search tab=1
+[SearchSpike] t=504.660 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=508.835 focus _UIContextMenuCell screen=search tab=1
+[SearchSpike] t=512.758 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=661.001 focus UIKeyboard screen=search tab=1
+[SearchSpike] t=664.117 query 'dunea'
+[SearchSpike] t=664.508 results sections=0 loading=true
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=up svh=-
+[SearchSpike] t=664.706 kb _UISearchControllerTVKeyboardContainerView other 396,157 780x135 | UIKeyboard grid 396,261 432x750 screen=search tab=1
+[SearchSpike] t=664.874 results sections=1 loading=true
+[SearchSpike] t=664.973 kb _UISearchControllerTVKeyboardContainerView other 0,157 860x135 | UIKeyboard grid 80,261 432x750 screen=search tab=1
+[SearchSpike] t=665.570 results sections=2 loading=true
+[SearchSpike] t=666.022 results sections=3 loading=true
+[SearchSpike] t=666.059 results sections=4 loading=false
+[SearchSpike] t=668.159 focus UITabBarButton screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=0 trk=none sd=0 sdt=-0-- m=cls r=tab svh=-
+[SearchSpike] t=672.886 tab 0
+[SearchSpike] t=672.942 kb none screen=search tab=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=-0-- m=cls r=tab2 svh=574
+[SearchSpike] t=674.279 focus UIKitFocusableViewResponderItem screen=search tab=0
+[SearchSpike] t=675.341 tabbar y=-3 h=68 onscreen=1
+[SearchSpike] t=675.592 tabbar y=-15 h=68 onscreen=1
+[TabBarStateProbe] y=-261 h=68 a=1.00 hid=0 tbh=0 st=min off=307 ins=0 sel=0 trk=rows sd=1 sdt=10-- m=cls r=down svh=574
+[SearchSpike] t=675.847 tabbar y=-260 h=68 onscreen=0
+[TabBarStateProbe] y=-385 h=68 a=1.00 hid=0 tbh=0 st=min off=431 ins=0 sel=0 trk=rows sd=1 sdt=10-- m=cls r=tick svh=574
+[SearchSpike] t=676.099 tabbar y=-396 h=68 onscreen=0
+[SearchSpike] t=676.353 tabbar y=-709 h=68 onscreen=0
+[SearchSpike] t=676.617 tabbar y=-812 h=68 onscreen=0
+[SearchSpike] t=676.874 tabbar y=-1053 h=68 onscreen=0
+[SearchSpike] t=677.135 tabbar y=-1310 h=68 onscreen=0
+[SearchSpike] t=677.391 tabbar y=-1681 h=68 onscreen=0
+[SearchSpike] t=677.643 tabbar y=-1881 h=68 onscreen=0
+[SearchSpike] t=677.894 tabbar y=-2207 h=68 onscreen=0
+[TabBarStateProbe] y=-2389 h=68 a=1.00 hid=0 tbh=0 st=min off=2435 ins=0 sel=0 trk=rows sd=1 sdt=10-- m=cls r=tick svh=574
+[SearchSpike] t=678.147 tabbar y=-2425 h=68 onscreen=0
+[SearchSpike] t=678.402 tabbar y=-2483 h=68 onscreen=0
+[SearchSpike] t=678.655 tabbar y=-2491 h=68 onscreen=0
+[SearchSpike] t=678.923 tabbar y=-2494 h=68 onscreen=0
+[TabBarStateProbe] y=-1982 h=68 a=1.00 hid=0 tbh=0 st=min off=2028 ins=0 sel=0 trk=rows sd=1 sdt=10-- m=cls r=tick svh=574
+[SearchSpike] t=680.213 tabbar y=-766 h=68 onscreen=0
+[TabBarStateProbe] y=-103 h=68 a=1.00 hid=0 tbh=0 st=min off=149 ins=0 sel=0 trk=rows sd=0 sdt=00-- m=cls r=up svh=574
+[SearchSpike] t=680.469 tabbar y=46 h=68 onscreen=1
+[SearchSpike] t=682.038 focus UITabBarButton screen=search tab=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=00-- m=cls r=tick svh=574
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=00-- m=cls r=tab svh=574
+[SearchSpike] t=682.941 tab 1
+[SearchSpike] t=683.073 kb _UISearchControllerTVKeyboardContainerView other 0,157 860x135 | UIKeyboard grid 80,261 432x750 screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=00-- m=cls r=tab2 svh=574
+[TabBarLink] unlinked (left window) controllers=2
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=00-- m=cls r=tick svh=-
+[SearchSpike] t=685.186 focus UIKeyboard screen=search tab=1
+[SearchSpike] t=690.416 focus UIKitFocusableViewResponderItem screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=1 sdt=01-- m=cls r=down svh=-

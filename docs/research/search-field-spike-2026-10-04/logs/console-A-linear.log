@@ -1,0 +1,121 @@
+[SearchSpike] t=0.000 scanner armed variant=A
+[TabBarLink] linked chain=NavigationStackHostingController<AnyView> > UIKitNavigationController(skip) > TabHostingController tab=UIKitTabBarController sv=HostingScrollView svh=1080 pinned=1 legacyObserved=rows adjBottom=0 adjTop=0 restFix=0
+[SearchSpike] t=0.045 kb none screen=search tab=0
+[SearchSpike] t=0.045 focus UIKitFocusableViewResponderItem screen=search tab=0
+[SearchSpike] t=0.045 tabbar y=46 h=68 onscreen=1
+[TabBarStateProbe] chain root=UIHostingController<ModifiedContent<LazyView<ModifiedContent<ContentView, _PreferenceWritingModifier<PreferredColorSchemeKey>>>, RootModifier>> tab=UIKitTabBarController selected=TabHostingController > UIKitNavigationController > NavigationStackHostingController<AnyView> legacyObserved=rows
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=---- m=cls r=arm svh=1080
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=---- m=cls r=attach svh=1080
+[SearchSpike] t=0.302 focus UITabBarButton screen=search tab=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=---- m=cls r=tab svh=574
+[SearchSpike] t=3.715 tab 1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=---- m=cls r=tab2 svh=574
+[TabBarLink] unlinked (left window) controllers=2
+[SearchSpike] t=4.841 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x245 screen=search tab=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=---- m=cls r=tick svh=-
+[SearchSpike] t=19.680 focus UIKeyboard screen=search tab=1
+[SearchSpike] t=24.843 query 'd'
+[SearchSpike] t=25.365 results sections=1 loading=true
+[SearchSpike] t=25.419 results sections=2 loading=true
+[SearchSpike] t=25.453 results sections=3 loading=true
+[SearchSpike] t=25.675 results sections=4 loading=true
+[SearchSpike] t=30.562 query 'du'
+[SearchSpike] t=30.977 results sections=0 loading=true
+[SearchSpike] t=31.037 results sections=1 loading=true
+[SearchSpike] t=31.077 results sections=2 loading=true
+[SearchSpike] t=31.134 results sections=3 loading=true
+[SearchSpike] t=31.220 results sections=4 loading=true
+[SearchSpike] t=32.813 results sections=5 loading=true
+[SearchSpike] t=32.889 results sections=8 loading=false
+[SearchSpike] t=33.820 query 'dun'
+[SearchSpike] t=34.227 results sections=0 loading=true
+[SearchSpike] t=34.300 results sections=2 loading=true
+[SearchSpike] t=34.354 results sections=3 loading=true
+[SearchSpike] t=34.431 results sections=4 loading=true
+[SearchSpike] t=36.970 query 'dune'
+[SearchSpike] t=37.386 results sections=0 loading=true
+[SearchSpike] t=37.429 results sections=1 loading=true
+[SearchSpike] t=37.490 results sections=2 loading=true
+[SearchSpike] t=37.515 results sections=3 loading=true
+[SearchSpike] t=37.594 results sections=4 loading=true
+[SearchSpike] t=38.299 results sections=5 loading=true
+[SearchSpike] t=38.372 results sections=6 loading=true
+[SearchSpike] t=115.335 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=115.852 tabbar y=-216 h=68 onscreen=0
+[TabBarStateProbe] y=-275 h=68 a=1.00 hid=0 tbh=0 st=min off=- ins=- sel=1 trk=none sd=1 sdt=-1-- m=cls r=down svh=-
+[TabBarStateProbe] y=-428 h=68 a=1.00 hid=0 tbh=0 st=min off=- ins=- sel=1 trk=none sd=1 sdt=-1-- m=cls r=tick svh=-
+[SearchSpike] t=116.108 tabbar y=-461 h=68 onscreen=0
+[SearchSpike] t=116.372 tabbar y=-512 h=68 onscreen=0
+[SearchSpike] t=116.624 tabbar y=-173 h=68 onscreen=0
+[TabBarStateProbe] y=-100 h=68 a=1.00 hid=0 tbh=0 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=up svh=-
+[SearchSpike] t=116.893 tabbar y=5 h=68 onscreen=1
+[SearchSpike] t=117.157 tabbar y=38 h=68 onscreen=1
+[SearchSpike] t=117.420 tabbar y=44 h=68 onscreen=1
+[SearchSpike] t=117.679 tabbar y=46 h=68 onscreen=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[SearchSpike] t=122.892 tabbar y=16 h=68 onscreen=1
+[TabBarStateProbe] y=-275 h=68 a=1.00 hid=0 tbh=0 st=min off=- ins=- sel=1 trk=none sd=1 sdt=-1-- m=cls r=down svh=-
+[SearchSpike] t=123.163 tabbar y=-417 h=68 onscreen=0
+[SearchSpike] t=123.416 tabbar y=-502 h=68 onscreen=0
+[SearchSpike] t=123.679 tabbar y=-519 h=68 onscreen=0
+[SearchSpike] t=123.949 tabbar y=-523 h=68 onscreen=0
+[TabBarStateProbe] y=-524 h=68 a=1.00 hid=0 tbh=0 st=min off=- ins=- sel=1 trk=none sd=1 sdt=-1-- m=cls r=tick svh=-
+[SearchSpike] t=124.213 tabbar y=-742 h=68 onscreen=0
+[SearchSpike] t=124.496 tabbar y=-1011 h=68 onscreen=0
+[SearchSpike] t=124.756 tabbar y=-1473 h=68 onscreen=0
+[SearchSpike] t=125.014 tabbar y=-1580 h=68 onscreen=0
+[SearchSpike] t=125.282 tabbar y=-2026 h=68 onscreen=0
+[SearchSpike] t=125.533 tabbar y=-2312 h=68 onscreen=0
+[SearchSpike] t=125.802 tabbar y=-2570 h=68 onscreen=0
+[TabBarStateProbe] y=-2617 h=68 a=1.00 hid=0 tbh=0 st=min off=- ins=- sel=1 trk=none sd=1 sdt=-1-- m=cls r=tick svh=-
+[SearchSpike] t=126.066 tabbar y=-2618 h=68 onscreen=0
+[SearchSpike] t=126.335 tabbar y=-2627 h=68 onscreen=0
+[SearchSpike] t=126.590 tabbar y=-2629 h=68 onscreen=0
+[SearchSpike] t=127.109 tabbar y=-2525 h=68 onscreen=0
+[SearchSpike] t=127.366 tabbar y=-2214 h=68 onscreen=0
+[SearchSpike] t=127.620 tabbar y=-1882 h=68 onscreen=0
+[SearchSpike] t=127.883 tabbar y=-1287 h=68 onscreen=0
+[TabBarStateProbe] y=-988 h=68 a=1.00 hid=0 tbh=0 st=min off=- ins=- sel=1 trk=none sd=1 sdt=-1-- m=cls r=tick svh=-
+[SearchSpike] t=128.137 tabbar y=-842 h=68 onscreen=0
+[SearchSpike] t=128.401 focus UIKeyboard screen=search tab=1
+[SearchSpike] t=128.401 tabbar y=-172 h=68 onscreen=0
+[TabBarStateProbe] y=-106 h=68 a=1.00 hid=0 tbh=0 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=up svh=-
+[SearchSpike] t=128.653 focus UITabBarButton screen=search tab=1
+[SearchSpike] t=128.653 tabbar y=8 h=68 onscreen=1
+[SearchSpike] t=128.905 tabbar y=38 h=68 onscreen=1
+[SearchSpike] t=129.173 tabbar y=44 h=68 onscreen=1
+[SearchSpike] t=129.430 tabbar y=46 h=68 onscreen=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[SearchSpike] t=134.755 focus UIKeyboard screen=search tab=1
+[SearchSpike] t=136.071 focus UIKitFocusableViewResponderItem screen=search tab=1
+[SearchSpike] t=136.323 tabbar y=36 h=68 onscreen=1
+[TabBarStateProbe] y=-275 h=68 a=1.00 hid=0 tbh=0 st=min off=- ins=- sel=1 trk=none sd=1 sdt=-1-- m=cls r=down svh=-
+[SearchSpike] t=136.592 tabbar y=-405 h=68 onscreen=0
+[SearchSpike] t=136.848 tabbar y=-499 h=68 onscreen=0
+[SearchSpike] t=137.112 tabbar y=-519 h=68 onscreen=0
+[SearchSpike] t=137.381 tabbar y=-522 h=68 onscreen=0
+[SearchSpike] t=137.655 tabbar y=-523 h=68 onscreen=0
+[SearchSpike] t=138.211 screen detail appear
+[SearchSpike] t=138.230 kb none screen=detail tab=1
+[SearchSpike] t=138.230 tabbar none
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=1 sdt=-1-- m=cls r=tick svh=-
+[SearchSpike] t=146.015 focus nil screen=detail tab=1
+[SearchSpike] t=149.996 focus UIKitFocusableViewResponderItem screen=detail tab=1
+[TabBarStateProbe] y=-14 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=1 sdt=-1-- m=cls r=tick svh=-
+[TabBarStateProbe] y=-2581 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=1 sdt=-1-- m=cls r=tick svh=-
+[TabBarStateProbe] y=-947 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=1 sdt=-1-- m=cls r=tick svh=-
+[SearchSpike] t=154.256 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x245 screen=detail tab=1
+[TabBarStateProbe] y=-524 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=1 sdt=-1-- m=cls r=pop svh=-
+[SearchSpike] t=154.815 screen detail disappear
+[SearchSpike] t=154.850 tabbar y=-523 h=68 onscreen=0
+[TabBarStateProbe] y=-524 h=68 a=1.00 hid=0 tbh=0 st=min off=- ins=- sel=1 trk=none sd=1 sdt=-1-- m=cls r=tick svh=-
+[SearchSpike] t=156.430 tabbar y=-513 h=68 onscreen=0
+[TabBarStateProbe] y=-101 h=68 a=1.00 hid=0 tbh=0 st=min off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=up svh=-
+[SearchSpike] t=156.693 tabbar y=-72 h=68 onscreen=0
+[SearchSpike] t=156.946 tabbar y=22 h=68 onscreen=1
+[SearchSpike] t=157.211 tabbar y=41 h=68 onscreen=1
+[SearchSpike] t=157.480 tabbar y=45 h=68 onscreen=1
+[SearchSpike] t=157.745 tabbar y=46 h=68 onscreen=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=-0-- m=cls r=tick svh=-
+[SearchSpike] t=223.615 focus UITabBarButton screen=search tab=1
+[SearchSpike] t=224.425 focus nil screen=search tab=1

@@ -1,0 +1,58 @@
+[SearchSpike] t=0.000 scanner armed variant=A2
+[SidebarChrome] hidden tab bar made unfocusable (hidden=0 alpha=1.00 frame={{0, 0}, {1920, 68}})
+[SearchSpike] t=0.040 presslogger installed window=UIWindow level=0
+[SearchSpike] t=0.040 kb none screen=search tab=0
+[SearchSpike] t=0.040 focus UIKitFocusableViewResponderItem screen=search tab=0 blocker=1
+[SearchSpike] t=0.040 tabbar none
+[TabBarStateProbe] chain root=UIHostingController<ModifiedContent<LazyView<ModifiedContent<ContentView, _PreferenceWritingModifier<PreferredColorSchemeKey>>>, RootModifier>> tab=UIKitTabBarController selected=TabHostingController > UIKitNavigationController > NavigationStackHostingController<AnyView> legacyObserved=nil
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=0 trk=none sd=0 sdt=---- m=sb r=arm svh=-
+[SearchSpike] t=0.297 focus nil screen=search tab=0 blocker=1
+[SearchSpike] t=1.868 focus UIKitFocusableViewResponderItem screen=search tab=0 blocker=1
+[SearchSpike] t=14.756 press menu window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[SearchSpike] t=15.715 press down window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[SearchSpike] t=17.600 press select window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=---- m=sb r=tab svh=-
+[SearchSpike] t=17.642 tab 1
+[SearchSpike] t=17.690 router installed windows=1
+[SearchSpike] t=18.081 focus nil screen=search tab=1 blocker=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=---- m=sb r=tab2 svh=-
+[SearchSpike] t=18.857 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x135 | UIKeyboard grid 80,261 432x750 screen=search tab=1
+[SearchSpike] t=18.857 layout grid
+[SearchSpike] t=18.857 focus UIKeyboard screen=search tab=1 blocker=1
+[SearchSpike] t=21.437 press select window=UIWindow focus=UIKeyboard inKeyboard=1
+[SearchSpike] t=21.470 query 'a' renders view=1 layer=3 content=9
+[SearchSpike] t=22.020 results sections=1 loading=true
+[SearchSpike] t=22.138 rows swap mode=2 old=1 new=8 after=0.12s loading=0
+[SearchSpike] t=22.235 results sections=8 loading=false
+[SearchSpike] t=22.403 press down window=UIWindow focus=UIKeyboard inKeyboard=1
+[SearchSpike] t=23.004 press select window=UIWindow focus=UIKeyboard inKeyboard=1
+[SearchSpike] t=23.023 query 'ag' renders view=1 layer=4 content=19
+[SearchSpike] t=23.948 rows swap mode=2 old=8 new=8 after=0.54s loading=0
+[SearchSpike] t=28.400 router gate take=1 sidebar=1 chromeFocused=0 inKeyboard=1
+[SearchSpike] t=28.410 press menu window=UIWindow focus=UIKeyboard inKeyboard=1
+[SearchSpike] t=28.411 router recognized menu (log only)
+[SearchSpike] t=28.435 router redirect hiddenTabBar prev=UIKeyboard heading=0 -> requestReveal
+[SearchSpike] t=28.592 focus UIKitFocusableViewResponderItem screen=search tab=1 blocker=1
+[SearchSpike] t=34.729 press right window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[SearchSpike] t=36.351 press right window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[SearchSpike] t=37.294 press right window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[SearchSpike] t=38.089 press right window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[SearchSpike] t=41.509 press right window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[SearchSpike] t=49.148 router gate take=0 sidebar=1 chromeFocused=1 inKeyboard=0
+[SearchSpike] t=49.162 press menu window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[SearchSpike] t=49.406 focus nil screen=search tab=1 blocker=1
+[SearchSpike] t=52.010 focus UIKeyboard screen=search tab=1 blocker=1
+[SearchSpike] t=52.024 press down window=UIWindow focus=UIKeyboard inKeyboard=1
+[SearchSpike] t=53.179 press up window=UIWindow focus=UIKeyboard inKeyboard=1
+[SearchSpike] t=53.479 press up window=UIWindow focus=UIKeyboard inKeyboard=1
+[SearchSpike] t=54.319 press up window=UIWindow focus=UIKeyboard inKeyboard=1
+[SearchSpike] t=55.459 press down window=UIWindow focus=UIKeyboard inKeyboard=1
+[SearchSpike] t=56.570 router gate take=1 sidebar=1 chromeFocused=0 inKeyboard=1
+[SearchSpike] t=56.576 press menu window=UIWindow focus=UIKeyboard inKeyboard=1
+[SearchSpike] t=56.576 router recognized menu (log only)
+[SearchSpike] t=56.597 router redirect hiddenTabBar prev=UIKeyboard heading=0 -> requestReveal
+[SearchSpike] t=56.794 focus UIKitFocusableViewResponderItem screen=search tab=1 blocker=1
+[SearchSpike] t=73.071 press right window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[SearchSpike] t=73.505 press right window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[SearchSpike] t=129.594 press select window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[SearchSpike] t=129.888 focus UIKeyboard screen=search tab=1 blocker=1

@@ -1,0 +1,1451 @@
+diff --git a/iosApp/NuvioTV/ContentView.swift b/iosApp/NuvioTV/ContentView.swift
+index 1e75d7aa..254d0b77 100644
+--- a/iosApp/NuvioTV/ContentView.swift
++++ b/iosApp/NuvioTV/ContentView.swift
+@@ -380,9 +380,18 @@ struct MainTabView: View {
+                 HomeView(model: home)
+                     .tabBarImmersiveHide()
+             }
+-            Tab("Search", systemImage: "magnifyingglass", value: 1) {
+-                SearchView()
+-                    .tabBarImmersiveHide()
++            // SPIKE (2026-10-04, never merge): variant C gives Search the system search role.
++            // `nil` is today's plain tab. See SearchFieldSpike.swift.
++            Tab("Search", systemImage: "magnifyingglass", value: 1,
++                role: SearchFieldSpike.variant == .c ? .search : nil) {
++                // WAVE 0: A0 = the morning spike's SearchView verbatim.
++                if SearchFieldSpike.variant == .a0 {
++                    SearchViewA0()
++                        .tabBarImmersiveHide()
++                } else {
++                    SearchView()
++                        .tabBarImmersiveHide()
++                }
+             }
+             Tab("Library", systemImage: "books.vertical", value: 2) {
+                 LibraryView()
+@@ -413,6 +422,10 @@ struct MainTabView: View {
+                     .tabBarImmersiveHide()
+             }
+         }
++        // SPIKE: variant C's `.searchable` sits on the TabView (Apple's WWDC25 search-tab
++        // pattern). Its text lives in `SearchFieldSpike.TabQuery.shared`, never in this view's
++        // state, so typing doesn't re-evaluate this body (T3/BUG-66).
++        .modifier(SpikeTabSearchable())
+         .environment(\.tabBarVisibility, tabBarVisibility)
+         .environment(\.sidebarChrome, sidebarChrome)
+         // BUG-66 evidence probe (2026-09-10): arms `TabBarStateProbe`'s on-device tab-bar geometry
+@@ -424,6 +437,10 @@ struct MainTabView: View {
+         // (TabBarStateProbe.swift) which the About pane's toggle writes in Release too, so a
+         // DEBUG-only armer meant every rc sample logged `NOT-FOUND state=unknown`.
+         .background(TabBarProbeArmer())
++        // SPIKE: the keyboard scanner sits on the shell (moved from SearchView on the Mac run,
++        // 2026-10-04) so it keeps sampling while another tab is on screen: inside SearchView it
++        // left the window on every tab switch, and Home was sampled once.
++        .background(SpikeKeyboardScanner().frame(width: 0, height: 0))
+         // FEAT-30: the shell-wide focus scope `resetFocus(in:)` targets. Sidebar mode only, so
+         // tabs mode carries no new modifier at all (the byte-identical promise; test54's row walk
+         // stopped finding tiles in the one run where this scope was declared in both modes).
+@@ -481,6 +498,9 @@ struct MainTabView: View {
+             // Geometry pane — what the bar tracks after a switch is the half of BUG-66 the cold
+             // launch never showed. No-op unless that probe is armed.
+             TabBarStateProbe.noteTabSelected(tab)
++            // SPIKE: a keyboard line while tab != 1 is the bleed-onto-another-tab case.
++            SearchFieldSpike.tab = tab
++            SearchFieldSpike.log("tab \(tab)")
+         }
+     }
+ }
+diff --git a/iosApp/NuvioTV/DesignSystem/TabBarContentScrollLink.swift b/iosApp/NuvioTV/DesignSystem/TabBarContentScrollLink.swift
+index 70d75c02..14a049b6 100644
+--- a/iosApp/NuvioTV/DesignSystem/TabBarContentScrollLink.swift
++++ b/iosApp/NuvioTV/DesignSystem/TabBarContentScrollLink.swift
+@@ -278,6 +278,7 @@ struct TabBarContentScrollLinkAttacher: UIViewRepresentable {
+                     loggedFailure = true
+                     NSLog("[TabBarLink] no view controller below the tab controller (nearest=%@) — link not made",
+                           String(describing: nearestController().map { type(of: $0) }))
++                    SearchFieldSpike.log("tabbarlink FAILED no controller below the tab controller nearest=\(String(describing: nearestController().map { type(of: $0) }))")
+                 }
+                 return
+             }
+@@ -328,6 +329,8 @@ struct TabBarContentScrollLinkAttacher: UIViewRepresentable {
+                       // T1: which leg this launch runs, so a console capture names it.
+                       TabBarRestFix.leg)
+                 TabBarStateProbe.noteAttached()
++                // WAVE 0 RIG (U4, never merge): the link line into the spike's file log.
++                SearchFieldSpike.log("tabbarlink linked chain=\(chainDesc) sv=\(type(of: scrollView)) svh=\(Int(scrollView.bounds.height.rounded())) observed=\(observed.map { $0 === scrollView ? "self" : String(describing: type(of: $0)) } ?? "nil")")
+             }
+         }
+ 
+diff --git a/iosApp/NuvioTV/Screens/SearchFieldSpike.swift b/iosApp/NuvioTV/Screens/SearchFieldSpike.swift
+new file mode 100644
+index 00000000..8de55bf8
+--- /dev/null
++++ b/iosApp/NuvioTV/Screens/SearchFieldSpike.swift
+@@ -0,0 +1,587 @@
++import SwiftUI
++import UIKit
++import Combine
++
++/// THROWAWAY SPIKE (2026-10-04). Never merge; build it in a throwaway clone.
++///
++/// Question: can tvOS 26/27's system search field (`.searchable`) replace Search's plain
++/// `TextField` without the keyboard-bleed bug that got it banned (SearchView's header comment,
++/// `docs/design/hig-hybrid-contract.md`)? If it can, Search gets live results under the keyboard,
++/// Siri dictation, iPhone typing and the viewer's Linear/Grid keyboard choice (FEAT-37).
++///
++/// Launch with `-debug.searchFieldSpike A|B|C`. Unset (or anything else) = today's TextField,
++/// which is the control, and every spike code path below is inert.
++///
++/// - A "plain": `.searchable` on Search's existing results ScrollView, inside the tab's existing
++///   NavigationStack; titles push Detail as today. This is VortX's structure and exactly what
++///   the ban describes, so A answers "does the original bug still reproduce on tvOS 26/27?".
++/// - B "host": `.searchable` in its own clipped NavigationStack that holds only `Color.clear`
++///   (bobsupra NuvioTVOS's `NativeSearchKeyboardHost`); results are siblings below it (Linear
++///   keyboard) or to its right (Grid keyboard), and Detail is pushed by the OUTER stack, so
++///   nothing pushed can ever sit under the keyboard.
++/// - C "search tab": `Tab(role: .search)` with `.searchable` on the TabView (Apple's WWDC25
++///   pattern). The typed text lives in `TabQuery.shared`, which only SearchView observes, so
++///   typing never re-evaluates `MainTabView`'s body (the T3/BUG-66 rule in ContentView).
++///
++/// Every observation is logged as `[SearchSpike] t=<s> …` (NSLog), so a `devicectl … --console`
++/// stream or Console.app captures the whole walk. See
++/// `docs/research/search-field-spike-2026-10-04.md` in the outer repo for the legs.
++enum SearchFieldSpike {
++    enum Variant: String { case a = "A", a0 = "A0", a2 = "A2", b = "B", c = "C" }
++
++    /// Launch-latched: the variant can't change mid-session.
++    static let variant: Variant? = UserDefaults.standard
++        .string(forKey: "debug.searchFieldSpike")
++        .flatMap { Variant(rawValue: $0.uppercased()) }
++
++    /// What the walk is looking at, stamped into every keyboard-scan line: "search", "detail",
++    /// "grid" (See All) or "person". Main-actor state (project default isolation).
++    /// Pushed screens from Search, innermost last (a stack since the Mac run, 2026-10-04: with
++    /// Detail → person stacked, Detail's `onDisappear` used to reset the tag to "search" while the
++    /// person page was still on top).
++    static var screens: [String] = []
++    static var screen: String { screens.last ?? "search" }
++    static var tab = 0
++
++    /// Probe on: any variant, or the control with `-debug.searchFieldSpikeProbe YES` (added on the
++    /// Mac run, 2026-10-04: a control baseline for the keyboard detector and the latency lines;
++    /// the control's UI is unchanged either way).
++    static let probeEnabled: Bool = variant != nil
++        || UserDefaults.standard.bool(forKey: "debug.searchFieldSpikeProbe")
++
++    private static let t0 = Date()
++
++    // MARK: Wave 0 flags (S1 plan, 2026-10-04). All launch-latched, all off by default.
++
++    /// U6: hold the previous query's rows while the next query loads. 0 = off (today), 1 = swap on
++    /// the first new row, 2 = swap when the new fan-out finishes or 1 s after its first row.
++    static let rowsHoldMode: Int = UserDefaults.standard.integer(forKey: "debug.searchRowsHold")
++    /// U3: Menu pressed while focus is in the system keyboard opens the sidebar (Sidebar mode only).
++    static let menuRouter: Bool = UserDefaults.standard.bool(forKey: "debug.searchMenuRouter")
++    /// U4: link the tab bar to Search's results scroll view (`TabBarContentScrollLinkAttacher`).
++    static let tabBarLink: Bool = UserDefaults.standard.bool(forKey: "debug.searchTabBarLink")
++    /// U4 mode 2: link from the TOP (window root → tab controller → selected tab), because the
++    /// attacher's parent walk from inside `.searchable` stops at TVSearchController (sim 26.5).
++    static let tabBarLinkMode: Int = UserDefaults.standard.integer(forKey: "debug.searchTabBarLinkMode")
++
++    /// U2: body evaluations per view ("view", "layer", "content"), stamped on every `query` line.
++    private static var renders: [String: Int] = [:]
++    static func noteRender(_ name: String) {
++        guard probeEnabled else { return }
++        renders[name, default: 0] += 1
++    }
++    static func renderSummary() -> String {
++        "renders view=\(renders["view", default: 0]) layer=\(renders["layer", default: 0]) content=\(renders["content", default: 0])"
++    }
++
++    /// Every line also lands in `Library/Caches/search-spike.log` (appended, one header per
++    /// launch), because the `devicectl --console` stream to the Apple TV drops on its own
++    /// (Mercury error 1001). Pull it with `devicectl device copy from --domain-type
++    /// appDataContainer --domain-identifier com.youngchris29.NuvioTV --source
++    /// Library/Caches/search-spike.log --destination …`.
++    private static let fileHandle: FileHandle? = {
++        guard let caches = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
++        else { return nil }
++        let url = caches.appendingPathComponent("search-spike.log")
++        if !FileManager.default.fileExists(atPath: url.path) {
++            FileManager.default.createFile(atPath: url.path, contents: nil)
++        }
++        guard let handle = try? FileHandle(forWritingTo: url) else { return nil }
++        _ = try? handle.seekToEnd()
++        let header = "=== launch \(Date()) variant=\(variant?.rawValue ?? "control")\n"
++        try? handle.write(contentsOf: Data(header.utf8))
++        return handle
++    }()
++
++    static func log(_ message: @autoclosure () -> String) {
++        guard probeEnabled else { return }
++        let t = String(format: "%.3f", Date().timeIntervalSince(t0))
++        let line = "[SearchSpike] t=\(t) \(message())"
++        NSLog("%@", line)
++        try? fileHandle?.write(contentsOf: Data((line + "\n").utf8))
++    }
++
++    /// Variant C's query box. A reference type that `MainTabView` never observes; SearchView
++    /// subscribes to `$text`.
++    final class TabQuery: ObservableObject {
++        static let shared = TabQuery()
++        @Published var text = ""
++    }
++
++    /// The keyboard layout the scan last saw ("linear"/"grid"). Variant B lays out around it.
++    /// Never set back to "none", so a host rebuild can't flip the layout back and forth.
++    final class KeyboardState: ObservableObject {
++        static let shared = KeyboardState()
++        @Published var layout = "linear"
++    }
++}
++
++// MARK: - Variant A: .searchable on the results ScrollView
++
++struct SpikeSearchableA: ViewModifier {
++    @Binding var query: String
++    let onSubmit: () -> Void
++
++    func body(content: Content) -> some View {
++        if SearchFieldSpike.variant == .a {
++            content
++                .searchable(text: $query, prompt: "Search movies & shows")
++                .onSubmit(of: .search, onSubmit)
++        } else {
++            content
++        }
++    }
++}
++
++// MARK: - Variant A2: .searchable in the layer that observes only the query (Wave 0, U2)
++
++struct SpikeSearchableA2: ViewModifier {
++    @Binding var query: String
++    let onSubmit: () -> Void
++
++    func body(content: Content) -> some View {
++        if SearchFieldSpike.variant == .a2 {
++            content
++                .searchable(text: $query, prompt: "Search movies & shows")
++                .onSubmit(of: .search, onSubmit)
++        } else {
++            content
++        }
++    }
++}
++
++// MARK: - Variant B: the clipped keyboard host
++
++/// bobsupra's host: a NavigationStack with nothing in it but the search field. It is clipped to
++/// a fixed frame by the caller, and it never pushes anything.
++struct SpikeSearchFieldHost: View {
++    @Binding var text: String
++    let onSubmit: () -> Void
++
++    var body: some View {
++        NavigationStack {
++            Color.clear
++                .frame(maxWidth: .infinity, maxHeight: .infinity)
++                .searchable(text: $text, prompt: "Search movies & shows")
++                .onSubmit(of: .search, onSubmit)
++                .toolbar(.hidden, for: .navigationBar)
++        }
++    }
++}
++
++/// Lays Search's results out around variant B's host; a pass-through for every other variant.
++struct SpikeSearchLayout<Results: View>: View {
++    @Binding var query: String
++    let onSubmit: () -> Void
++    let results: () -> Results
++    @ObservedObject private var keyboard = SearchFieldSpike.KeyboardState.shared
++
++    /// Explicit, because the private `keyboard` would make the synthesized init private.
++    init(
++        query: Binding<String>,
++        onSubmit: @escaping () -> Void,
++        @ViewBuilder results: @escaping () -> Results
++    ) {
++        _query = query
++        self.onSubmit = onSubmit
++        self.results = results
++    }
++
++    /// bobsupra's measured frames: Linear = 220 pt keyboard band under a 56 pt top inset;
++    /// Grid = a 780 × 780 column on the left.
++    private static var linearHeight: CGFloat { 220 + 56 }
++    private static var gridSide: CGFloat { 780 }
++
++    var body: some View {
++        if SearchFieldSpike.variant == .b {
++            if keyboard.layout == "grid" {
++                HStack(alignment: .top, spacing: Theme.Spacing.lg) {
++                    SpikeSearchFieldHost(text: $query, onSubmit: onSubmit)
++                        .frame(width: Self.gridSide, height: Self.gridSide, alignment: .topLeading)
++                        .clipped()
++                    results()
++                }
++            } else {
++                VStack(alignment: .leading, spacing: 0) {
++                    SpikeSearchFieldHost(text: $query, onSubmit: onSubmit)
++                        .padding(.top, 56)
++                        .frame(maxWidth: .infinity)
++                        .frame(height: Self.linearHeight, alignment: .top)
++                        .clipped()
++                    results()
++                }
++            }
++        } else {
++            results()
++        }
++    }
++}
++
++// MARK: - Variant C: .searchable on the TabView
++
++struct SpikeTabSearchable: ViewModifier {
++    func body(content: Content) -> some View {
++        if SearchFieldSpike.variant == .c {
++            content.searchable(
++                text: Binding(
++                    get: { SearchFieldSpike.TabQuery.shared.text },
++                    set: { SearchFieldSpike.TabQuery.shared.text = $0 }
++                ),
++                prompt: "Search movies & shows"
++            )
++        } else {
++            content
++        }
++    }
++}
++
++// MARK: - Probes
++
++/// Stamps `SearchFieldSpike.screen` while a pushed screen is on top, so a keyboard seen during
++/// "detail" is the original bleed bug.
++struct SpikeScreenTag: ViewModifier {
++    let name: String
++
++    func body(content: Content) -> some View {
++        content
++            .onAppear {
++                SearchFieldSpike.screens.append(name)
++                SearchFieldSpike.log("screen \(name) appear")
++            }
++            .onDisappear {
++                if let i = SearchFieldSpike.screens.lastIndex(of: name) {
++                    SearchFieldSpike.screens.remove(at: i)
++                }
++                SearchFieldSpike.log("screen \(name) disappear")
++            }
++    }
++}
++
++/// Zero-size probe. Every 250 ms while the spike is on, it walks every window of the scene for
++/// visible views whose class name contains "Keyboard" (bobsupra's detector heuristic) and logs
++/// the summary when it changes, together with the focused item's type and the tab bar's frame.
++/// Bleed = a keyboard line while `screen=detail`, or while `tab` isn't 1.
++struct SpikeKeyboardScanner: UIViewRepresentable {
++    func makeUIView(context: Context) -> SpikeKeyboardScanView { SpikeKeyboardScanView() }
++    func updateUIView(_ uiView: SpikeKeyboardScanView, context: Context) {}
++}
++
++final class SpikeKeyboardScanView: UIView {
++    private var loop: Task<Void, Never>?
++    private var lastKeyboard = ""
++    private var lastFocus = ""
++    private var lastTabBar = ""
++
++    override func didMoveToWindow() {
++        super.didMoveToWindow()
++        loop?.cancel()
++        loop = nil
++        guard window != nil, SearchFieldSpike.probeEnabled else { return }
++        SearchFieldSpike.log("scanner armed variant=\(SearchFieldSpike.variant?.rawValue ?? "-")")
++        loop = Task { [weak self] in
++            while !Task.isCancelled {
++                self?.scan()
++                try? await Task.sleep(nanoseconds: 250_000_000)
++            }
++        }
++    }
++
++    private func scan() {
++        guard let scene = window?.windowScene else { return }
++        SpikePressLogger.shared.install(on: scene.windows)
++        var hits: [String] = []
++        var layout: String?
++        var tabBar = "none"
++        for win in scene.windows where !win.isHidden {
++            walk(win, window: win, hits: &hits, layout: &layout, tabBar: &tabBar)
++        }
++
++        let keyboard = hits.isEmpty ? "none" : hits.joined(separator: " | ")
++        if keyboard != lastKeyboard {
++            lastKeyboard = keyboard
++            SearchFieldSpike.log("kb \(keyboard) screen=\(SearchFieldSpike.screen) tab=\(SearchFieldSpike.tab)")
++        }
++        if let layout, SearchFieldSpike.KeyboardState.shared.layout != layout {
++            SearchFieldSpike.KeyboardState.shared.layout = layout
++            SearchFieldSpike.log("layout \(layout)")
++        }
++
++        let focus = scene.focusSystem?.focusedItem.map { String(describing: type(of: $0)) } ?? "nil"
++        if focus != lastFocus {
++            lastFocus = focus
++            SearchFieldSpike.log("focus \(focus) screen=\(SearchFieldSpike.screen) tab=\(SearchFieldSpike.tab) blocker=\(HiddenTabBarFocusBlocker.isBlocking ? 1 : 0)")
++        }
++        if tabBar != lastTabBar {
++            lastTabBar = tabBar
++            SearchFieldSpike.log("tabbar \(tabBar)")
++        }
++    }
++
++    private func walk(
++        _ view: UIView,
++        window: UIWindow,
++        hits: inout [String],
++        layout: inout String?,
++        tabBar: inout String
++    ) {
++        if view.isHidden || view.alpha < 0.01 { return }
++        let name = String(describing: type(of: view))
++        if let bar = view as? UITabBar {
++            let f = bar.convert(bar.bounds, to: window)
++            tabBar = "y=\(Int(f.minY)) h=\(Int(f.height)) onscreen=\(f.intersects(window.bounds) ? 1 : 0)"
++        }
++        if name.contains("Keyboard") {
++            let f = view.convert(view.bounds, to: window)
++            if f.width > 200, f.height > 40, f.intersects(window.bounds) {
++                let kind = (f.height > 320 && f.width < 900) ? "grid" : (f.width >= 900 ? "linear" : "other")
++                if kind != "other" { layout = kind }
++                hits.append("\(name) \(kind) \(Int(f.minX)),\(Int(f.minY)) \(Int(f.width))x\(Int(f.height))")
++                return
++            }
++        }
++        for sub in view.subviews {
++            walk(sub, window: window, hits: &hits, layout: &layout, tabBar: &tabBar)
++        }
++    }
++}
++
++// MARK: - Wave 0 (U3): press logger and the Menu router
++
++/// Passive: logs every remote press with the focused item at press time, on every window of the
++/// scene (the inline keyboard may live in its own window). Recognizes alongside everything and
++/// cancels nothing.
++final class SpikePressLogger: NSObject, UIGestureRecognizerDelegate {
++    static let shared = SpikePressLogger()
++    private var installed: Set<ObjectIdentifier> = []
++    private static let types: [(UIPress.PressType, String)] = [
++        (.menu, "menu"), (.upArrow, "up"), (.downArrow, "down"), (.leftArrow, "left"),
++        (.rightArrow, "right"), (.select, "select"), (.playPause, "playpause"),
++    ]
++
++    func install(on windows: [UIWindow]) {
++        for window in windows where !installed.contains(ObjectIdentifier(window)) {
++            installed.insert(ObjectIdentifier(window))
++            for (type, _) in Self.types {
++                let r = UITapGestureRecognizer(target: self, action: #selector(pressed(_:)))
++                r.allowedPressTypes = [NSNumber(value: type.rawValue)]
++                r.allowedTouchTypes = []
++                r.cancelsTouchesInView = false
++                r.delaysTouchesBegan = false
++                r.delaysTouchesEnded = false
++                r.delegate = self
++                window.addGestureRecognizer(r)
++            }
++            SearchFieldSpike.log("presslogger installed window=\(type(of: window)) level=\(Int(window.windowLevel.rawValue))")
++        }
++    }
++
++    @objc private func pressed(_ r: UITapGestureRecognizer) {
++        let raw = (r.allowedPressTypes.first as? NSNumber)?.intValue ?? -1
++        let name = Self.types.first { $0.0.rawValue == raw }?.1 ?? "\(raw)"
++        // The recognizer sits ON the window, and a UIWindow's own `window` is nil: read the scene
++        // from the window itself (Wave 0 run 2 logged `focus=nil` for every press before this).
++        let scene = (r.view as? UIWindow)?.windowScene ?? r.view?.window?.windowScene
++        let focus = scene?.focusSystem?.focusedItem.map { String(describing: type(of: $0)) } ?? "nil"
++        SearchFieldSpike.log("press \(name) window=\(type(of: r.view ?? UIView())) focus=\(focus) inKeyboard=\(SearchMenuRouter.focusIsInSystemKeyboard(scene) ? 1 : 0)")
++    }
++
++    func gestureRecognizer(_ g: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith o: UIGestureRecognizer) -> Bool { true }
++}
++
++/// U3 prototype. A zero-size view that, while Search is on screen, puts a CONSUMING Menu recognizer
++/// on every window of the scene. It only receives a press when Sidebar mode is on, the sidebar
++/// doesn't hold focus, and the focused item is inside the system keyboard (`shouldReceive`), so
++/// every other Menu press never touches it. On recognize it opens the sidebar.
++struct SearchMenuRouter: UIViewRepresentable {
++    let chrome: SidebarChromeModel
++
++    func makeUIView(context: Context) -> RouterView {
++        let v = RouterView()
++        v.chrome = chrome
++        return v
++    }
++    func updateUIView(_ uiView: RouterView, context: Context) { uiView.chrome = chrome }
++    static func dismantleUIView(_ uiView: RouterView, coordinator: ()) { uiView.uninstall() }
++
++    /// The spike probe's class-name heuristic: the focused view, or an ancestor, is a keyboard view.
++    static func focusIsInSystemKeyboard(_ scene: UIWindowScene?) -> Bool {
++        guard let item = scene?.focusSystem?.focusedItem else { return false }
++        var node: UIView? = item as? UIView
++        while let v = node {
++            let name = String(describing: type(of: v))
++            if name.contains("Keyboard") { return true }
++            node = v.superview
++        }
++        return false
++    }
++
++    final class RouterView: UIView, UIGestureRecognizerDelegate {
++        var chrome: SidebarChromeModel?
++        private var installed: [(UIWindow, UITapGestureRecognizer)] = []
++
++        override func didMoveToWindow() {
++            super.didMoveToWindow()
++            uninstall()
++            guard SearchFieldSpike.menuRouter, let scene = window?.windowScene else { return }
++            for w in scene.windows {
++                let r = UITapGestureRecognizer(target: self, action: #selector(menu))
++                r.allowedPressTypes = [NSNumber(value: UIPress.PressType.menu.rawValue)]
++                r.allowedTouchTypes = []
++                // Consuming: hold the press until recognized and cancel it in the view, so neither
++                // the search container (focus to the hidden tab bar) nor the app exit sees it.
++                r.cancelsTouchesInView = true
++                r.delaysTouchesBegan = true
++                r.delegate = self
++                w.addGestureRecognizer(r)
++                installed.append((w, r))
++            }
++            SearchFieldSpike.log("router installed windows=\(installed.count)")
++            startRedirect()
++        }
++
++        func uninstall() {
++            stopRedirect()
++            for (w, r) in installed { w.removeGestureRecognizer(r) }
++            if !installed.isEmpty { SearchFieldSpike.log("router uninstalled") }
++            installed.removeAll()
++        }
++
++        func gestureRecognizer(_ g: UIGestureRecognizer, shouldReceive press: UIPress) -> Bool {
++            let sidebar = SidebarChrome.isEnabled()
++            let chromeFocused = chrome?.isFocusedChrome ?? false
++            let inKeyboard = SearchMenuRouter.focusIsInSystemKeyboard(window?.windowScene)
++            let take = sidebar && !chromeFocused && inKeyboard
++            SearchFieldSpike.log("router gate take=\(take ? 1 : 0) sidebar=\(sidebar ? 1 : 0) chromeFocused=\(chromeFocused ? 1 : 0) inKeyboard=\(inKeyboard ? 1 : 0)")
++            return take
++        }
++
++        /// Exclusive, except with the passive press logger: when the router takes the press, the
++        /// keyboard's own Menu handling must not run alongside it.
++        /// Run 4b: simultaneous with everything, and the action only logs, to learn whether this
++        /// recognizer can fire at all next to the search container's own Menu handling (run 4: it
++        /// took the press but never recognized; focus went to the hidden tab bar 62 ms later).
++        func gestureRecognizer(_ g: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith o: UIGestureRecognizer) -> Bool {
++            true
++        }
++
++        @objc private func menu() {
++            SearchFieldSpike.log("router recognized menu (log only)")
++        }
++
++        // MARK: Run 4b: redirect focus that lands on the hidden system tab bar into the sidebar.
++
++        private var focusObserver: NSObjectProtocol?
++
++        func startRedirect() {
++            guard focusObserver == nil else { return }
++            focusObserver = NotificationCenter.default.addObserver(forName: UIFocusSystem.didUpdateNotification, object: nil, queue: .main) { [weak self] note in
++                MainActor.assumeIsolated { self?.focusUpdated(note) }
++            }
++        }
++
++        func stopRedirect() {
++            if let focusObserver { NotificationCenter.default.removeObserver(focusObserver) }
++            focusObserver = nil
++        }
++
++        private func focusUpdated(_ note: Notification) {
++            guard SidebarChrome.isEnabled(), !(chrome?.isFocusedChrome ?? false) else { return }
++            let ctx = note.userInfo?[UIFocusSystem.focusUpdateContextUserInfoKey] as? UIFocusUpdateContext
++            guard let next = ctx?.nextFocusedItem else { return }
++            let name = String(describing: type(of: next))
++            guard name.contains("UITabBarButton") else { return }
++            let prev = ctx?.previouslyFocusedItem.map { String(describing: type(of: $0)) } ?? "nil"
++            SearchFieldSpike.log("router redirect hiddenTabBar prev=\(prev) heading=\(ctx?.focusHeading.rawValue ?? 0) -> requestReveal")
++            chrome?.requestReveal()
++        }
++    }
++}
++
++// MARK: - Wave 0 (U4 mode 2): link the tab bar from the tab controller down
++
++/// Mounted in the background of Search's results stack. Finds the scroll view it sits in, finds the
++/// `UITabBarController` from the window root (children first, presented last — the same walk
++/// `HiddenTabBarFocusBlocker` uses), and sets that scroll view as the content scroll view of the
++/// selected tab's controllers (navigation controllers skipped, like `TabBarContentScrollLink`).
++/// Re-applied on every focus update; withdrawn when the view leaves the window.
++struct SpikeTopDownTabLink: UIViewRepresentable {
++    func makeUIView(context: Context) -> LinkView { LinkView() }
++    func updateUIView(_ uiView: LinkView, context: Context) {}
++
++    final class LinkView: UIView {
++        private var observer: NSObjectProtocol?
++        private weak var linkedScroll: UIScrollView?
++        private var linked: [WeakVC] = []
++        private var logged = false
++        struct WeakVC { weak var vc: UIViewController? }
++
++        override func didMoveToWindow() {
++            super.didMoveToWindow()
++            if window == nil { withdraw(); return }
++            for delay in [0.0, 0.3, 1.0, 2.5] {
++                DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in self?.apply() }
++            }
++            if observer == nil {
++                observer = NotificationCenter.default.addObserver(forName: UIFocusSystem.didUpdateNotification, object: nil, queue: .main) { [weak self] _ in
++                    MainActor.assumeIsolated { self?.apply() }
++                }
++            }
++        }
++
++        override func willMove(toWindow newWindow: UIWindow?) {
++            super.willMove(toWindow: newWindow)
++            if newWindow == nil { withdraw() }
++        }
++
++        private func withdraw() {
++            for w in linked { if let vc = w.vc, vc.contentScrollView(for: .top) === linkedScroll { vc.setContentScrollView(nil, for: .top) } }
++            if !linked.isEmpty { SearchFieldSpike.log("tablink2 withdrawn controllers=\(linked.count)") }
++            linked = []
++            if let observer { NotificationCenter.default.removeObserver(observer); self.observer = nil }
++        }
++
++        private func apply() {
++            guard window != nil, let sv = enclosingScrollView(), let root = window?.rootViewController else { return }
++            guard let tab = Self.findTab(root) else {
++                if !logged { logged = true; SearchFieldSpike.log("tablink2 FAILED no UITabBarController under the window root") }
++                return
++            }
++            var targets: [UIViewController] = []
++            var node: UIViewController? = tab.selectedViewController
++            var depth = 0
++            while let c = node, depth < 6 {
++                // Only controllers whose view actually contains the results: a push or a tab switch
++                // fires a focus update before this view leaves the window, and the selected chain
++                // then belongs to another screen (sim 26.5: Detail's and Library's controllers).
++                if !(c is UINavigationController), c.isViewLoaded, self.isDescendant(of: c.view) { targets.append(c) }
++                node = (c as? UINavigationController)?.topViewController ?? c.children.first
++                depth += 1
++            }
++            guard !targets.isEmpty else { return }
++            var changed = false
++            for vc in targets where vc.contentScrollView(for: .top) !== sv {
++                vc.setContentScrollView(sv, for: .top)
++                changed = true
++            }
++            linkedScroll = sv
++            linked = targets.map { WeakVC(vc: $0) }
++            if changed || !logged {
++                logged = true
++                SearchFieldSpike.log("tablink2 linked targets=\(targets.map { String(describing: type(of: $0)).prefix(40) }.joined(separator: " > ")) sv=\(type(of: sv)) svh=\(Int(sv.bounds.height))")
++            }
++        }
++
++        private func enclosingScrollView() -> UIScrollView? {
++            var node = superview
++            while let v = node { if let s = v as? UIScrollView { return s }; node = v.superview }
++            return nil
++        }
++
++        static func findTab(_ vc: UIViewController) -> UITabBarController? {
++            if let t = vc as? UITabBarController { return t }
++            for child in vc.children { if let t = findTab(child) { return t } }
++            if let p = vc.presentedViewController { return findTab(p) }
++            return nil
++        }
++    }
++}
+diff --git a/iosApp/NuvioTV/Screens/SearchView.swift b/iosApp/NuvioTV/Screens/SearchView.swift
+index e301e08c..cd9e2e1c 100644
+--- a/iosApp/NuvioTV/Screens/SearchView.swift
++++ b/iosApp/NuvioTV/Screens/SearchView.swift
+@@ -1,87 +1,162 @@
+ import SwiftUI
+ import SharedCore
++import Combine
+ 
+-/// Search screen. Uses a plain `TextField` rather than `.searchable` — on tvOS `.searchable` inside a
+-/// `TabView` leaves a persistent keyboard panel that bleeds over results and pushed screens. A
+-/// `TextField` instead opens tvOS's self-contained full-screen keyboard which dismisses on commit,
+-/// then shows results inline. Results push the detail screen via a normal NavigationLink.
++/// WAVE 0 RIG (2026-10-04, never merge; S1 plan `docs/search-s1-native-search-plan-2026-10-04.md`).
++/// The spike's SearchView, split into the W1 shape so U2 (the iPhone-keyboard echo) can be tested:
+ ///
+-/// While the query is empty the screen doubles as **Discover**: recent-search chips plus shared
+-/// `SearchRepository.discoverUiState`-driven browsing (type → catalog → genre → paginated grid).
+-struct SearchView: View {
+-    @StateObject private var model = SearchViewModel()
+-    @State private var query = ""
+-    @Environment(\.posterStyle) private var posterStyle
++/// - `SearchView` owns the model and the query box through `SearchViewOwner`, which never
++///   publishes, so this view's body never re-runs on a results update.
++/// - `SearchFieldLayer` observes ONLY the query box. Variant A2 applies `.searchable` here, so a
++///   results update can't re-apply the search field's text binding.
++/// - `SearchContent` observes the model and draws the page. Variant A keeps `.searchable` inside it
++///   (on the results ScrollView, the spike's placement), so A re-applies it on every results update.
++///
++/// A against A2 isolates that one difference. Today's TextField is the control (no variant).
++final class SearchQueryBox: ObservableObject {
++    @Published var text = ""
++}
+ 
+-    private var gridColumns: [GridItem] {
+-        [GridItem(
+-            .adaptive(minimum: posterStyle.width + Theme.Spacing.rowGap),
+-            spacing: Theme.Spacing.rowGap
+-        )]
+-    }
++final class SearchViewOwner: ObservableObject {
++    let model = SearchViewModel()
++    let queryBox = SearchQueryBox()
++}
++
++struct SearchView: View {
++    @StateObject private var owner = SearchViewOwner()
++    @Environment(\.sidebarChrome) private var sidebarChrome
+ 
+     var body: some View {
++        let _ = SearchFieldSpike.noteRender("view")
+         NavigationStack {
+             ZStack {
+                 Theme.Palette.background.ignoresSafeArea()
+-
+-                ScrollView(.vertical) {
+-                    VStack(alignment: .leading, spacing: Theme.Spacing.xl) {
+-                        HStack(spacing: Theme.Spacing.md) {
+-                            Image(systemName: "magnifyingglass")
+-                                .foregroundStyle(Theme.Palette.textSecondary)
+-                            TextField("Search movies & shows", text: $query)
+-                                .textFieldStyle(.plain)
+-                                .font(Theme.Font.body)
+-                                .foregroundStyle(Theme.Palette.textPrimary)
+-                                .onSubmit { model.recordSearch(query) }
+-                        }
+-                        .padding(Theme.Spacing.lg)
+-                        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: Theme.Radius.card))
+-
+-                        if queryIsEmpty {
+-                            historyChips
+-                            // UX-8: the user can hide the whole Discover section (synced per
+-                            // profile) — the page is then the search field + recent searches.
+-                            if !model.hideDiscover {
+-                                discoverSection
+-                            }
+-                        } else {
+-                            searchResults
+-                        }
+-                    }
+-                    .padding(Theme.Spacing.screen)
+-                }
+-                .scrollClipDisabled()
+-                // beta.19-rc1 verdict (M3, BUG-133): Search has no settle corrector, so its rows'
+-                // inline trailers gate on `RowsMotionClock` (`RowRestSource.motionClock`, the
+-                // default); this stamps it while the results scroll vertically.
+-                .rowsMotionStamp(.vertical)
+-                .reportsScrollToTabBar(tab: "Search")
+-                // FEAT-30: in sidebar mode Menu summons the floating sidebar instead of
+-                // suspending the app; a second Menu (with focus now in the sidebar) falls through
+-                // to the system default and exits, so the exit convention survives one step
+-                // further in. Structurally absent in tabs mode — see `SidebarMenuRevealModifier`.
+-                .sidebarMenuReveal()
++                SearchFieldLayer(model: owner.model, queryBox: owner.queryBox)
+             }
+             .navigationDestination(for: TitleRoute.self) { route in
+                 DetailView(preview: route.preview)
++                    .modifier(SpikeScreenTag(name: "detail"))
+             }
+             .navigationDestination(for: CatalogRoute.self) { route in
+                 CatalogGridView(route: route)
++                    .modifier(SpikeScreenTag(name: "grid"))
+             }
+             .navigationDestination(for: PersonRoute.self) { route in
+                 PersonDetailView(personId: route.id, personName: route.name)
++                    .modifier(SpikeScreenTag(name: "person"))
+             }
+             .navigationDestination(for: EntityRoute.self) { route in
+                 EntityBrowseView(route: route)
+             }
+         }
+-        .onChange(of: query) { _, newValue in
++        // WAVE 0 (U3): Menu pressed while focus is in the system keyboard opens the sidebar.
++        // Inert unless `-debug.searchMenuRouter YES`, and only in Sidebar mode.
++        .background(SearchMenuRouter(chrome: sidebarChrome).frame(width: 0, height: 0))
++        .onAppear { owner.model.start() }
++        .onDisappear { owner.model.stop() }
++    }
++}
++
++/// Observes only the query box. A2's `.searchable` lives here.
++private struct SearchFieldLayer: View {
++    let model: SearchViewModel
++    @ObservedObject var queryBox: SearchQueryBox
++
++    var body: some View {
++        let _ = SearchFieldSpike.noteRender("layer")
++        // SPIKE (2026-10-04, never merge): variant B lays the results out around its own
++        // search-field host; a pass-through otherwise. See SearchFieldSpike.swift.
++        SpikeSearchLayout(query: $queryBox.text, onSubmit: { model.recordSearch(queryBox.text) }) {
++            SearchContent(model: model, query: $queryBox.text)
++                // WAVE 0 (U2): variant A2 applies `.searchable` in the layer that results
++                // updates never re-render.
++                .modifier(SpikeSearchableA2(query: $queryBox.text, onSubmit: { model.recordSearch(queryBox.text) }))
++        }
++        .onChange(of: queryBox.text) { _, newValue in
++            SearchFieldSpike.log("query '\(newValue)' \(SearchFieldSpike.renderSummary())")
+             model.queryChanged(newValue)
+         }
+-        .onAppear { model.start() }
+-        .onDisappear { model.stop() }
++        // SPIKE: variant C's text arrives through the TabView-level field.
++        .onReceive(SearchFieldSpike.TabQuery.shared.$text) { text in
++            if SearchFieldSpike.variant == .c, text != queryBox.text { queryBox.text = text }
++        }
++    }
++}
++
++/// Observes the model and draws the page. Variant A's `.searchable` lives here.
++private struct SearchContent: View {
++    @ObservedObject var model: SearchViewModel
++    @Binding var query: String
++    @Environment(\.posterStyle) private var posterStyle
++
++    private var gridColumns: [GridItem] {
++        [GridItem(
++            .adaptive(minimum: posterStyle.width + Theme.Spacing.rowGap),
++            spacing: Theme.Spacing.rowGap
++        )]
++    }
++
++    var body: some View {
++        let _ = SearchFieldSpike.noteRender("content")
++        ScrollView(.vertical) {
++            VStack(alignment: .leading, spacing: Theme.Spacing.xl) {
++                // SPIKE: today's field is the control; every spike variant replaces it
++                // with the system search field.
++                if SearchFieldSpike.variant == nil {
++                HStack(spacing: Theme.Spacing.md) {
++                    Image(systemName: "magnifyingglass")
++                        .foregroundStyle(Theme.Palette.textSecondary)
++                    TextField("Search movies & shows", text: $query)
++                        .textFieldStyle(.plain)
++                        .font(Theme.Font.body)
++                        .foregroundStyle(Theme.Palette.textPrimary)
++                        .onSubmit { model.recordSearch(query) }
++                }
++                .padding(Theme.Spacing.lg)
++                .glassEffect(.regular, in: RoundedRectangle(cornerRadius: Theme.Radius.card))
++                }
++
++                if queryIsEmpty {
++                    historyChips
++                    // UX-8: the user can hide the whole Discover section (synced per
++                    // profile) — the page is then the search field + recent searches.
++                    if !model.hideDiscover {
++                        discoverSection
++                    }
++                } else {
++                    searchResults
++                }
++            }
++            .padding(Theme.Spacing.screen)
++            // WAVE 0 (U4): link the tab bar to the results scroll view. Inert unless
++            // `-debug.searchTabBarLink YES` (and, inside the attacher, in Sidebar mode).
++            .background {
++                if SearchFieldSpike.tabBarLinkMode == 2 {
++                    SpikeTopDownTabLink().frame(width: 0, height: 0)
++                } else if SearchFieldSpike.tabBarLink {
++                    TabBarContentScrollLinkAttacher(pinnedContainer: false)
++                        .frame(width: 0, height: 0)
++                }
++            }
++        }
++        .scrollClipDisabled()
++        // beta.19-rc1 verdict (M3, BUG-133): Search has no settle corrector, so its rows'
++        // inline trailers gate on `RowsMotionClock` (`RowRestSource.motionClock`, the
++        // default); this stamps it while the results scroll vertically.
++        .rowsMotionStamp(.vertical)
++        .reportsScrollToTabBar(tab: "Search")
++        // FEAT-30: in sidebar mode Menu summons the floating sidebar instead of
++        // suspending the app; a second Menu (with focus now in the sidebar) falls through
++        // to the system default and exits, so the exit convention survives one step
++        // further in. Structurally absent in tabs mode — see `SidebarMenuRevealModifier`.
++        .sidebarMenuReveal()
++        // SPIKE: variant A puts `.searchable` right here, on the results ScrollView.
++        .modifier(SpikeSearchableA(query: $query, onSubmit: { model.recordSearch(query) }))
++        // SPIKE: live-results cadence. The gap between a `query` line and the next `results`
++        // line is the keystroke-to-results latency (350 ms debounce + add-on fan-out).
++        .onChange(of: model.sections.count) { _, count in
++            SearchFieldSpike.log("results sections=\(count) loading=\(model.isLoading)")
++        }
+     }
+ 
+     private var queryIsEmpty: Bool {
+@@ -92,7 +167,8 @@ struct SearchView: View {
+ 
+     @ViewBuilder
+     private var searchResults: some View {
+-        if model.isLoading {
++        // WAVE 0 (U6): with rows held between queries, "Searching…" shows only when there are none.
++        if model.isLoading && (SearchFieldSpike.rowsHoldMode == 0 || model.sections.isEmpty) {
+             HStack(spacing: Theme.Spacing.md) {
+                 ProgressView()
+                 Text("Searching\u{2026}")
+diff --git a/iosApp/NuvioTV/Screens/SearchViewA0.swift b/iosApp/NuvioTV/Screens/SearchViewA0.swift
+new file mode 100644
+index 00000000..111fe3a1
+--- /dev/null
++++ b/iosApp/NuvioTV/Screens/SearchViewA0.swift
+@@ -0,0 +1,416 @@
++import SwiftUI
++import SharedCore
++import Combine
++
++/// WAVE 0 RIG (never merge): variant A0 = the 2026-10-04 spike's SearchView verbatim (query in
++/// `@State`, model observed by the view that carries `.searchable`), to test whether the iPhone echo
++/// reproduces with the original structure.
++///
++/// Search screen. Uses a plain `TextField` rather than `.searchable` — on tvOS `.searchable` inside a
++/// `TabView` leaves a persistent keyboard panel that bleeds over results and pushed screens. A
++/// `TextField` instead opens tvOS's self-contained full-screen keyboard which dismisses on commit,
++/// then shows results inline. Results push the detail screen via a normal NavigationLink.
++///
++/// While the query is empty the screen doubles as **Discover**: recent-search chips plus shared
++/// `SearchRepository.discoverUiState`-driven browsing (type → catalog → genre → paginated grid).
++struct SearchViewA0: View {
++    @StateObject private var model = SearchViewModel()
++    @State private var query = ""
++    @Environment(\.posterStyle) private var posterStyle
++
++    private var gridColumns: [GridItem] {
++        [GridItem(
++            .adaptive(minimum: posterStyle.width + Theme.Spacing.rowGap),
++            spacing: Theme.Spacing.rowGap
++        )]
++    }
++
++    var body: some View {
++        NavigationStack {
++            ZStack {
++                Theme.Palette.background.ignoresSafeArea()
++
++                // SPIKE (2026-10-04, never merge): variant B lays the results out around its own
++                // search-field host; a pass-through otherwise. See SearchFieldSpike.swift.
++                SpikeSearchLayout(query: $query, onSubmit: { model.recordSearch(query) }) {
++                ScrollView(.vertical) {
++                    VStack(alignment: .leading, spacing: Theme.Spacing.xl) {
++                        // SPIKE: today's field is the control; every spike variant replaces it
++                        // with the system search field.
++                        if SearchFieldSpike.variant == nil {
++                        HStack(spacing: Theme.Spacing.md) {
++                            Image(systemName: "magnifyingglass")
++                                .foregroundStyle(Theme.Palette.textSecondary)
++                            TextField("Search movies & shows", text: $query)
++                                .textFieldStyle(.plain)
++                                .font(Theme.Font.body)
++                                .foregroundStyle(Theme.Palette.textPrimary)
++                                .onSubmit { model.recordSearch(query) }
++                        }
++                        .padding(Theme.Spacing.lg)
++                        .glassEffect(.regular, in: RoundedRectangle(cornerRadius: Theme.Radius.card))
++                        }
++
++                        if queryIsEmpty {
++                            historyChips
++                            // UX-8: the user can hide the whole Discover section (synced per
++                            // profile) — the page is then the search field + recent searches.
++                            if !model.hideDiscover {
++                                discoverSection
++                            }
++                        } else {
++                            searchResults
++                        }
++                    }
++                    .padding(Theme.Spacing.screen)
++                }
++                .scrollClipDisabled()
++                // beta.19-rc1 verdict (M3, BUG-133): Search has no settle corrector, so its rows'
++                // inline trailers gate on `RowsMotionClock` (`RowRestSource.motionClock`, the
++                // default); this stamps it while the results scroll vertically.
++                .rowsMotionStamp(.vertical)
++                .reportsScrollToTabBar(tab: "Search")
++                // FEAT-30: in sidebar mode Menu summons the floating sidebar instead of
++                // suspending the app; a second Menu (with focus now in the sidebar) falls through
++                // to the system default and exits, so the exit convention survives one step
++                // further in. Structurally absent in tabs mode — see `SidebarMenuRevealModifier`.
++                .sidebarMenuReveal()
++                // SPIKE: variant A puts `.searchable` right here, on the results ScrollView.
++                .modifier(SpikeSearchableA0(query: $query, onSubmit: { model.recordSearch(query) }))
++                }
++            }
++            .navigationDestination(for: TitleRoute.self) { route in
++                DetailView(preview: route.preview)
++                    .modifier(SpikeScreenTag(name: "detail"))
++            }
++            .navigationDestination(for: CatalogRoute.self) { route in
++                CatalogGridView(route: route)
++                    .modifier(SpikeScreenTag(name: "grid"))
++            }
++            .navigationDestination(for: PersonRoute.self) { route in
++                PersonDetailView(personId: route.id, personName: route.name)
++                    .modifier(SpikeScreenTag(name: "person"))
++            }
++            .navigationDestination(for: EntityRoute.self) { route in
++                EntityBrowseView(route: route)
++            }
++        }
++        .onChange(of: query) { _, newValue in
++            SearchFieldSpike.log("query '\(newValue)'")
++            model.queryChanged(newValue)
++        }
++        // SPIKE: live-results cadence. The gap between a `query` line and the next `results`
++        // line is the keystroke-to-results latency (350 ms debounce + add-on fan-out).
++        .onChange(of: model.sections.count) { _, count in
++            SearchFieldSpike.log("results sections=\(count) loading=\(model.isLoading)")
++        }
++        // SPIKE: variant C's text arrives through the TabView-level field.
++        .onReceive(SearchFieldSpike.TabQuery.shared.$text) { text in
++            if SearchFieldSpike.variant == .c, text != query { query = text }
++        }
++        .onAppear { model.start() }
++        .onDisappear { model.stop() }
++    }
++
++    private var queryIsEmpty: Bool {
++        query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
++    }
++
++    // MARK: - Search results (query non-empty)
++
++    @ViewBuilder
++    private var searchResults: some View {
++        if model.isLoading {
++            HStack(spacing: Theme.Spacing.md) {
++                ProgressView()
++                Text("Searching\u{2026}")
++                    .font(Theme.Font.body)
++                    .foregroundStyle(Theme.Palette.textSecondary)
++            }
++        } else if let error = model.searchError {
++            // Codex r1 on upstream 085e8dc6: a failed fan-out is not "No results." — name it and
++            // offer the recovery (manifest re-fetch or a forced re-query, see retrySearch()).
++            VStack(alignment: .leading, spacing: Theme.Spacing.md) {
++                Text(error).font(Theme.Font.body).foregroundStyle(Theme.Palette.textSecondary)
++                Button {
++                    model.retrySearch()
++                } label: {
++                    Label("Retry", systemImage: "arrow.clockwise")
++                        .font(Theme.Font.meta)
++                        .padding(.horizontal, Theme.Spacing.md)
++                        .padding(.vertical, Theme.Spacing.xs)
++                }
++                .buttonStyle(.chip)
++            }
++        } else if let message = model.emptyMessage {
++            Text(message).font(Theme.Font.body).foregroundStyle(Theme.Palette.textSecondary)
++        }
++
++        ForEach(model.sections, id: \.key) { section in
++            CatalogRowView(section: section)
++        }
++    }
++
++    // MARK: - Recent searches
++
++    @ViewBuilder
++    private var historyChips: some View {
++        if !model.history.isEmpty {
++            VStack(alignment: .leading, spacing: Theme.Spacing.md) {
++                Text("Recent Searches")
++                    .font(Theme.Font.sectionTitle)
++                    .foregroundStyle(Theme.Palette.textPrimary)
++                ScrollView(.horizontal, showsIndicators: false) {
++                    HStack(spacing: Theme.Spacing.md) {
++                        ForEach(model.history, id: \.self) { item in
++                            RecentSearchChip(item: item) {
++                                query = item
++                            }
++                            .contextMenu {
++                                Button(role: .destructive) {
++                                    model.removeHistory(item)
++                                } label: {
++                                    Label("Remove from history", systemImage: "trash")
++                                }
++                            }
++                        }
++                    }
++                    .padding(.vertical, Theme.Spacing.xs)
++                }
++            }
++        }
++    }
++
++    // MARK: - Discover (query empty)
++
++    @ViewBuilder
++    private var discoverSection: some View {
++        if let discover = model.discover {
++            VStack(alignment: .leading, spacing: Theme.Spacing.lg) {
++                Text("Discover")
++                    .font(Theme.Font.sectionTitle)
++                    .foregroundStyle(Theme.Palette.textPrimary)
++
++                if !discover.typeOptions.isEmpty {
++                    chipRow(
++                        options: discover.typeOptions,
++                        isSelected: { widen(discover.selectedType) == $0 },
++                        label: { typeLabel($0) }
++                    ) { model.selectDiscoverType($0) }
++                }
++
++                if discover.catalogOptions.count > 1 {
++                    ScrollView(.horizontal, showsIndicators: false) {
++                        HStack(spacing: Theme.Spacing.md) {
++                            ForEach(discover.catalogOptions, id: \.key) { option in
++                                DiscoverChip(
++                                    title: option.catalogName,
++                                    subtitle: option.addonName,
++                                    isSelected: widen(discover.selectedCatalogKey) == option.key
++                                ) {
++                                    model.selectDiscoverCatalog(option.key)
++                                }
++                            }
++                        }
++                        .padding(.vertical, Theme.Spacing.xs)
++                    }
++                }
++
++                if !discover.genreOptions.isEmpty {
++                    ScrollView(.horizontal, showsIndicators: false) {
++                        HStack(spacing: Theme.Spacing.md) {
++                            if discover.selectedCatalog?.genreRequired != true {
++                                DiscoverChip(title: String(localized: "All"), subtitle: nil, isSelected: widen(discover.selectedGenre) == nil) {
++                                    model.selectDiscoverGenre(nil)
++                                }
++                            }
++                            ForEach(discover.genreOptions, id: \.self) { genre in
++                                DiscoverChip(title: genre, subtitle: nil, isSelected: widen(discover.selectedGenre) == genre) {
++                                    model.selectDiscoverGenre(genre)
++                                }
++                            }
++                        }
++                        .padding(.vertical, Theme.Spacing.xs)
++                    }
++                }
++
++                discoverGrid(discover)
++            }
++        }
++    }
++
++    @ViewBuilder
++    private func discoverGrid(_ discover: DiscoverUiState) -> some View {
++        if discover.items.isEmpty {
++            if discover.isLoading {
++                HStack(spacing: Theme.Spacing.md) {
++                    ProgressView()
++                    Text("Loading\u{2026}")
++                        .font(Theme.Font.body)
++                        .foregroundStyle(Theme.Palette.textSecondary)
++                }
++            } else if let reason = discover.emptyStateReason {
++                // Upstream 085e8dc6: RequestFailed with NO catalog options means an add-on MANIFEST
++                // failed (SearchRepository.refreshDiscover's early return), not a catalog page —
++                // say so and offer the honest recovery (re-fetch the manifests) instead of
++                // "try another genre". The root TextField keeps this screen focusable regardless.
++                if reason == DiscoverEmptyStateReason.requestfailed, discover.catalogOptions.isEmpty {
++                    VStack(alignment: .leading, spacing: Theme.Spacing.md) {
++                        Text(widen(discover.errorMessage) ?? String(localized: "Couldn't load your add-ons."))
++                            .font(Theme.Font.body)
++                            .foregroundStyle(Theme.Palette.textSecondary)
++                        Button {
++                            AddonRepository.shared.refreshAll()
++                        } label: {
++                            Label("Retry", systemImage: "arrow.clockwise")
++                                .font(Theme.Font.meta)
++                                .padding(.horizontal, Theme.Spacing.md)
++                                .padding(.vertical, Theme.Spacing.xs)
++                        }
++                        .buttonStyle(.chip)
++                    }
++                } else {
++                    Text(discoverEmptyMessage(reason))
++                        .font(Theme.Font.body)
++                        .foregroundStyle(Theme.Palette.textSecondary)
++                }
++            }
++        } else {
++            LazyVGrid(columns: gridColumns, spacing: Theme.Spacing.xl) {
++                ForEach(Array(discover.items.enumerated()), id: \.element.id) { index, item in
++                    NavigationLink(value: TitleRoute(preview: item)) {
++                        PosterCard(title: item.name, imageURL: item.poster, fallbackImageURL: item.rawPosterUrl)
++                    }
++                    .cardFocusButtonStyle()
++                    .posterButtonShape()
++                    .titleHoldMenu(preview: item)
++                    .onAppear { model.discoverItemAppeared(at: index) }
++                }
++            }
++            if discover.isLoading {
++                HStack {
++                    Spacer()
++                    ProgressView()
++                    Spacer()
++                }
++                .padding(.vertical, Theme.Spacing.md)
++            }
++        }
++    }
++
++    // MARK: - Chip helpers
++
++    private func chipRow(
++        options: [String],
++        isSelected: @escaping (String) -> Bool,
++        label: @escaping (String) -> String,
++        onSelect: @escaping (String) -> Void
++    ) -> some View {
++        ScrollView(.horizontal, showsIndicators: false) {
++            HStack(spacing: Theme.Spacing.md) {
++                ForEach(options, id: \.self) { option in
++                    DiscoverChip(title: label(option), subtitle: nil, isSelected: isSelected(option)) {
++                        onSelect(option)
++                    }
++                }
++            }
++            .padding(.vertical, Theme.Spacing.xs)
++        }
++    }
++
++    /// Kotlin `String?` properties can surface non-optional; force an explicit optional for ==.
++    private func widen(_ value: String?) -> String? { value }
++
++    private func typeLabel(_ type: String) -> String {
++        switch type.lowercased() {
++        case "movie": return String(localized: "Movies")
++        case "series": return String(localized: "Series")
++        case "tv": return String(localized: "TV")
++        case "anime": return String(localized: "Anime")
++        default: return type.capitalized
++        }
++    }
++
++    private func discoverEmptyMessage(_ reason: DiscoverEmptyStateReason) -> String {
++        // KMP exports these enum entries all-lowercase (like CloudLibraryItemType.webdownload).
++        if reason == DiscoverEmptyStateReason.noactiveaddons {
++            return String(localized: "Install and enable an add-on to browse its catalogs.")
++        }
++        if reason == DiscoverEmptyStateReason.nodiscovercatalogs {
++            return String(localized: "Your add-ons don't expose browsable catalogs.")
++        }
++        if reason == DiscoverEmptyStateReason.requestfailed {
++            return String(localized: "Couldn't load this catalog. Try another genre or catalog.")
++        }
++        return String(localized: "Nothing here yet \u{2014} try another genre or catalog.")
++    }
++}
++
++private struct RecentSearchChip: View {
++    let item: String
++    let action: () -> Void
++    @FocusState private var focused: Bool
++
++    var body: some View {
++        Button(action: action) {
++            HStack(spacing: Theme.Spacing.xs) {
++                Image(systemName: "clock.arrow.circlepath")
++                Text(item)
++            }
++            .font(Theme.Font.meta)
++            .padding(.horizontal, Theme.Spacing.md)
++            .padding(.vertical, Theme.Spacing.xs)
++            .foregroundStyle(focused ? Theme.Palette.onFocusPlatter : Theme.Palette.textPrimary)
++        }
++        .buttonStyle(.chip)
++        .focused($focused)
++        .environment(\.settingsRowIsFocused, focused)
++    }
++}
++
++private struct DiscoverChip: View {
++    let title: String
++    let subtitle: String?
++    let isSelected: Bool
++    let action: () -> Void
++    @FocusState private var focused: Bool
++
++    var body: some View {
++        Button(action: action) {
++            HStack(spacing: Theme.Spacing.xs) {
++                if isSelected {
++                    Image(systemName: "checkmark.circle.fill")
++                }
++                VStack(alignment: .leading, spacing: 0) {
++                    Text(title)
++                    if let subtitle, !subtitle.isEmpty {
++                        Text(subtitle)
++                            .font(Theme.Font.caption)
++                            .chipMetaText(selected: isSelected)
++                    }
++                }
++            }
++            .font(Theme.Font.meta)
++            .padding(.horizontal, Theme.Spacing.md)
++            .padding(.vertical, Theme.Spacing.xs)
++        }
++        .buttonStyle(.chip(selected: isSelected))
++        .focused($focused)
++        .environment(\.settingsRowIsFocused, focused)
++    }
++}
++
++struct SpikeSearchableA0: ViewModifier {
++    @Binding var query: String
++    let onSubmit: () -> Void
++
++    func body(content: Content) -> some View {
++        if SearchFieldSpike.variant == .a0 {
++            content
++                .searchable(text: $query, prompt: "Search movies & shows")
++                .onSubmit(of: .search, onSubmit)
++        } else {
++            content
++        }
++    }
++}
+diff --git a/iosApp/NuvioTV/Screens/SearchViewModel.swift b/iosApp/NuvioTV/Screens/SearchViewModel.swift
+index 65de084a..44f25886 100644
+--- a/iosApp/NuvioTV/Screens/SearchViewModel.swift
++++ b/iosApp/NuvioTV/Screens/SearchViewModel.swift
+@@ -83,6 +83,35 @@ final class SearchViewModel: ObservableObject {
+     /// mid-pop. One flag for all four watchers — they're always started and stopped together.
+     private var stopped = false
+ 
++    // MARK: Wave 0 rig (U6): hold rows between queries
++
++    private var holdingSince: Date?
++    private var heldCount = 0
++
++    private func applySections(_ state: SearchUiState) {
++        let incoming = state.sections
++        let mode = SearchFieldSpike.rowsHoldMode
++        guard mode != 0, !sections.isEmpty, state.isLoading else {
++            if let since = holdingSince, !incoming.isEmpty || !state.isLoading {
++                SearchFieldSpike.log(String(format: "rows swap mode=%ld old=%ld new=%ld after=%.2fs loading=0", mode, heldCount, incoming.count, Date().timeIntervalSince(since)))
++            }
++            holdingSince = nil
++            sections = incoming
++            return
++        }
++        if holdingSince == nil {
++            holdingSince = Date()
++            heldCount = sections.count
++        }
++        if incoming.isEmpty { return }  // keep the old rows
++        let elapsed = Date().timeIntervalSince(holdingSince ?? Date())
++        if mode == 1 || elapsed >= 1.0 {
++            SearchFieldSpike.log(String(format: "rows swap mode=%ld old=%ld new=%ld after=%.2fs loading=1", mode, heldCount, incoming.count, elapsed))
++            holdingSince = nil
++            sections = incoming
++        }
++    }
++
+     func start() {
+         guard !started else { return }
+         started = true
+@@ -92,7 +121,9 @@ final class SearchViewModel: ObservableObject {
+             guard let self, !self.stopped else { return }
+             guard let state = emitted as? SearchUiState else { return }
+             self.isLoading = state.isLoading
+-            self.sections = state.sections
++            // WAVE 0 RIG (U6, never merge): `SearchRepository.search` publishes empty sections at
++            // the start of every new query, which blanks the page on each letter. Hold the old rows.
++            self.applySections(state)
+             let settledEmpty = state.sections.isEmpty && !state.isLoading
+             // KMP exports enum entries all-lowercase (like DiscoverEmptyStateReason.requestfailed).
+             // Manifest failure = RequestFailed while no enabled add-on has a manifest at all.
+diff --git a/iosApp/NuvioTVUITests/NuvioTVUITests.swift b/iosApp/NuvioTVUITests/NuvioTVUITests.swift
+index 717d449b..fb46abc2 100644
+--- a/iosApp/NuvioTVUITests/NuvioTVUITests.swift
++++ b/iosApp/NuvioTVUITests/NuvioTVUITests.swift
+@@ -9269,3 +9269,66 @@ final class NuvioTVUITests: XCTestCase {
+         XCTAssertEqual(focusedSettingsRootTitle(app), "Appearance", "the pop must return focus to the Appearance row")
+     }
+ }
++
++// MARK: - WAVE 0 RIG (S1 plan 2026-10-04, never merge): U1 tvOS 26.5 bleed + U5 how XCUITest sees the field
++
++extension NuvioTVUITests {
++    func testW0SearchableSimA() { runW0Searchable(variant: "A") }
++    func testW0SearchableSimA2() { runW0Searchable(variant: "A2", extra: ["-debug.searchRowsHold", "2", "-debug.searchTabBarLinkMode", "2"]) }
++
++    private func w0Dump(_ app: XCUIApplication, _ tag: String) {
++        let sf = app.searchFields
++        let kb = app.keyboards
++        var line = "W0 [\(tag)] searchFields=\(sf.count) textFields=\(app.textFields.count) keyboards=\(kb.count) keys=\(app.keys.count)"
++        if kb.count > 0 { line += " kbFrame=\(kb.firstMatch.frame)" }
++        if sf.count > 0 {
++            let f = sf.firstMatch
++            line += " sfFrame=\(f.frame) sfValue=\(String(describing: f.value)) sfLabel=\(f.label) sfFocus=\(f.hasFocus)"
++        }
++        if let focused = focusedButton(app) { line += " focusedButton=\(focused.label)" }
++        print(line)
++    }
++
++    private func runW0Searchable(variant: String, extra: [String] = []) {
++        let app = launchToHome(extraArguments: ["-debug.searchFieldSpike", variant] + extra, forceFreshLaunch: true)
++        shot(app, "w0-\(variant)-home")
++        openTab(app, named: "Search")
++        pause(2)
++        shot(app, "w0-\(variant)-search-open")
++        w0Dump(app, "\(variant) open")
++
++        app.typeText("dune")
++        pause(3)
++        shot(app, "w0-\(variant)-typed")
++        w0Dump(app, "\(variant) typed")
++
++        // Into the results: Right off a Grid keyboard (narrow), Down off a Linear one.
++        let kbFrame = app.keyboards.firstMatch.exists ? app.keyboards.firstMatch.frame : .zero
++        let grid = kbFrame.width > 0 && kbFrame.width < 900
++        print("W0 [\(variant)] layout=\(grid ? "grid" : "linear-or-unknown") kbFrame=\(kbFrame)")
++        if grid { press(.right, times: 7, gap: 0.5) } else { press(.down, times: 1) }
++        pause(1)
++        w0Dump(app, "\(variant) inResults")
++        shot(app, "w0-\(variant)-in-results")
++
++        remote.press(.select)
++        pause(5)
++        shot(app, "w0-\(variant)-detail")
++        w0Dump(app, "\(variant) detail")
++
++        remote.press(.menu)
++        pause(3)
++        shot(app, "w0-\(variant)-back")
++        w0Dump(app, "\(variant) back")
++
++        openTab(app, named: "Home")
++        pause(4)
++        shot(app, "w0-\(variant)-home-after")
++        w0Dump(app, "\(variant) home")
++
++        openTab(app, named: "Search")
++        pause(2)
++        shot(app, "w0-\(variant)-search-return")
++        w0Dump(app, "\(variant) return")
++    }
++}

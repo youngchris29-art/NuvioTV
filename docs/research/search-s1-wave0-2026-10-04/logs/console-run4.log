@@ -1,0 +1,94 @@
+[SearchSpike] t=0.000 scanner armed variant=A2
+[TabBarLink] linked chain=NavigationStackHostingController<AnyView> > UIKitNavigationController(skip) > TabHostingController tab=UIKitTabBarController sv=HostingScrollView svh=1080 pinned=1 legacyObserved=rows adjBottom=0 adjTop=0 restFix=0
+[SearchSpike] t=0.036 tabbarlink linked chain=NavigationStackHostingController<AnyView> > UIKitNavigationController(skip) > TabHostingController sv=HostingScrollView svh=1080 observed=self
+[SearchSpike] t=0.041 presslogger installed window=UIWindow level=0
+[SearchSpike] t=0.041 kb none screen=search tab=0
+[SearchSpike] t=0.041 focus UIKitFocusableViewResponderItem screen=search tab=0 blocker=0
+[SearchSpike] t=0.041 tabbar y=46 h=68 onscreen=1
+[TabBarStateProbe] chain root=UIHostingController<ModifiedContent<LazyView<ModifiedContent<ContentView, _PreferenceWritingModifier<PreferredColorSchemeKey>>>, RootModifier>> tab=UIKitTabBarController selected=TabHostingController > UIKitNavigationController > NavigationStackHostingController<AnyView> legacyObserved=rows
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=---- m=cls r=arm svh=1080
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=---- m=cls r=attach svh=1080
+[SearchSpike] t=0.304 focus UITabBarButton screen=search tab=0 blocker=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=---- m=cls r=tick svh=574
+[SearchSpike] t=9.435 press right window=UIWindow focus=UITabBarButton inKeyboard=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=---- m=cls r=tab svh=574
+[SearchSpike] t=9.615 tab 1
+[SearchSpike] t=9.667 router installed windows=1
+[SearchSpike] t=9.968 press right window=UIWindow focus=UITabBarButton inKeyboard=0
+[SearchSpike] t=10.186 press right window=UIWindow focus=UITabBarButton inKeyboard=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=---- m=cls r=tab2 svh=574
+[SearchSpike] t=10.470 press right window=UIWindow focus=UITabBarButton inKeyboard=0
+[TabBarLink] unlinked (left window) controllers=2
+[SearchSpike] t=10.756 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x135 | UIKeyboard grid 80,261 432x750 screen=search tab=1
+[SearchSpike] t=10.756 layout grid
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=4 trk=none sd=0 sdt=---- m=cls r=tab svh=-
+[SearchSpike] t=10.768 tab 4
+[SearchSpike] t=11.043 kb none screen=search tab=4
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=4 trk=none sd=0 sdt=---- m=cls r=tab2 svh=-
+[SearchSpike] t=11.520 press down window=UIWindow focus=ListTableViewCell inKeyboard=0
+[SearchSpike] t=11.570 focus ListTableViewCell screen=search tab=4 blocker=0
+[SearchSpike] t=11.770 router uninstalled
+[SearchSpike] t=11.953 press down window=UIWindow focus=ListTableViewCell inKeyboard=0
+[SearchSpike] t=12.137 press down window=UIWindow focus=ListTableViewCell inKeyboard=0
+[SearchSpike] t=13.326 press select window=UIWindow focus=ListTableViewCell inKeyboard=0
+[SearchSpike] t=14.032 focus UIKitFocusableViewResponderItem screen=search tab=4 blocker=0
+[SearchSpike] t=14.240 press down window=UIWindow focus=ListTableViewCell inKeyboard=0
+[SearchSpike] t=14.301 focus ListTableViewCell screen=search tab=4 blocker=0
+[SearchSpike] t=14.489 press down window=UIWindow focus=ListTableViewCell inKeyboard=0
+[SearchSpike] t=14.690 press down window=UIWindow focus=TVMenuButtonControl<ControlContent> inKeyboard=0
+[SearchSpike] t=14.873 press down window=UIWindow focus=ListTableViewCell inKeyboard=0
+[SearchSpike] t=15.086 focus TVMenuButtonControl<ControlContent> screen=search tab=4 blocker=0
+[SearchSpike] t=15.090 press down window=UIWindow focus=TVMenuButtonControl<ControlContent> inKeyboard=0
+[SearchSpike] t=15.307 press down window=UIWindow focus=TVMenuButtonControl<ControlContent> inKeyboard=0
+[SearchSpike] t=15.881 focus _UIContextMenuCell screen=search tab=4 blocker=0
+[SearchSpike] t=15.958 press select window=UIWindow focus=_UIContextMenuCell inKeyboard=0
+[SearchSpike] t=16.542 press down window=UIWindow focus=_UIContextMenuCell inKeyboard=0
+[SearchSpike] t=16.976 press select window=UIWindow focus=_UIContextMenuCell inKeyboard=0
+[SearchSpike] t=17.102 scanner armed variant=A2
+[SidebarChrome] hidden tab bar made unfocusable (hidden=0 alpha=1.00 frame={{0, 0}, {1920, 68}})
+[SearchSpike] t=17.186 kb none screen=search tab=4
+[SearchSpike] t=17.186 focus _UIContextMenuCell screen=search tab=4 blocker=1
+[SearchSpike] t=17.186 tabbar none
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=4 trk=none sd=0 sdt=---- m=sb r=arm svh=-
+[SearchSpike] t=18.234 focus TVMenuButtonControl<ControlContent> screen=search tab=4 blocker=1
+[SearchSpike] t=20.782 press menu window=UIWindow focus=TVMenuButtonControl<ControlContent> inKeyboard=0
+[SearchSpike] t=21.409 focus ListTableViewCell screen=search tab=4 blocker=1
+[SearchSpike] t=23.700 press menu window=UIWindow focus=ListTableViewCell inKeyboard=0
+[SearchSpike] t=23.762 focus UIKitFocusableViewResponderItem screen=search tab=4 blocker=1
+[SearchSpike] t=24.401 press down window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[SearchSpike] t=25.081 press up window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[SearchSpike] t=25.260 press up window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[SearchSpike] t=25.802 press up window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[SearchSpike] t=26.041 press up window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[SearchSpike] t=26.621 press select window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=---- m=sb r=tab svh=-
+[SearchSpike] t=26.650 tab 1
+[SearchSpike] t=26.685 router installed windows=1
+[SearchSpike] t=26.955 focus nil screen=search tab=1 blocker=1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=1 tbh=1 st=min off=- ins=- sel=1 trk=none sd=0 sdt=---- m=sb r=tab2 svh=-
+[SearchSpike] t=27.815 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x135 | UIKeyboard grid 80,261 432x750 screen=search tab=1
+[SearchSpike] t=27.815 focus UIKeyboard screen=search tab=1 blocker=1
+[SearchSpike] t=35.495 press select window=UIWindow focus=UIKeyboard inKeyboard=1
+[SearchSpike] t=35.533 query 'a' renders view=2 layer=4 content=21
+[SearchSpike] t=35.865 press right window=UIWindow focus=UIKeyboard inKeyboard=1
+[SearchSpike] t=36.176 results sections=1 loading=true
+[SearchSpike] t=36.428 press select window=UIWindow focus=UIKeyboard inKeyboard=1
+[SearchSpike] t=36.438 query 'ab' renders view=2 layer=6 content=30
+[SearchSpike] t=38.155 rows swap mode=2 old=1 new=5 after=1.97s loading=1
+[SearchSpike] t=38.258 results sections=5 loading=true
+[SearchSpike] t=39.522 rows swap mode=2 old=5 new=8 after=1.24s loading=0
+[SearchSpike] t=39.590 results sections=8 loading=false
+[SearchSpike] t=42.701 router gate take=1 sidebar=1 chromeFocused=0 inKeyboard=1
+[SearchSpike] t=42.707 press menu window=UIWindow focus=UIKeyboard inKeyboard=1
+[SearchSpike] t=42.769 focus UITabBarButton screen=search tab=1 blocker=1
+[SearchSpike] t=44.983 focus UIKitFocusableViewResponderItem screen=search tab=1 blocker=1
+[SearchSpike] t=45.053 press down window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[SearchSpike] t=46.221 press left window=UIWindow focus=UIKeyboard inKeyboard=1
+[SearchSpike] t=46.295 focus UIKeyboard screen=search tab=1 blocker=1
+[SearchSpike] t=47.539 router gate take=1 sidebar=1 chromeFocused=0 inKeyboard=1
+[SearchSpike] t=47.545 press menu window=UIWindow focus=UIKeyboard inKeyboard=1
+[SearchSpike] t=47.613 focus UITabBarButton screen=search tab=1 blocker=1
+[SearchSpike] t=55.280 press right window=UIWindow focus=UITabBarButton inKeyboard=0
+[SearchSpike] t=73.098 press right window=UIWindow focus=UITabBarButton inKeyboard=0
+[SearchSpike] t=73.949 press right window=UIWindow focus=UITabBarButton inKeyboard=0
+[SearchSpike] t=74.382 press right window=UIWindow focus=UITabBarButton inKeyboard=0

@@ -1,0 +1,242 @@
+=== launch 2026-10-04 22:47:11 +0000 variant=A
+[SearchSpike] t=0.000 scanner armed variant=A
+[SearchSpike] t=0.191 tabbarlink linked chain=NavigationStackHostingController<AnyView> > UIKitNavigationController(skip) > TabHostingController sv=HostingScrollView svh=1080 observed=self
+[SearchSpike] t=0.243 presslogger installed window=UIWindow level=0
+[SearchSpike] t=0.245 kb none screen=search tab=0
+[SearchSpike] t=0.245 focus UITabBarButton screen=search tab=0 blocker=0
+[SearchSpike] t=0.245 tabbar y=46 h=68 onscreen=1
+[SearchSpike] t=10.926 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=11.711 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=12.060 tab 1
+[SearchSpike] t=12.709 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=13.930 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x245 screen=search tab=1
+[SearchSpike] t=15.093 focus UIKeyboard screen=search tab=1 blocker=0
+[SearchSpike] t=15.096 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=19.950 query 'd' renders view=1 layer=3 content=10
+[SearchSpike] t=20.044 query 'dune' renders view=1 layer=4 content=11
+[SearchSpike] t=20.525 results sections=1 loading=true
+[SearchSpike] t=21.782 results sections=2 loading=false
+[SearchSpike] t=25.000 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=25.062 focus UIKitFocusableViewResponderItem screen=search tab=1 blocker=0
+[SearchSpike] t=27.785 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=28.113 screen detail appear
+[SearchSpike] t=28.171 kb none screen=detail tab=1
+[SearchSpike] t=28.172 tabbar none
+[SearchSpike] t=28.774 focus nil screen=detail tab=1 blocker=0
+[SearchSpike] t=29.034 focus UIKitFocusableViewResponderItem screen=detail tab=1 blocker=0
+[SearchSpike] t=34.043 press menu window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=34.262 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x245 screen=detail tab=1
+[SearchSpike] t=34.821 screen detail disappear
+[SearchSpike] t=34.892 tabbar y=46 h=68 onscreen=1
+[SearchSpike] t=38.360 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=38.401 focus UIKeyboard screen=search tab=1 blocker=0
+[SearchSpike] t=39.223 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=39.425 focus UITabBarButton screen=search tab=1 blocker=0
+[SearchSpike] t=39.875 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=40.659 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=40.981 tab 2
+[SearchSpike] t=41.168 kb none screen=search tab=2
+[SearchSpike] t=41.609 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=42.041 tab 3
+[SearchSpike] t=42.628 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=43.004 tab 4
+[SearchSpike] t=43.776 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=44.127 tab 5
+[SearchSpike] t=44.775 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=45.728 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=46.736 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=47.235 tab 4
+[SearchSpike] t=47.792 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=48.132 tab 3
+[SearchSpike] t=48.742 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=49.111 tab 2
+[SearchSpike] t=49.774 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=50.331 tab 1
+[SearchSpike] t=50.729 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x245 screen=search tab=1
+[SearchSpike] t=50.826 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=51.155 tab 0
+[SearchSpike] t=51.277 kb none screen=search tab=0
+[SearchSpike] t=51.845 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=52.058 focus UIKitFocusableViewResponderItem screen=search tab=0 blocker=0
+[SearchSpike] t=54.431 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=54.848 tabbar y=16 h=68 onscreen=1
+[SearchSpike] t=55.112 tabbar y=10 h=68 onscreen=1
+[SearchSpike] t=55.378 tabbar y=0 h=68 onscreen=1
+[SearchSpike] t=55.639 tabbar y=-4 h=68 onscreen=1
+[SearchSpike] t=60.592 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=61.027 tabbar y=46 h=68 onscreen=1
+[SearchSpike] t=61.417 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=61.547 focus UITabBarButton screen=search tab=0 blocker=0
+[SearchSpike] t=62.046 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=62.811 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=63.159 tab 1
+[SearchSpike] t=63.404 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x245 screen=search tab=1
+[SearchSpike] t=63.847 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=64.121 focus UIKeyboard screen=search tab=1 blocker=0
+[SearchSpike] t=66.270 focus UIKitFocusableViewResponderItem screen=search tab=1 blocker=0
+[SearchSpike] t=66.272 press down window=UIWindow focus=nil inKeyboard=0
+=== launch 2026-10-04 22:49:43 +0000 variant=A2
+[SearchSpike] t=-0.000 scanner armed variant=A2
+[SearchSpike] t=0.109 tabbarlink linked chain=NavigationStackHostingController<AnyView> > UIKitNavigationController(skip) > TabHostingController sv=HostingScrollView svh=1080 observed=self
+[SearchSpike] t=0.137 presslogger installed window=UIWindow level=0
+[SearchSpike] t=0.139 kb none screen=search tab=0
+[SearchSpike] t=0.139 focus UITabBarButton screen=search tab=0 blocker=0
+[SearchSpike] t=0.139 tabbar y=46 h=68 onscreen=1
+[SearchSpike] t=10.688 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=11.445 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=11.768 tab 1
+[SearchSpike] t=12.489 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=13.154 kb UIKeyboard linear 0,0 1760x66 screen=search tab=1
+[SearchSpike] t=13.209 tabbarlink linked chain=SearchContentContainer<ModifiedContent<ModifiedContent<_ViewModifier_Content<SearchModifier<TextField<EmptyView>>>, SubmitScopeModifier>, _PreferenceTransformModifier<ContentScrollViewPreferenceKey>>> > SearchContentWrapper > TVSearchController<ModifiedContent<ModifiedContent<_ViewModifier_Content<SearchModifier<TextField<EmptyView>>>, SubmitScopeModifier>, _PreferenceTransformModifier<ContentScrollViewPreferenceKey>>> sv=HostingScrollView svh=678 observed=self
+[SearchSpike] t=13.417 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x245 screen=search tab=1
+[SearchSpike] t=14.830 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=14.879 focus UIKeyboard screen=search tab=1 blocker=0
+[SearchSpike] t=19.574 query 'd' renders view=1 layer=3 content=12
+[SearchSpike] t=19.629 query 'dune' renders view=1 layer=4 content=13
+[SearchSpike] t=20.193 results sections=2 loading=false
+[SearchSpike] t=23.799 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=23.876 focus UIKitFocusableViewResponderItem screen=search tab=1 blocker=0
+[SearchSpike] t=26.462 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=26.683 screen detail appear
+[SearchSpike] t=26.720 kb none screen=detail tab=1
+[SearchSpike] t=26.720 tabbar none
+[SearchSpike] t=27.287 focus nil screen=detail tab=1 blocker=0
+[SearchSpike] t=27.538 focus UIKitFocusableViewResponderItem screen=detail tab=1 blocker=0
+[SearchSpike] t=32.367 press menu window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=32.467 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x245 screen=detail tab=1
+[SearchSpike] t=32.998 screen detail disappear
+[SearchSpike] t=33.041 tabbar y=46 h=68 onscreen=1
+[SearchSpike] t=36.664 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=36.713 focus UIKeyboard screen=search tab=1 blocker=0
+[SearchSpike] t=37.485 focus UITabBarButton screen=search tab=1 blocker=0
+[SearchSpike] t=37.487 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=38.156 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=38.954 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=39.269 tab 2
+[SearchSpike] t=39.424 kb none screen=search tab=2
+[SearchSpike] t=39.938 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=40.314 tab 3
+[SearchSpike] t=40.938 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=41.270 tab 4
+[SearchSpike] t=42.038 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=42.376 tab 5
+[SearchSpike] t=43.004 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=43.971 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=44.937 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=45.278 tab 4
+[SearchSpike] t=45.971 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=46.284 tab 3
+[SearchSpike] t=46.939 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=47.285 tab 2
+[SearchSpike] t=47.921 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=48.255 tab 1
+[SearchSpike] t=48.446 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x245 screen=search tab=1
+[SearchSpike] t=48.938 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=49.258 tab 0
+[SearchSpike] t=49.360 kb none screen=search tab=0
+[SearchSpike] t=49.909 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=50.128 focus UIKitFocusableViewResponderItem screen=search tab=0 blocker=0
+[SearchSpike] t=52.156 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=52.214 tabbar y=38 h=68 onscreen=1
+[SearchSpike] t=52.467 tabbar y=14 h=68 onscreen=1
+[SearchSpike] t=52.718 tabbar y=10 h=68 onscreen=1
+[SearchSpike] t=52.973 tabbar y=0 h=68 onscreen=1
+[SearchSpike] t=53.225 tabbar y=-4 h=68 onscreen=1
+[SearchSpike] t=58.093 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=58.177 tabbar y=-2 h=68 onscreen=1
+[SearchSpike] t=58.440 tabbar y=41 h=68 onscreen=1
+[SearchSpike] t=58.696 tabbar y=46 h=68 onscreen=1
+[SearchSpike] t=58.867 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=58.952 focus UITabBarButton screen=search tab=0 blocker=0
+[SearchSpike] t=59.492 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=60.271 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=60.609 tab 1
+[SearchSpike] t=60.779 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x245 screen=search tab=1
+[SearchSpike] t=61.289 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=61.380 focus UIKeyboard screen=search tab=1 blocker=0
+[SearchSpike] t=63.556 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=63.723 focus UIKitFocusableViewResponderItem screen=search tab=1 blocker=0
+=== launch 2026-10-04 22:54:21 +0000 variant=A2
+[SearchSpike] t=0.000 scanner armed variant=A2
+[SearchSpike] t=0.121 tabbarlink linked chain=NavigationStackHostingController<AnyView> > UIKitNavigationController(skip) > TabHostingController sv=HostingScrollView svh=1080 observed=self
+[SearchSpike] t=0.149 presslogger installed window=UIWindow level=0
+[SearchSpike] t=0.151 kb none screen=search tab=0
+[SearchSpike] t=0.151 focus UITabBarButton screen=search tab=0 blocker=0
+[SearchSpike] t=0.151 tabbar y=46 h=68 onscreen=1
+[SearchSpike] t=10.749 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=11.531 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=11.859 tab 1
+[SearchSpike] t=12.570 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=13.378 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x245 screen=search tab=1
+[SearchSpike] t=13.382 tablink2 linked targets=TabHostingController > NavigationStackHostingController<AnyView > SearchContainerViewWrapper<ModifiedConte > UISearchContainerViewController sv=HostingScrollView svh=1080
+[SearchSpike] t=14.924 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=14.966 focus UIKeyboard screen=search tab=1 blocker=0
+[SearchSpike] t=19.484 query 'd' renders view=1 layer=3 content=12
+[SearchSpike] t=19.525 query 'dune' renders view=1 layer=4 content=13
+[SearchSpike] t=20.087 results sections=2 loading=true
+[SearchSpike] t=23.856 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=23.874 focus UIKitFocusableViewResponderItem screen=search tab=1 blocker=0
+[SearchSpike] t=26.578 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=26.772 screen detail appear
+[SearchSpike] t=26.806 kb none screen=detail tab=1
+[SearchSpike] t=26.806 tabbar none
+[SearchSpike] t=27.304 tablink2 linked targets=TabHostingController > NavigationStackHostingController<AnyView sv=HostingScrollView svh=1080
+[SearchSpike] t=27.306 tablink2 withdrawn controllers=2
+[SearchSpike] t=32.395 press menu window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=32.537 tablink2 linked targets=TabHostingController > NavigationStackHostingController<AnyView > SearchContainerViewWrapper<ModifiedConte > UISearchContainerViewController sv=HostingScrollView svh=1080
+[SearchSpike] t=32.642 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x245 screen=detail tab=1
+[SearchSpike] t=33.075 screen detail disappear
+[SearchSpike] t=33.159 tabbar y=46 h=68 onscreen=1
+[SearchSpike] t=36.738 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=36.814 focus UIKeyboard screen=search tab=1 blocker=0
+[SearchSpike] t=37.612 focus UITabBarButton screen=search tab=1 blocker=0
+[SearchSpike] t=37.613 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=38.318 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=39.135 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=39.500 tab 2
+[SearchSpike] t=39.758 kb none screen=search tab=2
+[SearchSpike] t=40.120 tablink2 linked targets=TabHostingController > NavigationStackHostingController<AnyView sv=HostingScrollView svh=1080
+[SearchSpike] t=40.122 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=40.431 tablink2 withdrawn controllers=2
+[SearchSpike] t=40.516 tab 3
+[SearchSpike] t=41.138 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=41.487 tab 4
+[SearchSpike] t=42.252 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=42.603 tab 5
+[SearchSpike] t=43.223 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=44.185 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=45.186 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=45.510 tab 4
+[SearchSpike] t=46.202 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=46.526 tab 3
+[SearchSpike] t=47.185 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=47.552 tab 2
+[SearchSpike] t=48.170 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=48.538 tab 1
+[SearchSpike] t=48.638 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x245 screen=search tab=1
+[SearchSpike] t=49.185 press left window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=49.530 tab 0
+[SearchSpike] t=49.626 tablink2 linked targets=TabHostingController > NavigationStackHostingController<AnyView sv=HostingScrollView svh=1080
+[SearchSpike] t=49.685 kb none screen=search tab=0
+[SearchSpike] t=50.154 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=50.174 tablink2 linked targets=TabHostingController > NavigationStackHostingController<AnyView sv=HostingScrollView svh=1080
+[SearchSpike] t=50.200 focus UIKitFocusableViewResponderItem screen=search tab=0 blocker=0
+[SearchSpike] t=50.570 tablink2 withdrawn controllers=2
+[SearchSpike] t=52.437 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=52.555 tabbar y=23 h=68 onscreen=1
+[SearchSpike] t=52.813 tabbar y=12 h=68 onscreen=1
+[SearchSpike] t=53.066 tabbar y=10 h=68 onscreen=1
+[SearchSpike] t=53.320 tabbar y=-4 h=68 onscreen=1
+[SearchSpike] t=58.565 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=58.831 tabbar y=28 h=68 onscreen=1
+[SearchSpike] t=59.088 tabbar y=46 h=68 onscreen=1
+[SearchSpike] t=59.182 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=59.338 focus UITabBarButton screen=search tab=0 blocker=0
+[SearchSpike] t=59.790 press up window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=60.572 press right window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=60.924 tab 1
+[SearchSpike] t=61.121 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x245 screen=search tab=1
+[SearchSpike] t=61.593 press select window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=61.952 focus UIKeyboard screen=search tab=1 blocker=0
+[SearchSpike] t=64.036 press down window=UIWindow focus=nil inKeyboard=0
+[SearchSpike] t=64.037 focus UIKitFocusableViewResponderItem screen=search tab=1 blocker=0

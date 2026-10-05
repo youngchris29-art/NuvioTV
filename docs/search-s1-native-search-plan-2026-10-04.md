@@ -1,6 +1,6 @@
 # Search S1 · Native Search (2026-10-04)
 
-**Status: W1, W2, W4, W5 BUILT 2026-10-04 (night); device pass in the Test profile next, then Christian's merge/cut call.** D1, D3 and D5 were approved by Christian after Wave 0 ("D1, D3, D5 approved, start W1"; "start W2, W4 and W5"). The branch is NuvioMobile `claude/search-s1` in the clone `~/Claude/Projects/NuvioMobile-search-s1`, off `dad2bed5`. It has six commits, `8b0710b6` (W1) through `d68b9d61` (reviews r3–r6), committed locally and not pushed or merged. Review r6 was CLEAN. Gates on the tip: NuvioTVTests 1042 / 0, every migrated UI leg plus test92 and test93 on FA87, and a Release simulator build. Details are in [Build record](#build-record-2026-10-04-night). Wave 0 settled D2 and D4 and the tvOS 26 rule (see [Wave 0 outcome](#wave-0-outcome-2026-10-04) below), and the W1–W4 specs here are revised to match. Written from:
+**Status: W1, W2, W4, W5 BUILT 2026-10-04 (night); DEVICE PASS PASSED 2026-10-05 in the Test profile (steps 1–10, the optional Retry leg skipped; see [Device pass outcome](#device-pass-outcome-2026-10-05)); next: Christian's merge/cut call.** D1, D3 and D5 were approved by Christian after Wave 0 ("D1, D3, D5 approved, start W1"; "start W2, W4 and W5"). The branch is NuvioMobile `claude/search-s1` in the clone `~/Claude/Projects/NuvioMobile-search-s1`, off `dad2bed5`. It has six commits, `8b0710b6` (W1) through `d68b9d61` (reviews r3–r6), committed locally and not pushed or merged. Review r6 was CLEAN. Gates on the tip: NuvioTVTests 1042 / 0, every migrated UI leg plus test92 and test93 on FA87, and a Release simulator build. Details are in [Build record](#build-record-2026-10-04-night). Wave 0 settled D2 and D4 and the tvOS 26 rule (see [Wave 0 outcome](#wave-0-outcome-2026-10-04) below), and the W1–W4 specs here are revised to match. Written from:
 
 - the search-field spike, run 2026-10-04 on the Living Room Apple TV (`docs/research/search-field-spike-2026-10-04/README.md`, its logs and photos);
 - the revamp board's S1 direction (`docs/research/search-library-revamp-2026-10-04.html`, "S1 · Native Search" and "Recommendation");
@@ -225,6 +225,23 @@ The TV's keyboard is on **Grid**. Changing the layout in tvOS Settings terminate
 9. **Stress.** Open and close Detail five times quickly.
 10. **Regressions.** See All → grid → Back (UX-13, BUG-47/48); Hide Discover on and off; Search Sources toggles; Retry on the error state.
 
+### Device pass outcome (2026-10-05)
+
+Christian walked it on the Living Room Apple TV in the **Test** profile, on the Debug build of `d68b9d61` (`com.youngchris29.NuvioTV`), with the console streamed. Probe lines are in `docs/research/search-s1-device-pass-2026-10-05/`. Each keyboard-layout switch closed the app with `signal 9`, as expected, and it was relaunched.
+
+| Step | Result |
+|---|---|
+| 1 Grid typing | PASS: rows update while typing, no blanking. |
+| 2 Open and return | PASS: "dune" intact, focus on the card. |
+| 3 Linear | PASS: same as 1–2. |
+| 4 iPhone keyboard | **PASS (the gate):** each letter appears once, no bouncing. |
+| 5 Dictation | PASS: "the bear" landed and results followed. |
+| 6 Recent Searches | PASS: "dune" is the first chip, no partial queries. |
+| 7 Tabs mode | PASS: on Linear the bar scrolls off; Menu goes to the tab bar; no keyboard on Home; the query survives. On Grid the bar stays put (D4, accepted). |
+| 8 Sidebar mode | PASS: opening Search from the sidebar lands on the keyboard; Menu opens the sidebar; Right comes back and typing continues ("du" → "dun"); a second Menu opens it again. The log shows a redirect for every Menu and no hand-off re-arm. |
+| 9 Stress | PASS: no stuck keyboard. |
+| 10 Regressions | PASS: See All → Back lands on the See All card; Hide Discover hides it and brings it back; switching a Search Source off removes its row. **Not walked:** Retry on the add-on error state (needs Wi-Fi off before a cold launch; optional). |
+
 ## Risks
 
 - ~~tvOS 26 bleeds~~ and ~~the echo fix doesn't hold~~: **retired by Wave 0** (U1: no bleed on 26.5; U2: the A0/A/A2 comparison isolates the cause and the fix). The tvOS 26 check was the simulator, not a 26 device; any tvOS 26 tester report of a keyboard over Detail reopens it.
@@ -255,4 +272,4 @@ From the board's S1 direction and its mix-and-match pieces:
   - W5 in the main session.
 - **Concurrency.** Nothing here overlaps Home Stage & Strip's Wave 0/1 files (`HomeView.swift`, the strip and stage). The overlap is W2 and that batch's W2-D, both in `SidebarOverlay.swift`.
 
-**Next step:** the device pass above in the **Test** profile (a Debug device build of `claude/search-s1` under `com.youngchris29.NuvioTV`), then Christian's call on merging into `tvos-shared-extraction` and cutting. Nothing is pushed until he says so.
+**Next step:** Christian's call on merging `claude/search-s1` into `tvos-shared-extraction` (a fast-forward from `dad2bed5`) and cutting. Nothing is pushed until he says so. The release-note line is in W5's record.

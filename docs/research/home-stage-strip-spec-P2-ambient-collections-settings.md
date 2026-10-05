@@ -3,7 +3,20 @@
 **Status:** design spec for W1-B, W1-C, W2-B, W2-C and the P2 part of W3. Nothing here is built.
 **Plan:** `docs/home-stage-strip-plan-2026-10-03.md` (H3, H5, H8, "Defaults I chose", Target design).
 **Base:** `tvos-shared-extraction` `d68b9d61`, clone `~/Claude/Projects/NuvioMobile-home-stage`. Paths are relative to `iosApp/NuvioTV/` unless they start with `shared/` or `iosApp/`. Every `file:line` below was re-read at the base.
-**P1 dependency:** P1 (Stage + Strip) is being written in parallel. §2.9 lists the seam this spec needs from it. If P1 lands with other names, the implementer maps them; P3 checks that the behaviour exists.
+**P1 dependency:** P1 §1.5 lists the seams W1-A provides; §2.9 below consumes exactly those, by those names.
+
+**Corrections after the P3 critique (2026-10-05)**
+- #1: `Screens/Home/HomeLayout.swift` is W1-C's alone; its API (§3.1) is the one P1 and P4 read (§3.1, §4.1).
+- #2 / S1–S8: §2.9 now matches P1 §1.5. The folder page consumes `StageController`, `StageView` and `StripPager` and edits none of W1-A's files (§2.3, §2.8, §2.9).
+- #5 / S8: the wash takes P1's driver feed, `AmbientWashLayer(feed:)`, and observes it itself (§1.3, §1.4).
+- #19: the held-Down wash claim is corrected; the wash keeps warming ahead (§1.4).
+- Q1 / #7: the folder stage shows the folder until the first move, then follows focus, and the compact logo never re-docks (§2.4, §2.5, tests).
+- #9: the folder Rows page links the tab bar (`linksTabBar: true`); new test108 asserts no rest ends on `st=part` (§2.8, §4.3).
+- #10: the device pass runs Top Tabs for steps 1–13 and Rail for 14–15 (§4.5).
+- R2: `FolderRowsPage` registers a rail return route, added by W2-D after W2-B (§2.7, §4.1).
+- #12 and the P3 file matrix: W2-D after W2-A, W2-B and W2-C; `SettingsDescriptions.swift` goes W1-C → W2-C → W2-D; `Localizable.xcstrings` changes through the scripts, once, at the end (§4.1).
+- S7: the folder page's stage probe is `debug_stage_folder` (§2.8, §4.3).
+- Risks 1, 5, 7, 8 closed (risk 8 by W2-D hiding Hide Hero Artwork in Stage, #22). Risk 2 now notes that the never-re-docked logo shares the tab bar's band at row 0 (§5).
 
 ## 0. Decisions
 
@@ -107,6 +120,7 @@ extension WashArt {
     /// [heroBackdropURL(for: item), item.poster, fallback]. `heroBackdropURL(for:)` is the global
     /// chain the stage art uses (Screens/HomeView.swift:6619), so wash and art share a decode family.
     init(item: MetaPreview, fallback: String? = nil)
+    init(_ f: StageFeedItem)                // = init(item: f.item, fallback: f.washFallback) (P1 §4.3)
 }
 
 @MainActor final class AmbientWashModel: ObservableObject {
@@ -125,24 +139,24 @@ extension WashArt {
 
 /// Mount once per Stage page. Renders nothing when the setting is off.
 struct AmbientWashLayer: View {
-    init(displayed: WashArt?, pending: WashArt?, probeID: String = "debug_wash")
+    init(feed: StageWashFeed, probeID: String = "debug_wash")    // P1's driver feed (S2, S8)
 }
 ```
 
 `AmbientWashLayer` body rules:
-- Reads `@AppStorage(AmbientWashSetting.defaultsKey)`. Off → `EmptyView()`. On → a private child `AmbientWashContent` that owns the `@StateObject` model, so off drops the layers and on re-runs its `.onAppear { model.prepare(pending); model.show(displayed) }` (a cache hit is back within 0.4 s).
-- `.onChange(of: pending) { model.prepare($1) }`, `.onChange(of: displayed) { model.show($1) }`.
+- Reads `@AppStorage(AmbientWashSetting.defaultsKey)`. Off → `EmptyView()`. On → a private child `AmbientWashContent` that owns the `@StateObject` model, so off drops the layers and on re-runs its `.onAppear { model.prepare(feed.pending.map(WashArt.init)); model.show(feed.displayed.map(WashArt.init)) }` (a cache hit is back within 0.4 s).
+- The wash observes the feed itself (#5): `.onReceive(feed.$pending) { model.prepare($0.map(WashArt.init)) }`, `.onReceive(feed.$displayed) { model.show($0.map(WashArt.init)) }`. Nothing else observes the feed, so a pending change re-renders no strip row.
 - `ZStack { base (opacity 1); incoming (opacity model.incomingOpacity) }`. On `.onChange(of: model.incoming?.id)`: `withAnimation(.easeInOut(duration: reduceMotion ? 0.2 : 0.4)) { model.incomingOpacity = 1 } completion: { model.promote(id) }`. The old layer stays at 1 underneath, so the midpoint never dips toward black.
 - Whole-layer opacity: `oled ? 0.4 : (contrast == .increased ? 0.6 : 1)`. `oled` is read at init with the idiom at `DesignSystem/AppThemeModel.swift:35` (`ThemeSettingsRepository.shared.amoledEnabled.value_`). An OLED change re-identifies the whole tree (`ContentView.swift:151`), so `Theme.swift` needs no edit.
 
-### 1.4 Input contract from P1
+### 1.4 Input contract from P1 (S2, S8)
 
-The host (StageStripHome in W1-A, `FolderRowsPage` in W2-B) passes two values it reads from P1's `StageSwapModel` (S2):
+The host (`StageStripHome`, W1-A; `FolderRowsPage`, W2-B) passes P1's `controller.swap.washFeed`, a `StageWashFeed` that only the wash observes (P1 §4.3):
 
-| Input | Set when | Wash does |
+| Feed value | Set when | Wash does |
 |---|---|---|
-| `pending: WashArt?` | the 450 ms pause starts for a new target | `prepare`: after a 0.15 s debounce, fetch + render into the cache. Held-Down paging restarts the debounce, so skipped rows render nothing. |
-| `displayed: WashArt?` | the swap point (after the 150 ms text fade-out), the same instant the art's 300 ms cross-fade starts | `show`: start the 400 ms fade. The wash ends ~100 ms after the art does. |
+| `pending: StageFeedItem?` | the swap core takes a new pending identity, i.e. its 450 ms pause starts | `prepare`: after a 0.15 s debounce, fetch + render into the cache. Device hops on a held Down come ~0.5 s apart, longer than the debounce, so each passed row does render one wash into the cache (≈ 1–4 ms off the main thread, never shown). That is cheap, so the wash keeps warming ahead (#19). |
+| `displayed: StageFeedItem?` | the swap point (after the 150 ms text fade-out), the same instant the art's 300 ms cross-fade starts, or the seed | `show`: start the 400 ms fade. The wash ends ~100 ms after the art does. |
 
 Rules:
 - `show(nil)` keeps the current wash (genre chips row, See All tile); the same identity is a no-op.
@@ -267,7 +281,7 @@ enum FolderRowsPlan {
 | failed | `error != nil` | heading + "Couldn't load this source.", secondary | no |
 | empty | otherwise (settled, no items, no error; or no buildable target) | heading + "Nothing here yet." (existing string), secondary | no |
 
-**Visibility** (`visible`): loading and loaded rows always show. An empty or failed row shows **only above the focused row** (`tabIndex < focusedTabIndex`), and with no focused row every one is removed. Nothing above the focused row ever vanishes, so it never jumps. The engine skips non-focusable pages, and P1's `scrollPosition(id:)` follows the focused row, so a skip is still one motion.
+**Visibility** (`visible`): loading and loaded rows always show. An empty or failed row shows **only above the focused row** (`tabIndex < focusedTabIndex`), and with no focused row every one is removed. Nothing above the focused row ever vanishes, so it never jumps. Non-focusable pages need nothing from the strip: the engine skips them, and `StripPager`'s `onRowChange` follows focus (P1 §3.1), so a skip is still one motion.
 
 **Page states** (`pageState`), drawn left-aligned at the top of the strip area:
 
@@ -277,7 +291,7 @@ enum FolderRowsPlan {
 | `.empty` | `allSettled`, none focusable, not every row failed | "Nothing here yet." + `Button("Go Back") { dismiss() }.buttonStyle(.bordered)` | Go Back |
 | `.failed` | `allSettled`, every non-All row failed | "Couldn't load this folder." + `Button("Try Again") { model.retry() }` + Go Back | Try Again |
 
-**Initial focus:** `@State pendingInitialFocus = true`. When `firstFocusable` first becomes non-nil while it is still true, send P1's strip a focus request for that row's first card (S4) and clear the flag. Any focus change the user makes clears it too.
+**Initial focus:** `@State pendingInitialFocus = true`. When `firstFocusable` first becomes non-nil while it is still true, call `stage.requestFocus(rowKey: row.id, itemId: nil)` (S4; nil = first card) and clear the flag. Any focus change the user makes clears it too.
 
 **Section building** (`section`), mirroring `getCatalogSectionsForRows` (`FolderDetailRepository.kt:551–588`) with two differences: the key uses the tab index, not the label, and items are trimmed.
 - `key: "folder_\(folderId)_\(tabIndex)"`, `title: label`, `subtitle: typeLabel`, `addonName: ""`.
@@ -290,18 +304,20 @@ enum FolderRowsPlan {
 ### 2.4 What the stage shows
 
 ```swift
-enum FolderStageInput {
-    /// Row 0 is the folder's own row: the stage shows the folder there, and the focused item
-    /// from row 1 down. `rowPosition` = index of the focused row in `visible`, nil before focus.
-    static func choose(rowPosition: Int?, focusedItem: MetaPreview?, folderPreview: MetaPreview) -> MetaPreview?
-    // (rowPosition ?? 0) == 0 → folderPreview, else focusedItem (nil = keep, P1's rule)
+nonisolated enum FolderStageInput {
+    /// Q1 (decided 2026-10-05): the stage shows the folder from open until the user's first move,
+    /// then follows focus for good. A card key is "\(rowId)|\(itemId ?? "-")"; `initial` is the
+    /// first card report after open (the initial focus landing), nil before it.
+    static func startsFollowing(initial: String?, report: String) -> Bool   // initial != nil && report != initial
 }
 ```
 
-- **`folderPreview`:** `HomeView.folderHeroPreview(collection:folder:)` (S6). When that returns nil (a folder with neither backdrop nor logo), use `FolderRowsPlan.plainFolderPreview(collection:folder:)`: the same id/type (`nuvio-folder://…`, `nuvio.folder`, `Screens/HomeView.swift:6585–6589`), name = folder title, `releaseInfo` = collection title, `description` = `HomeView.folderHeroDescription` (`:2990`), banner/logo/poster nil, and every other field nil/empty as in `folderHeroPreview` (`:2949–2985`).
+- **First paint:** on appear, `stage.seed(folderPreview, washFallback: folder.coverImageUrl)` (S2), so the stage shows the folder at once, with no fade.
+- **Reports:** `@State initialCard: String?`, `@State followsFocus = false`. While not following, a card report isn't forwarded: the first one sets `initialCard`, and one for which `startsFollowing` is true sets `followsFocus` for good and is forwarded. From then on every report goes to `stage.report(item, source: row.id, prefetch: { the row's first 8 items' heroBackdropPrefetchURLs })`, P1's funnel. Up to the Edit band reports no card, so the stage keeps the folder (P1 D5).
+- **`folderPreview`:** `HomeRowPreviews.folder(collection:folder:)` (S6, P1 E6). When that returns nil (a folder with neither backdrop nor logo), use `FolderRowsPlan.plainFolderPreview(collection:folder:)`: the same id/type (`nuvio-folder://…`, `nuvio.folder`, `Screens/HomeView.swift:6585–6589`), name = folder title, `releaseInfo` = collection title, `description` = `HomeView.folderHeroDescription` (`:2990`), banner/logo/poster nil, and every other field nil/empty as in `folderHeroPreview` (`:2949–2985`).
 - `isCollectionHero` already gates trailers and enrichment, so a folder stage never plays a trailer.
 - **Stage art:** `heroBackdropUrl` only. The cover is not a stage fallback (Wave H, `:2958–2964`).
-- **Wash:** `WashArt(item: folderPreview, fallback: folder.coverImageUrl)`, i.e. backdrop, then cover. A blurred square cover makes a good wash. Items from row 1 down use `WashArt(item:)`.
+- **Wash:** the seed's fallback gives the folder `WashArt(item: folderPreview, fallback: folder.coverImageUrl)`, i.e. backdrop, then cover. A blurred square cover makes a good wash. Items after the first move use `WashArt(item:)`.
 
 ### 2.5 Folder logo: the rise (H5, Steven's "title always visible")
 
@@ -314,10 +330,8 @@ nonisolated enum FolderStageLogo {
     static let compactScale: CGFloat = 0.6
     static let compactGap: CGFloat = 8           // compact bottom → stage block top
     static let compactTopFloor: CGFloat = 12
-    /// Docked = drawn in the stage's logo slot at full size.
-    static func docked(rowPosition: Int?, displayedIdentity: String?, folderIdentity: String) -> Bool {
-        (rowPosition ?? 0) == 0 && (displayedIdentity == nil || displayedIdentity == folderIdentity)
-    }
+    /// Docked = drawn in the stage's logo slot at full size: only until the first move (Q1), never again.
+    static func docked(followsFocus: Bool) -> Bool { !followsFocus }
     static func compactTop(blockTop: CGFloat, slot: CGFloat) -> CGFloat {
         max(compactTopFloor, blockTop - compactGap - compactScale * slot)
     }
@@ -327,20 +341,18 @@ nonisolated enum FolderStageLogo {
 }
 ```
 
-- **Frame:** `(blockLeading, blockTop, 680, slot)` from S1.
+- **Frame:** `(geo.stageBlockLeading, geo.stageBlockTop, 680, geo.logoSlot)` from S1.
 - **Transform:** `.scaleEffect(docked ? 1 : 0.6, anchor: .topLeading)` and `.offset(y: offsetY)`.
-- **Animation:** `.animation(reduceMotion ? nil : .easeOut(duration: 0.5), value: docked)`, the strip's page duration. W2-A retunes both together.
+- **Animation:** `.animation(reduceMotion ? nil : .easeOut(duration: StageStripTuning.pageSeconds), value: docked)`, the strip's page curve, so the two retune together.
 - **Example:** `blockTop` 120 and slot 150 give a compact 90 pt logo at y 22…112. A compressed slot of 110 gives 66 pt at y 46…112.
 - **Stage logo:** the stage hides its own logo slot while it displays the folder (S3), so only one logo is ever in the slot.
 
 | Moment | Strip | Stage text | Folder logo |
 |---|---|---|---|
-| open | row 0 | folder meta + synopsis, logo slot empty | docked, 100 % |
-| Down, t = 0 | pages to row 1 (0.5 s) | still the folder | rises at once (0.5 s) to compact |
-| t ≈ 0.6 s | — | swap: the item's logo/meta/synopsis fade in | compact; the slot was empty from t = 0.5 |
-| Up to row 0, t = 0 | pages to row 0 | still the item | stays compact (`displayed` ≠ folder) |
-| t ≈ 0.6 s | — | swap: folder text fades in, slot hidden | descends (0.5 s) into the empty slot |
-| Down then back Up inside 450 ms | row 1 → row 0 | never swapped | rises, then docks again |
+| open | row 0, first card focused | the folder: meta + synopsis, logo slot empty | docked, 100 % |
+| first move (Right or Down), t = 0 | Down pages to row 1 (0.5 s); Right doesn't page | still the folder | rises at once, with the page's curve, to compact |
+| t ≈ 0.60 (Right) / 0.70 (Down) | — | swap: the item's logo, meta and synopsis fade in | compact |
+| any later move, Up to row 0 included | pages as usual | follows focus | stays compact: no re-dock (Q1), so no title moves after the strip rests (#7) |
 
 ### 2.6 Edit menu (Stage only)
 
@@ -369,10 +381,11 @@ The existing `.fullScreenCover(item: $editing, onDismiss: { model.reload() })` s
 | Press | Rows page |
 |---|---|
 | Down / Up between rows | P1's strip paging (one motion) |
-| Up from row 0 | the Edit band. The strip must not consume it (S4). |
+| Up from row 0 | the Edit band. The strip never consumes it (S4). |
 | Down from the Edit band | back to the row the strip shows (its focus section) |
-| Menu | **pops** (HIG: Menu = back). Unlike Home, no detour to row 0 (S4 `menuPagesToTop: false`). |
+| Menu | **pops** (HIG: Menu = back). Unlike Home, no detour to row 0: `menuPagesToTop: false` installs no exit handler (S4, R3). |
 | Back from a pushed Detail | the same row and card (P1's per-row memory, S4; the page's `@State` survives the push) |
+| Right out of a Left-opened rail | the row and card the user left: W2-D registers the Stage-style route for this page (R2, P4 §2.5) |
 | Leaving the folder | Home focus returns to the folder tile (P1's Home strip memory; test57's contract) |
 
 ### 2.8 View tree
@@ -393,40 +406,53 @@ ZStack(alignment: .top) {
 
 The selected-tab `.onChange` and the reveal `.task(id: GridRevealKey…)` move inside `gridPage`, so Rows mode never prefetches a grid. `FolderDetailView` owns `@State rowPosition: Int?` and hands `FolderRowsPage` a binding to it.
 
-New `Screens/FolderRowsPage.swift`:
+New `Screens/FolderRowsPage.swift` (`@StateObject private var stage = StageController()`, held, never observed; `geo` = `StripGeometry.make` with the same inputs as Home plus `leadingInset: railLeadingInset`):
 
 ```swift
 ZStack(alignment: .topLeading) {
     Theme.Palette.background.ignoresSafeArea()
-    AmbientWashLayer(displayed: washDisplayed, pending: washPending, probeID: "debug_wash_folder")
-    StageView(model: stage, hidesLogoWhenDisplaying: folderIdentity)          // S3
-    FolderStageLogoLayer(...)                                                  // §2.5
-    StageStrip(rows: specs, focusedRowID: $focusedRowID, focusRequest: $focusRequest,
-               linksTabBar: false, menuPagesToTop: false) { spec in rowView(spec) }   // S4
+    AmbientWashLayer(feed: stage.swap.washFeed, probeID: "debug_wash_folder")                 // S2, S8
+    StageView(controller: stage, geometry: geo, hidesLogoWhenDisplaying: folderIdentity,
+              probeID: "debug_stage_folder")                                                 // S1, S3, S7
+    FolderStageLogoLayer(...)                                                                // §2.5
+    VStack(spacing: 0) {
+        Color.clear.frame(height: geo.stageHeight)
+        StripPager(rowKeys: visible.map(\.id), geometry: geo, controller: stage,
+                   linksTabBar: true, reportsTab: nil, menuPagesToTop: false, atTopExit: nil, // #9, S4
+                   onRowChange: { i, _ in rowPosition = i }, onPageStart: { _, _ in },
+                   onStripFocusLost: {}) { key in rowView(key) }
+            .frame(height: geo.stripHeight)
+    }
     #if DEBUG  probe `folder_rows_state`  #endif
 }
+.ignoresSafeArea()
+.onAppear { stage.start(); stage.seed(folderPreview, washFallback: folder.coverImageUrl) }   // §2.4
 ```
 
-Probe: `mode=rows rows=<visible> removed=<n> row=<rowPosition|-> tab=<tabIndex|-> docked=<0|1> disp=<displayedIdentity|-> state=<rows|loading|empty|failed>`.
+`linksTabBar: true` (#9): in Tabs mode the pushed page otherwise falls back to UIKit's scroll heuristic, the BUG-66 half-shown class, and from the first move the compact logo (y 22–112) shares the bar's band. The attacher already unlinks Home's rows when Home leaves the window on the push (`TabBarContentScrollLink.swift:193–215`). `reportsTab: nil`: the page writes no rail mirror, so the rail keeps Home's state (P4 §5.2). `rowView` builds §2.3's rows; a loaded row's `onItemFocusChange` goes through §2.4's report rule.
 
-### 2.9 Seam needed from P1 / W1-A
+Probe (a leaf observing `stage.swap`): `mode=rows rows=<visible> removed=<n> row=<rowPosition|-> tab=<tabIndex|-> docked=<0|1> disp=<displayedIdentity|-> state=<rows|loading|empty|failed>`.
 
-| # | Need | Used for |
+### 2.9 Seams P1 / W1-A provides (P1 §1.5); W2-B only consumes them
+
+| # | What P1 provides | Used for |
 |---|---|---|
-| S1 | `StripGeometry`: strip height, stage height, stage logo-slot height (150 / 110), `stageBlockTop`, `stageBlockLeading` (pure) | the folder page uses the same geometry; logo docking |
-| S2 | `StageSwapModel` publishes `pendingItem` (pause started) and `displayedItem` (swap point), both `MetaPreview?`, plus `displayedIdentity: String?` (`"\(type):\(id)"`). Its input accepts a synthetic folder preview. | wash prepare/show (§1.4); logo docking (§2.5) |
-| S3 | `StageView(…, hidesLogoWhenDisplaying identity: String?)`: logo slot at opacity 0 while that identity is displayed; meta and synopsis still draw | one logo in the slot |
-| S4 | `StageStrip` generic over rows: `rows: [StripRowSpec(id, heading, isFocusable)]`, `focusedRowID` binding, `focusRequest` (row id + optional item id), `linksTabBar`, `menuPagesToTop`. Never consumes Up at the first row. Per-row card memory survives a push. Next-row heading peek from `heading`. | folder strip; Up to the Edit band; Menu pops |
-| S5 | Stage art fades by **alpha mask** on the left and bottom, never by a `Theme.Palette.background` gradient. Nothing in the Stage strip paints an opaque background over the wash. | the wash shows through; wash off = today's look |
-| S6 | `HomeView.folderHeroPreview(collection:folder:)` becomes `nonisolated static`, internal (today `private func`, `:2949`; it only reads globals and `folderHeroDescription`). Three call sites become `Self.` | folder stage row 0 without duplicating the synthesis |
-| S7 | A Stage probe `debug_stage` with `row=`, `fitem=` (the `nuvio-folder://` id when a folder tile is focused) and `disp=` (`displayedIdentity`) tokens | UI tests 102–106 |
-| S8 | `AmbientWashLayer(displayed:pending:)` mounted at the StageStripHome root as layer 2 (§1.1), with `WashArt(item:)` from S2's items | Home wash |
+| S1 | `StripGeometry` (P1 §2): `stripHeight`, `stageHeight`, `logoSlot` (150 / 110), `stageBlockTop` (120), `stageBlockLeading` (140 + `railLeadingInset`) | the folder page's layout; logo docking (§2.5) |
+| S2 | `controller.swap.washFeed` (`StageWashFeed`: `pending` and `displayed`, each `StageFeedItem` = item + identity + `washFallback`), observed only by the wash; `StageController.seed(_:washFallback:)` takes the synthetic folder preview | wash prepare/show (§1.4); the folder's first paint (§2.4) |
+| S3 | `StageView(controller:geometry:hidesLogoWhenDisplaying:probeID:)`: logo slot at opacity 0 while that identity is shown; meta and synopsis still draw | one logo in the slot |
+| S4 | `StripPager(…, menuPagesToTop: false, …)` installs no exit handler; `stage.requestFocus(rowKey:itemId:)` is the external handle (P1 §3.3's rungs). Up at the first row is never consumed, per-row card memory survives a push, and non-focusable rows need nothing (the engine skips them; `onRowChange` follows focus). Each row view draws its own heading, so the next row's heading peeks | initial focus (§2.3); Up to the Edit band; Menu pops |
+| S5 | met: the stage art fades by alpha mask, Classic's scrim stays Classic-only (P1 E4), and nothing opaque covers the wash | the wash shows through; wash off = today's look |
+| S6 | `HomeRowPreviews.folder(collection:folder:)` (P1 E6; the old `HomeView.folderHeroPreview` body, moved verbatim) | the folder preview without duplicating the synthesis |
+| S7 | `debug_stage … row= fitem= disp=` (`fitem` is the `nuvio-folder://` id when a folder tile is focused; `disp` the shown identity); the folder page's own stage label is `debug_stage_folder` (`StageView.probeID`) | UI tests 102–106 |
+| S8 | `AmbientWashLayer(feed:)` at `StageStripHome`'s layer 0, wired by the main session at the W1 merge | Home wash |
+
+The folder page also uses `stage.report(_:source:logoCandidates:prefetch:)` (P1 §4.1's funnel) and `StripPager`'s `onRowChange`.
 
 ## 3. Home Screen settings (W1-C)
 
 ### 3.1 Key and read helper
 
-New `Screens/Home/HomeLayout.swift`:
+New `Screens/Home/HomeLayout.swift`, owned by W1-C alone. P1's E1, the folder page and P4 all read this API, and W1-A creates no copy (#1):
 
 ```swift
 nonisolated enum HomeLayout: String, CaseIterable, Sendable {
@@ -525,14 +551,15 @@ New English UI strings. These are compiler-extracted, so never hand-edit `Locali
 
 | Agent | Owns (edit/create) | Must not touch |
 |---|---|---|
-| W1-B (Sonnet) | new `DesignSystem/AmbientWashRenderer.swift`, new `DesignSystem/AmbientWashLayer.swift`, `DesignSystem/ArtworkColorStore.swift`; tests `AmbientWashRendererTests.swift`, `AmbientWashModelTests.swift` (new), `ArtworkColorStoreTests.swift` (append) | `Theme.swift`, `HomeView.swift` (W1-A mounts the layer, S8) |
-| W1-C (Sonnet) | new `Screens/Home/HomeLayout.swift`, `Screens/Settings/HomeScreenSettingsPane.swift`, `Screens/Settings/SettingsDescriptions.swift` (4 ids + drafts); test `HomeLayoutTests.swift` (new) | `ContentView.swift` unless §3.5's fallback is triggered |
-| W1-A (Opus, P1) | adds S1–S8 in its own files plus S6 in `HomeView.swift` | — |
-| W2-B (Opus) | `Screens/CollectionsUI.swift` (switch, VM, Edit band), new `Screens/FolderRowsPage.swift`, new `Screens/FolderRowsPlan.swift` (plan, `FolderPageLayout`, `FolderLayoutStore`, `FolderStageInput`, `FolderStageLogo`); tests `FolderRowsPlanTests.swift`, `FolderLayoutStoreTests.swift`, `FolderStageLogoTests.swift` (new) | `HomeView.swift`, `shared/` |
-| W2-C (Sonnet) | phase 1 (with Wave 2): SlopMonster pass on the 4 descriptions + 2 category strings in `SettingsDescriptions.swift`. Phase 2 (after the main session builds W2-A/B): `scripts/populate-localizable-xcstrings.py <NuvioTV.build>` → de/es/fr/it/vi part files → `scripts/merge-translations-into-xcstrings.py`. Conventions: fr "vous", product names untranslated. | Swift sources other than `SettingsDescriptions.swift` |
-| W3 (Opus) | UI tests §4.3–4.4, the `folderRowsSeedJson` fixture | app sources |
+| W1-B (Sonnet) | new `DesignSystem/AmbientWashRenderer.swift`, new `DesignSystem/AmbientWashLayer.swift`, `DesignSystem/ArtworkColorStore.swift`; tests `AmbientWashRendererTests.swift`, `AmbientWashModelTests.swift` (new), `ArtworkColorStoreTests.swift` (append) | `Theme.swift`, `HomeView.swift`, `StageStripHome.swift` (the main session mounts the layer at the W1 merge, S8) |
+| W1-C (Sonnet) | new `Screens/Home/HomeLayout.swift` (alone, #1), `Screens/Settings/HomeScreenSettingsPane.swift`, `Screens/Settings/SettingsDescriptions.swift` (4 ids + drafts); test `HomeLayoutTests.swift` (new) | `ContentView.swift` unless §3.5's fallback is triggered |
+| W1-A (Opus, P1) | the §2.9 seams in its own files (P1 §9.1), E6 in `HomeView.swift`; no `HomeLayout.swift` | — |
+| W2-B (Opus) | `Screens/CollectionsUI.swift` (switch, VM, Edit band), new `Screens/FolderRowsPage.swift`, new `Screens/FolderRowsPlan.swift` (plan, `FolderPageLayout`, `FolderLayoutStore`, `FolderStageInput`, `FolderStageLogo`); tests `FolderRowsPlanTests.swift`, `FolderLayoutStoreTests.swift`, `FolderStageLogoTests.swift` (new). Consumes P1's seams only | `HomeView.swift`, every W1-A/W2-A file (`StageView`, `StripPager`, `StageSwapModel`, `StageController`, `StageStripHome`), `shared/` |
+| W2-C (Sonnet) | phase 1 (Wave 2, before W2-D): SlopMonster pass on the 4 descriptions + 2 category strings in `SettingsDescriptions.swift`. Phase 2, once, at the very end (after W2-D): `scripts/populate-localizable-xcstrings.py <NuvioTV.build>` → de/es/fr/it/vi part files → `scripts/merge-translations-into-xcstrings.py`, covering every new key including the rail's. Conventions: fr "vous", product names untranslated. | Swift sources other than `SettingsDescriptions.swift` |
+| W2-D (Opus, P4) | after W2-A, W2-B and W2-C have all landed (#12): the rail route in `FolderRowsPage.swift` (R2), the Hide Hero Artwork row in `AppearanceSettingsPane.swift` (#22), `SettingsDescriptions.swift` after W2-C | — |
+| W3 (Opus) | UI tests §4.3–4.4, the `folderRowsSeedJson` fixture; after W2-D | app sources |
 
-Agents reference each other's new types (`HomeLayout`, `AmbientWashSetting`, `WashArt`) by the signatures above. The main session builds only after a wave lands.
+W1-A, W1-B and W1-C touch disjoint files. `SettingsDescriptions.swift` goes W1-C → W2-C → W2-D, and `Localizable.xcstrings` changes only through the scripts. Agents reference each other's new types by signature: `HomeLayout`, `AmbientWashSetting`, `WashArt` here, and `StageWashFeed`, `StageFeedItem`, `StageController`, `StageView`, `StripPager` in P1. The main session builds only after a wave lands.
 
 ### 4.2 Unit tests (NuvioTVTests)
 
@@ -543,12 +570,12 @@ Agents reference each other's new types (`HomeLayout`, `AmbientWashSetting`, `Wa
 | `AmbientWashModelTests` (@MainActor, injected `loader`) | show → `incoming`, then `promote` → `base` · same identity no-op · `show(nil)` keeps · stale late image dropped (show A, show B, A resolves last) · three prepares within 0.15 s → one load, of the last · show during a fade promotes first |
 | `HomeLayoutTests` | keys and cases (`home_layout`, `stage`/`classic`, default `.stage`) · `resolve`: nil, "", "pinned" → stage; " Classic " → classic · `current` reads a throwaway suite (as `RowEdgeFadeSettingTests`) · `AmbientWashSetting` key `home_ambient_background`, default true |
 | `FolderLayoutStoreTests` | Classic → grid; Stage → rows · grid round trip (set grid → `isGrid`; set rows → entry removed) · same folderId in another collection is separate · 201 entries → 200, oldest dropped; re-setting moves an entry to newest · blank lines ignored |
-| `FolderRowsPlanTests` | All omitted, tab order kept · status mapping incl. items + error → loaded, no target → empty · empty/failed below focus removed, above focus kept, all removed with no focus; loading always kept · section trims to 18, keeps `availableItemCount` and `hasMore` · CollectionSource target for tmdb/trakt, Addon otherwise · keys distinct for duplicate labels · rebuild with the same items is `==` · `firstFocusable` · `pageState` loading/empty/failed · `FolderStageInput`: row nil/0 → folder, row 2 → item, row 2 + nil → nil |
-| `FolderStageLogoTests` | docked: row 0 + nil/folder displayed → true, row 0 + item → false, row 1 + folder → false · `compactTop`: (120, 150) → 22, (120, 110) → 46, (60, 150) → 12 · offset 0 when docked |
+| `FolderRowsPlanTests` | All omitted, tab order kept · status mapping incl. items + error → loaded, no target → empty · empty/failed below focus removed, above focus kept, all removed with no focus; loading always kept · section trims to 18, keeps `availableItemCount` and `hasMore` · CollectionSource target for tmdb/trakt, Addon otherwise · keys distinct for duplicate labels · rebuild with the same items is `==` · `firstFocusable` · `pageState` loading/empty/failed · `FolderStageInput.startsFollowing`: nil initial → false, the initial card → false, another card in row 0 → true, a card in row 1 → true |
+| `FolderStageLogoTests` | docked only while not following (Q1): `docked(followsFocus: false)` → true, `true` → false, with no path back · `compactTop`: (120, 150) → 22, (120, 110) → 46, (60, 150) → 12 · offset 0 when docked |
 
 ### 4.3 New UI tests
 
-The block test100–test107 is reserved for P2. P1 and P4 take other blocks; W3 renumbers on a clash.
+The block test100–test108 is reserved for P2. P1 (`testS…`) and P4 (`testRail…`) use named blocks; W3 renumbers on a clash.
 
 Every Stage leg passes `-home_layout stage` explicitly, so a value stored by an interrupted flip test can't leak in. The only exceptions are tests that flip a picker.
 
@@ -566,10 +593,11 @@ No `titleLogoUrl`, so the folder title is a `staticText`. The last source fails 
 | **test101HomeLayoutPickerIsLive** | No `-home_layout`. Settings › Home Screen › Home Layout → Classic → Home tab → Settings → Stage → Home tab. `defer`: re-pick Stage. | After the pick, focus is still on "Home Layout", value "Classic", and "Ambient Background" is gone. Home shows `debug_hero` and no `debug_stage`. After Stage: `debug_stage` exists. |
 | **test102AmbientWashOnOff** | `-home_layout stage`; Down ×1; rest 2 s; screenshot. Relaunch with `-home_ambient_background NO`, same walk. | On: `debug_wash` `on=1 shown=1 id=` equals `debug_stage` `disp=`. Off: `on=0 shown=0`. The region x 4…30, y 600…1000 (left gutter) in the off run has mean RGB within ±3/255 of 0x0D0D0D. The on run differs from it by ≥ 8/255 in at least one channel; skip with the reason if the on run's `lum=` < 0.03. |
 | **test103AmbientWashFollowsSwap** | Stage; land on a row with ≥ 3 items; Right ×2, 0.25 s apart; sample both probes every 50 ms for 2.5 s. | `gen` rises by exactly 1. The first sample with the wash `id` = the new identity is no earlier than the first with `disp` = the new identity. End state: `id == disp == fitem`. |
-| **test104FolderRowsPage** | Seeded; walk Down until `debug_stage fitem` contains `nuvio-folder://zzfolderrows`; Select. Wait for `folder_rows_state` `state=rows`. Down; wait 1.5 s; Up; sample at 50 ms for 2 s. | Open: `rows=3 removed=1 row=0 docked=1`; staticText "ZZFolderRowsFolder" exists; no "All" heading. After Down: `row=1 docked=0` within 0.6 s; `disp` = the focused item within 1.5 s; the folder title staticText still exists. After Up: no sample has `docked=1` while `disp` ≠ the folder identity, and `docked=1` arrives within 1.5 s. `debug_wash_folder` `shown=1`. |
+| **test104FolderRowsPage** | Seeded; walk Down until `debug_stage fitem` contains `nuvio-folder://zzfolderrows`; Select. Wait for `folder_rows_state` `state=rows`. Down; wait 1.5 s; Up; sample at 50 ms for 2 s. | Open: `rows=3 removed=1 row=0 docked=1`, `disp` = the folder identity; staticText "ZZFolderRowsFolder" exists; no "All" heading. After Down: `row=1 docked=0` within 0.6 s; `disp` = the focused item within 1.5 s; the folder title staticText still exists. After Up (Q1): every sample has `docked=0`, and `disp` = row 0's focused card within 1.5 s, never the folder. `debug_wash_folder` `shown=1`. |
 | **test105FolderRowsGridOption** | Seeded. Open folder; Up → "folder.editMenu" focused; Select → Layout › Grid. Menu back; re-open the folder; then Edit › Rows. `defer`: Rows + reseed. | After Grid: `folder_header_state` exists, chip "All" exists, `folder_rows_state` absent, focus still on `folder.editMenu`. Re-opened: still Grid. After Rows: `mode=rows`. |
-| **test106FolderRowsExitRestoresFocus** | Seeded (the Stage analogue of test57). Open folder; Down to row 1; Right ×1; Select (Detail); Menu; then Menu again. | Back from Detail: `row=1`, and `debug_stage fitem` equals the item focused before Select. Back from the folder: `debug_stage fitem` is the folder's `nuvio-folder://` id. |
+| **test106FolderRowsExitRestoresFocus** | Seeded (the Stage analogue of test57). Open folder; Down to row 1; Right ×1; Select (Detail); Menu; then Menu again. | Back from Detail: `folder_rows_state row=1`, and `debug_stage_folder fitem` equals the item focused before Select. Back from the folder: Home's `debug_stage fitem` is the folder's `nuvio-folder://` id. |
 | **test107FolderRowsSeeAll** | Seeded. Row 0 (Cinemeta top movie, > 18 items); Right until the See All tile; Select. | A catalog grid titled with row 0's heading is pushed; Menu returns to the folder at `row=0`. |
+| **test108FolderRowsTabBarNeverHalfShown** (#9) | Seeded, Tabs mode, `-debug.tabBarStateProbe YES`. Open the folder; Down, rest 4 s; Down, rest 4 s; Up ×2, rest 4 s (two 2 s probe ticks per rest); Menu back to Home. Read the Tab Bar Geometry blob (test75's `walkAndReadPane`). | Every rest settles on `st=min` (row ≥ 1) or `st=exp` (row 0). A `st=part` line may appear only as a mid-glide tick that the rest's own line follows; it is never the state a rest ends on. |
 
 ### 4.4 Existing UI tests affected by P2
 
@@ -579,18 +607,20 @@ No `titleLogoUrl`, so the folder title is a `staticText`. The last source fails 
 
 ### 4.5 Device pass (Living Room Apple TV, **"Test" profile**)
 
+Navigation → Top Tabs for steps 1–13, with `-debug.tabBarStateProbe YES` in the launch command, then Rail for 14–15 (#10; the Test profile runs Sidebar, which migrates to Rail and never shows the system tab bar).
+
 - **Step 6:** the wash is colourful and changes with the stage art ~0.6 s after a pause, never mid-paging. Off → plain at once; on → back within 0.5 s. OLED True Black → visibly dimmer. No banding in dark gradients; console `ms=` < 20.
-- **Step 9:** a folder in Test (Remote Setup or the phone's Test profile) shows one row per source in order, no All row. The logo rises on the first Down and docks again only after the stage shows the folder. Back from Detail restores the card; Back from the folder restores Home's folder tile. Edit › Grid gives today's grid and persists; Edit › Rows returns; Edit Filters still opens the editor.
+- **Step 9:** a folder in Test (Remote Setup or the phone's Test profile) shows one row per source in order, no All row. The stage shows the folder until the first move; the logo rises on that move and stays compact, with no re-dock back at row 0 (Q1). The tab bar is never half shown on the folder page. Back from Detail restores the card; Back from the folder restores Home's folder tile. Edit › Grid gives today's grid and persists; Edit › Rows returns; Edit Filters still opens the editor.
 - **Step 11:** Classic brings back Show Hero, Nuvio-Style Hero, Hero Sources and Autoplay Hero Trailer; Trailer Location reads Hero / Poster.
 - **Step 13:** the new Home Screen rows, Background / In Row and the Edit menu are in French, with no truncated picker pills.
 
 ## 5. Risks and open questions
 
-1. **Row 0 shows the folder, not the focused poster** (plan text: "the folder logo shows in the stage when the strip is at row 0"). So row 0's posters get no synopsis, and with Trailer Location = Background nothing plays at row 0. The alternative is to show the folder until the first focus move, then follow focus (the logo rises on that move). **Christian's call at the skim.**
-2. **The rise target.** This spec reads "rises into the stage's logo slot and shrinks to 60 %" as: docked in the slot at row 0, rising to a 60 % title at the top-left above the stage block from row 1 down. If he meant something else, only `FolderStageLogo` and its tests change.
+1. **Row 0 and the folder:** decided 2026-10-05 (Q1). The stage shows the folder on open, follows focus from the first move, and the compact logo stays up from then on (§2.4, §2.5).
+2. **The rise target.** This spec reads "rises into the stage's logo slot and shrinks to 60 %" as: docked in the slot until the first move, then a 60 % title at the top-left above the stage block. If he meant something else, only `FolderStageLogo` and its tests change. Since the logo never re-docks (Q1), at row 0 after a move the compact logo (y 22–112) shares the band where the Tabs-mode bar shows at offset 0. Today's folder grid header already rests in that band (`FolderHeaderGeometry.restTop` 32, `CollectionsUI.swift:1128`), so the Gate 2 screenshots check it rather than this spec moving it.
 3. **Wash brightness.** `maxMeanLuma` 0.26 and `minMeanLuma` 0.10 (sRGB-encoded) are first guesses between "cold, dull, too dark" and legible white text. Tune them on device in Wave 2; they're constants.
 4. **Banding** at 12× magnification: half-float output should prevent it. If the device shows it, raise the working size to 256×144 (the 4.6 MB cache becomes ~11.8 MB).
-5. **Live layout flip** (P2-7) assumes nothing in Stage changes a resolved toolbar preference (the BUG-66 latch class). P1 confirms; §3.5 is the fallback.
+5. **Live layout flip** (P2-7): P1 reads `home_layout` live (`@AppStorage`, P1 E1) and latches nothing per mount, so §3.5's fallback stays unused unless a device flip shows the BUG-66 latch class.
 6. **The Edit band's reachability** depends on a full-width focus section above the stage. Verify on the simulator (test105) before Gate 2.
-7. **P1 seam names** (§2.9) are requirements, not names. P3 should reject a P1 spec that lacks S3, S4's `menuPagesToTop`/Up rule, or S5.
-8. **Appearance › "Hide Hero Artwork"** (`hero_poster_focus_only`) has no defined meaning in Stage. P1 decides; it lives in the Appearance pane (W2-D's file).
+7. **P1 seams:** closed. P1 §1.5 provides S1–S8 by the names in §2.9.
+8. **Appearance › "Hide Hero Artwork"** (`hero_poster_focus_only`) has no meaning in Stage: W2-D hides that row while Home Layout is Stage (#22, P4 §4.1).

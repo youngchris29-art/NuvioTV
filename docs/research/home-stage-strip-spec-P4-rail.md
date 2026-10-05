@@ -4,17 +4,28 @@
 
 **Binding inputs:** plan `docs/home-stage-strip-plan-2026-10-03.md` (H9, "Navigation rail (H9)", W2-D, Risk 7, device steps 14–16, Spike verdict); Search S1 W2 (`docs/search-s1-native-search-plan-2026-10-04.md`); spike rail `NuvioMobile-stage-spike@035095a4` `DesignSystem/SpikeRail.swift`.
 
+**Corrections after the P3 critique (2026-10-05)**
+- #8: in Stage, Hide While Browsing moves with the strip's page (`setScrolledDown(…, motion: .page)`, the page's curve and duration, no resting settle) (§1.3, §5.2, §6.2).
+- #12: W2-D starts after W2-A, W2-B and W2-C have all landed; `SettingsDescriptions.swift` goes W1-C → W2-C → W2-D; `Localizable.xcstrings` changes only through the scripts, once, at the end (§7.1).
+- #13 / R1: `.railTabRoot` also publishes `\.railLeadingInset` (36 or 0), which P1 declares. Stage and the folder Rows page ignore the safe area and read it instead (§0 R3, §5.1, §5.2).
+- #14 / R2: Stage's route (row key captured, `requestFocus(rowKey:itemId:)` restore) uses P1 §1.5's seams. `FolderRowsPage` registers the same route, and the background trailer stops on `isFocusedChrome` (§2.5, §6.2).
+- R3, R4: Menu routing restated (§2.2, §6.2); the row-index write owns the rail, and the strip's mirror stays for the probe (§6.2).
+- #20: the expand animation honours Reduce Motion (§1.2).
+- #21: the Settings root registers a route that arms its one-shot landing correction (§2.5, §6.2).
+- #22: the Appearance pane hides Hide Hero Artwork While Browsing in Stage (§4.1).
+- Critique Q2, Q6 and Q7 are decided, which settles this spec's own Q1–Q3 and R7. Its Q4 is resolved; Q5 and Q6 wait for Probe G and the device (§0, §8).
+
 ## 0. Decisions this spec makes
 
 | # | Decision | Why |
 |---|---|---|
 | R1 | **Right returns to the current tab; Select switches tab.** Select on the current tab's item = Right. | The highlight never changes the page behind the dim (no live switching), so Right goes into the page you can see, and an Up/Down overshoot can't become a tab switch. Christian walked this on the device in the spike. |
 | R2 | **Content gate = one UIKit flag at the shell:** `isUserInteractionEnabled = false` on the `UITabBarController`'s view while the rail holds focus. The spike's per-root `.disabled` is the specified fallback (§2.3). | One site covers every tab root, every pushed page and the UIKit-hosted Search keyboard. The Grid keyboard (x 80…512, y 261…1011, S1 spike log) is a geometric neighbour of the centred rail, out of `.disabled`'s reach. No SwiftUI invalidation, no `.disabled` side effects on `.searchable`. |
-| R3 | **Always Visible inset = +36 pt of leading safe area** (`.safeAreaPadding`) on every tab root: content 140 → 176 pt from the bezel; full-bleed art still reaches x = 0. | The rail reserves `16 + 84 + 16 = 116`; the side safe area is 80, so the extra is 36. Each screen keeps its 60 pt margin from the new edge, and the system keyboard (anchored at x = 80) moves clear. |
-| R4 | **Menu inside the rail depends on how it opened.** By **Left**: Menu closes it. By **Menu** or the hidden-bar redirect: no handler, so the system suspends the app. | "Menu closes it" alone leaves no Menu exit from the app (root → rail → content → rail). The split keeps FEAT-30's grammar and the plan's close for a Left entry. One pure function. **Q1.** |
-| R5 | **Restoration tiers:** Home and Detail register SwiftUI-side return routes; every other surface returns to its default focus (`resetFocus(in:)` + the S1 ladder). | Spike verdict: SwiftUI-side only. A Left entry always comes from the leftmost item (card 0 of a row), so "first card of the remembered row" is exact for it. |
+| R3 | **Always Visible inset = +36 pt of leading safe area** (`.safeAreaPadding`) on every tab root: content 140 → 176 pt from the bezel; full-bleed art still reaches x = 0. Stage and the folder Rows page ignore the safe area, so they read the same 36 pt from `\.railLeadingInset` (R1, §5.1). Kept for this beta (Q6). | The rail reserves `16 + 84 + 16 = 116`; the side safe area is 80, so the extra is 36. Each screen keeps its 60 pt margin from the new edge, and the system keyboard (anchored at x = 80) moves clear. |
+| R4 | **Menu inside the rail depends on how it opened.** By **Left**: Menu closes it. By **Menu** or the hidden-bar redirect: no handler, so the system suspends the app. **Decided 2026-10-05 (critique Q2).** | "Menu closes it" alone leaves no Menu exit from the app (root → rail → content → rail). The split keeps FEAT-30's grammar and the plan's close for a Left entry. One pure function. |
+| R5 | **Restoration tiers:** Home (Classic and Stage), the folder Rows page and Detail register SwiftUI-side return routes, and the Settings root registers one that arms its landing correction (§2.5); every other surface returns to its default focus (`resetFocus(in:)` + the S1 ladder). | Spike verdict: SwiftUI-side only. A Left entry always comes from the leftmost item (card 0 of a row), so "first card of the remembered row" is exact for it. |
 | R6 | **Migration:** `sidebar_style` `"sidebar"` → `"rail"`, read from the persistent domain only; `"sidebar"` also reads as Rail. | A `-sidebar_style sidebar` launch arg lives in the argument domain and must not be persisted. The key is device-local, never synced (no reference in `shared/` or any sync blob). |
-| R7 | **Hide While Browsing** treats the Search tab and immersive pushes (Detail) as browsing. | The Grid keyboard occupies the left edge; Detail is "into a title" (FEAT-30's immersive hide). |
+| R7 | **Hide While Browsing** treats the Search tab and immersive pushes (Detail) as browsing. **Decided 2026-10-05 (critique Q7).** | The Grid keyboard occupies the left edge; Detail is "into a title" (FEAT-30's immersive hide). |
 
 ## 1. Files, types, numbers
 
@@ -87,7 +98,7 @@ nonisolated enum RailVisibilityRule {
 
 | Constant | Value | Notes |
 |---|---|---|
-| `bezelInset` | 16 | pill's leading edge from the screen edge (plan) |
+| `bezelInset` | 16 | pill's leading edge from the screen edge (plan); kept for this beta (Q6) |
 | `collapsedWidth` | 84 | |
 | `expandedWidth` | 300 | grows rightward only; height unchanged so no item moves vertically |
 | `contentGap` | 16 | |
@@ -102,9 +113,9 @@ nonisolated enum RailVisibilityRule {
 | `cornerRadius` | 42 | `collapsedWidth / 2` |
 | pill height | **492** | `2·22 + 6·60 + 5·14 + 18`; centred: y 294…786 on 1080 |
 | `dimOpacity` | 0.55 | full screen, behind the pill, only while expanded |
-| `expandDuration` | 0.20 s | ease-out |
-| `slideDuration` | 0.25 s | Hide While Browsing; Reduce Motion → opacity only |
-| `restingShowSettle` | 0.35 s | kept from `SidebarMetrics` (SidebarOverlay.swift:234) |
+| `expandDuration` | 0.20 s | ease-out; Reduce Motion → no width animation, the labels and dim cross-fade (#20) |
+| `slideDuration` | 0.25 s | Hide While Browsing; Reduce Motion → opacity only. Stage's `.page` writes use the page's own duration instead (§5.2) |
+| `restingShowSettle` | 0.35 s | kept from `SidebarMetrics` (SidebarOverlay.swift:234); never for Stage's `.page` writes |
 | `exitVerifyDelay` | 0.5 s | route restore fallback (spike `exitToContent`, SpikeRail.swift:216) |
 
 **Clearance check (unit-tested):** Always Visible puts content at 80 + 36 + 60 = 176. The widest row lift is a Saga card at ≈30 pt per side (500 × 0.1212 / 2, `cardSystemLiftScale`), so 146 ≥ 116. Hide While Browsing puts content at 140, so 110 > 100 (the pill's trailing edge). The overlay never covers a focused first card at rest in either mode.
@@ -118,8 +129,9 @@ Same ownership rule as today: `@State` on `MainTabView` (ContentView.swift:370),
     @Published var scrolledDownByTab: [Int: Bool] = [:]       // unchanged semantics
     @Published private(set) var revealRequest = RailRevealRequest(generation: 0, reason: .menu)
     @Published var isFocusedChrome = false                      // unchanged
+    private(set) var motionByTab: [Int: RailMotion] = [:]       // not published; read with the change
     nonisolated init() {}
-    func setScrolledDown(tab: Int, _ v: Bool)                   // write-on-change, as today
+    func setScrolledDown(tab: Int, _ v: Bool, motion: RailMotion = .scroll)   // write-on-change, as today (#8)
     func requestReveal(_ reason: RailOpenReason)                // generation &+= 1
     func setFocusedChrome(_ f: Bool)
     // Return routes: NOT published. A LIFO stack per tab, keyed by token.
@@ -128,6 +140,7 @@ Same ownership rule as today: `@State` on `MainTabView` (ContentView.swift:370),
     func topReturnRoute(tab: Int) -> RailReturnRoute?
 }
 struct RailRevealRequest: Equatable { var generation: Int; var reason: RailOpenReason }
+nonisolated enum RailMotion: Equatable { case scroll; case page(seconds: TimeInterval) }   // .page: Stage's strip (§5.2)
 struct RailReturnRoute {
     let capture: @MainActor () -> Void        // called at arm time, focus still on the origin
     let restore: @MainActor () -> Bool        // true = issued a SwiftUI focus write
@@ -272,16 +285,17 @@ fallbackHandOff(tab):                                 // SidebarOverlay.handOffF
 
 | Surface | Route | Lands on |
 |---|---|---|
-| Home, **Stage** | registered by `StageStripHome` (P1 seam below) | the current row's remembered card |
+| Home, **Stage** | registered by `StageStripHome` (R2, P1 §1.5) | the current row's remembered card |
+| Folder **Rows** page (P2) | registered by `FolderRowsPage`, the same shape as Stage's (R2); without it Right would land on default focus (the Edit band, or row 0) and the strip would page away | the current row's remembered card |
 | Home, **Classic** | registered by `HomeView` (§6.2) | hero CTA if it held focus; otherwise `PinnedRowFocusRequest(rowKey: lastOwnedRowKey)`, the existing seam (PinnedRowUpFallback.swift:22–30, applied by every row at :76–105), whose first card is the Left origin |
 | **Detail** (any tab) | registered by `DetailView` on appear, removed on disappear (beside `push/popImmersive`, :1194–1196); tab from `\.railTabIndex` | `heroFocus` captured at arm (`.play`, `.trailer`, …; :508); returns false for Detail rows → default |
 | Search | none | default focus = the system keyboard, waiting up to 2.5 s (ladder) |
-| Settings root | none | its `.defaultFocus` = `lastCategory` (SettingsRootView) |
-| Library, Add-ons, Profile, Settings panes, folder, See All, person pages | none | the screen's default focus (Q4) |
+| Settings root | registered by `SettingsRootView` (#21): `restore` arms its one-shot landing correction (`landingCorrectionArmed`, SettingsRootView.swift:66, :112–120) and returns false | the fallback hand-off lands in the `List`, and the correction moves focus to `lastCategory`. The root's own focus-graph doc (:11–33) records that a freshly built tvOS `List` doesn't honour default focus on its own, which is why the correction exists, and nothing arms it on a rail exit today |
+| Library, Add-ons, Profile, Settings panes, folder Grid page, See All, person pages | none | the screen's default focus (P4 Q4, accepted for this beta; device step 14 reads against this table) |
 
-Home's Classic route `restore()` returns false while `!homePath.isEmpty` (HomeView.swift:156) or `resume != nil`, so a folder page pushed over Home falls to the default.
+Home's routes (Classic and Stage) return false while Home is covered: `!homePath.isEmpty` (HomeView.swift:156) or `resume != nil`. The folder Rows page's route, like Detail's, is pushed on appear and removed on disappear, which a push over the page triggers. Routes are a LIFO per tab, so a folder Rows page over Home puts its own route on top, and a page with no route falls to the default.
 
-**P1 seam (name it in P1):** Stage owns per-row card memory for Down/Up paging (plan: "focus memory per row"). P4 needs two things from it: (a) `PinnedRowFocusRequest.itemId: String?`, so a row focuses that id when it is one of its rendered cards and its first card otherwise; (b) a Stage function `focusRememberedCard(inRow:)` (call it `StripFocusMemory`). Stage's route `capture` records the current row key; `restore` calls (b) and returns true. If P1 ships without (a), W2-D adds it exactly as stated here. Classic needs neither.
+**From P1 (§1.5, R2):** `PinnedRowFocusRequest.itemId` (P1 §3.3) and the controller's `currentRowKey`, `memory` and `requestFocus(rowKey:itemId:)`, which issues P1's rungs. Stage's route is `capture: { savedRow = stage.currentRowKey }`, then `restore: { guard !covered, let row = savedRow else { return false }; stage.requestFocus(rowKey: row, itemId: stage.memory.itemId(for: row)); return true }`, with `vetoesLeftArm: { false }`. A Left entry comes from card 0, which memory then holds. Classic needs none of this.
 
 ## 3. Search S1 carried into the rail
 
@@ -304,6 +318,7 @@ Home's Classic route `restore()` returns false while `!homePath.isEmpty` (HomeVi
 |---|---|---|---|---|
 | Navigation (:244–257) | `sidebar_style` | `"tabs"` → "Top Tabs" (existing key), `"rail"` → "Rail" | tabs | always |
 | **Rail** (new, directly below) | `rail_visibility` | `"always"` → "Always Visible", `"browsing"` → "Hide While Browsing" | always | only when `NavigationChrome.style(raw:) == .rail` |
+| Hide Hero Artwork While Browsing (:294–299) | `hero_poster_focus_only` | unchanged | off | **only when Home Layout is Classic** (`@AppStorage(HomeLayout.defaultsKey)` resolved through `HomeLayout.resolve`): it has no meaning in Stage (#22). The row stays a literal `descriptionID: .appearanceHideHeroArtwork` inside the `if`, as `SettingsDescriptionsTests`' regex needs |
 
 - The Navigation binding (:84–99) **normalises on get**: `NavigationChrome.style(raw: sidebarStyle).rawValue`. A launch-arg `"sidebar"` then shows "Rail", not a blank pill. It sets `pendingAppearanceRowFocus = "navigation"` before the write (unchanged).
 - The Rail row gets the same wrapper with hint `"railVisibility"`, plus `.accessibilityIdentifier("appearance_row_rail")` and `.focused($appearanceRowFocus, equals: "railVisibility")`.
@@ -311,7 +326,7 @@ Home's Classic route `restore()` returns false while `!homePath.isEmpty` (HomeVi
 - `SettingsDescriptions.swift`: rewrite `.appearanceNavigation` (:233); add `case appearanceRail = "appearance.rail"`. Copy scored with `scripts/deslop/deslop.py`, **5/5 each**. The Codex cleanse was skipped: the strings are short, and Codex is over quota until 10-29.
   - Navigation: "Top Tabs keeps the tab bar across the top of the screen. Rail replaces it with a column of icons on the left edge. Press Left at the edge of a page, or Menu, to open it. Default: Top Tabs."
   - Rail: "Always Visible keeps the rail on screen and moves pages a little to the right to make room for it. Hide While Browsing slides it away while you scroll or open a title, and brings it back at the top of a page. Default: Always Visible."
-- New English keys: "Rail", "Always Visible", "Hide While Browsing", the subtitle, the two descriptions. They go through `populate-localizable-xcstrings.py` → de/es/fr/it/vi → `merge-translations-into-xcstrings.py` in the main session after W2-D. W2-D never hand-edits `Localizable.xcstrings`. "Sidebar" and the old subtitle go stale and are left in the catalog.
+- New English keys: "Rail", "Always Visible", "Hide While Browsing", the subtitle, the two descriptions. They go through `populate-localizable-xcstrings.py` → de/es/fr/it/vi → `merge-translations-into-xcstrings.py` in the batch's one scripts pass, after W2-D (W2-C phase 2, P2 §4.1). W2-D never hand-edits `Localizable.xcstrings`. "Sidebar" and the old subtitle go stale and are left in the catalog.
 
 ### 4.2 Migration
 
@@ -341,26 +356,28 @@ content
   .environment(\.railTabIndex, index)
   // Always Visible only:
   .safeAreaPadding(.leading, NavigationChrome.contentSafeAreaExtra(sideSafeArea: PinnedRowGeometry.sideSafeArea, reservesWidth: true))  // 36
+  .environment(\.railLeadingInset, NavigationChrome.contentSafeAreaExtra(sideSafeArea: PinnedRowGeometry.sideSafeArea, reservesWidth: true))  // 36 (R1)
   .environment(\.rowEdgeMargins, NavigationChrome.rowEdgeMargins(sideSafeArea: PinnedRowGeometry.sideSafeArea, reservesWidth: true))  // 176 / 140
 ```
 
-`.safeAreaPadding` rather than `.padding`: `ignoresSafeArea()` backgrounds (Home hero art, Stage art and wash, Detail backdrop) still reach x = 0 behind the rail. A plain padding would move their frames.
+`.safeAreaPadding` rather than `.padding`: `ignoresSafeArea()` backgrounds (Home hero art, Stage art and wash, Detail backdrop) still reach x = 0 behind the rail. A plain padding would move their frames. Stage's root and the folder Rows page ignore the safe area by design (P1 §1.3), so the padding never reaches them. They read `\.railLeadingInset` (P1 declares it, default 0) for the stage block and the rows, and inherit `\.rowEdgeMargins` from here, which matches (R1). Environment values flow into NavigationStack destinations, so the pushed folder page gets them too.
 
 ### 5.2 Per surface
 
 | Surface | Always Visible | Hide While Browsing |
 |---|---|---|
 | Home Classic | rows, hero text and CTA at 176; the hero backdrop is full-bleed; rows clip at `176 − allowance` (`RowLeadingEdgeClip`), so nothing slides under the rail | no inset; overlay; hides on `isScrolledDown` (the existing hysteresis mirror) |
-| Home **Stage** | stage left block and strip rows from the safe area + 60 = 176; stage art and wash `.ignoresSafeArea()` (P1 contract) | hides when `rowIndex > 0`, back at row 0 (Stage reports it, §6.2) |
+| Home **Stage** | stage left block and strip rows at 140 + `railLeadingInset` = 176; stage art and wash `.ignoresSafeArea()` (P1 contract, R1) | hides when the strip starts paging to a row > 0 and returns when it starts paging to row 0, sliding with the page's curve and duration, with no resting settle (#8, §6.2) |
+| Folder **Rows** page (pushed, P2) | as Stage: 176 via `railLeadingInset` | the page writes no mirror, so the rail keeps Home's state |
 | Search | page at 176; the Grid keyboard should move from x 80 to 116 (**Probe I**) | hidden on the Search tab (R7); Menu (redirect) or Left still opens it |
 | Library / Add-ons | at 176 | per-tab scroll mirror (TabBarVisibility.swift:333–336, now `reportToRail`) |
 | Settings root and panes | title, explainer column and List all shift 36 (explainer `.padding(.leading, 60)` sits inside the safe area); `geo.size.width / 3` recomputes | never scrolls, so shown at rest |
 | Profile | centred content, unaffected | shown |
 | Detail (pushed) | shown; content at 176; backdrop full-bleed | hidden (immersive) unless focused or revealed |
-| Folder, See All, person (pushed) | shown, inherited inset | follow their tab's mirror |
+| Folder Grid page, See All, person (pushed) | shown, inherited inset | follow their tab's mirror |
 | Player, stream picker, trailer bridge, Top Shelf cover | **hidden automatically:** all are `fullScreenCover` presentations above the root hosting view; `presentedOverShell` blocks arming; `rootCoverActive` releases focus (port of SidebarOverlay.swift:608–614) | same |
 
-**Hide While Browsing motion:** `.transition(reduceMotion ? .opacity : .move(edge: .leading).combined(with: .opacity))`, animated on `shown` over 0.25 s. The hide edge is immediate, and the show edge waits 0.35 s of continuously not-scrolled (port `updateRestingVisibility`, SidebarOverlay.swift:331–353). There's no inset in this mode, so nothing else moves.
+**Hide While Browsing motion:** `.transition(reduceMotion ? .opacity : .move(edge: .leading).combined(with: .opacity))`, animated on `shown` over 0.25 s. The hide edge is immediate, and the show edge waits 0.35 s of continuously not-scrolled (port `updateRestingVisibility`, SidebarOverlay.swift:331–353). A `.page(seconds:)` write (Stage) animates both edges with the page's own `.easeOut(duration: seconds)`, and skips the settle: the row index is discrete, so the rail arrives with the strip instead of 0.1 s after it (#8). There's no inset in this mode, so nothing else moves.
 
 ## 6. Retirement and call sites
 
@@ -404,9 +421,12 @@ content
 | :2922–2933 | `railMenuRevealHandler`: `guard NavigationChrome.isRail(), !isScrolledDown`, then `requestReveal(.menu)` |
 | HomeView (new) | Classic route registered in `.onAppear` when `isRail` and `homeLayout == .classic`: `capture` stores `.hero` if `heroFocused`, else `.row(lastOwnedRowKey)`; `lastOwnedRowKey` is a new `@State`, written in `handleRowFocusOwnership` (:1931) on `owns == true` and never cleared on `false` (unlike `focusedRowKey`); `restore` as in §2.5; `vetoesLeftArm` = `heroFocused && heroCarouselActive` |
 | DetailView (new) | route push and remove beside :1194–1196, keyed by `@Environment(\.railTabIndex)` (skip when nil) |
-| Screens/Home/StageStripHome.swift (P1 file) | (a) the exit handler: `rowIndex > 0 ? pageToRow0 : railMenuRevealHandler` (nil in Tabs mode, so the system default), as plan "Menu"; (b) in rail mode `navigationChrome.setScrolledDown(tab: 0, rowIndex > 0)` on every row-index change; a strip `.reportsScrollToTabBar` writing the same mirror is harmless (it agrees at rest); (c) the Stage route (§2.5); (d) Up at row 0 in rail mode has no target and never reveals (BUG-98) |
+| Screens/Home/StageStripHome.swift (P1 file) | (a) `atTopExit` in rail mode = `railMenuRevealHandler` (nil in Tabs mode, so the system default); row > 0 still pages to row 0 first (R3). (b) In rail mode, `onPageStart: { index, s in navigationChrome.setScrolledDown(tab: 0, index > 0, motion: .page(seconds: s)) }` (#8). This write owns the rail. The strip's `reportsScrollToTabBar` mirror stays for TabBarStateProbe, and its later crossing writes the same value, a no-op under write-on-change (R4). (c) The Stage route (§2.5), pushed on appear and removed on disappear. (d) Up at row 0 in rail mode has no target and never reveals (BUG-98). (e) Rename the trailer teardown's `.onReceive(sidebarChrome.$isFocusedChrome)` (W2-A's) to `navigationChrome` (R2) |
+| Screens/FolderRowsPage.swift (P2, W2-B's file) | the folder route (§2.5), the same shape as Stage's, keyed by `\.railTabIndex` (R2) |
+| Screens/Settings/SettingsRootView.swift | the Settings root route (§2.5, #21) |
+| Screens/Settings/AppearanceSettingsPane.swift:294–299 | Hide Hero Artwork While Browsing shown only in Classic (§4.1, #22) |
 
-**Conflict with P1's Menu routing:** none in substance. Stage's own handler sits on the strip, so it wins at row > 0 and pages to row 0 first. At row 0 it delegates to the rail. W2-D lands after W1-A and W2-A and adapts any `sidebarChrome` reference P1's code already uses.
+**Conflict with P1's Menu routing:** none in substance (R3). Stage's own handler sits on the strip, so it wins at row > 0 and pages to row 0 first. At row 0 it delegates to the rail; the folder Rows page installs no handler and pops (P1 S4). W2-D lands after W2-A, W2-B and W2-C (#12) and adapts the `sidebarChrome` references W1-A and W2-A wrote.
 
 ### 6.3 Docs (main session, after W2-D)
 
@@ -418,14 +438,16 @@ content
 
 New: `DesignSystem/NavigationChrome.swift`, `DesignSystem/NavigationRail.swift`, `DesignSystem/HiddenTabBarFocusBlocker.swift`. Deleted: `DesignSystem/SidebarOverlay.swift`. Edited: every file in §6.2. The Xcode project uses synchronized groups (9 `PBXFileSystemSynchronizedRootGroup`), so there are no pbxproj edits. Agents never build.
 
-Order: (1) move the blocker and add the gate and content check; (2) `NavigationChrome` plus unit tests; (3) `NavigationRail`; (4) shell wiring and migration; (5) renames; (6) Appearance rows and descriptions; (7) routes and Stage hooks; (8) main session: build, **Probe G** (§2.3), **Probe I** (Always Visible on FA87: `app.keyboards.firstMatch.frame.minX ≥ 115` on Grid, Home card 0 `minX ∈ [175, 177]`); (9) the test93 port and harness helpers.
+**When (#12, the P3 file matrix):** W2-D starts only after W2-A, W2-B and W2-C have all landed: it edits `StageStripHome.swift` (W1-A, then W2-A), `FolderRowsPage.swift` (W2-B), `HomeView.swift` (W1-A) and `SettingsDescriptions.swift` (W1-C → W2-C → W2-D). Its new English strings go into `Localizable.xcstrings` only through the scripts, in the one translation pass at the very end (W2-C phase 2). It never hand-edits the catalog.
+
+Order: (1) move the blocker and add the gate and content check; (2) `NavigationChrome` plus unit tests; (3) `NavigationRail`; (4) shell wiring and migration; (5) renames; (6) Appearance rows and descriptions; (7) routes (Classic, Stage, folder Rows, Detail, Settings root) and Stage hooks; (8) main session: build, **Probe G** (§2.3), **Probe I** (Always Visible on FA87: `app.keyboards.firstMatch.frame.minX ≥ 115` on Grid, Home card 0 `minX ∈ [175, 177]`); (9) the test93 port and harness helpers.
 
 ### 7.2 Unit tests (NuvioTVTests)
 
 | File | Cases |
 |---|---|
 | `NavigationChromeTests.swift` (new) | style(raw:): tabs / rail / "sidebar" → rail / nil / garbage → tabs; visibility: browsing / always / nil / garbage → always. **Migration** (a `UserDefaults(suiteName:)` per test, `domain` = suite name): "sidebar" → "rail" and returns true; "rail" no-op; "tabs" no-op; missing stays missing; garbage unchanged; second run returns false; `rail_visibility` untouched. **Inset math:** reservedEdge == 116; extra(80, true) == 36; extra(80, false) == 0; extra(116, true) == 0; extra(130, true) == 0 (never negative); margins(80, true) == (176, 140); margins(80, false) == .standard; clearance: 176 − 30 ≥ 116 and 140 − 30 > 100 |
-| `RailFocusPolicyTests.swift` (new) | shouldArm: the all-true case → true; each of the six conditions negated → false; heading `[.left, .up]` → false; `.right` → false. moveFailedInRail: right → exit; up / down / left → contained. menuInRail: left → close; menu / redirect / rearm → system. select: other → switchTab; same → returnToCurrent. RailVisibilityRule: 9 cases, one per precedence step, including `.always` while immersive → shown and `.whileBrowsing` on tab 1 → hidden |
+| `RailFocusPolicyTests.swift` (new) | shouldArm: the all-true case → true; each of the six conditions negated → false; heading `[.left, .up]` → false; `.right` → false. moveFailedInRail: right → exit; up / down / left → contained. menuInRail: left → close; menu / redirect / rearm → system. select: other → switchTab; same → returnToCurrent. RailVisibilityRule: 9 cases, one per precedence step, including `.always` while immersive → shown and `.whileBrowsing` on tab 1 → hidden. `setScrolledDown` keeps the last `RailMotion` per tab and stays write-on-change (a same-value `.scroll` write after a `.page` write leaves `.page`) |
 | `HiddenTabBarRedirectTests.swift` | labels renamed; the 8 existing cases unchanged otherwise |
 
 That adds about 45 cases to NuvioTVTests' 1042 at the base.
@@ -439,10 +461,10 @@ New `NuvioTVUITests/NavigationRailUITests.swift`, class `NavigationRailUITests`,
 | Rail01 LeftFromFirstCard (classic and stage) | Down to a catalog row; Left one press at a time, recording the focused card's label, until `rail_state expanded=1 reason=left focused=0` (≤ 12 presses); `app.buttons["rail_item_Home"]` exists |
 | Rail02 LeftMidRow | from card 2, one Left → `expanded=0`, and the focused label is card 1's |
 | Rail03 RightReturnsSameCard | after Rail01, Right → within 1.5 s `expanded=0 armed=0 gated=0 route=home`; FA87: the focused label equals the recorded card 0 |
-| Rail04 MenuAtTabRoot | Home (top), Library, Settings root: Menu → `focused=<tab> reason=menu`; exit with Right |
+| Rail04 MenuAtTabRoot | Home (top), Library, Settings root: Menu → `focused=<tab> reason=menu`; exit with Right. On the Settings root, open a category and come back first: after the Right, the focused row is that category, through the root's landing correction (#21) |
 | Rail05 Contained | rail open on Home: Down ×8 → `focused=5`, Up ×8 → `focused=0`, still `expanded=1`; FA87: no content button `hasFocus`. **05b**, the same from the Search keyboard (opened by Menu): the keyboard never takes focus |
 | Rail06 SelectSwitchesTab | rail on Home → Down to `rail_item_Library` → Select → within 1.5 s `tab=2 focused=-1 expanded=0`; Library content exists |
-| Rail07 HideWhileBrowsing (stage) | `shown=1` at launch; Down → `shown=0` within 1.0 s, and strip card 0's `minX` unchanged (±1); Up → `shown=1` within 1.2 s; Search tab → `shown=0` |
+| Rail07 HideWhileBrowsing (stage) | `shown=1` at launch; Down → `shown=0` within 1.0 s, and strip card 0's `minX` unchanged (±1); Up → `shown=1` within 0.8 s, with no resting settle (#8); Search tab → `shown=0` |
 | Rail08 AlwaysVisibleInset | `navigation_rail` frame `maxX ≤ 101`; Classic card 0 `minX ∈ [175, 177]` (a Tabs-mode run: `[139, 141]`); on a Detail opened from Home, `navigation_rail` exists and the Play button's `minX ≥ 116` |
 | Rail09 MigrationAlias | `-sidebar_style sidebar` → `navigation_rail` exists, `debug_navchrome` contains `mode=rail`; Appearance `appearance_row_navigation` label contains "Rail" |
 | Rail10 DetailRoundTrip | Detail: Left from Play → `reason=left`; Right → `route=detail`; FA87: Play has focus |
@@ -464,10 +486,10 @@ W2-D owns the test93 port and the helpers (it is W2-D's canary). W3 owns `Naviga
 4. **Holding Left** along a row opens the rail at card 0 on the next repeat. That is the intended entry, and momentum swipes didn't fire it on hardware. The `arm` log line catches any surprise.
 5. **T3 / BUG-66:** `MainTabView` must not observe `NavigationChromeModel`. `.railTabRoot` takes only launch-constant inputs, and the rail is the sole observer.
 
-**Open questions for Christian**
-- **Q1 (R4):** Menu inside a Menu-opened rail suspends the app (as FEAT-30 does). The plan's literal "Menu closes it" leaves no Menu exit from the app at all. Keep the split?
-- **Q2:** Is the 36 pt shift (content at 176, 76 pt clear of the pill) right, or should content stay at 140 (no inset, 40 pt clear) and accept the Search keyboard's 20 pt under the pill? Decide from Gate 2 screenshots.
-- **Q3:** 16 pt from the bezel puts the icons 22 pt inside tvOS's 80 pt overscan margin; an overscanning TV clips the pill. Orivio uses 28. Keep 16?
-- **Q4:** Library, Add-ons, Settings panes and pushed grids return to their default focus, not the exact item. That is acceptable for this beta; exact return needs a route per screen (a follow-up row?). Device step 14 should be amended to the table in §2.5.
-- **Q5:** If Probe G forces the `.disabled` fallback, Down from the rail's avatar may reach the Search Grid keyboard. Should the rail then hide on Search in Always Visible too?
-- **Q6:** Is `.borderless` row focus readable enough on glass under the dim? Check on device; `.bordered` with a capsule shape is the native alternative.
+**Decisions (Christian, 2026-10-05, all as the P3 critique recommended) and resolved questions**
+- **Q1 (R4), critique Q2:** decided. Menu inside a Menu-opened rail suspends the app, as FEAT-30 does: Menu opens the rail at a tab root, and Menu again leaves the app, the remote's normal grammar. Menu still closes a rail that Left opened.
+- **Q2 and Q3, critique Q6:** decided for this beta. Keep the 36 pt content shift (content at 176, 76 pt clear of the pill) and the pill 16 pt from the bezel (icons 22 pt inside the 80 pt overscan margin; Orivio uses 28). Revisit from the Gate 2 screenshots and a look on his TV.
+- **R7, critique Q7:** decided. Hide While Browsing also hides the rail on Search (the Grid keyboard sits on the left edge) and on Detail (FEAT-30 already hides there).
+- **Q4:** resolved by the critique. Library, Add-ons, Settings panes and pushed grids return to their default focus for this beta; device step 14 reads against the §2.5 table. Exact return needs a route per screen (a follow-up row).
+- **Q5:** waits for Probe G. If it forces the `.disabled` fallback, decide then whether the rail hides on Search in Always Visible too.
+- **Q6:** waits for the device. Is `.borderless` row focus readable on glass under the dim? `.bordered` with a capsule shape is the native alternative.

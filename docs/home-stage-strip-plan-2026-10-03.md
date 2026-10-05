@@ -649,7 +649,17 @@ On Christian's go ("yes, start the design phase"), four Opus agents ran. They re
 | 6 Rail geometry | Keep the 36 pt content shift and the pill 16 pt from the bezel for this beta. Decide from the Gate 2 screenshots and a look on the TV. |
 | 7 Hide While Browsing on Search and Detail | Hides there too (P4 R7): the search keyboard sits on the left edge, and FEAT-30 already hides on Detail. |
 
-**Next:** one Opus agent folds the critique's findings (P1, P2 and the cheap P3s), the seam fixes S1–S8 / R1–R5 and these answers into the three specs. The main session checks that both P1 findings are closed, then Wave 1 starts.
+**Specs corrected 2026-10-05.** One Opus agent folded findings #1–#23, seams S1–S8 / R1–R5 and Q1–Q7 into the three specs, in place; each spec opens with a "Corrections after the P3 critique" list. The main session then checked both P1 findings:
+- **#1:** `HomeLayout.swift` is W1-C's alone, and the old `storageKey` API is gone.
+- **#2:** W1-A now builds `StageController`, `StageView(controller:hidesLogoWhenDisplaying:)`, `StripPager` + `StripPagerHandle` (`menuPagesToTop`, `requestFocus(rowKey:itemId:)`), `StageWashFeed` and the `fitem=`/`disp=` probe tokens. W2-B only consumes them, and W2-D adds the folder's `RailReturnRoute` after W2-B. The deleted names (`stageStripRestoreFocus`, `contentGated`, `leadingChromeInset`, `stripTopFade`) survive only in the corrections lists.
+
+The agent's notes against the critique:
+- **#22:** the hero fan-out is Kotlin-side (`HomeRepository`), and `HomeViewModel` holds the rows for the hero head's art prewarm (≤ 1.5 s) in Stage too. Gate 1 measures it, and Christian decides whether Stage skips that wait.
+- **Q1 + #9:** with no re-dock, the compact folder logo sits in the tab bar's band at folder row 0. The Gate 2 screenshots decide.
+- **Timing:** "Down → swap" is about 0.70 s now, with #15's quiet-clock gate.
+- **Size and cost:** the specs are now P1 9.2k, P2 8.0k and P4 6.6k words. The fix agent used 0.57M tokens, about 2.5M for the design phase in all.
+
+**Next:** Wave 1, with three agents in parallel on `claude/home-stage-strip`: W1-A (Opus, P1 §9.1), W1-B (Sonnet, P2 §1 wash) and W1-C (Sonnet, P2 §3 settings). Their files are disjoint. Agents edit only; the main session builds after all three land.
 
 ### Spike verdict (feeds P1 and P4)
 

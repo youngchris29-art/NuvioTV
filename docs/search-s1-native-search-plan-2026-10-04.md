@@ -201,7 +201,7 @@ NuvioMobile `claude/search-s1` in the clone `~/Claude/Projects/NuvioMobile-searc
 - Release simulator build (FA87 destination) is green.
 - The earlier tips' gates (`2a374e0c` and the round 3–5 trees) were also green. The `2a374e0c` gate found the Sidebar hand-off giving up before Search's keyboard arrived, and test52/test93 passed 2/2 once the hand-off wait was longer; the sim log showed the redirect firing on both Menus with no re-arm.
 - **Not run:** test92 on a tvOS 27.0 simulator. The build stalled for 16 min in `CompileAssetCatalogVariant thinned` for 406CA4AC and was stopped. Two 27.0 runtimes are installed (24J5305f and 24J360), which may be the cause. It is still owed and treated as environmental.
-- Debug device build: at the device pass.
+- Debug device build (`com.youngchris29.NuvioTV`) of `d68b9d61` is green and installed on the Living Room Apple TV, not launched.
 
 ## Gates
 

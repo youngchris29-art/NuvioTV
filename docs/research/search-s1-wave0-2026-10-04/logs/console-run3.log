@@ -1,0 +1,157 @@
+[SearchSpike] t=0.000 scanner armed variant=A0
+[TabBarLink] linked chain=NavigationStackHostingController<AnyView> > UIKitNavigationController(skip) > TabHostingController tab=UIKitTabBarController sv=HostingScrollView svh=1080 pinned=1 legacyObserved=rows adjBottom=0 adjTop=0 restFix=0
+[SearchSpike] t=0.037 tabbarlink linked chain=NavigationStackHostingController<AnyView> > UIKitNavigationController(skip) > TabHostingController sv=HostingScrollView svh=1080 observed=self
+[SearchSpike] t=0.042 presslogger installed window=UIWindow level=0
+[SearchSpike] t=0.042 kb none screen=search tab=0
+[SearchSpike] t=0.042 focus UIKitFocusableViewResponderItem screen=search tab=0 blocker=0
+[SearchSpike] t=0.042 tabbar y=46 h=68 onscreen=1
+[TabBarStateProbe] chain root=UIHostingController<ModifiedContent<LazyView<ModifiedContent<ContentView, _PreferenceWritingModifier<PreferredColorSchemeKey>>>, RootModifier>> tab=UIKitTabBarController selected=TabHostingController > UIKitNavigationController > NavigationStackHostingController<AnyView> legacyObserved=rows
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=---- m=cls r=arm svh=1080
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=---- m=cls r=attach svh=1080
+[SearchSpike] t=0.293 focus UITabBarButton screen=search tab=0 blocker=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=0 trk=rows sd=0 sdt=---- m=cls r=tick svh=574
+[SearchSpike] t=9.120 press right window=UIWindow focus=UITabBarButton inKeyboard=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=---- m=cls r=tab svh=574
+[SearchSpike] t=9.333 tab 1
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=0 ins=0 sel=1 trk=none sd=0 sdt=---- m=cls r=tab2 svh=574
+[TabBarLink] unlinked (left window) controllers=2
+[SearchSpike] t=10.455 kb _UISearchControllerTVKeyboardContainerView linear 0,157 1920x135 | UIKeyboard grid 80,261 432x750 screen=search tab=1
+[SearchSpike] t=10.455 layout grid
+[SearchSpike] t=12.287 focus UIKitFocusableViewResponderItem screen=search tab=1 blocker=0
+[SearchSpike] t=12.287 press down window=UIWindow focus=UIKitFocusableViewResponderItem inKeyboard=0
+[TabBarStateProbe] y=46 h=68 a=1.00 hid=0 tbh=0 st=exp off=- ins=- sel=1 trk=none sd=0 sdt=---- m=cls r=tick svh=-
+[SearchSpike] t=13.270 press left window=UIWindow focus=UIKeyboard inKeyboard=1
+[SearchSpike] t=13.347 focus UIKeyboard screen=search tab=1 blocker=0
+[SearchSpike] t=31.497 query 'S'
+[SearchSpike] t=31.676 query ''
+[SearchSpike] t=32.007 query 'E'
+[SearchSpike] t=32.663 results sections=1 loading=true
+[SearchSpike] t=32.734 results sections=2 loading=true
+[SearchSpike] t=32.814 results sections=3 loading=true
+[SearchSpike] t=32.949 results sections=4 loading=true
+[SearchSpike] t=33.100 results sections=5 loading=true
+[SearchSpike] t=33.143 results sections=6 loading=true
+[SearchSpike] t=33.395 results sections=7 loading=true
+[SearchSpike] t=33.454 results sections=8 loading=false
+[SearchSpike] t=35.014 query ''
+[SearchSpike] t=35.087 results sections=0 loading=false
+[SearchSpike] t=36.796 query 'S'
+[SearchSpike] t=37.385 results sections=1 loading=true
+[SearchSpike] t=37.436 results sections=2 loading=true
+[SearchSpike] t=37.491 results sections=3 loading=true
+[SearchSpike] t=37.519 results sections=7 loading=true
+[SearchSpike] t=37.617 results sections=8 loading=false
+[SearchSpike] t=38.668 query 'Se'
+[SearchSpike] t=38.725 query 'S'
+[SearchSpike] t=38.772 query 'Se'
+[SearchSpike] t=38.807 query 'S'
+[SearchSpike] t=38.852 query 'Se'
+[SearchSpike] t=39.258 results sections=0 loading=true
+[SearchSpike] t=39.344 results sections=1 loading=true
+[SearchSpike] t=39.370 results sections=2 loading=true
+[SearchSpike] t=39.398 results sections=3 loading=true
+[SearchSpike] t=39.492 results sections=6 loading=true
+[SearchSpike] t=39.572 results sections=8 loading=false
+[SearchSpike] t=40.516 query 'Sev'
+[SearchSpike] t=40.588 query 'Se'
+[SearchSpike] t=40.603 query 'Sev'
+[SearchSpike] t=40.640 query 'Se'
+[SearchSpike] t=40.676 query 'Sev'
+[SearchSpike] t=41.067 results sections=0 loading=true
+[SearchSpike] t=41.125 results sections=1 loading=true
+[SearchSpike] t=41.153 results sections=2 loading=true
+[SearchSpike] t=41.207 results sections=3 loading=true
+[SearchSpike] t=41.253 results sections=6 loading=true
+[SearchSpike] t=41.371 results sections=8 loading=false
+[SearchSpike] t=42.225 query 'Seve'
+[SearchSpike] t=42.284 query 'Sev'
+[SearchSpike] t=42.331 query 'Seve'
+[SearchSpike] t=42.726 results sections=0 loading=true
+[SearchSpike] t=42.816 results sections=2 loading=true
+[SearchSpike] t=42.859 results sections=3 loading=true
+[SearchSpike] t=42.903 results sections=6 loading=true
+[SearchSpike] t=43.039 results sections=8 loading=false
+[SearchSpike] t=43.366 query 'Sever'
+[SearchSpike] t=43.421 query 'Seve'
+[SearchSpike] t=43.466 query 'Sever'
+[SearchSpike] t=43.876 results sections=0 loading=true
+[SearchSpike] t=43.942 results sections=2 loading=true
+[SearchSpike] t=44.011 results sections=3 loading=true
+[SearchSpike] t=44.052 results sections=6 loading=true
+[SearchSpike] t=44.117 results sections=7 loading=false
+[SearchSpike] t=44.950 query 'Severa'
+[SearchSpike] t=45.005 query 'Sever'
+[SearchSpike] t=45.048 query 'Severa'
+[SearchSpike] t=45.080 query 'Sever'
+[SearchSpike] t=45.111 query 'Severa'
+[SearchSpike] t=45.153 query 'Sever'
+[SearchSpike] t=45.168 query 'Severa'
+[SearchSpike] t=45.200 query 'Sever'
+[SearchSpike] t=45.232 query 'Severa'
+[SearchSpike] t=45.264 query 'Sever'
+[SearchSpike] t=45.295 query 'Severa'
+[SearchSpike] t=45.328 query 'Sever'
+[SearchSpike] t=45.368 query 'Severa'
+[SearchSpike] t=45.386 query 'Sever'
+[SearchSpike] t=45.416 query 'Severa'
+[SearchSpike] t=45.451 query 'Sever'
+[SearchSpike] t=49.653 query 'Severa'
+[SearchSpike] t=49.709 query 'Sever'
+[SearchSpike] t=49.743 query 'Severa'
+[SearchSpike] t=49.777 query 'Sever'
+[SearchSpike] t=49.815 query 'Severa'
+[SearchSpike] t=49.840 query 'Sever'
+[SearchSpike] t=51.196 query 'Severa'
+[SearchSpike] t=51.260 query 'Sever'
+[SearchSpike] t=51.276 query 'Severa'
+[SearchSpike] t=51.309 query 'Sever'
+[SearchSpike] t=51.342 query 'Severa'
+[SearchSpike] t=51.741 results sections=0 loading=true
+[SearchSpike] t=51.796 results sections=1 loading=true
+[SearchSpike] t=51.844 results sections=2 loading=true
+[SearchSpike] t=51.872 results sections=3 loading=true
+[SearchSpike] t=51.906 results sections=4 loading=true
+[SearchSpike] t=51.944 results sections=6 loading=true
+[SearchSpike] t=52.037 results sections=7 loading=false
+[SearchSpike] t=53.954 query 'Severan'
+[SearchSpike] t=54.009 query 'Severa'
+[SearchSpike] t=54.051 query 'Severan'
+[SearchSpike] t=54.068 query 'Severa'
+[SearchSpike] t=54.098 query 'Severan'
+[SearchSpike] t=54.130 query 'Severa'
+[SearchSpike] t=54.893 query 'Severan'
+[SearchSpike] t=54.945 query 'Severa'
+[SearchSpike] t=54.987 query 'Severan'
+[SearchSpike] t=55.018 query 'Severa'
+[SearchSpike] t=55.048 query 'Severan'
+[SearchSpike] t=55.454 results sections=0 loading=true
+[SearchSpike] t=55.540 results sections=2 loading=true
+[SearchSpike] t=55.589 results sections=3 loading=true
+[SearchSpike] t=55.624 results sections=4 loading=true
+[SearchSpike] t=55.686 results sections=6 loading=true
+[SearchSpike] t=56.500 query 'Severanc'
+[SearchSpike] t=56.561 query 'Severan'
+[SearchSpike] t=56.578 query 'Severanc'
+[SearchSpike] t=56.612 query 'Severan'
+[SearchSpike] t=56.640 query 'Severanc'
+[SearchSpike] t=56.679 query 'Severan'
+[SearchSpike] t=56.708 query 'Severanc'
+[SearchSpike] t=56.740 query 'Severan'
+[SearchSpike] t=57.694 query 'Severanc'
+[SearchSpike] t=58.113 results sections=0 loading=true
+[SearchSpike] t=58.167 results sections=2 loading=true
+[SearchSpike] t=58.243 results sections=3 loading=true
+[SearchSpike] t=58.280 results sections=4 loading=true
+[SearchSpike] t=58.302 results sections=6 loading=true
+[SearchSpike] t=59.370 query 'Severance'
+[SearchSpike] t=59.420 query 'Severanc'
+[SearchSpike] t=59.458 query 'Severance'
+[SearchSpike] t=59.488 query 'Severanc'
+[SearchSpike] t=59.516 query 'Severance'
+[SearchSpike] t=59.546 query 'Severanc'
+[SearchSpike] t=59.579 query 'Severance'
+[SearchSpike] t=59.965 results sections=0 loading=true
+[SearchSpike] t=60.022 results sections=2 loading=true
+[SearchSpike] t=60.092 results sections=3 loading=true
+[SearchSpike] t=60.110 results sections=5 loading=true
+[SearchSpike] t=60.162 results sections=6 loading=true

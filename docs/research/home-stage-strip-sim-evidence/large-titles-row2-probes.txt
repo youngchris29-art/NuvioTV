@@ -1,0 +1,3 @@
+debug_stage phase=idle shown=movie:tt22526100 pending=- swaps=1 maxLive=1 stageH=449 stripH=631 P=588 fits=1 rest=movie:tt22526100 row=1 fitem=tt22526100 disp=movie:tt22526100
+debug_strip #1 0→1 vfocus-down moves=1 settle=505 trav=-588.0 aftRest=0 res=0.0 row=1 key=com.linvo.cinemeta:movie:imdbRating foc=com.linvo.cinemeta:movie:imdbRating/tt22526100 atTop=0 segs=1 seg=-588.0/437
+on=1 oled=0 id=movie:tt22526100 gen=2 shown=1 late=1 lum=0.26 ms=8.0

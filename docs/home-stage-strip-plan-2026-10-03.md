@@ -374,7 +374,7 @@ The focus engine is the risk. Spike two mechanisms behind a debug arg on a throw
 
 **Gate 1:**
 - Debug build plus NuvioTVTests.
-- Simulator screenshots for each poster size (Small, Medium, Medium+, Large, each with titles on and off), No Zoom on, Continue Watching present and empty, and a folder focused.
+- Simulator screenshots for each poster size (Small, Medium, Medium+, Large, each with titles on and off), No Zoom on, Continue Watching present and empty, and a folder focused. Poster Size is synced and FA87 is Medium, so W1-A adds a DEBUG `-debug.posterSizeOverride small|medium|mediumPlus|large` launch knob (P3 finding 11). The guest fixture already carries a collections seed for the folder shot.
 - Saved to `docs/research/home-stage-strip-sim-evidence/`.
 - **Christian design checkpoint before Wave 2.**
 
@@ -397,7 +397,7 @@ The focus engine is the risk. Spike two mechanisms behind a debug arg on a throw
 - English strings for all new settings and labels.
 - If the revamp's Settings part has merged: description ids + `SettingsDescriptions` entries (SlopMonster to 5/5), then translations through `populate-localizable-xcstrings.py` → de/es/fr/it/vi → `merge-translations-into-xcstrings.py`.
 
-**Wave 2b (after W2-C): W2-D (Opus): navigation rail.**
+**Wave 2b (after W2-A, W2-B and W2-C have all landed; P3 finding 12, since W2-D edits files each of them owns): W2-D (Opus): navigation rail.**
 - New `DesignSystem/NavigationRail.swift`.
 - Changes to the tab shell in `ContentView.swift`/`MainTabView`: migration, rail overlay, insets, Menu routing.
 - The Navigation and Rail pickers in `AppearanceSettingsPane.swift`.
@@ -467,7 +467,9 @@ The focus engine is the risk. Spike two mechanisms behind a debug arg on a throw
 Christian runs it on the Living Room Apple TV in the **"Test" profile**.
 
 Debug build with probes streamed:
-`xcrun devicectl device process launch --console --terminate-existing --device <id> com.youngchris29.NuvioTV -- -debug.homeScrollProbe YES > ~/Downloads/home-stage-strip.log 2>&1`
+`xcrun devicectl device process launch --console --terminate-existing --device <id> com.youngchris29.NuvioTV -- -debug.homeScrollProbe YES -debug.tabBarStateProbe YES > ~/Downloads/home-stage-strip.log 2>&1`
+
+The Test profile runs Sidebar mode, which migrates to Rail, so it never shows the system tab bar. **Switch Navigation to Tabs for steps 1–13**, so "offset 0 at the top, never half shown" gets device evidence (P3 finding 10; the spike's walks never had the bar). Switch to Rail for steps 14–15.
 
 1. Cold launch: Stage, row 0 = Continue Watching (or first row), tab bar visible, stage shows the focused title.
 2. Down ×5 at Medium+:
@@ -635,7 +637,19 @@ On Christian's go ("yes, start the design phase"), four Opus agents ran. They re
 - **P3 critique:** `docs/research/home-stage-strip-spec-P3-critique.md`. **FIX FIRST:** 2 P1 (W1-A and W1-C both create `HomeLayout.swift`; P2's seams are missing from W1-A's scope, so W2-A and W2-B would edit the same files), 12 P2, 9 P3, and 7 questions for Christian with recommendations.
 - **Cost:** about 1.9M tokens across the four agents, roughly double the 1M estimate given before the go. The specs ran 5,600–7,200 words each.
 
-**Next:** Christian answers the 7 questions and skims P1's geometry table (§2) and swap timeline (§4.4). Then one Opus agent folds the critique's P1/P2 fixes and his answers into the three specs, and Wave 1 starts.
+**Checkpoint done 2026-10-05.** Christian skimmed the geometry table and swap timeline, and answered the critique's 7 questions **"all as recommended"**:
+
+| Q | Decision |
+|---|---|
+| 1 Folder stage on row 0 | Show the folder when the page opens, follow focus from the first move, and keep the compact logo up from then on (no re-dock on return to row 0). |
+| 2 Menu in a Menu-opened rail | Suspends the app (P4 R4): Menu opens the rail at a tab root, and Menu again leaves the app, the remote's normal grammar. Menu still closes a rail that Left opened. |
+| 3 Swap pause | Ship 450 ms, with launch-latched `-debug.stageSwapPause` / `stageFadeOut` / `stageFadeIn` knobs. Tune from the device pass and Steven's video; if Right reads as late, try 300 ms. |
+| 4 Peek heading in the bottom overscan band | Accept it as a hint. Lifting it out would put Large's stage under the 420 pt floor. |
+| 5 Focus memory if `.defaultFocus` fails gate G-F | Ship the fallback: Down/Up land geometrically, as the spike measured, and memory serves Menu and rail restores. |
+| 6 Rail geometry | Keep the 36 pt content shift and the pill 16 pt from the bezel for this beta. Decide from the Gate 2 screenshots and a look on the TV. |
+| 7 Hide While Browsing on Search and Detail | Hides there too (P4 R7): the search keyboard sits on the left edge, and FEAT-30 already hides on Detail. |
+
+**Next:** one Opus agent folds the critique's findings (P1, P2 and the cheap P3s), the seam fixes S1–S8 / R1–R5 and these answers into the three specs. The main session checks that both P1 findings are closed, then Wave 1 starts.
 
 ### Spike verdict (feeds P1 and P4)
 

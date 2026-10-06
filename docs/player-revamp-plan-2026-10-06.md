@@ -263,4 +263,21 @@ About 15 build agents and 11 review rounds across five rcs; never more than thre
 
 - Decisions D1–D10 taken as recommended. Release model: one rc after P5 with Search & Discover; ten-day checkpoint rule.
 - **P1 started.** Clone `~/Claude/Projects/NuvioMobile-player` (`git clone --no-local` of the submodule, `origin` push URL set to `DISABLED`), branch `claude/player-p1` off `5feef338`; MPVKit symlinked from the main checkout; `local.properties` copied (17 lines). ⚠️ Stage by explicit paths in the clone; never `git add -A`.
-- W0 next: baseline Debug simulator build in the clone, then the two P1 specs (`docs/research/player-p1-spec-bar.md`, `player-p1-spec-preview.md`) and one Opus critique.
+### P1 Wave 0 (2026-10-06)
+
+- Baseline Debug simulator build in the clone: BUILD SUCCEEDED (`iosApp/build/logs/p1-baseline-debug.log`, 327 warnings, all pre-existing); the generated `SupabaseConfig.kt` carries `https://api.nuvio.tv`, so `local.properties` took.
+- Two Opus specs written read-only from the clone at `5feef338`: `docs/research/player-p1-spec-bar.md` (4.4k words) and `docs/research/player-p1-spec-preview.md` (7.2k words), then one Opus critique that edited both in place and recorded itself in `docs/research/player-p1-critique-2026-10-06.md`. Decisions the critique made, for Christian's eye at Gate 1:
+  1. **Hold ramp is time-based**, not tick-based: 10 s steps while the hold is under 0.6 s, 20 s under 1.2 s, 30 s under 2.0 s, then 60 s; first tick at 0.4 s, then every 0.25 s. Knobs `-debug.holdTickSec`, `-debug.holdRampScale`. (The official app keys its table to Android key repeats at ~20/s, which would mean 60 s steps within a second; at four ticks a second that moves the preview 240 s per second, so the ramp was slowed.)
+  2. **Scan is Apple's latched model**: scanning continues after release, Right cycles 2→3→4→2, Select/Play ends it in place, Menu returns to where the scan started, Left/Up/Down end it in place. A held Left never scans (mpv has no reverse play); it steps.
+  3. **Paused bar:** never hides while paused unless the Pause Info Card setting is on, in which case it hides after 5 s idle and the card fades in; any press except Menu removes the card and returns the bar. Focus on a pill blocks the hide.
+  4. **Pills are player-driven focus** (the mpv controller routes presses and publishes `focusedPill`; the pills draw non-focusable). System focus is the documented alternative, only if device-pass item 6 asks for swipe movement between pills. **Consequence: clicks, not swipes, move between pills in P1.**
+  5. **Agents run sequentially**, A (preview/commit/scan/buffered + model) → B (bar + pills + press regions) → C (chip auto-hide, audio-delay persistence incl. `shared/`, failure-alert engine buttons, settings rows, strings, Release build). The `MPVPlayerView.swift` region split is in the bar spec §1.
+  6. **Menu precedence:** panel → step/scan cancel → up-next chip → pill → bar → exit. Menu never dismisses the skip chip.
+  7. **Buffered ranges** read `demuxer-cache-state` as a string assumed JSON; a one-shot DEBUG log on the first build proves it; fallback one span `[time-pos, demuxer-cache-time]`.
+  8. Chips move to bottom 240 / trailing 86 while the bar shows.
+- Spec facts worth keeping: the main thread never reads an mpv property (`MPVPlayerView.swift:158-176`), so cache-state and the pre-scan mute read run on `eventQueue`; native failures never reach the alert today because `PlayerScreen` always passes `onFallback`, so "Try with mpv" only appears after a forced-native retry fails; audio-delay persistence is a `shared/` change (`PlayerTrackPreferenceStorage` is an `expect object`, plus the `audio_delay_ms|` prefix in `AccountDataStores.kt:480`); the Streaming Buffer setting already sets `demuxer-max-back-bytes = max(bufferMB/2, 16)` (`:469`), the spec raises the floor to 64 MiB.
+- Smoke fixture for the UI legs: `iosApp/build/smoke/test-long.mkv` (600 s HEVC, 2 s keyframes, generated with `~/bin/ffmpeg`) served by `iosApp/build/smoke/range_server.py` on 127.0.0.1:8000 (disposable; the `build/` dir is gitignored).
+
+### P1 Wave 1 (2026-10-06, in progress)
+
+- Agent A (Sonnet) started on spec-preview §1–§5: `TransportPreview.swift`, `TransportBarModel.swift`, `SeekProbe.swift`, planner `refineSeek`/`recordUserSpan`, controller wiring, cache option, tests, UI legs 1–3.

@@ -376,7 +376,7 @@ Roughly 14 execution agents + 3–4 review rounds — the same scale as the Home
 
 ## Landed (2026-10-06 ~04:25 ET)
 
-- `claude/search-discover-stage` fetched into the main submodule checkout and `tvos-shared-extraction` **fast-forwarded locally `65074a19` → `cbdd1aa2` (32 commits)**. **NOT pushed**: the push to `origin`, the outer pointer push, the branch deletion and the clone deletion wait for Christian's go, with the device pass (every merge in this project has been on his go, and the device pass is owed). The clone `~/Claude/Projects/NuvioMobile-search-discover` stays until then (its derived data is reusable).
+- `claude/search-discover-stage` fetched into the main submodule checkout and `tvos-shared-extraction` **fast-forwarded `65074a19` → `cbdd1aa2` (32 commits)**. **PUSHED 2026-10-06 ~04:40 ET on Christian's go** ("go ahead and push, keep Own Tab default for now"); outer `main` pushed as `00d5589` after a rebase over the morning sweep (`0c27db8`, tracker header + dashboard only); feature branch deleted locally (it was never on `origin`); clone `~/Claude/Projects/NuvioMobile-search-discover` deleted. **Own Tab stays the default for now.**
 - Final numbers: jvm 1439 / K/N 1457 / composeApp 435; NuvioTVTests 1387 (was 1271 + 116 new); 42 UI legs (40 + D06b + Rail11) pass; evidence 22 files.
 
 ## Device pass (owed; Living Room Apple TV, **Test profile**, dev build `com.youngchris29.NuvioTV`)

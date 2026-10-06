@@ -751,6 +751,83 @@ Both reviews run over `d68b9d61..c02b0333`. The estimate is about 2–2.5M token
 3. Gate 2.
 4. The device pass: Tabs for steps 1–13 with the tab-bar probe, Rail for 14–15.
 
+### Wave 3 + review rounds r1–r3 (2026-10-05)
+
+**W3 (Opus) landed in `b66b0c0f`:**
+- The whole `NuvioTVUITests` class and the pinned-row, hero, trailer and detail harnesses launch with `-home_layout classic`. The helpers open tabs through the rail when `rail_state` is present.
+- New `StageStripUITests` S01–S16 and `NavigationRailUITests` Rail01–10 (+01b, 05b).
+- test84/93 are ported to the rail; test52 is deleted.
+- test100–108 cover the Home Screen rows, the live Home Layout flip, the ambient wash and the folder Rows page.
+- New DEBUG knob `-debug.continueWatchingSeedJsonB64` (guest only; refused while a tracker owns progress).
+
+**Reviews (Opus read-only; Codex over quota until 10-29):**
+- **r1, two passes over `d68b9d61..c02b0333`: 1 P1, 7 P2, 13 P3.** Fixed in `02c45450`:
+  - P1: every Stage host leaked its controller and its 3840 px stage art, through the pager handle's closure.
+  - P2: a late restore rung pulled focus back.
+  - P2: the mounted window lived in `@State`, so each hop re-rendered every mounted row (BUG-126 class). Now one `StripPageMount` per page.
+  - P2: rows inserted above row 0 while focus was outside the strip stayed hidden.
+  - P2: the Continue Watching remount restore used `proxy.scrollTo`.
+  - P2: a live Home Layout flip left `isScrolledDown` and the rail mirror stale.
+  - P2: the folder Edit band hid under its own focus.
+  - P2: Search's Always Visible inset (later superseded by the shell inset).
+  - 11 P3s.
+- **r2 over `02c45450` + the seed: 1 P2, 5 P3.** Fixed in `66f2a00c`:
+  - P2: a focused row the window moved away from (Menu under Reduce Motion) was unmounted and left a stale owner, which switched off focus-lost detection.
+  - The seed's tracker guard; the strip CW reorder snap; `box.rowKeys` in `handleOwnership`.
+  - Deferred: the Upcoming/collection remount restore (LazyHStack, non-uniform tiles).
+- **r3 over `66f2a00c`: CLEAN** (no P1/P2, 4 P3). Applied in `7494ee21`: the blocker's `restore()` resets the bar and inset only for the registered blocker; Reduce Motion mirrored into the pager box; stale docs. Left for the device: a possible first-frame 140 → 176 jump on a cold launch.
+
+**The run's own finding: Always Visible's reserved width only reached Stage.**
+- SwiftUI's `.safeAreaPadding` at each tab root never crossed a tab's NavigationStack or `.searchable`'s container. Rail08 measured Classic card 0 at 140, Settings moved about 15 pt, and Search sat at 140, while `\.rowEdgeMargins` said 176, so Row Edge Fade Soft would fade the first card.
+- Fixed in `66f2a00c`: the width is UIKit safe area on the shell's tab controller (`additionalSafeAreaInsets.left`, set by the rail from the live visibility).
+- Re-measured:
+  - Stage 176 (no double inset), Classic 176, Tabs 140;
+  - Search content 176, Library 176, Detail controls from 116;
+  - the system keyboard moved from x 80 to 116, clearing the pill (Probe I; the simulator only offers the Linear keyboard, so the Grid one is a device check).
+
+**UI suite on FA87 (first pass in chunks A–I, then the re-runs R1–R3):**
+
+| Area | Result |
+|---|---|
+| Stage S01–S16 | 16 / 16 |
+| Rail Rail01–10 (+01b, 05b) | 10 / 10 |
+| Folder page + Stage settings (test84, 93, 100–108) | 11 / 11 |
+| Search legs (test19, 23, 24, 29, 92) | 5 / 5 |
+| Classic legs | 20 pass, 8 skip, 1 fail |
+| Card-level legs | 8 pass, 2 skip, 2 fail |
+
+Classic legs against the Wave 0 baseline:
+- Every baseline pass still passes. test64 and HeroFolderSwap test54 now pass (the seeded folder).
+- The skips are fixture premises, as at the baseline.
+- test48 now reaches its known "PREMISE UNREACHABLE" fail under the Large override.
+
+Card-level legs: the fails are test27/28, the stale Appearance legs CLAUDE.md lists since the revamp.
+
+**Test-side fixes in `822832af` (oracles, not app bugs):**
+- S04 and Rail08 read DEBUG bounds elements: a `.contain` container's accessibility frame is the union of its children.
+- The tvOS 26.5 open `Menu` is a CollectionView of `Cell`s holding labelled `Other`s, and the Cell holds focus. The folder Edit menu's focus is an unlabelled node too, so `hasFocusByFrame` handles both (test101, 105).
+- Rail04 accepts the Home screen (HeadBoard) as the exit.
+- S09's rest floor is 0.15 s: the simulator's Down settles in 0.21–0.27 s.
+
+**Flake to watch:** test93 failed once in R2. Focus reached the keyboard, but the rail's `@FocusState` stayed on item 1 and the pill stayed expanded. It then passed 2/2 with the shell inset and 2/2 with it off (`-debug.railShellInsetOff`).
+
+**Open decisions and device checks:**
+- **Folder title at row 0** sits under the Tabs-mode tab bar pill: the Q1 + #9 Gate 2 screenshot is `w3-104c-memory.jpg`. Christian asked to lift it back to full size, then withdrew that ("nevermind"), so it stays as built.
+- **Device checks** (r3's list, Test profile, Rail + Always Visible): `[NavRail] reserved leading safe area=36` logs once per shell mount; content at 176 on every tab and on pushed pages; the Grid keyboard clears the pill; Stage and the folder page at 176, not 212; Soft fade leaves card 0 unfaded; Tabs mode back at 140 with a focusable bar.
+- **Plus:** Reduce Motion paging; Search Menu → rail → Right.
+
+Evidence: `docs/research/home-stage-strip-sim-evidence/w3-*.jpg`; results summary `docs/research/home-stage-strip-w3-results-2026-10-05.md`.
+
+**Gate 2 (simulator), on the tip `7494ee21`:**
+- Debug and Release builds are green.
+- NuvioTVTests 1271 / 0.
+- UI smoke 7 / 7: S01, S08, Rail07, Rail08, Rail09, test93, test104.
+- Still owed from Gate 2: the device spike re-measure of one motion per press, which joins the device pass.
+
+**Next, on Christian's go:**
+1. The device pass in the Test profile: Tabs mode for steps 1–13 with `-debug.tabBarStateProbe YES`, Rail for 14–15, plus r3's inset checks and the items above.
+2. Then the merge into `tvos-shared-extraction` and a cut, each only on his go.
+
 ### Spike verdict (feeds P1 and P4)
 
 **Paging mechanism: (a), as a2.** A vertical `ScrollView`; each row in a page frame of height P = rowHeight + 2·lift, top-aligned; `.scrollTargetLayout()` + `.scrollTargetBehavior(.viewAligned)`; a trailing clear spacer of `peek`; `.scrollPosition(id:anchor: .top)` driven by the focused row's key with a 0.5 s ease-out. The focus engine moves focus, and the app's position animation overrides the engine's slower scroll. On hardware that is one motion per press, exactly on the boundary, nothing after. Tune the duration on device in Wave 2 (0.5 s now; the plan's range is 0.45–0.6 s).

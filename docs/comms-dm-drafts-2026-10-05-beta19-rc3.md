@@ -1,7 +1,7 @@
 # DM draft, beta.19-rc3 (2026-10-05)
 
 To: u/mrStevenx3 (Reddit chat)
-Status: DRAFT, not sent. Send only on Christian's go.
+Status: **SENT 2026-10-05 10:42 PM ET** on Christian's go ("send it"), via ego-browser task space 7 ("reddit chat steven"): two bubbles (1,774 and 785 chars), each verified complete in the room, in order, composer empty after. Steven had sent nothing since his 12:14 PM verdict.
 Build 135, commit `65074a19`, tag `tvos-v0.3.0-beta.19-rc3`. IPA 28,677,275 B (sha256 be07ea96143e8c87…), copy `~/Downloads/NuvioTV-beta19-rc3.ipa`, litterbox 72 h (until ~2026-10-08 22:15 ET), content-length verified.
 Lint: 5/5 CLEAN on each bubble (deslop.py; one rule-of-three in bubble 2 reshaped, the Library line). Re-linted 5/5 after the link, expiry and SHA were filled in. Cleanse skipped: Codex usage limit (until 10-29).
 

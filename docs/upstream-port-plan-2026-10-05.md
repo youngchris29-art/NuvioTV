@@ -20,3 +20,10 @@ Also: pt / pt-BR strings not needed (fork i18n handled separately).
 
 ## Decision for Christian
 Item 1 is optional feature parity; worth doing only if you use multiple MDBList lists.
+
+
+---
+
+## OUTCOME ADDENDUM (2026-10-06)
+
+Item 1 PORTED in the Search & Discover batch (`docs/search-discover-stage-plan-2026-10-06.md`): the shared half applied verbatim with `git apply --3way` after a path rewrite (`76c9d130`; the four fork files were byte-identical to upstream's pre-commit versions; `MdbListLibraryServiceTest` 17/17), plus a fork-only `MdbListLibraryServiceBridging.kt` (`setListVisibilityAsync(key, visible, onResult: (String?) -> Unit)`) that maps failures to user-safe text the way `removeFromListAsync` does, because the raw Ktor message can carry the bearer token (`3de07a64`). tvOS UI: Services › MDBList › "Library lists" (`MdbListLibraryListsView.swift`, one toggle per list, Watchlist excluded, "N of M shown", optimistic toggles with a per-key monotonic generation guard). Upstream's Compose picker and pt/pt-BR strings not ported; `MdbListLibraryWriter.kt:69` left on the unfiltered `tabs()` as upstream did. Landed locally on `tvos-shared-extraction` `cbdd1aa2`; push, cut and the device check (needs an MDBList-connected profile) on Christian's go. Not applicable items unchanged.

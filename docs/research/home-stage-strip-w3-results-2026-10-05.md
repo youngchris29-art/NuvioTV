@@ -1,8 +1,16 @@
 # Home Stage & Strip: tests and review results (2026-10-05)
 
-Branch `claude/home-stage-strip` in the clone `~/Claude/Projects/NuvioMobile-home-stage`, local only, tip `7494ee21`. Everything below ran on the FA87 simulator (tvOS 26.5) in the guest fixture.
+Branch `claude/home-stage-strip` in the clone `~/Claude/Projects/NuvioMobile-home-stage`, local only, tip `4f62e836` (was `7494ee21` at Gate 2). Everything below the device-pass section ran on the FA87 simulator (tvOS 26.5) in the guest fixture.
 
-**Where it stands:** Wave 3 and three review rounds are done, Gate 2 is green on the simulator: Debug and Release builds, unit tests 1271 / 0, and a 7 / 7 UI smoke on the final tip. Next is the device pass with you, in the Test profile.
+**Where it stands:** Wave 3 and three review rounds are done and Gate 2 is green on the simulator. The device pass on the Living Room Apple TV (Test profile) passed all 16 steps; its one finding, a grey bar with OLED True Black, is fixed in `4f62e836` and confirmed on the TV. Next: the merge and a cut, each on your go.
+
+## Device pass (2026-10-05)
+
+- **All 16 steps pass.** Tabs for steps 1–13, the rail for 14–15, back to Tabs for 16. Full table in the plan's OUTCOME "Device pass".
+- **Paging on hardware:** 71 single-row presses, one move each, settled in 529–631 ms. Menu glides take 1.15–1.84 s (a tuning note).
+- **The one bug, OLED grey bar:** the ambient wash took its size from the image's 16:9 shape instead of the space it was given. That made Stage 2006 pt wide and pushed Home's black background 160 pt in from the left edge; at OLED's 40 % wash the gap showed. Fix `4f62e836`; a new UI test measures the step at x 160 (15.4 before, 0.0 after). On the TV: no bar, and rows now keep the designed 140 pt right margin.
+- **r3's checks on hardware:** no 140 → 176 jump at a cold launch in Always Visible; the Grid keyboard clears the pill; Search Menu → rail → Right works; Reduce Motion cuts (by eye; the console missed that window).
+- **Watch item:** once, on the first Up after a fast Down walk, a row moved in 83 ms instead of gliding (1 of 152 logged moves).
 
 ## Reviews (Opus, read-only; Codex is over quota until 10-29)
 
@@ -48,11 +56,11 @@ Unit tests: **1271 / 0**. Translations: 48 strings in de/es/fr/it/vi.
 ## Open
 
 - **Folder title at row 0** sits under the tab bar pill in Tabs mode. You said to leave it.
-- **Device checks:**
-  - the Grid keyboard against the pill (the simulator only gives the Linear one);
+- **Device checks: all done 2026-10-05** (see the device pass above):
+  - the Grid keyboard clears the pill;
   - no 140 → 176 jump on a cold launch;
-  - Reduce Motion paging;
-  - Search: Menu → rail → Right;
-  - `[NavRail] reserved leading safe area=36` logs once per shell mount.
+  - Reduce Motion paging cuts;
+  - Search: Menu → rail → Right works;
+  - `[NavRail] reserved leading safe area=36` logs once at a cold launch; a shell remount (switching to Rail, an OLED toggle) logs it again with the same value, and nothing moves.
 
 Screenshots: `docs/research/home-stage-strip-sim-evidence/w3-*.jpg`.

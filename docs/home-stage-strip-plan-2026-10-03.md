@@ -828,6 +828,59 @@ Evidence: `docs/research/home-stage-strip-sim-evidence/w3-*.jpg`; results summar
 1. The device pass in the Test profile: Tabs mode for steps 1–13 with `-debug.tabBarStateProbe YES`, Rail for 14–15, plus r3's inset checks and the items above.
 2. Then the merge into `tvos-shared-extraction` and a cut, each only on his go.
 
+### Device pass (2026-10-05, Living Room Apple TV, Test profile)
+
+Debug build `7494ee21` under `com.youngchris29.NuvioTV`, console streamed with `-debug.homeScrollProbe YES -debug.tabBarStateProbe YES`. Logs in `~/Downloads/`: `home-stage-strip-tabs.log` (steps 1–12), `-fr.log` (13), `-rail.log` (14–16 and the Reduce Motion check), `-oled.log` (the fix build). **All 16 steps pass. Step 6 found one bug, the OLED grey bar, fixed in `4f62e836` and confirmed on the TV.**
+
+| Step | Result |
+|---|---|
+| 1 Cold launch | Pass: Stage, Continue Watching at row 0, tab bar visible with focus on it. |
+| 2 Down ×5 at Medium+ | Pass: one motion per press, no doubled title, the heading peeks, the bar hides and returns fully. |
+| 3 Up to row 0, then the bar | Pass. |
+| 4 Large with titles, then No Zoom | Pass: rows fit, no clipped lift. |
+| 5 Hold Down 3 s | Pass: fast paging, one stage swap after release. |
+| 6 Ambient wash | Colourful, changes after a pause; the off switch and OLED dimming work. **Bug:** with OLED True Black on, a light grey bar ran down the left of Home (his two photos). Fixed, see below. |
+| 7 Trailer Location | Pass: Background and In Row. |
+| 8 Continue Watching stage copy | Pass: "S1 E7", the episode title, time left. |
+| 9 Folder page | Pass: rows per source, the header rises, Back restores focus, Grid works. |
+| 10 Menu | Pass: Menu from row 4 landed on row 0's remembered card; Menu again went to the tab bar; Down went to row 1 and stayed. |
+| 11 Classic | Pass: unchanged, including Classic's small poster bounce; Menu jumps to the top. |
+| 12 4K sharpness | Pass. |
+| 13 French | Pass: no clipped text. A few synopses stay English; they are add-on/TMDB content, not app strings. |
+| 14 Rail Always Visible | Pass: Left, Right and Menu on every tab; the Grid keyboard clears the pill; clear on Detail and a folder page; no rail in the player. |
+| 15 Rail Hide While Browsing | Pass: leaves on paging and scrolling, returns at row 0 and at the top. |
+| 16 Back to Tabs | Pass: the bar is back, hides on scroll, Up reaches it; content is back at 140 (the Library chip moved from 176 to 140). |
+
+**Measured (tabs log):** 71 single-row presses, one move each, settled in 529–631 ms across the three page sizes walked (535.5, 548, 588 pt), `afterRest=0` on every press. Menu glides take 1.15–1.84 s (a 4-row, 2192 pt glide: 1.42–1.58 s), a tuning note.
+
+**r3's device checks:**
+- `[NavRail] reserved leading safe area=36` logs once at a cold launch in Always Visible, 30 ms before Home's first layout, and Christian saw no sideways jump. A shell remount (the live switch to Rail, an OLED toggle) logs it again, two or three times within 0.35 s, always 36; nothing moves.
+- Content at 176 on every tab in Always Visible; Tabs back at 140.
+- The Grid keyboard clears the pill on hardware.
+- Search: Menu from the keyboard lands on the hidden tab bar, the redirect opens the rail (`arm reason=hiddenBarRedirect`), and Right hands focus back to the keyboard at x 116.
+- Reduce Motion: the strip cuts with no glide, Menu cuts to row 0, the rail opens without the width animation. Confirmed by eye only: the console logged nothing from the app between 21:27:28 and 21:36:32 (same process), so those pages never reached the log.
+- test93's simulator flake did not show on hardware.
+
+**The OLED bar (step 6).**
+- **Cause:** `AmbientWashLayer.washImage` used `.aspectRatio(contentMode: .fill)` inside a flexible frame, which reports the fill size, not the proposal. Home's tab region is 1920×1128.5, not 16:9, so the wash came back 2006 wide. That width widened Stage and HomeView's root ZStack (1920 wide from x 80), which centred its 1760-wide page background at x 160…1920, so the background stopped 160 pt short of the left bezel. With OLED off the opaque wash hid the gap; at OLED's 40 % it showed. A background Opus agent reproduced it on FA87 (`-amoled_enabled_1 YES`) and confirmed it with a layer dump.
+- **Fix `4f62e836`:** the wash is an aspect-filled overlay on `Color.clear`, the `HeroCrossfadeImage` rule. Home's root stays 1760 wide and the background covers 0…1920.
+- **Side effects:** the strip is now screen-width instead of 86 pt wider, so a row scrolled to its end keeps the designed 140 pt trailing margin (before, the focused card got to about 54 pt from the right edge); the stage art sits about 43 pt further left.
+- **Test:** `StageGate1EvidenceTests.testOledBarEvidence` (OLED on, off, OLED with the wash off, Classic; row 0 and one Down) reads the brightness step either side of x 160: 15.4 before the fix, −0.1…0.0 after.
+- **On the TV (Rail Always Visible):** no bar with OLED on (Home and a folder page), the right margin matches, no launch jump. Christian's three photos: OLED Home, the folder page, a row scrolled to See All.
+
+**Gates on `4f62e836`:**
+- NuvioTVTests 1271 / 0 (the agent's run).
+- Stage: S01, S02, S04, S07, S13 (agent) and S03, S05, S06, S08, S10–S12, S14–S16 pass. S09 skipped twice on its poll race: both times the morph reached `event=wide … aborts=0`, so the one-line `debug_trailerMorph` label had moved past `gate` between polls. In Row trailers work on the TV (step 7, and the folder photo). Follow-up: give S09 an event history instead of the one-line label.
+- Rail 10 / 10. Folder / settings 11 / 11 (test84, 93, 100–108). `testOledBarEvidence` passes.
+- Release build green.
+
+**Notes, not bugs:**
+- Once, on the first Up after a fast three-row Down, the strip moved its row in 83 ms instead of gliding: the focus engine's own scroll arrived first (`seg p=4 start=-23 dur=83`), so the app's 0.5 s glide had nothing left to do. 1 segment of 152 logged on the TV, none in the main pass; Christian saw nothing. Watch item for Steven's video.
+- In Always Visible, a row scrolled toward its end still slides its first cards under the pill (the edge-to-edge bleed every row has). Same before and after the fix.
+- The folder title under the Tabs-mode bar at row 0 stays as built (Christian).
+
+**Merged 2026-10-05** on Christian's go ("Merge + cut rc3"): `tvos-shared-extraction` fast-forwarded `d68b9d61` → `4f62e836` (13 commits), pushed, branch deleted. Next: the beta.19-rc3 cut, then Steven's DM (`docs/comms-dm-drafts-2026-10-05-beta19-rc3.md`) on his go.
+
 ### Spike verdict (feeds P1 and P4)
 
 **Paging mechanism: (a), as a2.** A vertical `ScrollView`; each row in a page frame of height P = rowHeight + 2·lift, top-aligned; `.scrollTargetLayout()` + `.scrollTargetBehavior(.viewAligned)`; a trailing clear spacer of `peek`; `.scrollPosition(id:anchor: .top)` driven by the focused row's key with a 0.5 s ease-out. The focus engine moves focus, and the app's position animation overrides the engine's slower scroll. On hardware that is one motion per press, exactly on the boundary, nothing after. Tune the duration on device in Wave 2 (0.5 s now; the plan's range is 0.45–0.6 s).

@@ -2,8 +2,8 @@
 
 To: u/mrStevenx3 (Reddit chat)
 Status: DRAFT, not sent. Send only on Christian's go.
-Build 135, commit `<SHA>`, tag `tvos-v0.3.0-beta.19-rc3`. IPA link and expiry filled in after the cut.
-Lint: 5/5 CLEAN on each bubble (deslop.py; one rule-of-three in bubble 2 reshaped, the Library line). Re-lint after the link, expiry and SHA are filled in. Cleanse skipped: Codex usage limit (until 10-29).
+Build 135, commit `65074a19`, tag `tvos-v0.3.0-beta.19-rc3`. IPA 28,677,275 B (sha256 be07ea96143e8c87…), copy `~/Downloads/NuvioTV-beta19-rc3.ipa`, litterbox 72 h (until ~2026-10-08 22:15 ET), content-length verified.
+Lint: 5/5 CLEAN on each bubble (deslop.py; one rule-of-three in bubble 2 reshaped, the Library line). Re-linted 5/5 after the link, expiry and SHA were filled in. Cleanse skipped: Codex usage limit (until 10-29).
 
 Follows the rc2 thank-you DM (2026-10-05 4:25 PM ET), which told him the new Home keeps the big image and text fixed at the top with one row below, and that collections would follow the same layout. Carries Home Stage & Strip (FEAT-55, device pass 16/16 on 10-05), plus Library L1 and Search S1, both merged after rc2. Setting names and defaults checked against the code on `4f62e836`: Home Layout `home_layout` default Stage; Ambient Background on; Trailer Location `trailer_playback_location` default "poster" (In Row in Stage); Navigation `sidebar_style` default Top Tabs, FEAT-30 "sidebar" reads as Rail; Rail `rail_visibility` default Always Visible; folder Layout in the folder page's Edit menu, Rows unless a folder is set to Grid.
 
@@ -14,9 +14,9 @@ Bubble 1:
 ```
 Hi Steven, beta.19-rc3 is up. It has the new Home I told you about.
 
-<IPA_LINK>
-(<EXPIRY>)
-Build 135. Settings, About should show commit <SHA>.
+https://litter.catbox.moe/rh5dfe.ipa
+(good for 3 days, until Oct 8)
+Build 135. Settings, About should show commit 65074a19.
 
 New Home (Settings, Home Screen, Home Layout: Stage, now the default):
 - The top is a fixed stage with the focused title's art, logo, info and synopsis. It never takes focus and never moves.

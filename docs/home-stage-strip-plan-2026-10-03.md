@@ -879,7 +879,7 @@ Debug build `7494ee21` under `com.youngchris29.NuvioTV`, console streamed with `
 - In Always Visible, a row scrolled toward its end still slides its first cards under the pill (the edge-to-edge bleed every row has). Same before and after the fix.
 - The folder title under the Tabs-mode bar at row 0 stays as built (Christian).
 
-**Merged 2026-10-05** on Christian's go ("Merge + cut rc3"): `tvos-shared-extraction` fast-forwarded `d68b9d61` → `4f62e836` (13 commits), pushed, branch deleted. Next: the beta.19-rc3 cut, then Steven's DM (`docs/comms-dm-drafts-2026-10-05-beta19-rc3.md`) on his go.
+**Merged 2026-10-05** on Christian's go ("Merge + cut rc3"): `tvos-shared-extraction` fast-forwarded `d68b9d61` → `4f62e836` (13 commits), pushed, branch deleted. **Cut the same evening as beta.19-rc3:** build 135 `65074a19`, tag `tvos-v0.3.0-beta.19-rc3` pushed, outer pointer `36fa602`, IPA 28,677,275 B at https://litter.catbox.moe/rh5dfe.ipa (litterbox 72 h, size verified). It also carries Library L1, Search S1 and the upstream poster-URL port. Steven's DM: `docs/comms-dm-drafts-2026-10-05-beta19-rc3.md` (5/5), sent on Christian's go.
 
 ### Spike verdict (feeds P1 and P4)
 

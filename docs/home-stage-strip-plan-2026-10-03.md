@@ -891,4 +891,4 @@ Debug build `7494ee21` under `com.youngchris29.NuvioTV`, console streamed with `
 
 **Open for P4:** the plan says "Right or Select on an item switches tab". In the spike, Right always returns to the current tab. Either works mechanically, since Right is app-handled. P4 decides the semantics.
 
-**Clean-up:** the spike clone stays until P1/P4 are written (the designers may read it), then it is deleted (`~/Claude/Projects/NuvioMobile-stage-spike`). The Apple TV is back on the `284fd764` dev build (reinstalled 16:10).
+**Clean-up:** the spike clone stays until P1/P4 are written (the designers may read it), then it is deleted (`~/Claude/Projects/NuvioMobile-stage-spike`). Deleted 2026-10-05 on Christian's go; the throwaway commit `035095a4` went with it, and its logs are kept in `docs/research/home-stage-strip-spike/`. The Apple TV is back on the `284fd764` dev build (reinstalled 16:10).

@@ -1,6 +1,6 @@
 # Player revamp: implementation plan, batches P1–P5 (2026-10-06)
 
-**Status: DRAFT, awaiting Christian's decisions (D1–D10 below) and a "start P1" go.** Nothing has been branched or built. **Release model decided 2026-10-06: ONE rc after P5**, carrying the Search & Discover batch (merged, uncut, `tvos-shared-extraction` `5feef338`) plus P1–P5; see "Merge, cut, comms". Checkpoint rule: if P3 has not merged within ten days of P1 starting, cut an interim rc with Search & Discover + P1 + P2.
+**Status: APPROVED 2026-10-06. D1–D10 all taken as recommended ("ask me the questions and start P1"). P1 STARTED 2026-10-06: clone `~/Claude/Projects/NuvioMobile-player`, branch `claude/player-p1` off `tvos-shared-extraction` `5feef338`, push disabled, MPVKit symlinked, `local.properties` copied. See OUTCOME.** **Release model decided 2026-10-06: ONE rc after P5**, carrying the Search & Discover batch (merged, uncut, `tvos-shared-extraction` `5feef338`) plus P1–P5; see "Merge, cut, comms". Checkpoint rule: if P3 has not merged within ten days of P1 starting, cut an interim rc with Search & Discover + P1 + P2.
 
 **Sources:**
 - Research: `docs/research/player-revamp-research-2026-10-06.md` (field survey, Nuvio-port survey §3b, redesign spec §5, scrub + preview design §6, tiers §7). Item codes below (A1, B19, C13…) are that report's.
@@ -14,9 +14,9 @@ Paths are relative to `NuvioMobile/iosApp/NuvioTV/` unless noted.
 
 A **local Claude Code session on the Mac**, in a **fresh local clone** of the submodule (`~/Claude/Projects/NuvioMobile-player`), never `git worktree` on the submodule. Every wave ends on a build, a simulator check or a device check; the mpv path in particular needs hardware because the simulator cannot swipe and `gpu-next` asserts there. In a clone MPVKit is a symlink over the gitlink: stage by explicit paths, never `git add -A`.
 
-## Decisions (Christian)
+## Decisions (Christian, 2026-10-06: every row below taken as recommended)
 
-| # | Question | Recommended | Why |
+| # | Question | Recommended → DECIDED | Why |
 |---|---|---|---|
 | D1 | **Swipe scrubs while playing, or only when already paused?** | While playing (system grammar, Orivio) | The system player and Infuse do it; the 160 pt tap-vs-swipe threshold from the Orivio handoff handles pad brushes. bobsupra's paused-only rule is the safe fallback if the device pass shows accidental scrubs. |
 | D2 | **What does a held Left/Right do?** | Preview-then-commit with the 10/20/30/60 table (every Nuvio port), with the system's 2×/3×/4× scan as a Playback setting "Hold Left/Right: Step / Scan" | Keeps the grammar testers know from Nuvio, fixes the seek-per-step defect, and still offers the Apple feel. Default Step. |
@@ -259,4 +259,8 @@ About 15 build agents and 11 review rounds across five rcs; never more than thre
 
 ## OUTCOME
 
-(empty until P1 starts)
+### Status (2026-10-06)
+
+- Decisions D1–D10 taken as recommended. Release model: one rc after P5 with Search & Discover; ten-day checkpoint rule.
+- **P1 started.** Clone `~/Claude/Projects/NuvioMobile-player` (`git clone --no-local` of the submodule, `origin` push URL set to `DISABLED`), branch `claude/player-p1` off `5feef338`; MPVKit symlinked from the main checkout; `local.properties` copied (17 lines). ⚠️ Stage by explicit paths in the clone; never `git add -A`.
+- W0 next: baseline Debug simulator build in the clone, then the two P1 specs (`docs/research/player-p1-spec-bar.md`, `player-p1-spec-preview.md`) and one Opus critique.

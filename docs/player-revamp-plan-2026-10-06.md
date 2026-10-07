@@ -325,3 +325,13 @@ Record results in the plan's OUTCOME; new bugs get BUG rows.
 - **Step 14: "rows not present"** — the checklist named them "Hold Tick / Exact Delay"; the actual rows are **"Hold Step Interval (A/B)", "Hold Ramp Speed (A/B)", "Exact Seek Delay (A/B)"** under Settings → Developer, below "Reset trailer zoom cache" (`DeveloperSettingsPane.swift:170-200`, in `detailScrollAndTrailerTuningRows`, placed at `:424`). Re-check with those names owed.
 - New DEBUG probes kept for the next passes: the responder-chain dump on a cancelled Menu (`dumpMenuResponderChain`), `[SeekProbe] seek gen= args= status=` + `restart gen= landed=`, `[MPV] <level>: …` into the system log, `[MenuProbe] perform action= mode=` and `endScan from= returnTo= live=`.
 - **Round 2 (owed):** the 2026-10-06 ~23:40 install of `0c10ca4a4` could not launch (`FBSOpenApplicationServiceErrorDomain 1`) and the 10-07 08:06 reinstall failed with `ApplicationVerificationFailed … 0xe8008011 (This provisioning profile has expired.)`: the free team's tvOS profile for `com.youngchris29.NuvioTV` had been minted 2026-09-30 04:01Z and expired 2026-10-07 04:01Z (seven days). Fix: delete the two expired `youngchris29` profiles from `~/Library/Developer/Xcode/UserData/Provisioning Profiles/`, rebuild with `-allowProvisioningUpdates` (new profile expires 2026-10-14 12:07Z), install (first attempt) and launch: **INSTALLED + LAUNCHED 2026-10-07 08:08 ET.** Re-check steps 4, 9 and 14; steps 1–3, 5–8, 10–13, 15 stand.
+- **Round 2 (2026-10-07 morning): steps 4, 9 and 14 all PASS. P1 DEVICE PASS PASSED 15/15.**
+
+### P1 MERGED (2026-10-07, on Christian's go "merge P1 and start P2")
+
+`tvos-shared-extraction` fast-forwarded `5feef338` → `0c10ca4a4` (17 commits: agents A/B/C, review fixes r1 `ec4e19fdc` / r2 `9a2f5c37e` / r3 `907d72002`, device-pass fix `0c10ca4a4`), pushed; `claude/player-p1` deleted in the clone (it was never on `origin`); outer pointer bumped. Not cut (single-rc model). Gates on the tip: Debug + Release sim, jvm 1439 / K/N 1457 / NuvioTVTests 1444 (on `c0c87906d`; only Swift controller/test/rig files changed after), ten UI legs PASS on FA87, device pass 15/15 in the Test profile.
+
+### P2 Wave 0 (2026-10-07, started)
+
+- Same clone, branch `claude/player-p2` off `0c10ca4a4` (`git checkout -b` refuses over the MPVKit symlink: `git branch` + `git symbolic-ref HEAD` instead, same commit so the tree is consistent).
+- Two Opus specs (`docs/research/player-p2-spec-scrub.md`: gestures, arbiter, scrub mode, preview card, rate curves + knobs; `docs/research/player-p2-spec-store.md`: `SeekPreviewStore`, `commandNode` + `screenshot-raw` harvest, chapters, aspect modes, settings, strings), then one Opus critique, then Wave 1.

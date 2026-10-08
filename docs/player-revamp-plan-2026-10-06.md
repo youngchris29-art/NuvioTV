@@ -371,3 +371,13 @@ Play an mpv-routed title (an MKV without Dolby Vision, or Settings → Playback 
 12. **Nothing else moved:** the native engine's own bar and panel unchanged; Home, Search, Detail unchanged; a cold launch in Steven's config (Show Hero OFF) smoke.
 
 Record results in the plan's OUTCOME; new bugs get BUG rows.
+
+#### Device pass round 1 (2026-10-08 ~10:40–10:55 ET, Living Room ATV, Test profile, build 135 from `b9e94b25e`, console streamed to `iosApp/build/logs/p2-device-console-1040.log`)
+
+Christian: 1 pass, 2 pass ("no black preview card, only the chapter title shows"), 3 pass, 4 pass, 5 skipped, 6 pass, 7 pass, 8 pass, **9 FAIL** ("pill is there and does nothing on click; the picture never resizes"), 10 pass, 11 pass, 12 pass.
+
+- **Step 1, the real harvest on hardware: works.** First 4K capture `took=725.2ms size=3840x2160 fmt=bgr0`, the slow-harvest backoff fired once (`interval now 30s for this file`), later captures 128–200 ms; store `n=5 bytes=63145` after five frames (about 12 KB a frame at 320 px); no crash, no sentinel trip; RSS 800–936 MB is the whole app decoding 4K, not the store. Harvest spacing on 4K is therefore 30 s per file (the backoff is working as designed; 1080p `took=` still unmeasured).
+- **Step 2 note: by construction.** `PlayerTransportBar.scrubCard` draws the card only when `model.previewFrame` exists (the chapter title and the time under the playhead always show); step 6 passing is the same card with a frame in it. Not the spec's literal "else the time only", but the sane reading; Christian's call whether an empty black card with the time is wanted (recommendation: no).
+- **Step 9: the pill works; the content could not show it.** The console has every write and read-back: `fill panscan=1.00`, `zoom panscan=0.50`, `stretch override=16:9 read=1.777778`, `fit override=-1`, plus the write-back log (`persist fill resting=fill`, then `persist fit`), so the click, the flash timer and the synced write all ran. The title was the 3840×2160 Spider-Man (2002) remux (chapter list in the log): a 1.85:1 film with its bars baked into a 16:9 frame. mpv sees a 16:9 video on a 16:9 screen, so `panscan` (Fill, Zoom) and a 16:9 override (Stretch) are all no-ops by definition; the simulator proved the same code on a true 4:3 file (`testAspectStretchFillsOn43`). Re-test owed on a file whose container aspect is not 16:9 (a 4:3 show, or a scope film cropped to 2.39:1, e.g. 3840×1600). **Design question raised:** for baked-bar UHD remuxes (the common case) Fill/Zoom via `panscan` can never remove the bars; a crop that does (fixed `video-zoom`, or a black-bar probe) is a product call for P3/P4.
+- Step 5 skipped: the scrub curve stays Auto (Orivio-style) and the speed at 1×.
+

@@ -124,3 +124,42 @@ Nothing on the rail (he did not switch it on), nothing on Library L1 or Search S
 3. S10 — localized previews on the Stage (shared + Swift).
 4. The Detail header logo FEAT with the owed darker-synopsis-area and full-synopsis-affordance items from the weekend, as one Detail pass.
 5. S5, S9, D2, the black poster — repro first.
+
+## 2026-10-08 follow-up (read 11:15 AM ET, three new messages)
+
+**10-07 10:03 PM ET:** a second Wako link, r/wako "Soon - New Home" (`1uad0w3`, 36 s screen recording of
+Wako's upcoming Home). Downloaded with `yt-dlp` (kept out of the repo); frames in
+`docs/research/wako-new-home-2026-10-08/`. What it shows: a top tab strip (For You / Movies / TV Shows /
+Anime + icons); page one is a hero carousel (logo, meta chips, 2-line synopsis, "Voir le détail", page dots);
+every row below is the fixed-slot row from the 10-05 reference: the focused card is a big landscape tile
+pinned at the left with the logo over it, the posters sit to its right, the meta line + a 2-line synopsis sit
+UNDER the card, one row per page, the next heading dimmed and peeking at the bottom. Same vertical scheme as
+Stage & Strip; the text-under-the-card placement is his earlier "synopsis below the tile" ask.
+
+**10-08 11:03 AM ET + four photos** (`docs/research/steven-beta19-rc3-photos-2026-10-08/`): "When I enable
+the hero, the text is displayed on two lines (or on one line when I enable zoom on focus), and the number of
+sources in a collection isn't displayed. However, when I disable it, the synopsis appears on more lines, and
+the number of sources is displayed." The photos are **Classic Home with the Rail on** (he is back on Classic,
+as he said, and now runs Navigation: Rail):
+
+| Photo | Mode | What it shows |
+|---|---|---|
+| 1 Infirmary | Show Hero ON | hero with "Voir le film", synopsis cut to ONE line (zoom on), trailer card playing in the row |
+| 2 Action folder | Show Hero ON | "Ouvrir le dossier" button, no "Genres · 8 sources" line |
+| 3 Aventure folder | Show Hero OFF | hero-off panel: "Genres" + "Aventure · 8 sources" (rc14's BUG-119 `folderHeroDescription`), no button |
+| 4 Infirmary | Show Hero OFF | hero-off panel: FOUR synopsis lines, no button |
+
+Explanation (code): the Classic hero-ON info panel budgets its synopsis by the rt4 pinned-row geometry
+(2 lines at his size, 1 once the zoom hold takes its 6 pt), and its folder state is the "Open Folder" CTA
+with no description; `folderHeroDescription` is only wired into the hero-OFF panel. Not a bug in the sense
+of a defect, a parity gap: hero-ON could carry the folder line under the CTA, and the line budget is the
+known W4/rt4 trade (hero height vs the row fitting the viewport). Logged BUG-154.
+
+**10-08 11:06 AM ET:** "the sidebar always remains visible on the first line, which may be intentional. But
+perhaps hiding it on the first line and making it appear when clicking the left/back button could be a good
+idea." The rail has two modes (`NavigationChrome.RailVisibility`: Always Visible, Hide While Browsing), and
+Hide While Browsing brings the rail back at the top of a page by design. His ask is a third mode: hidden at
+rest everywhere, revealed by Left from the first card or Menu (both reveal paths already exist). Logged
+FEAT-62.
+
+Reply DM still owed; it now also answers these three.

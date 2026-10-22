@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>NuvioTV beta 19</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #0d0d0d; }
+      #main { position: relative; width: 1920px; height: 1080px; background: #0d0d0d; }
+      .scene-host { position: absolute; inset: 0; }
+    </style>
+  </head>
+  <body>
+    <!--
+      NuvioTV v0.3.0 beta.19 (build 144) release film. 44.3 s, 30 fps, 1920x1080.
+      One scene per sub-composition; the host id, the scene's data-composition-id and
+      its timeline key are the same word. Screenshots come from design/screenshots/
+      (staged into assets/screens/ by ../build.py), fonts from the NuvioMobile submodule.
+    -->
+    <div id="main" data-composition-id="main" data-start="0" data-duration="44.3" data-width="1920" data-height="1080">
+      <audio id="bgm" class="clip" src="assets/bgm.wav" data-start="0" data-duration="44.3" data-track-index="0" data-volume="0.9"></audio>
+
+      <div id="intro"  class="clip scene-host" data-composition-id="intro"  data-composition-src="compositions/intro.html"  data-start="0"    data-duration="3.6" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:1"></div>
+      <div id="stage"  class="clip scene-host" data-composition-id="stage"  data-composition-src="compositions/stage.html"  data-start="3.6"  data-duration="8"   data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:2"></div>
+      <div id="rail"   class="clip scene-host" data-composition-id="rail"   data-composition-src="compositions/rail.html"   data-start="11.6" data-duration="5"   data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:3"></div>
+      <div id="detail" class="clip scene-host" data-composition-id="detail" data-composition-src="compositions/detail.html" data-start="16.6" data-duration="7.6" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:4"></div>
+      <div id="search" class="clip scene-host" data-composition-id="search" data-composition-src="compositions/search.html" data-start="24.2" data-duration="5"   data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:5"></div>
+      <div id="player" class="clip scene-host" data-composition-id="player" data-composition-src="compositions/player.html" data-start="29.2" data-duration="6.6" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:6"></div>
+      <div id="more"   class="clip scene-host" data-composition-id="more"   data-composition-src="compositions/more.html"   data-start="35.8" data-duration="4.2" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:7"></div>
+      <div id="outro"  class="clip scene-host" data-composition-id="outro"  data-composition-src="compositions/outro.html"  data-start="40"   data-duration="4.3"   data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:8"></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

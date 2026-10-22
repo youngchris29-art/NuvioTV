@@ -1,0 +1,69 @@
+<template>
+  <style>
+      @font-face { font-family: "JetBrains Sans"; font-weight: 400; font-style: normal; src: url("assets/fonts/jetbrains_sans_regular.ttf") format("truetype"); }
+      @font-face { font-family: "JetBrains Sans"; font-weight: 600; font-style: normal; src: url("assets/fonts/jetbrains_sans_semibold.ttf") format("truetype"); }
+      @font-face { font-family: "JetBrains Sans"; font-weight: 700; font-style: normal; src: url("assets/fonts/jetbrains_sans_bold.ttf") format("truetype"); }
+      #root { position: absolute; inset: 0; overflow: hidden; background: #0d0d0d; color: #f5f7f8; font-family: "JetBrains Sans", sans-serif; }
+      #root .orb { position: absolute; width: 1200px; height: 1200px; border-radius: 50%; background: radial-gradient(circle closest-side, rgba(229,57,53,0.20) 0%, rgba(229,57,53,0) 100%); }
+      #root .grain { position: absolute; inset: 0; z-index: 30; opacity: 0.14; mix-blend-mode: overlay; background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1.2px), radial-gradient(rgba(0,0,0,0.18) 1px, transparent 1.2px); background-size: 3px 3px, 5px 5px; background-position: 0 0, 1px 2px; }
+      #root .dip { position: absolute; inset: 0; z-index: 40; background: #000; opacity: 0; }
+      #root .kicker { position: absolute; left: 192px; top: 98px; font-weight: 600; font-size: 28px; letter-spacing: 0.4em; text-transform: uppercase; color: #969ca3; white-space: nowrap; }
+      #root .head { position: absolute; left: 192px; top: 138px; font-weight: 700; font-size: 78px; line-height: 1.05; letter-spacing: -0.015em; white-space: nowrap; }
+      #root .head .w { display: inline-block; }
+      #root .head em { font-style: normal; color: #ff5252; }
+      #root .chip { position: absolute; right: 310px; top: 930px; font-weight: 600; font-size: 28px; letter-spacing: 0.04em; color: #f5f7f8; background: #242424; border: 2px solid #353a3a; border-radius: 14px; padding: 14px 26px; white-space: nowrap; z-index: 10; }
+      #root .chip .sep { color: #ff5252; }
+      #root .shot { position: absolute; left: 270px; top: 244px; width: 1380px; height: 776px; border-radius: 22px; overflow: hidden; background: #000; box-shadow: 0 30px 90px rgba(0,0,0,0.65); z-index: 1; }
+      #root .cam { position: absolute; inset: 0; }
+      #root .head { top: 140px; }
+      #root .shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+      #root .callout { position: absolute; z-index: 10; display: flex; align-items: center; gap: 16px; padding: 16px 28px; border-radius: 999px; background: rgba(16,16,16,0.9); border: 2px solid rgba(255,255,255,0.16); font-size: 30px; font-weight: 600; white-space: nowrap; box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
+      #root .callout i { width: 14px; height: 14px; border-radius: 50%; background: #e53935; flex: none; }
+      #root .c1 { left: 310px; top: 290px; }
+      #root .c2 { left: 310px; top: 372px; }
+      #root .c3 { left: 310px; top: 454px; }
+      #root #rail-corner { opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="rail" data-width="1920" data-height="1080">
+    <div class="orb" data-layout-ignore style="top: -500px; left: -300px;"></div>
+    <p class="kicker" id="rail-kicker">New in beta 19 · Navigation</p>
+    <h2 class="head" id="rail-head">The <em>Rail</em> replaces the tab bar</h2>
+    <div class="chip" id="rail-chip" data-layout-allow-caption-zone>Settings <span class="sep">›</span> Appearance <span class="sep">›</span> Navigation</div>
+    <div class="shot" id="rail-shot" data-layout-allow-overlap>
+      <div class="cam" id="rail-cam" data-layout-allow-overflow>
+        <img src="assets/screens/rail-centre.png" alt="The Rail in the Centre position" />
+        <img id="rail-corner" src="assets/screens/rail-corner.png" alt="The Rail in the Corner position" />
+      </div>
+    </div>
+    <div class="callout c1" id="rail-c1"><i></i>Icons down the left edge</div>
+    <div class="callout c1" id="rail-c2"><i></i>Centre or Corner. Labels or icons only.</div>
+    <div class="grain" data-layout-ignore></div>
+    <div class="dip" id="rail-dip" data-layout-ignore></div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+      var inCall = function (sel, at) { tl.fromTo(sel, { opacity: 0, y: 14, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.22, ease: "power3.out" }, at); };
+      var outCall = function (sel, at) { tl.to(sel, { opacity: 0, filter: "blur(8px)", duration: 0.16, ease: "power3.in" }, at); };
+
+      // whip in from the left, the way the rail itself opens
+      tl.fromTo("#rail-shot", { opacity: 0, x: -70 }, { opacity: 1, x: 0, duration: 0.3, ease: "expo.out" }, 0);
+      tl.fromTo("#rail-kicker", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power2.out" }, 0.1);
+      tl.fromTo("#rail-head", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 0.18);
+      tl.fromTo("#rail-chip", { opacity: 0, x: 24 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, 0.45);
+
+      tl.set("#rail-cam", { transformOrigin: "50% 50%", scale: 1, x: 0, y: 0 }, 0);
+      inCall("#rail-c1", 0.45);
+      tl.to("#rail-cam", { scale: 1.5, x: 852, y: 0, duration: 0.5, ease: "power2.inOut" }, 0.9);
+      outCall("#rail-c1", 2.4);
+      tl.to("#rail-cam", { scale: 1, x: 0, y: 0, duration: 0.5, ease: "power2.inOut" }, 2.6);
+      tl.fromTo("#rail-corner", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.inOut" }, 3.0);
+      inCall("#rail-c2", 2.75);
+
+      tl.fromTo("#rail-dip", { opacity: 0 }, { opacity: 0.45, duration: 0.1, ease: "none" }, 4.88);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["rail"] = tl;
+    })();
+  </script>
+</template>

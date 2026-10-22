@@ -1,0 +1,68 @@
+<template>
+  <style>
+      @font-face { font-family: "JetBrains Sans"; font-weight: 400; font-style: normal; src: url("assets/fonts/jetbrains_sans_regular.ttf") format("truetype"); }
+      @font-face { font-family: "JetBrains Sans"; font-weight: 600; font-style: normal; src: url("assets/fonts/jetbrains_sans_semibold.ttf") format("truetype"); }
+      @font-face { font-family: "JetBrains Sans"; font-weight: 700; font-style: normal; src: url("assets/fonts/jetbrains_sans_bold.ttf") format("truetype"); }
+      #root { position: absolute; inset: 0; overflow: hidden; background: #0d0d0d; color: #f5f7f8; font-family: "JetBrains Sans", sans-serif; }
+      #root .orb { position: absolute; width: 1200px; height: 1200px; border-radius: 50%; background: radial-gradient(circle closest-side, rgba(229,57,53,0.20) 0%, rgba(229,57,53,0) 100%); }
+      #root .grain { position: absolute; inset: 0; z-index: 30; opacity: 0.14; mix-blend-mode: overlay; background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1.2px), radial-gradient(rgba(0,0,0,0.18) 1px, transparent 1.2px); background-size: 3px 3px, 5px 5px; background-position: 0 0, 1px 2px; }
+      #root .dip { position: absolute; inset: 0; z-index: 40; background: #000; opacity: 0; }
+      #root .kicker { position: absolute; left: 192px; top: 98px; font-weight: 600; font-size: 28px; letter-spacing: 0.4em; text-transform: uppercase; color: #969ca3; white-space: nowrap; }
+      #root .head { position: absolute; left: 192px; top: 138px; font-weight: 700; font-size: 78px; line-height: 1.05; letter-spacing: -0.015em; white-space: nowrap; }
+      #root .head .w { display: inline-block; }
+      #root .head em { font-style: normal; color: #ff5252; }
+      #root .chip { position: absolute; right: 310px; top: 930px; font-weight: 600; font-size: 28px; letter-spacing: 0.04em; color: #f5f7f8; background: #242424; border: 2px solid #353a3a; border-radius: 14px; padding: 14px 26px; white-space: nowrap; z-index: 10; }
+      #root .chip .sep { color: #ff5252; }
+      #root .shot { position: absolute; left: 270px; top: 244px; width: 1380px; height: 776px; border-radius: 22px; overflow: hidden; background: #000; box-shadow: 0 30px 90px rgba(0,0,0,0.65); z-index: 1; }
+      #root .cam { position: absolute; inset: 0; }
+      #root .head { top: 140px; }
+      #root .shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+      #root .callout { position: absolute; z-index: 10; display: flex; align-items: center; gap: 16px; padding: 16px 28px; border-radius: 999px; background: rgba(16,16,16,0.9); border: 2px solid rgba(255,255,255,0.16); font-size: 30px; font-weight: 600; white-space: nowrap; box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
+      #root .callout i { width: 14px; height: 14px; border-radius: 50%; background: #e53935; flex: none; }
+      #root .c1 { left: 310px; top: 290px; }
+      #root .c2 { left: 310px; top: 372px; }
+      #root .c3 { left: 310px; top: 454px; }
+      #root #intro-wrap { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2; }
+      #root #intro-lockup { display: flex; align-items: center; gap: 44px; }
+      #root #intro-mark { width: 230px; height: 230px; display: block; }
+      #root #intro-word { font-weight: 700; font-size: 230px; line-height: 1; letter-spacing: -0.02em; display: flex; }
+      #root #intro-word .ch { display: inline-block; }
+      #root #intro-word .tv { color: #e53935; }
+      #root #intro-line { width: 480px; height: 10px; margin-top: 38px; border-radius: 5px; background: #e53935; }
+      #root #intro-sub { margin-top: 42px; font-weight: 600; font-size: 50px; }
+      #root #intro-sub em { font-style: normal; color: #ff5252; }
+      #root #intro-kick { margin-top: 26px; font-weight: 600; font-size: 28px; letter-spacing: 0.42em; text-transform: uppercase; color: #969ca3; }
+  </style>
+  <div id="root" data-composition-id="intro" data-width="1920" data-height="1080">
+    <div class="orb" id="intro-orb" data-layout-ignore style="top: -420px; right: -300px;"></div>
+    <div id="intro-wrap">
+      <div id="intro-lockup">
+        <img id="intro-mark" src="assets/brand/nuvio-mark.svg" alt="Nuvio mark" />
+        <div id="intro-word"><span class="ch">N</span><span class="ch">u</span><span class="ch">v</span><span class="ch">i</span><span class="ch">o</span><span class="ch tv">T</span><span class="ch tv">V</span></div>
+      </div>
+      <div id="intro-line"></div>
+      <p id="intro-sub">v0.3.0 <em>beta 19</em> is out</p>
+      <p id="intro-kick">Apple TV · Community beta · build 144</p>
+    </div>
+    <div class="grain" data-layout-ignore></div>
+    <div class="dip" id="intro-dip" data-layout-ignore></div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+      // the mark lands with a premium spring, then the name arrives letter by letter
+      tl.fromTo("#intro-mark", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.55, ease: "back.out(1.4)" }, 0.1);
+      tl.fromTo("#intro-word .ch", { opacity: 0.3, filter: "blur(5px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power2.out", stagger: 0.09 }, 0.3);
+      tl.fromTo("#intro-line", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.5, ease: "expo.out" }, 0.95);
+      tl.fromTo("#intro-sub", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 1.15);
+      tl.fromTo("#intro-kick", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power3.out" }, 1.4);
+      // the stage behind drifts while the title holds still
+      tl.fromTo("#intro-orb", { x: 0, y: 0 }, { x: -90, y: 50, duration: 3.4, ease: "sine.inOut" }, 0.1);
+      // dip cut into the first feature (3 frames)
+      tl.fromTo("#intro-dip", { opacity: 0 }, { opacity: 0.45, duration: 0.1, ease: "none" }, 3.48);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["intro"] = tl;
+    })();
+  </script>
+</template>

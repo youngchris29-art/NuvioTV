@@ -1,0 +1,73 @@
+<template>
+  <style>
+      @font-face { font-family: "JetBrains Sans"; font-weight: 400; font-style: normal; src: url("assets/fonts/jetbrains_sans_regular.ttf") format("truetype"); }
+      @font-face { font-family: "JetBrains Sans"; font-weight: 600; font-style: normal; src: url("assets/fonts/jetbrains_sans_semibold.ttf") format("truetype"); }
+      @font-face { font-family: "JetBrains Sans"; font-weight: 700; font-style: normal; src: url("assets/fonts/jetbrains_sans_bold.ttf") format("truetype"); }
+      #root { position: absolute; inset: 0; overflow: hidden; background: #0d0d0d; color: #f5f7f8; font-family: "JetBrains Sans", sans-serif; }
+      #root .orb { position: absolute; width: 1200px; height: 1200px; border-radius: 50%; background: radial-gradient(circle closest-side, rgba(229,57,53,0.20) 0%, rgba(229,57,53,0) 100%); }
+      #root .grain { position: absolute; inset: 0; z-index: 30; opacity: 0.14; mix-blend-mode: overlay; background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1.2px), radial-gradient(rgba(0,0,0,0.18) 1px, transparent 1.2px); background-size: 3px 3px, 5px 5px; background-position: 0 0, 1px 2px; }
+      #root .dip { position: absolute; inset: 0; z-index: 40; background: #000; opacity: 0; }
+      #root .kicker { position: absolute; left: 192px; top: 98px; font-weight: 600; font-size: 28px; letter-spacing: 0.4em; text-transform: uppercase; color: #969ca3; white-space: nowrap; }
+      #root .head { position: absolute; left: 192px; top: 138px; font-weight: 700; font-size: 78px; line-height: 1.05; letter-spacing: -0.015em; white-space: nowrap; }
+      #root .head .w { display: inline-block; }
+      #root .head em { font-style: normal; color: #ff5252; }
+      #root .chip { position: absolute; right: 310px; top: 930px; font-weight: 600; font-size: 28px; letter-spacing: 0.04em; color: #f5f7f8; background: #242424; border: 2px solid #353a3a; border-radius: 14px; padding: 14px 26px; white-space: nowrap; z-index: 10; }
+      #root .chip .sep { color: #ff5252; }
+      #root .shot { position: absolute; left: 270px; top: 244px; width: 1380px; height: 776px; border-radius: 22px; overflow: hidden; background: #000; box-shadow: 0 30px 90px rgba(0,0,0,0.65); z-index: 1; }
+      #root .cam { position: absolute; inset: 0; }
+      #root .head { top: 140px; }
+      #root .shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+      #root .callout { position: absolute; z-index: 10; display: flex; align-items: center; gap: 16px; padding: 16px 28px; border-radius: 999px; background: rgba(16,16,16,0.9); border: 2px solid rgba(255,255,255,0.16); font-size: 30px; font-weight: 600; white-space: nowrap; box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
+      #root .callout i { width: 14px; height: 14px; border-radius: 50%; background: #e53935; flex: none; }
+      #root .c1 { left: 310px; top: 290px; }
+      #root .c2 { left: 310px; top: 372px; }
+      #root .c3 { left: 310px; top: 454px; }
+      #root #outro-wrap { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2; }
+      #root #outro-lockup { display: flex; align-items: center; gap: 30px; }
+      #root #outro-mark { width: 150px; height: 150px; display: block; }
+      #root #outro-word { font-weight: 700; font-size: 150px; line-height: 1; letter-spacing: -0.02em; display: flex; }
+      #root #outro-word .ch { display: inline-block; }
+      #root #outro-word .tv { color: #e53935; }
+      #root #outro-head { margin-top: 34px; font-weight: 700; font-size: 96px; line-height: 1.05; letter-spacing: -0.015em; }
+      #root #outro-head em { font-style: normal; color: #ff5252; }
+      #root #outro-url { margin-top: 30px; font-weight: 600; font-size: 44px; }
+      #root #outro-url .at { color: #ff5252; }
+      #root #outro-row { display: flex; gap: 26px; margin-top: 44px; }
+      #root #outro-row .pill { font-weight: 600; font-size: 30px; letter-spacing: 0.05em; background: #242424; border: 2px solid #353a3a; border-radius: 16px; padding: 16px 32px; white-space: nowrap; }
+      #root #outro-about { margin-top: 40px; font-size: 32px; color: #969ca3; }
+      #root #outro-about strong { color: #f5f7f8; font-weight: 600; }
+  </style>
+  <div id="root" data-composition-id="outro" data-width="1920" data-height="1080">
+    <div class="orb" id="outro-orb" data-layout-ignore style="top: -400px; left: 50%; margin-left: -600px;"></div>
+    <div id="outro-wrap">
+      <div id="outro-lockup">
+        <img id="outro-mark" src="assets/brand/nuvio-mark.svg" alt="Nuvio mark" />
+        <div id="outro-word"><span class="ch">N</span><span class="ch">u</span><span class="ch">v</span><span class="ch">i</span><span class="ch">o</span><span class="ch tv">T</span><span class="ch tv">V</span></div>
+      </div>
+      <h2 id="outro-head">Get <em>beta 19</em></h2>
+      <p id="outro-url"><span class="at">github.com/</span>youngchris29-art/NuvioTV/releases/latest</p>
+      <div id="outro-row">
+        <div class="pill">NuvioTV.ipa</div>
+        <div class="pill">Sideloadly</div>
+        <div class="pill">atvloadly</div>
+      </div>
+      <p id="outro-about">Settings › About should read <strong>0.3.0 (144)</strong></p>
+    </div>
+    <div class="grain" data-layout-ignore></div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+      tl.fromTo("#outro-mark", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.4)" }, 0.1);
+      tl.fromTo("#outro-word .ch", { opacity: 0.3, filter: "blur(5px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.14, ease: "power2.out", stagger: 0.08 }, 0.3);
+      tl.fromTo("#outro-head", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 0.9);
+      tl.fromTo("#outro-url", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power3.out" }, 1.15);
+      tl.fromTo("#outro-row .pill", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.4)", stagger: 0.08 }, 1.4);
+      tl.fromTo("#outro-about", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power3.out" }, 1.85);
+      tl.fromTo("#outro-orb", { x: 0, y: 0 }, { x: 80, y: 40, duration: 3.8, ease: "sine.inOut" }, 0.1);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["outro"] = tl;
+    })();
+  </script>
+</template>

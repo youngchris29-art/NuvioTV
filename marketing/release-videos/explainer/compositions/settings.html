@@ -1,0 +1,95 @@
+<template>
+  <style>
+      @font-face { font-family: "JetBrains Sans"; font-weight: 400; font-style: normal; src: url("assets/fonts/jetbrains_sans_regular.ttf") format("truetype"); }
+      @font-face { font-family: "JetBrains Sans"; font-weight: 600; font-style: normal; src: url("assets/fonts/jetbrains_sans_semibold.ttf") format("truetype"); }
+      @font-face { font-family: "JetBrains Sans"; font-weight: 700; font-style: normal; src: url("assets/fonts/jetbrains_sans_bold.ttf") format("truetype"); }
+      #root { position: absolute; inset: 0; overflow: hidden; background: transparent; color: #f5f7f8; font-family: "JetBrains Sans", sans-serif; }
+      #root .world { position: absolute; inset: 0; }
+      #root .screen { position: absolute; inset: 0; overflow: hidden; background: #000; }
+      #root .screen.later { opacity: 0; }
+      #root .cam { position: absolute; inset: 0; }
+      #root .screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+      #root .scrim { position: absolute; left: 0; right: 0; bottom: 0; height: 560px; z-index: 5; background: linear-gradient(to top, rgba(0,0,0,0.86) 0%, rgba(0,0,0,0.62) 40%, rgba(0,0,0,0) 100%); }
+      #root .lt { position: absolute; left: 192px; bottom: 112px; z-index: 10; max-width: 1400px; opacity: 0; }
+      #root .lt .kick { font-weight: 600; font-size: 28px; letter-spacing: 0.4em; text-transform: uppercase; color: #d2d6da; white-space: nowrap; }
+      #root .lt .ttl { margin-top: 10px; font-weight: 700; font-size: 78px; line-height: 1.05; letter-spacing: -0.015em; white-space: nowrap; }
+      #root .lt .ttl .w { display: inline-block; }
+      #root .lt .ttl em { font-style: normal; color: #ff5252; }
+      #root .lt .sub { margin-top: 16px; font-weight: 400; font-size: 36px; line-height: 1.35; color: #eef0f2; opacity: 0; }
+      #root .callout { position: absolute; z-index: 10; display: flex; align-items: center; gap: 16px; padding: 16px 28px; border-radius: 999px; background: rgba(14,14,14,0.92); border: 2px solid rgba(255,255,255,0.16); font-size: 30px; font-weight: 600; white-space: nowrap; box-shadow: 0 12px 40px rgba(0,0,0,0.5); opacity: 0; }
+      #root .callout i { width: 14px; height: 14px; border-radius: 50%; background: #e53935; flex: none; }
+      #root .grain { position: absolute; inset: 0; z-index: 30; opacity: 0.12; mix-blend-mode: overlay; background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1.2px), radial-gradient(rgba(0,0,0,0.18) 1px, transparent 1.2px); background-size: 3px 3px, 5px 5px; background-position: 0 0, 1px 2px; }
+      #root .dip { position: absolute; inset: 0; z-index: 40; background: #000; opacity: 0; }
+      #root .flood { position: absolute; inset: 0; z-index: 20; opacity: 0; }
+      #root #settings-flood { background: #2b8df0; }
+      #root #settings-flood2 { background: #e53935; }
+  </style>
+  <div id="root" data-composition-id="settings" data-width="1920" data-height="1080">
+    <div class="world" id="settings-world">
+      <div class="screen" id="settings-scrA"><div class="cam" id="settings-camA" data-layout-allow-overflow><img src="assets/screens/settings-root.png" alt="Settings" /></div></div>
+      <div class="screen later" id="settings-scrB"><div class="cam" id="settings-camB" data-layout-allow-overflow><img src="assets/screens/appearance.png" alt="Appearance settings" /></div></div>
+      <div class="screen later" id="settings-scrC"><div class="cam" id="settings-camC" data-layout-allow-overflow><img src="assets/screens/localization.png" alt="The profile picker in French" /></div></div>
+      <div class="scrim" data-layout-ignore></div>
+      <div class="lt" id="settings-lt1">
+        <p class="kick">Settings</p>
+        <h2 class="ttl">Settings that <em>explain</em> themselves</h2>
+        <p class="sub">The focused row, described on the left.</p>
+      </div>
+      <div class="lt" id="settings-lt2">
+        <p class="kick">Appearance</p>
+        <h2 class="ttl"><span class="w">Make</span> <span class="w">it</span> <span class="w"><em>yours</em></span></h2>
+        <p class="sub">Seven accent colors, poster size and corners, synced per profile.</p>
+      </div>
+      <div class="lt" id="settings-lt3">
+        <p class="kick">Languages</p>
+        <h2 class="ttl">In <em>your</em> language</h2>
+        <p class="sub">English, French, German, Italian, Spanish and Vietnamese.</p>
+      </div>
+      <div class="grain" data-layout-ignore></div>
+    </div>
+    <div class="flood" id="settings-flood" data-layout-ignore></div>
+    <div class="flood" id="settings-flood2" data-layout-ignore></div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+      function camInit(sel) { tl.set(sel, { transformOrigin: "50% 50%", scale: 1, x: 0, y: 0 }, 0); }
+      function punch(sel, s, px, py, at, dur, ease) { tl.to(sel, { scale: s, x: (960 - px) * s, y: (540 - py) * s, duration: dur || 0.55, ease: ease || "power2.inOut" }, at); }
+      function wide(sel, at, dur) { tl.to(sel, { scale: 1, x: 0, y: 0, duration: dur || 0.5, ease: "power2.inOut" }, at); }
+      function inText(sel, at, dur) { tl.fromTo(sel, { opacity: 0, y: 14, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: dur || 0.22, ease: "power3.out" }, at); }
+      function outText(sel, at) { tl.to(sel, { opacity: 0, filter: "blur(8px)", duration: 0.16, ease: "power3.in" }, at); }
+      function wordsIn(sel, at) { tl.fromTo(sel, { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.13, ease: "power2.out", stagger: 0.067 }, at); }
+      function greyIn(sel, at) { tl.fromTo(sel, { color: "#5c6166" }, { color: "#f5f7f8", duration: 0.2, ease: "power2.out", stagger: 0.09 }, at); }
+      function show(sel, at) { tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, at); }
+      function swap(outSel, inSel, at) { tl.to(outSel, { opacity: 0, duration: 0.3, ease: "power2.inOut" }, at); tl.fromTo(inSel, { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: 0.35, ease: "power2.out" }, at); }
+      function whipX(outSel, inSel, at, dir) { dir = dir || 1; tl.to(outSel, { x: -220 * dir, opacity: 0, duration: 0.22, ease: "power3.in" }, at); tl.fromTo(inSel, { x: 220 * dir, opacity: 0 }, { x: 0, opacity: 1, duration: 0.3, ease: "expo.out" }, at + 0.12); }
+      function whipY(outSel, inSel, at) { tl.to(outSel, { y: -220, opacity: 0, duration: 0.22, ease: "power3.in" }, at); tl.fromTo(inSel, { y: 220, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "expo.out" }, at + 0.12); }
+      function dip(sel, at) { tl.fromTo(sel, { opacity: 0 }, { opacity: 0.45, duration: 0.1, ease: "none" }, at); }
+      function register(id) { window.__timelines = window.__timelines || {}; window.__timelines[id] = tl; }
+      tl.fromTo("#settings-world", { y: 220, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "expo.out" }, 0);
+      camInit("#settings-camA"); camInit("#settings-camB"); camInit("#settings-camC");
+      // A: the root list with its explainer column (0-4.2)
+      show("#settings-lt1", 0.5); tl.fromTo("#settings-lt1 .ttl", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 0.5); inText("#settings-lt1 .sub", 0.75);
+      punch("#settings-camA", 1.4, 420, 600, 1.2);
+      outText("#settings-lt1", 3.95);
+      // B: Appearance, punch into the accent swatches (4.2-8.4)
+      swap("#settings-scrA", "#settings-scrB", 4.15);
+      show("#settings-lt2", 4.7); wordsIn("#settings-lt2 .ttl .w", 4.75); inText("#settings-lt2 .sub", 5.0);
+      punch("#settings-camB", 1.6, 960, 470, 5.2);
+      outText("#settings-lt2", 7.75);
+      // colour flood: the selected Ocean swatch floods the frame, the French profile picker is under it
+      tl.fromTo("#settings-flood", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.inOut" }, 8.0);
+      tl.set("#settings-scrB", { opacity: 0 }, 8.4);
+      tl.set("#settings-scrC", { opacity: 1 }, 8.4);
+      tl.to("#settings-flood", { opacity: 0, duration: 0.4, ease: "power2.inOut" }, 8.4);
+      // C: languages (8.4-12.5)
+      show("#settings-lt3", 8.9); tl.fromTo("#settings-lt3 .ttl", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 8.9); inText("#settings-lt3 .sub", 9.15);
+      punch("#settings-camC", 1.3, 960, 560, 9.4, 0.6);
+      outText("#settings-lt3", 11.9);
+      // exit: a crimson flood that the end card lands on
+      tl.fromTo("#settings-flood2", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.inOut" }, 12.1);
+      register("settings");
+    })();
+  </script>
+</template>

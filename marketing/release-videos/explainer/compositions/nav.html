@@ -1,0 +1,88 @@
+<template>
+  <style>
+      @font-face { font-family: "JetBrains Sans"; font-weight: 400; font-style: normal; src: url("assets/fonts/jetbrains_sans_regular.ttf") format("truetype"); }
+      @font-face { font-family: "JetBrains Sans"; font-weight: 600; font-style: normal; src: url("assets/fonts/jetbrains_sans_semibold.ttf") format("truetype"); }
+      @font-face { font-family: "JetBrains Sans"; font-weight: 700; font-style: normal; src: url("assets/fonts/jetbrains_sans_bold.ttf") format("truetype"); }
+      #root { position: absolute; inset: 0; overflow: hidden; background: transparent; color: #f5f7f8; font-family: "JetBrains Sans", sans-serif; }
+      #root .world { position: absolute; inset: 0; }
+      #root .screen { position: absolute; inset: 0; overflow: hidden; background: #000; }
+      #root .screen.later { opacity: 0; }
+      #root .cam { position: absolute; inset: 0; }
+      #root .screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+      #root .scrim { position: absolute; left: 0; right: 0; bottom: 0; height: 560px; z-index: 5; background: linear-gradient(to top, rgba(0,0,0,0.86) 0%, rgba(0,0,0,0.62) 40%, rgba(0,0,0,0) 100%); }
+      #root .lt { position: absolute; left: 192px; bottom: 112px; z-index: 10; max-width: 1400px; opacity: 0; }
+      #root .lt .kick { font-weight: 600; font-size: 28px; letter-spacing: 0.4em; text-transform: uppercase; color: #d2d6da; white-space: nowrap; }
+      #root .lt .ttl { margin-top: 10px; font-weight: 700; font-size: 78px; line-height: 1.05; letter-spacing: -0.015em; white-space: nowrap; }
+      #root .lt .ttl .w { display: inline-block; }
+      #root .lt .ttl em { font-style: normal; color: #ff5252; }
+      #root .lt .sub { margin-top: 16px; font-weight: 400; font-size: 36px; line-height: 1.35; color: #eef0f2; opacity: 0; }
+      #root .callout { position: absolute; z-index: 10; display: flex; align-items: center; gap: 16px; padding: 16px 28px; border-radius: 999px; background: rgba(14,14,14,0.92); border: 2px solid rgba(255,255,255,0.16); font-size: 30px; font-weight: 600; white-space: nowrap; box-shadow: 0 12px 40px rgba(0,0,0,0.5); opacity: 0; }
+      #root .callout i { width: 14px; height: 14px; border-radius: 50%; background: #e53935; flex: none; }
+      #root .grain { position: absolute; inset: 0; z-index: 30; opacity: 0.12; mix-blend-mode: overlay; background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1.2px), radial-gradient(rgba(0,0,0,0.18) 1px, transparent 1.2px); background-size: 3px 3px, 5px 5px; background-position: 0 0, 1px 2px; }
+      #root .dip { position: absolute; inset: 0; z-index: 40; background: #000; opacity: 0; }
+      #root .flood { position: absolute; inset: 0; z-index: 20; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="nav" data-width="1920" data-height="1080">
+    <div class="world" id="nav-world">
+      <div class="screen" id="nav-scrA"><div class="cam" id="nav-camA" data-layout-allow-overflow><img src="assets/screens/rail-centre.png" alt="The Rail" /></div></div>
+      <div class="screen later" id="nav-scrB"><div class="cam" id="nav-camB" data-layout-allow-overflow><img src="assets/screens/search-results.png" alt="Search results" /></div></div>
+      <div class="screen later" id="nav-scrC"><div class="cam" id="nav-camC" data-layout-allow-overflow><img src="assets/screens/discover.png" alt="Discover" /></div></div>
+      <div class="scrim" data-layout-ignore></div>
+      <div class="lt" id="nav-lt1">
+        <p class="kick">Navigation</p>
+        <h2 class="ttl">The <em>Rail</em></h2>
+        <p class="sub">A column of icons on the left, Centre or Corner.</p>
+      </div>
+      <div class="lt" id="nav-lt2">
+        <p class="kick">Search</p>
+        <h2 class="ttl"><span class="w"><em>Search</em></span> <span class="w">as</span> <span class="w">you</span> <span class="w">type</span></h2>
+        <p class="sub">The Apple TV keyboard, results grouped by type.</p>
+      </div>
+      <div class="lt" id="nav-lt3">
+        <p class="kick">Discover</p>
+        <h2 class="ttl">A <em>poster grid</em> to browse</h2>
+        <p class="sub">Narrowed by type and genre.</p>
+      </div>
+      <div class="grain" data-layout-ignore></div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+      function camInit(sel) { tl.set(sel, { transformOrigin: "50% 50%", scale: 1, x: 0, y: 0 }, 0); }
+      function punch(sel, s, px, py, at, dur, ease) { tl.to(sel, { scale: s, x: (960 - px) * s, y: (540 - py) * s, duration: dur || 0.55, ease: ease || "power2.inOut" }, at); }
+      function wide(sel, at, dur) { tl.to(sel, { scale: 1, x: 0, y: 0, duration: dur || 0.5, ease: "power2.inOut" }, at); }
+      function inText(sel, at, dur) { tl.fromTo(sel, { opacity: 0, y: 14, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: dur || 0.22, ease: "power3.out" }, at); }
+      function outText(sel, at) { tl.to(sel, { opacity: 0, filter: "blur(8px)", duration: 0.16, ease: "power3.in" }, at); }
+      function wordsIn(sel, at) { tl.fromTo(sel, { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.13, ease: "power2.out", stagger: 0.067 }, at); }
+      function greyIn(sel, at) { tl.fromTo(sel, { color: "#5c6166" }, { color: "#f5f7f8", duration: 0.2, ease: "power2.out", stagger: 0.09 }, at); }
+      function show(sel, at) { tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: 0.08, ease: "none" }, at); }
+      function swap(outSel, inSel, at) { tl.to(outSel, { opacity: 0, duration: 0.3, ease: "power2.inOut" }, at); tl.fromTo(inSel, { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: 0.35, ease: "power2.out" }, at); }
+      function whipX(outSel, inSel, at, dir) { dir = dir || 1; tl.to(outSel, { x: -220 * dir, opacity: 0, duration: 0.22, ease: "power3.in" }, at); tl.fromTo(inSel, { x: 220 * dir, opacity: 0 }, { x: 0, opacity: 1, duration: 0.3, ease: "expo.out" }, at + 0.12); }
+      function whipY(outSel, inSel, at) { tl.to(outSel, { y: -220, opacity: 0, duration: 0.22, ease: "power3.in" }, at); tl.fromTo(inSel, { y: 220, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "expo.out" }, at + 0.12); }
+      function dip(sel, at) { tl.fromTo(sel, { opacity: 0 }, { opacity: 0.45, duration: 0.1, ease: "none" }, at); }
+      function register(id) { window.__timelines = window.__timelines || {}; window.__timelines[id] = tl; }
+      tl.fromTo("#nav-world", { x: 220, opacity: 0 }, { x: 0, opacity: 1, duration: 0.3, ease: "expo.out" }, 0);
+      camInit("#nav-camA"); camInit("#nav-camB"); camInit("#nav-camC");
+      // A: the Rail (0-4.0)
+      show("#nav-lt1", 0.45); tl.fromTo("#nav-lt1 .ttl", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 0.45); inText("#nav-lt1 .sub", 0.7);
+      punch("#nav-camA", 1.5, 170, 540, 1.0);
+      outText("#nav-lt1", 3.75);
+      // B: whip to Search (4.0-7.3)
+      whipX("#nav-scrA", "#nav-scrB", 3.85);
+      show("#nav-lt2", 4.4); wordsIn("#nav-lt2 .ttl .w", 4.45); inText("#nav-lt2 .sub", 4.7);
+      punch("#nav-camB", 1.4, 260, 800, 5.0);
+      outText("#nav-lt2", 7.05);
+      // C: whip to Discover (7.3-10.6)
+      whipX("#nav-scrB", "#nav-scrC", 7.15);
+      show("#nav-lt3", 7.7); greyIn("#nav-lt3 .ttl", 7.7); inText("#nav-lt3 .sub", 7.95);
+      tl.to("#nav-camC", { scale: 1.06, y: -14, duration: 2.2, ease: "none" }, 7.6);
+      outText("#nav-lt3", 9.9);
+      // exit: zoom through a poster into the detail page
+      punch("#nav-camC", 2.8, 640, 480, 10.1, 0.5, "power3.in");
+      tl.to("#nav-world", { opacity: 0, duration: 0.15, ease: "none" }, 10.45);
+      register("nav");
+    })();
+  </script>
+</template>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>NuvioTV explainer</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #0d0d0d; }
+      #main { position: relative; width: 1920px; height: 1080px; background: #0d0d0d; }
+      .scene-host { position: absolute; inset: 0; }
+    </style>
+  </head>
+  <body>
+    <!--
+      NuvioTV product explainer. 98 s, 30 fps, 1920x1080. One scene per sub-composition;
+      neighbouring hosts overlap by 0.3-0.5 s so a scene can transition over the one before it
+      (iris, whip, zoom-through, grow, colour flood). The host id, the scene's data-composition-id
+      and its timeline key are the same word. Screens come from design/screenshots/ (staged into
+      assets/screens/ by ../build.py), the mpv scan frames from assets/frames/ (Apple TV rig bursts).
+    -->
+    <div id="main" data-composition-id="main" data-start="0" data-duration="98" data-width="1920" data-height="1080">
+      <audio id="bgm" class="clip" src="assets/bgm.wav" data-start="0" data-duration="98" data-track-index="0" data-volume="0.55"></audio>
+
+      <div id="intro"    class="clip scene-host" data-composition-id="intro"    data-composition-src="compositions/intro.html"    data-start="0"    data-duration="5"    data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:1"></div>
+      <div id="home"     class="clip scene-host" data-composition-id="home"     data-composition-src="compositions/home.html"     data-start="4.5"  data-duration="15.7" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:2"></div>
+      <div id="nav"      class="clip scene-host" data-composition-id="nav"      data-composition-src="compositions/nav.html"      data-start="19.8" data-duration="10.6" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:3"></div>
+      <div id="detail"   class="clip scene-host" data-composition-id="detail"   data-composition-src="compositions/detail.html"   data-start="30"   data-duration="14.6" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:4"></div>
+      <div id="sources"  class="clip scene-host" data-composition-id="sources"  data-composition-src="compositions/sources.html"  data-start="44.1" data-duration="9.5"  data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:5"></div>
+      <div id="player"   class="clip scene-host" data-composition-id="player"   data-composition-src="compositions/player.html"   data-start="53.2" data-duration="18.2" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:6"></div>
+      <div id="library"  class="clip scene-host" data-composition-id="library"  data-composition-src="compositions/library.html"  data-start="71.4" data-duration="8.2"  data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:7"></div>
+      <div id="settings" class="clip scene-host" data-composition-id="settings" data-composition-src="compositions/settings.html" data-start="79.3" data-duration="12.5" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:8"></div>
+      <div id="outro"    class="clip scene-host" data-composition-id="outro"    data-composition-src="compositions/outro.html"    data-start="91.4" data-duration="6.6"  data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:9"></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

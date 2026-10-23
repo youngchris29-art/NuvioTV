@@ -33,6 +33,23 @@ Two project shapes exist:
   button or an episode card, the loading card growing into the player, a colour
   flood off the selected Ocean swatch and a crimson one into the end card.
   Scene roots are transparent so the scene underneath shows through a seam.
+- `explainer-kinetic/` (option B): the same product in kinetic type, 59 s at
+  120 BPM. Seven chapters, each a sub-composition whose ground colour floods in
+  over the last 0.25 s of the one before (black, crimson, white); slabs of
+  196 px type slam in on beats, screens cut in on beats as a bottom strip of
+  three panes or a half-frame split pane with a slow push, numbers count up
+  (1 row a press, 4 debrid services, +4 external players, 7 themes, 78
+  languages, 6 UI languages). The bed is the synth at 120 BPM so the cut grid
+  is the beat grid (`B(k)` in each scene is beat k after the flood).
+- `explainer-tour/` (option C): the editorial tour, 99 s. A contents page,
+  eight numbered chapters and an end card, each a page that scrolls up as the
+  next scrolls in under it. Every chapter has the screen in a thin frame on
+  the left and a column of numbered facts on the right that tick in one at a
+  time; a red ring lands on the control the fact names with a connector line.
+  The chapter files are written by a small generator kept outside the repo
+  (ring rectangles in 1920x1080 screen coordinates, facts, screens), so edit
+  the HTML directly; rings are positioned in the frame's coordinates
+  (`96 + x * 1120/1920`, `192 + y * 1120/1920`).
 - `beta19/`: the beta.19 release film (44.3 s), framed screens with callouts.
 
 **What the explainer cannot show yet.** Every frame is a real screen, but the
@@ -131,6 +148,8 @@ needs `GEMINI_API_KEY`.)
 
 - `explainer/` — the product explainer (98 s, 9 scenes, see above); its mpv
   scan frames under `assets/frames/`
+- `explainer-kinetic/` — option B, kinetic type (59 s, 8 scenes, 120 BPM bed)
+- `explainer-tour/` — option C, the editorial tour (99 s, 10 scenes)
 - `build.py` — stages a project into `build/<project>/` (fonts, screenshots,
   brand files); still inlines base64 fonts for the single-file beta5 template
 - `beta19/` — NuvioTV v0.3.0 beta.19 announcement (44.3 s, 8 scenes: title,

@@ -1,0 +1,76 @@
+<template>
+  <style>
+      @font-face { font-family: "JetBrains Sans"; font-weight: 400; font-style: normal; src: url("assets/fonts/jetbrains_sans_regular.ttf") format("truetype"); }
+      @font-face { font-family: "JetBrains Sans"; font-weight: 600; font-style: normal; src: url("assets/fonts/jetbrains_sans_semibold.ttf") format("truetype"); }
+      @font-face { font-family: "JetBrains Sans"; font-weight: 700; font-style: normal; src: url("assets/fonts/jetbrains_sans_bold.ttf") format("truetype"); }
+      #root { position: absolute; inset: 0; overflow: hidden; background: transparent; color: #f5f7f8; font-family: "JetBrains Sans", sans-serif; }
+      #root .page { position: absolute; inset: 0; background-color: #0d0d0d; background-image: linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px); background-size: 96px 96px; }
+      #root .shot { position: absolute; left: 96px; top: 192px; width: 1120px; height: 630px; border: 2px solid #353a3a; border-radius: 6px; overflow: hidden; background: #000; }
+      #root .shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+      #root .shot img.later { opacity: 0; }
+      #root .ring { position: absolute; border: 3px solid #ff5252; border-radius: 12px; box-shadow: 0 0 0 6px rgba(229,57,53,0.25); opacity: 0; z-index: 4; }
+      #root .line { position: absolute; height: 3px; background: #ff5252; opacity: 0; z-index: 4; }
+      #root .line i { position: absolute; right: -6px; top: -5px; width: 12px; height: 12px; border-radius: 50%; background: #ff5252; }
+      #root .col { position: absolute; left: 1312px; top: 192px; width: 512px; }
+      #root .idx { font-family: "JetBrains Mono", monospace; font-size: 28px; letter-spacing: 0.2em; color: #969ca3; opacity: 0; white-space: nowrap; }
+      #root .h { margin-top: 14px; font-weight: 700; font-size: 64px; line-height: 1.05; letter-spacing: -0.015em; opacity: 0; }
+      #root .h em { font-style: normal; color: #ff5252; }
+      #root .fact { margin-top: 28px; padding-top: 18px; border-top: 1px solid #2b2f2f; display: flex; gap: 18px; align-items: baseline; opacity: 0; }
+      #root .fact b { font-family: "JetBrains Mono", monospace; font-weight: 400; font-size: 28px; color: #ff5252; flex: none; width: 64px; }
+      #root .fact span { font-size: 30px; line-height: 1.3; color: #e6e9eb; }
+      #root .foot { position: absolute; left: 96px; top: 860px; font-family: "JetBrains Mono", monospace; font-size: 28px; letter-spacing: 0.14em; color: #8b9196; opacity: 0; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="page" data-width="1920" data-height="1080">
+    <div class="page" id="page-page">
+      <div class="shot" id="page-shot">
+        <img id="page-imgA" class="" src="assets/screens/detail-cinematic.png" alt="The Page screen A" />
+        <img id="page-imgB" class="later" src="assets/screens/season-hold-menu.png" alt="The Page screen B" />
+      </div>
+      <div class="ring" id="page-r0" style="left:166.0px;top:355.3px;width:536.7px;height:186.7px;" data-layout-ignore></div>
+      <div class="line" id="page-l0" style="left:710.7px;top:447.7px;width:589.3px;" data-layout-ignore><i></i></div>
+      <div class="ring" id="page-r1" style="left:166.0px;top:623.7px;width:816.7px;height:198.3px;" data-layout-ignore></div>
+      <div class="line" id="page-l1" style="left:990.7px;top:721.8px;width:309.3px;" data-layout-ignore><i></i></div>
+      <div class="ring" id="page-r2" style="left:664.8px;top:285.3px;width:268.3px;height:55.4px;" data-layout-ignore></div>
+      <div class="line" id="page-l2" style="left:941.1px;top:312.0px;width:358.9px;" data-layout-ignore><i></i></div>
+      <div class="ring" id="page-r3" style="left:177.7px;top:547.8px;width:1003.3px;height:140.0px;" data-layout-ignore></div>
+      <div class="line" id="page-l3" style="left:1189.0px;top:616.8px;width:111.0px;" data-layout-ignore><i></i></div>
+      <div class="col">
+        <p class="idx" id="page-idx">03 / 08 · THE PAGE</p>
+        <h2 class="h" id="page-h">Every title, <em>Cinematic</em></h2>
+        <div class="fact" id="page-f0"><b>3.1</b><span>Logo, ratings and synopsis over a full-bleed backdrop</span></div>
+        <div class="fact" id="page-f1"><b>3.2</b><span>Play, trailer, watched and add, then studios and a parental guide</span></div>
+        <div class="fact" id="page-f2"><b>3.3</b><span>Hold a season or an episode to mark it watched</span></div>
+        <div class="fact" id="page-f3"><b>3.4</b><span>Hide Spoilers blurs unwatched episodes</span></div>
+      </div>
+      <p class="foot" id="page-foot">SETTINGS › DETAIL PAGE › DETAIL LAYOUT</p>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+      function fact(sel, at) { tl.fromTo(sel, { opacity: 0, x: -16 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, at); }
+      function ringIn(sel, at) { tl.fromTo(sel, { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out" }, at); }
+      function lineIn(sel, at) { tl.fromTo(sel, { opacity: 1, scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, at + 0.1); }
+      function off(sel, at) { tl.to(sel, { opacity: 0, duration: 0.15, ease: "power2.in" }, at); }
+      function swap(sel, at) { tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.inOut" }, at); }
+      function register(id) { window.__timelines = window.__timelines || {}; window.__timelines[id] = tl; }
+      // page turn in; the page before scrolls up under this one
+      tl.fromTo("#page-page", { y: 1080 }, { y: 0, duration: 0.5, ease: "power3.inOut" }, 0);
+      tl.fromTo("#page-idx", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none" }, 0.5);
+      tl.fromTo("#page-h", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 0.6);
+      tl.fromTo("#page-foot", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none" }, 0.9);
+      fact("#page-f0", 1.0); ringIn("#page-r0", 1.1); lineIn("#page-l0", 1.1);
+      off("#page-r0, #page-l0", 2.95);
+      fact("#page-f1", 3.2); ringIn("#page-r1", 3.3000000000000003); lineIn("#page-l1", 3.3000000000000003);
+      off("#page-r1, #page-l1", 5.15);
+      swap("#page-imgB", 5.2);
+      fact("#page-f2", 5.4); ringIn("#page-r2", 5.5); lineIn("#page-l2", 5.5);
+      off("#page-r2, #page-l2", 7.35);
+      fact("#page-f3", 7.6); ringIn("#page-r3", 7.699999999999999); lineIn("#page-l3", 7.699999999999999);
+      // page turn out
+      tl.to("#page-page", { y: -1080, duration: 0.5, ease: "power3.inOut" }, 11.0);
+      register("page");
+    })();
+  </script>
+</template>

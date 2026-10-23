@@ -1,0 +1,76 @@
+<template>
+  <style>
+      @font-face { font-family: "JetBrains Sans"; font-weight: 400; font-style: normal; src: url("assets/fonts/jetbrains_sans_regular.ttf") format("truetype"); }
+      @font-face { font-family: "JetBrains Sans"; font-weight: 600; font-style: normal; src: url("assets/fonts/jetbrains_sans_semibold.ttf") format("truetype"); }
+      @font-face { font-family: "JetBrains Sans"; font-weight: 700; font-style: normal; src: url("assets/fonts/jetbrains_sans_bold.ttf") format("truetype"); }
+      #root { position: absolute; inset: 0; overflow: hidden; background: transparent; color: #f5f7f8; font-family: "JetBrains Sans", sans-serif; }
+      #root .page { position: absolute; inset: 0; background-color: #0d0d0d; background-image: linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px); background-size: 96px 96px; }
+      #root .shot { position: absolute; left: 96px; top: 192px; width: 1120px; height: 630px; border: 2px solid #353a3a; border-radius: 6px; overflow: hidden; background: #000; }
+      #root .shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+      #root .shot img.later { opacity: 0; }
+      #root .ring { position: absolute; border: 3px solid #ff5252; border-radius: 12px; box-shadow: 0 0 0 6px rgba(229,57,53,0.25); opacity: 0; z-index: 4; }
+      #root .line { position: absolute; height: 3px; background: #ff5252; opacity: 0; z-index: 4; }
+      #root .line i { position: absolute; right: -6px; top: -5px; width: 12px; height: 12px; border-radius: 50%; background: #ff5252; }
+      #root .col { position: absolute; left: 1312px; top: 192px; width: 512px; }
+      #root .idx { font-family: "JetBrains Mono", monospace; font-size: 28px; letter-spacing: 0.2em; color: #969ca3; opacity: 0; white-space: nowrap; }
+      #root .h { margin-top: 14px; font-weight: 700; font-size: 64px; line-height: 1.05; letter-spacing: -0.015em; opacity: 0; }
+      #root .h em { font-style: normal; color: #ff5252; }
+      #root .fact { margin-top: 28px; padding-top: 18px; border-top: 1px solid #2b2f2f; display: flex; gap: 18px; align-items: baseline; opacity: 0; }
+      #root .fact b { font-family: "JetBrains Mono", monospace; font-weight: 400; font-size: 28px; color: #ff5252; flex: none; width: 64px; }
+      #root .fact span { font-size: 30px; line-height: 1.3; color: #e6e9eb; }
+      #root .foot { position: absolute; left: 96px; top: 860px; font-family: "JetBrains Mono", monospace; font-size: 28px; letter-spacing: 0.14em; color: #8b9196; opacity: 0; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="settings" data-width="1920" data-height="1080">
+    <div class="page" id="settings-page">
+      <div class="shot" id="settings-shot">
+        <img id="settings-imgA" class="" src="assets/screens/settings-root.png" alt="Settings screen A" />
+        <img id="settings-imgB" class="later" src="assets/screens/appearance.png" alt="Settings screen B" />
+      </div>
+      <div class="ring" id="settings-r0" style="left:163.1px;top:291.2px;width:361.7px;height:350.0px;" data-layout-ignore></div>
+      <div class="line" id="settings-l0" style="left:532.8px;top:465.2px;width:767.2px;" data-layout-ignore><i></i></div>
+      <div class="ring" id="settings-r1" style="left:451.8px;top:445.8px;width:443.3px;height:64.2px;" data-layout-ignore></div>
+      <div class="line" id="settings-l1" style="left:903.2px;top:476.8px;width:396.8px;" data-layout-ignore><i></i></div>
+      <div class="ring" id="settings-r2" style="left:446.0px;top:550.8px;width:245.0px;height:157.5px;" data-layout-ignore></div>
+      <div class="line" id="settings-l2" style="left:699.0px;top:628.5px;width:601.0px;" data-layout-ignore><i></i></div>
+      <div class="ring" id="settings-r3" style="left:446.0px;top:705.3px;width:700.0px;height:105.0px;" data-layout-ignore></div>
+      <div class="line" id="settings-l3" style="left:1154.0px;top:756.8px;width:146.0px;" data-layout-ignore><i></i></div>
+      <div class="col">
+        <p class="idx" id="settings-idx">07 / 08 · SETTINGS</p>
+        <h2 class="h" id="settings-h">Settings that <em>explain</em></h2>
+        <div class="fact" id="settings-f0"><b>7.1</b><span>The focused row, described on the left</span></div>
+        <div class="fact" id="settings-f1"><b>7.2</b><span>Seven accent themes, synced per profile</span></div>
+        <div class="fact" id="settings-f2"><b>7.3</b><span>Poster size and corners, Square to Round</span></div>
+        <div class="fact" id="settings-f3"><b>7.4</b><span>Depth Takes Poster Color, Row Edge Fade</span></div>
+      </div>
+      <p class="foot" id="settings-foot">SETTINGS</p>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+      function fact(sel, at) { tl.fromTo(sel, { opacity: 0, x: -16 }, { opacity: 1, x: 0, duration: 0.3, ease: "power3.out" }, at); }
+      function ringIn(sel, at) { tl.fromTo(sel, { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out" }, at); }
+      function lineIn(sel, at) { tl.fromTo(sel, { opacity: 1, scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, at + 0.1); }
+      function off(sel, at) { tl.to(sel, { opacity: 0, duration: 0.15, ease: "power2.in" }, at); }
+      function swap(sel, at) { tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.inOut" }, at); }
+      function register(id) { window.__timelines = window.__timelines || {}; window.__timelines[id] = tl; }
+      // page turn in; the page before scrolls up under this one
+      tl.fromTo("#settings-page", { y: 1080 }, { y: 0, duration: 0.5, ease: "power3.inOut" }, 0);
+      tl.fromTo("#settings-idx", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none" }, 0.5);
+      tl.fromTo("#settings-h", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 0.6);
+      tl.fromTo("#settings-foot", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none" }, 0.9);
+      fact("#settings-f0", 1.0); ringIn("#settings-r0", 1.1); lineIn("#settings-l0", 1.1);
+      off("#settings-r0, #settings-l0", 2.95);
+      swap("#settings-imgB", 3.0);
+      fact("#settings-f1", 3.2); ringIn("#settings-r1", 3.3000000000000003); lineIn("#settings-l1", 3.3000000000000003);
+      off("#settings-r1, #settings-l1", 5.15);
+      fact("#settings-f2", 5.4); ringIn("#settings-r2", 5.5); lineIn("#settings-l2", 5.5);
+      off("#settings-r2, #settings-l2", 7.35);
+      fact("#settings-f3", 7.6); ringIn("#settings-r3", 7.699999999999999); lineIn("#settings-l3", 7.699999999999999);
+      // page turn out
+      tl.to("#settings-page", { y: -1080, duration: 0.5, ease: "power3.inOut" }, 11.0);
+      register("settings");
+    })();
+  </script>
+</template>

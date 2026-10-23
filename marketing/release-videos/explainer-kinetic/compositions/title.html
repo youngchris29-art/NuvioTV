@@ -1,0 +1,68 @@
+<template>
+  <style>
+      @font-face { font-family: "JetBrains Sans"; font-weight: 400; font-style: normal; src: url("assets/fonts/jetbrains_sans_regular.ttf") format("truetype"); }
+      @font-face { font-family: "JetBrains Sans"; font-weight: 600; font-style: normal; src: url("assets/fonts/jetbrains_sans_semibold.ttf") format("truetype"); }
+      @font-face { font-family: "JetBrains Sans"; font-weight: 700; font-style: normal; src: url("assets/fonts/jetbrains_sans_bold.ttf") format("truetype"); }
+      #root { position: absolute; inset: 0; overflow: hidden; background: transparent; color: #f5f7f8; font-family: "JetBrains Sans", sans-serif; }
+      #root .ground { position: absolute; inset: 0; opacity: 0; }
+      #root .slab { position: absolute; left: 96px; top: 88px; font-weight: 700; font-size: 196px; line-height: 0.92; letter-spacing: -0.04em; z-index: 3; }
+      #root .slab .l { display: block; opacity: 0; }
+      #root .ink { color: #0d0d0d; } #root .paper { color: #f5f7f8; } #root .red { color: #e53935; }
+      #root .strip { position: absolute; left: 0; right: 0; bottom: 0; height: 400px; display: flex; z-index: 2; }
+      #root .pane { flex: 1; position: relative; overflow: hidden; background: #000; opacity: 0; }
+      #root .pane + .pane { margin-left: 6px; }
+      #root .pane .cam { position: absolute; inset: 0; }
+      #root .pane, #root .split { }
+      #root .pane img, #root .split img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+      #root .split { position: absolute; left: 960px; top: 0; width: 960px; height: 1080px; overflow: hidden; background: #000; z-index: 2; }
+      #root .split .cam { position: absolute; inset: 0; opacity: 0; }
+      #root .tag { position: absolute; right: 96px; top: 120px; text-align: right; font-weight: 600; font-size: 30px; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0; z-index: 3; }
+      #root .num { position: absolute; right: 96px; top: 330px; text-align: right; font-weight: 700; font-size: 150px; line-height: 1; letter-spacing: -0.03em; opacity: 0; z-index: 3; }
+      #root .num small { display: block; font-size: 30px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; margin-top: 10px; }
+      #root .lines { position: absolute; left: 96px; top: 700px; z-index: 3; }
+      #root .lines p { position: absolute; left: 0; top: 0; white-space: nowrap; font-weight: 600; font-size: 44px; line-height: 1.25; letter-spacing: 0.02em; opacity: 0; }
+      #root .grain { position: absolute; inset: 0; z-index: 30; opacity: 0.1; mix-blend-mode: overlay; background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1.2px), radial-gradient(rgba(0,0,0,0.18) 1px, transparent 1.2px); background-size: 3px 3px, 5px 5px; }
+      #root #title-g { background: #f5f7f8; }
+      #root #title-strip { top: 0; bottom: auto; height: 520px; }
+      #root #title-slab { top: 560px; }
+      #root .tag.ink { color: #0d0d0d; }
+  </style>
+  <div id="root" data-composition-id="title" data-width="1920" data-height="1080">
+    <div class="ground" id="title-g"></div>
+    <div class="strip" id="title-strip">
+      <div class="pane" id="title-p1"><div class="cam" id="title-c1" data-layout-allow-overflow><img src="assets/screens/detail-cinematic.png" alt="The Cinematic page" /></div></div>
+      <div class="pane" id="title-p2"><div class="cam" id="title-c2" data-layout-allow-overflow><img src="assets/screens/episodes.png" alt="Seasons and episodes" /></div></div>
+      <div class="pane" id="title-p3"><div class="cam" id="title-c3" data-layout-allow-overflow><img src="assets/screens/season-hold-menu.png" alt="The season hold menu" /></div></div>
+    </div>
+    <div class="slab" id="title-slab"><span class="l ink">EVERY TITLE,</span><span class="l red">A STAGE.</span></div>
+    <p class="tag ink" id="title-tag" style="top: 580px;">03 / The page</p>
+    <div class="num ink" id="title-num" style="top: 700px; font-size: 44px; letter-spacing: 0.02em;"><span>HOLD TO MARK WATCHED</span><small style="color:#e53935;">Hide Spoilers blurs the rest</small></div>
+    <div class="grain" data-layout-ignore></div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+      var B = function (k) { return 0.25 + 0.5 * k; };            // beat k after the flood lands (120 BPM)
+      function flood(sel) { tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.inOut" }, 0); }
+      function slam(sel, at) { tl.fromTo(sel, { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.28, ease: "power4.out" }, at); }
+      function slamOut(sel, at) { tl.to(sel, { y: -80, opacity: 0, duration: 0.18, ease: "power3.in" }, at); }
+      function cut(sel, at) { tl.fromTo(sel, { opacity: 0 }, { opacity: 1, duration: 0.03, ease: "none" }, at); }
+      function cutOut(sel, at) { tl.to(sel, { opacity: 0, duration: 0.03, ease: "none" }, at); }
+      function rise(sel, at) { tl.fromTo(sel, { y: 400 }, { y: 0, duration: 0.35, ease: "expo.out" }, at); }
+      function push(sel, ox, oy, from, to, at, dur) { tl.fromTo(sel, { scale: from, transformOrigin: ox + "% " + oy + "%" }, { scale: to, duration: dur, ease: "none" }, at); }
+      function tagIn(sel, at) { tl.fromTo(sel, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.3, ease: "expo.out" }, at); }
+      function count(sel, from, to, at, dur, fmt) { var o = { v: from }; var el = null; tl.to(o, { v: to, duration: dur, ease: "power2.out", onUpdate: function () { el = el || document.querySelector(sel); el.textContent = fmt ? fmt(o.v) : Math.round(o.v); } }, at); }
+      function register(id) { window.__timelines = window.__timelines || {}; window.__timelines[id] = tl; }
+      flood("#title-g");
+      tl.fromTo("#title-strip", { y: -520 }, { y: 0, duration: 0.35, ease: "expo.out" }, B(0));
+      cut("#title-p1", B(0)); push("#title-c1", 25, 45, 1.4, 1.55, B(0), 7);
+      slam("#title-slab .l:nth-child(1)", B(1)); slam("#title-slab .l:nth-child(2)", B(2));
+      tagIn("#title-tag", B(2));
+      cut("#title-p2", B(4)); push("#title-c2", 30, 55, 1.4, 1.55, B(4), 7);
+      cut("#title-p3", B(6)); push("#title-c3", 60, 15, 1.5, 1.65, B(6), 7);
+      tl.fromTo("#title-num", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.3, ease: "expo.out" }, B(8));
+      register("title");
+    })();
+  </script>
+</template>

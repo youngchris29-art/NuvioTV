@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>NuvioTV tour</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #0d0d0d; }
+      #main { position: relative; width: 1920px; height: 1080px; background: #0d0d0d; }
+      .scene-host { position: absolute; inset: 0; }
+    </style>
+  </head>
+  <body>
+    <!--
+      NuvioTV explainer, option C: the editorial tour. 99.0 s, 1920x1080. Eight numbered chapters,
+      one per sub-composition: the screen on the left, a column of facts on the right that tick in
+      one at a time, a ring on the control each fact names with a connector line. Chapters turn like
+      pages (the page scrolls up, the next scrolls in under it; hosts overlap by 0.5 s).
+    -->
+    <div id="main" data-composition-id="main" data-start="0" data-duration="99.0" data-width="1920" data-height="1080">
+      <audio id="bgm" class="clip" src="assets/bgm.wav" data-start="0" data-duration="99.0" data-track-index="0" data-volume="0.5"></audio>
+      <div id="intro" class="clip scene-host" data-composition-id="intro" data-composition-src="compositions/intro.html" data-start="0" data-duration="5" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:1"></div>
+      <div id="home" class="clip scene-host" data-composition-id="home" data-composition-src="compositions/home.html" data-start="4.5" data-duration="11.5" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:2"></div>
+      <div id="nav" class="clip scene-host" data-composition-id="nav" data-composition-src="compositions/nav.html" data-start="15.5" data-duration="11.5" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:3"></div>
+      <div id="page" class="clip scene-host" data-composition-id="page" data-composition-src="compositions/page.html" data-start="26.5" data-duration="11.5" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:4"></div>
+      <div id="sources" class="clip scene-host" data-composition-id="sources" data-composition-src="compositions/sources.html" data-start="37.5" data-duration="11.5" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:5"></div>
+      <div id="play" class="clip scene-host" data-composition-id="play" data-composition-src="compositions/play.html" data-start="48.5" data-duration="11.5" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:6"></div>
+      <div id="library" class="clip scene-host" data-composition-id="library" data-composition-src="compositions/library.html" data-start="59.5" data-duration="11.5" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:7"></div>
+      <div id="settings" class="clip scene-host" data-composition-id="settings" data-composition-src="compositions/settings.html" data-start="70.5" data-duration="11.5" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:8"></div>
+      <div id="languages" class="clip scene-host" data-composition-id="languages" data-composition-src="compositions/languages.html" data-start="81.5" data-duration="11.5" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:9"></div>
+      <div id="end" class="clip scene-host" data-composition-id="end" data-composition-src="compositions/end.html" data-start="92.5" data-duration="6.5" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080" style="z-index:10"></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

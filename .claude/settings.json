@@ -13,8 +13,6 @@
       "Bash(git add *)",
       "Bash(git commit *)",
       "Bash(git merge *)",
-      "Bash(git push -u origin claude/*)",
-      "Bash(git push origin main)",
       "Bash(python3 scripts/deslop/deslop.py *)",
       "Bash(python3 scripts/deslop/test_deslop.py)",
       "Bash(.claude/skills/codex-review/tools/review.sh *)",

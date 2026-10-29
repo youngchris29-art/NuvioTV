@@ -33,10 +33,10 @@ The shared rules (no sends without a go, no cuts unless told, ask before plannin
 All device testing runs in the app's **"Test" profile** ("Test 2" on the Living Room box), never the synced daily-use "Chris" profile: passes, repros, installing a tester's add-ons or collections. Name the profile before any device step; remove tester payloads afterwards. If a pass needs "Chris", say so and get his go first. Dev builds under `com.youngchris29.NuvioTV` share the account. Remote rig (`scripts/device/*.sh`, credentials in `~/.config/nuviotv-device/`): `docs/device-rig-2026-10-15.md`. Pre-flight before any pass or install: `scripts/device/ready.sh` (`--walk` adds the app/console/profile gate).
 
 ## Branch hygiene
-- Outer `origin` carries `main` only. The cloud sweeps no longer commit or branch (2026-10-27); any `claude/*` branch that appears is a stray to delete once it is an ancestor of `main`.
+- Outer `origin` carries `main` only. Cloud sweeps never commit or branch; delete any `claude/*` branch once it is an ancestor of `main`.
 - Submodule `origin` holds `tvos-shared-extraction` and `cmp-rewrite` (stale mirror). Fork tags are `tvos-*`; never push upstream's `0.x` tags.
 - Never `git worktree add`/`remove` on the submodule (`core.worktree` resolves back to `.git/modules/NuvioMobile`); a stray one is removed with `rm -rf` + `git worktree prune`. Isolated work goes in a clone `~/Claude/Projects/NuvioMobile-<task>`, landed with `git fetch <clone> <branch>:<branch>`; in a clone MPVKit is a symlink over the gitlink, so stage by explicit paths, never `git add -A`.
-- Side clones now: none for landing work (the Card Depth clone was deleted 2026-10-24 after its merge); delete each once its branch is fast-forwarded in. `~/Claude/Projects/NuvioMobile-ios-sideload` is NOT one of these: it is the standing upstream checkout for the iPad sideload (see below), detached at a release tag, never committed or pushed.
+- Delete a side clone once its branch is fast-forwarded in. `~/Claude/Projects/NuvioMobile-ios-sideload` is not one of these: it is the standing upstream checkout for the iPad sideload (see below), detached at a release tag, never committed or pushed.
 - Commit the `docs/*.md` the checks and sweeps write.
 
 ## iPad sideload (standing, 2026-10-25)
@@ -53,7 +53,7 @@ The tracker is the database of the Tester Feedback dashboard artifact `https://c
 - Labels: communities were named once by `graphify label .` (claude-cli, subscription). `--resolution` / `--exclude-hubs` change membership and invalidate labels, so re-cluster deliberately and relabel after.
 
 ## Codex review (standing, 2026-10-01)
-`.claude/skills/codex-review/tools/review.sh --repo NuvioMobile --base <sha-before-the-work>` (exit 0 CLEAN / 3 findings / 2 no verdict). Run unsandboxed, never piped; loop review → fix → re-review on the same `--base` until CLEAN, documenting declines. Codex quota resets 2026-10-29; until then an Opus read-only review agent stands in.
+`.claude/skills/codex-review/tools/review.sh --repo NuvioMobile --base <sha-before-the-work>` (exit 0 CLEAN / 3 findings / 2 no verdict). Run unsandboxed, never piped; loop review → fix → re-review on the same `--base` until CLEAN, documenting declines. When Codex is out of quota, an Opus read-only review agent stands in.
 
 ## Copy rule (standing, 2026-09-03)
 Every user-facing draft (Reddit, DMs, README/INSTALL, release notes, GitHub text) goes through SlopMonster first: lint `python3 scripts/deslop/deslop.py <file>` → rewrite to 5/5 keeping every fact → cleanse with `~/.claude/skills/slopmonster/tools/cleanse.sh` when `codex` is available (diff every hunk, restore dropped facts) → re-lint; present at 5/5 with the score. No scorer tricks; legal/DMCA and quoted third-party text are never rewritten.

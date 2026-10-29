@@ -4,6 +4,12 @@ Moved out of `CLAUDE.md` (then titled "Nuvio tvOS — Claude Code project notes"
 
 Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-beta.19-rc6`, `-rc7`, `-rc8`, `-rc9` and `-rc10` (see `git -C NuvioMobile tag`). The daily upstream check is recorded in `docs/upstream-check-latest.md` (since 2026-10-27; the dated `docs/upstream-port-plan-YYYY-MM-DD.md` reports are local only).
 
+## Branches, clones and review fallback (moved out of CLAUDE.md 2026-10-29)
+
+- Side clones: none for landing work as of 2026-10-29 (the Card Depth clone was deleted 2026-10-24 after its merge). `~/Claude/Projects/NuvioMobile-ios-sideload` is the standing iPad checkout, not a landing clone.
+- Cloud sweeps stopped committing and branching on 2026-10-27.
+- Codex quota was due to reset 2026-10-29; until then an Opus read-only review agent stood in for `codex-review`.
+
 ## Stream picker "Best pick + tiers" (Direction C) 2026-10-28
 
 Batch landed on `tvos-shared-extraction` at `3a6d50950` (11 commits over `3937a6e08`), NOT cut. The source list opens on a best-pick card (the walk's own order: resolution, then HDR, then cached, then size; failed links skipped; "Best So Far" while add-ons answer, one upgrade per answer), three quick picks (Best 1080p, Best direct link, Show all N), and each quality or add-on group folded to its first two sources with an "N more" row; the Readable rows list is one press away under Show all. New setting **Source List Opens With** (Settings › Sources › Source List: Best Pick default / Full List, profile-local). DEBUG knob `-debug.sourceListOpensWith FULL|BEST`. Review: Opus stand-in r1–r3 CLEAN (Codex login expired). Gates: Kotlin ×3, NuvioTVTests 2524/0, four picker legs, Debug + Release sim. Device pass driven in Test 2 (steps 1, 2, 4–11 PASS; 3, 5 hide case, 9 walk-exhaust and 12 diagnostics not run); evidence local. Comms drafts local, NOT SENT. Follow-ups (local batch doc): card vs walk pool under mobile-synced source settings (C-28), resolver-id test seam.

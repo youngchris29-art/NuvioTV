@@ -53,7 +53,7 @@ The tracker is the database of the Tester Feedback dashboard artifact `https://c
 - Labels: communities were named once by `graphify label .` (claude-cli, subscription). `--resolution` / `--exclude-hubs` change membership and invalidate labels, so re-cluster deliberately and relabel after.
 
 ## Codex review (standing, 2026-10-01)
-`.claude/skills/codex-review/tools/review.sh --repo NuvioMobile --base <sha-before-the-work>` (exit 0 CLEAN / 3 findings / 2 no verdict). Run unsandboxed, never piped; loop review → fix → re-review on the same `--base` until CLEAN, documenting declines. When Codex is out of quota, an Opus read-only review agent stands in.
+`.claude/skills/codex-review/tools/review.sh --repo NuvioMobile --base <sha-before-the-work>` (exit 0 CLEAN / 3 findings / 2 no verdict). Run unsandboxed, never piped; loop review → fix → re-review on the same `--base` until CLEAN, documenting declines. Pass `--model gpt-5.6-terra`: the resolver's top pick `gpt-6-luna` is refused on this ChatGPT account (400 model_not_found). The account's usage limit is exhausted until 2026-11-28; while Codex is out, an Opus read-only review agent stands in.
 
 ## Copy rule (standing, 2026-09-03)
 Every user-facing draft (Reddit, DMs, README/INSTALL, release notes, GitHub text) goes through SlopMonster first: lint `python3 scripts/deslop/deslop.py <file>` → rewrite to 5/5 keeping every fact → cleanse with `~/.claude/skills/slopmonster/tools/cleanse.sh` when `codex` is available (diff every hunk, restore dropped facts) → re-lint; present at 5/5 with the score. No scorer tricks; legal/DMCA and quoted third-party text are never rewritten.

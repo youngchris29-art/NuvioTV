@@ -21,21 +21,44 @@ source "$CONF/atv.env"
 CREDS="$(cat "$ATV_CREDENTIALS_FILE")"
 ATVREMOTE="$HERE/.venv/bin/atvremote"
 
-resolve_port() {
+# 2026-10-30: the box drops its IPv4 path (ping 100% loss, ARP incomplete) while IPv6 can stay up
+# (rig lessons 2026-10-21). atvctl.py already fell back to the link-local IPv6 on its own; this
+# gives the atvremote paths (`run`, ready.sh's Companion check) the same fallback. Fast path: one
+# 1 s TCP probe of the configured address; only when it fails is atvctl.reachable_address asked
+# (it prints "[atvctl] IPv4 … unreachable; using IPv6 …" on stderr, and returns the configured
+# address unchanged when no IPv6 path works either).
+pick_address() {
+  local probe_port="$1" addr
+  if nc -z -G 1 "$ATV_ADDRESS" "$probe_port" >/dev/null 2>&1; then
+    echo "$ATV_ADDRESS"; return
+  fi
+  addr="$("$HERE/.venv/bin/python" -c '
+import sys
+sys.path.insert(0, sys.argv[1])
+import atvctl
+print(atvctl.reachable_address(sys.argv[2], int(sys.argv[3]), sys.argv[4]))' \
+    "$HERE" "$ATV_ADDRESS" "$probe_port" "${ATV_HOST:-}" || true)"
+  echo "${addr:-$ATV_ADDRESS}"
+}
+
+# The Companion port Bonjour advertises (empty when mDNS has no answer).
+advertised_port() {
   local line
   line="$(timeout 3 dns-sd -L "$ATV_NAME" _companion-link._tcp local. 2>/dev/null | grep -m1 'can be reached at' || true)"
-  # mDNS can keep serving the pre-restart port (2026-10-19: 61193 refused, the box listened on
-  # 49153), so use the advertised port only if it accepts a connection.
-  if [[ "$line" =~ :([0-9]+)\ \(interface ]] && nc -z -G 2 "$ATV_ADDRESS" "${BASH_REMATCH[1]}" >/dev/null 2>&1; then
-    echo "${BASH_REMATCH[1]}"
-  else
-    echo "$ATV_COMPANION_PORT"
-  fi
+  if [[ "$line" =~ :([0-9]+)\ \(interface ]]; then echo "${BASH_REMATCH[1]}"; fi
 }
-PORT="$(resolve_port)"
+ADV="$(advertised_port)"
+ADDR="$(pick_address "${ADV:-$ATV_COMPANION_PORT}")"
+# mDNS can keep serving the pre-restart port (2026-10-19: 61193 refused, the box listened on
+# 49153), so use the advertised port only if it accepts a connection.
+if [[ -n "$ADV" ]] && nc -z -G 2 "$ADDR" "$ADV" >/dev/null 2>&1; then
+  PORT="$ADV"
+else
+  PORT="$ATV_COMPANION_PORT"
+fi
 
 run() {
-  "$ATVREMOTE" --manual --address "$ATV_ADDRESS" --port "$PORT" --protocol companion \
+  "$ATVREMOTE" --manual --address "$ADDR" --port "$PORT" --protocol companion \
     --id "$ATV_ID" --companion-credentials "$CREDS" "$@"
 }
 

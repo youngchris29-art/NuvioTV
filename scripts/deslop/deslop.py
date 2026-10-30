@@ -189,8 +189,20 @@ def markdown_prose(md):
 
 
 def audit(text):
-    hits = {'vocab': [], 'phrases': [], 'punctuation': [], 'rhythm': [], 'proof': []}
+    # Everything after an "<!-- internal" marker is a record for the author, not
+    # copy anyone reads (facts checks, status entries), so it is not scored.
+    cut = text.find('<!-- internal')
+    if cut != -1:
+        text = text[:cut]
+    hits = {'vocab': [], 'phrases': [], 'punctuation': [], 'rhythm': [], 'proof': [],
+            'jargon': []}
     low = text.lower()
+
+    # Tracker ids (BUG-95, FEAT-89, UX-16, DOC-6, POL-3) are the project's own
+    # bookkeeping. A tester reads "BUG-228" as noise; the rule since 2026-10-30 is
+    # that no release note, reply, README line or DM carries one.
+    for m in re.finditer(r'\b(?:BUG|FEAT|UX|DOC|POL)-\d+\b', text):
+        hits['jargon'].append(('internal tracker id', m.group(0)))
 
     for w in VOCAB:
         n = len(re.findall(_root_pattern(w), low))
@@ -253,7 +265,8 @@ def audit(text):
 
 
 def report(hits, label='', allow_proof=False):
-    weights = {'vocab': 1, 'phrases': 1, 'punctuation': 1, 'rhythm': 1, 'proof': 1}
+    weights = {'vocab': 1, 'phrases': 1, 'punctuation': 1, 'rhythm': 1, 'proof': 1,
+               'jargon': 1}
     if allow_proof:
         # The one rule a regex cannot judge: it sees a number beside a noun, not
         # whether you can evidence it. --allow-proof still prints the hits, but
@@ -269,11 +282,12 @@ def report(hits, label='', allow_proof=False):
         'punctuation': 'punctuation cadence',
         'rhythm': 'rule-of-three rhythm',
         'proof': 'possible invented proof',
+        'jargon': 'internal tracker ids in copy',
     }
 
     if label:
         print(f'── {label}')
-    for k in ('proof', 'phrases', 'vocab', 'punctuation', 'rhythm'):
+    for k in ('jargon', 'proof', 'phrases', 'vocab', 'punctuation', 'rhythm'):
         if not hits[k]:
             continue
         print(f'  {titles[k]}:')

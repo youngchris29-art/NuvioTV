@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Copy to ~/Library/LaunchAgents/, replace CHECKOUT with the NuvioTV checkout path, then
+     launchctl load ~/Library/LaunchAgents/com.youngchris29.nuvio-notes.plist -->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>com.youngchris29.nuvio-notes</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>CHECKOUT/scripts/notes/sync-notes.sh</string>
+    <string>sync</string>
+  </array>
+  <key>StartInterval</key><integer>900</integer>
+  <key>RunAtLoad</key><true/>
+  <key>StandardOutPath</key><string>/tmp/nuvio-notes.log</string>
+  <key>StandardErrorPath</key><string>/tmp/nuvio-notes.log</string>
+</dict>
+</plist>

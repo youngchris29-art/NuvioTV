@@ -4,11 +4,14 @@ Moved out of `CLAUDE.md` (then titled "Nuvio tvOS — Claude Code project notes"
 
 Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-beta.19-rc6`, `-rc7`, `-rc8`, `-rc9` and `-rc10` (see `git -C NuvioMobile tag`). The daily upstream check is recorded in `docs/upstream-check-latest.md` (since 2026-10-27; the dated `docs/upstream-port-plan-YYYY-MM-DD.md` reports are local only).
 
-## Branches, clones and review fallback (moved out of CLAUDE.md 2026-10-29)
+## Branches, clones and review fallback (moved out of CLAUDE.md 2026-10-29 and 2026-11-02)
 
 - Side clones: none for landing work as of 2026-10-29 (the Card Depth clone was deleted 2026-10-24 after its merge). `~/Claude/Projects/NuvioMobile-ios-sideload` is the standing iPad checkout, not a landing clone.
 - Cloud sweeps stopped committing and branching on 2026-10-27.
-- Codex quota reset 2026-10-31 (Christian); `--model gpt-5.6-sol` for reviews. The Opus read-only review agent stands in only while Codex is rate-limited.
+- Codex review quota: the ChatGPT account's usage limit is exhausted until 2026-11-28; reviews use `--model gpt-5.6-terra` (as of 2026-11-02, replacing the 2026-10-31 note about `gpt-5.6-sol`). The Opus read-only review agent stands in until then.
+- `docs/` became an Obsidian vault on 2026-11-02; `docs/obsidian/` has been untracked since then.
+- The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
+- Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
 ## Insights: cast in the player + chrome rework 2026-11-01/02 (landed and pushed, NOT cut)
 

@@ -10,9 +10,9 @@ History, run logs, releases and open action items: `docs/status.md` (moved out 2
 ## Standing instructions
 The shared rules (no sends without a go, no cuts unless told, ask before planning, model delegation) live in `~/.codex/AGENTS.md`, loaded globally by both tools. Project-specific additions:
 - Comms drafts go in `docs/comms-*.md`, marked NOT SENT (local only, never tracked).
-- `docs/` is gitignored except an allowlist in `.gitignore` (status, the rolling upstream check, the README's two reference docs, the rig doc, the iPad release watch, `docs/design/`, `docs/obsidian/`). Plans, reviews, specs, comms, evidence, sweeps and dashboards never enter the repo; add a tracked doc only by editing the allowlist. `marketing/` lives at `~/Claude/Projects/nuvio-marketing` (not git). Working material removed on 2026-10-27 is archived at `~/Claude/Archive/nuvio-2026-10-27/`.
+- `docs/` is gitignored except an allowlist in `.gitignore` (status, the rolling upstream check, the README's two reference docs, the rig doc, the iPad release watch, `docs/design/`). Plans, reviews, specs, comms, evidence, sweeps and dashboards never enter the repo; add a tracked doc only by editing the allowlist. `marketing/` lives at `~/Claude/Projects/nuvio-marketing` (not git). Working material removed on 2026-10-27 is archived at `~/Claude/Archive/nuvio-2026-10-27/`.
 - Batch work records delegation rounds and findings in the batch doc.
-- `docs/` is an Obsidian vault (2026-11-02): every new batch, comms, device-pass, owed or decision note starts with the frontmatter in `docs/obsidian/README.md` (templates in `docs/obsidian/templates/`, views in `docs/obsidian/bases/`); keep `state` in step with the body (NOT SENT, landed/cut) and backfill old notes only when touched.
+- `docs/` is an Obsidian vault (2026-11-02): every new batch, comms, device-pass, owed or decision note starts with the frontmatter in `docs/obsidian/README.md` (local only, untracked since 2026-11-02) (templates in `docs/obsidian/templates/`, views in `docs/obsidian/bases/`); keep `state` in step with the body (NOT SENT, landed/cut) and backfill old notes only when touched.
 - Release notes and tester DMs name every new setting and its default.
 
 ## Build and gates (in `NuvioMobile/`)

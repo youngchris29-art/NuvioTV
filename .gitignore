@@ -22,8 +22,6 @@ docs/**
 !docs/ios-release-watch.md
 !docs/design/
 !docs/design/**
-!docs/obsidian/
-!docs/obsidian/**
 
 # Marketing output (release videos, explainers) lives outside the repo: ~/Claude/Projects/nuvio-marketing
 marketing/

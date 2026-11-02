@@ -1,0 +1,16 @@
+filters:
+  and:
+    - 'type == "owed"'
+    - 'state == "open"'
+views:
+  - type: table
+    name: Owed from people
+    order:
+      - note.who
+      - note.what
+      - note.where
+      - note.asked
+      - note.item
+    sort:
+      - property: note.asked
+        direction: ASC

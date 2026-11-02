@@ -9,8 +9,9 @@
 # nested repo would break those. The git dir lives outside the checkout (dotfiles-style
 # --git-dir/--work-tree), so Obsidian and the outer repo see nothing new.
 #
-# Not mirrored: the files the outer repo tracks (already on GitHub, public), Obsidian's
-# per-device state, and media/build outputs (GitHub refuses files over 100 MB).
+# Mirrored: text files only (md, base, canvas, txt, csv, json, yml). Not mirrored: the files the
+# outer repo tracks (already on GitHub, public), Obsidian's per-device state, and everything else
+# (screenshots, recordings, logs, build output). Any single file over 5 MB stops the run.
 #
 # Config (optional): ~/.config/nuvio-notes/config.env
 #   NOTES_GITDIR=~/Claude/Projects/nuvio-notes.git
@@ -33,6 +34,19 @@ g() { git --git-dir="$NOTES_GITDIR" --work-tree="$WORK" "$@"; }
 
 write_exclude() {
   cat > "$NOTES_GITDIR/info/exclude" <<'EXCL'
+# Text only: notes, views and small data. Evidence media, logs and build output stay on the Mac
+# (the first import with media was 7.4 GB and GitHub refused it).
+*
+!*/
+!*.md
+!*.base
+!*.canvas
+!*.txt
+!*.csv
+!*.json
+!*.yml
+!*.yaml
+# Exclusions come last so the text allowlist above cannot re-include them.
 # Tracked (publicly) by the outer NuvioTV repo; keep one home for each.
 /status.md
 /upstream-check-latest.md
@@ -46,16 +60,6 @@ write_exclude() {
 /.obsidian/cache
 /.trash/
 .DS_Store
-# Media and build outputs
-*.mov
-*.mp4
-*.m4v
-*.mkv
-*.ts
-*.zip
-*.ipa
-*.xcresult/
-*.trace/
 EXCL
 }
 
@@ -70,6 +74,17 @@ refuse_public_remote() {
   fi
 }
 
+guard_size() {
+  local big
+  big="$(g diff --cached --name-only -z | (cd "$WORK" && xargs -0 -I{} find {} -size +5M) 2>/dev/null || true)"
+  if [ -n "$big" ]; then
+    g reset -q
+    echo "files over 5 MB staged; nothing committed. Move them or exclude them:" >&2
+    echo "$big" >&2
+    exit 1
+  fi
+}
+
 case "${1:-sync}" in
   init)
     if [ -d "$NOTES_GITDIR" ]; then echo "already initialised: $NOTES_GITDIR"; exit 0; fi
@@ -81,8 +96,7 @@ case "${1:-sync}" in
     write_exclude
     g remote add origin "$NOTES_REMOTE"
     g add -A
-    big="$(g diff --cached --name-only -z | xargs -0 -I{} find "$WORK/{}" -size +50M 2>/dev/null || true)"
-    if [ -n "$big" ]; then echo "files over 50 MB, add them to $NOTES_GITDIR/info/exclude first:"; echo "$big"; exit 1; fi
+    guard_size
     g commit -q -m "notes: first import of docs/"
     g branch -M main
     g push -u origin main
@@ -93,6 +107,7 @@ case "${1:-sync}" in
     refuse_public_remote
     write_exclude
     g add -A
+    guard_size
     g diff --cached --quiet || g commit -q -m "notes: sync $(date '+%Y-%m-%d %H:%M')"
     g pull -q --rebase --autostash origin main || { echo "pull failed: resolve with $0 git status" >&2; exit 1; }
     g push -q origin main

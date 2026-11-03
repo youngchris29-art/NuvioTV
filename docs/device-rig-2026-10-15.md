@@ -89,7 +89,7 @@ Facts that shape a walk (all seen on 2026-10-15):
 - Per-call cost: `atv.sh seq` ≈ 3.7 s connection + the steps; `shot.sh` 1.3–4 s. Budget ~10 s per
   "move, look" cycle.
 
-- ⚠️ **Companion Menu does not exit the native (AVKit) player** (2026-10-17). Six 150 ms Menu presses with the top panel closed never left playback and logged nothing, while Select paused and resumed. A physical Siri Remote exits normally. AVKit's system transport bar isn't in screenshots either. To leave native playback from the rig, relaunch with `console.sh start` (playback progress is saved).
+- ⚠️ **Companion Menu exits the native (AVKit) player when the native chrome is hidden** (rewritten 2026-11-03 from the Insights cast device pass of 2026-11-02). A Companion Menu press while the chrome is hidden exits the native player, so an accidental Menu there drops the rig straight out of playback (on 2026-11-02 a Cast card was focused with the actor view closed and the player exited to Home). With the top panel or a tool overlay open, Menu closes that layer first. On 2026-10-17 six 150 ms Menu presses with the top panel closed did not exit; that build predates the Insights chrome rework. A physical Siri Remote exits normally. AVKit's system transport bar isn't in screenshots either. To leave native playback from the rig, relaunch with `console.sh start` (playback progress is saved).
 
 ## What the rig can and cannot judge
 

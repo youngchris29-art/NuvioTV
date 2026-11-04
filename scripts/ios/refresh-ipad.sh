@@ -50,14 +50,31 @@ log() { printf '%s %s\n' "$(date '+%H:%M:%S')" "$*" | tee -a "$LOG"; }
 notify() {  # title, body
   osascript -e "display notification \"${2//\"/\\\"}\" with title \"${1//\"/\\\"}\"" >/dev/null 2>&1 || true
 }
-save_state() {
+save_state() {  # result [cause]
   cat > "$STATE" <<EOF
 INSTALLED_TAG=${INSTALLED_TAG:-}
 PROFILE_EXPIRY=${PROFILE_EXPIRY:-}
 LAST_RUN_DATE=$TODAY
 LAST_RESULT=$1
+LAST_CAUSE=${2:-}
 LAST_SUCCESS=${LAST_SUCCESS:-}
 EOF
+}
+# Name the failure so the scheduled task (and Christian) see the cause, not just "failed".
+classify_build_failure() {  # build log → one line
+  if grep -q "No Accounts: Add a new account" "$1"; then
+    echo "xcode-signed-out: Xcode has no Apple ID (an Xcode update signs it out). Fix: Xcode > Settings > Accounts, sign in, then rerun."
+  elif grep -q "No profiles for" "$1"; then
+    echo "no-profile: Xcode could not mint a provisioning profile for the free team; check the Accounts tab and the 7-day limit."
+  elif grep -qi "Nuvio Engine\|prepare-ios-dependencies\|checksum mismatch" "$1"; then
+    echo "engine-fetch: the Nuvio Engine framework download or checksum failed for this tag."
+  elif grep -q "What went wrong\|generateRuntimeConfigs\|local.properties" "$1"; then
+    echo "gradle: $(grep -m1 -A2 'What went wrong' "$1" | tail -1 | cut -c1-140)"
+  elif grep -q "Your team has no devices" "$1"; then
+    echo "no-device: the free team has no registered iPad; -allowProvisioningDeviceRegistration needs the iPad reachable."
+  else
+    echo "unclassified: $(grep -m1 -E 'error:' "$1" | cut -c1-140)"
+  fi
 }
 
 [ -f "$CONF" ] || { echo "REFUSED: $CONF missing" >&2; exit 2; }
@@ -117,7 +134,7 @@ log "refresh needed: $REASON"
 TARGET="${LATEST:-$INSTALLED_TAG}"
 if [ -z "$TARGET" ]; then
   log "FAILED: no release tag known (GitHub unreachable and nothing installed yet)"
-  save_state failed; exit 1
+  save_state failed "no-tag: GitHub unreachable and nothing installed yet"; exit 1
 fi
 if [ "$DRY" = 1 ]; then
   echo "DRY-RUN would build $TARGET and install on $IPAD_UDID"
@@ -130,7 +147,7 @@ if ! xcrun devicectl device info details --device "$IPAD_UDID" --timeout 20 >/de
   if [ "$(date +%H)" -ge 21 ]; then
     notify "Nuvio iPad refresh" "Could not reach the iPad today ($REASON). Unlock it on Wi-Fi and the job retries tomorrow."
   fi
-  save_state unreachable
+  save_state unreachable "ipad-unreachable: devicectl could not reach the iPad; unlock it on the same Wi-Fi"
   exit 4
 fi
 
@@ -145,7 +162,7 @@ fi
 if ! git checkout -q --detach "$TARGET" >>"$LOG" 2>&1; then
   log "FAILED: cannot check out $TARGET"
   notify "Nuvio iPad refresh failed" "Cannot check out $TARGET in the side clone."
-  save_state failed; exit 1
+  save_state failed "git-checkout: tag $TARGET not found in the side clone"; exit 1
 fi
 git submodule update --init --recursive >>"$LOG" 2>&1 || log "warning: submodule update returned $?"
 
@@ -157,7 +174,7 @@ sed -i '' \
 sed -i '' "s/^TEAM_ID=.*/TEAM_ID=$TEAM_ID/" "$XCCONFIG"
 if grep -qE "PRODUCT_BUNDLE_IDENTIFIER = com\.nuvio\.(app|media);" "$PBX"; then
   log "FAILED: bundle id rewrite did not take"; notify "Nuvio iPad refresh failed" "Bundle id rewrite did not take; see $LOG"
-  save_state failed; exit 1
+  save_state failed "bundle-id-rewrite: upstream changed its pbxproj bundle ids; update the sed in refresh-ipad.sh"; exit 1
 fi
 if [ ! -f local.properties ] && [ -n "${LOCAL_PROPERTIES_SRC:-}" ] && [ -f "$LOCAL_PROPERTIES_SRC" ]; then
   cp "$LOCAL_PROPERTIES_SRC" local.properties
@@ -176,7 +193,7 @@ if [ -x scripts/prepare-ios-dependencies.sh ]; then
   if ! ./scripts/prepare-ios-dependencies.sh >>"$LOG" 2>&1; then
     log "FAILED: prepare-ios-dependencies.sh (Nuvio Engine download)"
     notify "Nuvio iPad refresh failed" "Could not fetch the Nuvio Engine framework for $TARGET; see $LOG"
-    save_state failed; exit 1
+    save_state failed "engine-fetch: prepare-ios-dependencies.sh failed (download or checksum) for $TARGET"; exit 1
   fi
 fi
 
@@ -200,12 +217,12 @@ export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 if ! xcodebuild -project iosApp/iosApp.xcodeproj -scheme iosApp -configuration Release \
       -destination 'generic/platform=iOS' -derivedDataPath "$DERIVED" \
       -allowProvisioningUpdates -allowProvisioningDeviceRegistration build >"$BUILD_LOG" 2>&1; then
-  err="$(grep -m1 -E 'error:' "$BUILD_LOG" | cut -c1-140)"
-  log "FAILED: build ($err)"
-  notify "Nuvio iPad build failed" "${err:-see $BUILD_LOG}"
-  save_state failed; exit 1
+  cause="$(classify_build_failure "$BUILD_LOG")"
+  log "FAILED: build ($cause)"
+  notify "Nuvio iPad build failed" "${cause:-see $BUILD_LOG}"
+  save_state failed "$cause"; exit 1
 fi
-[ -d "$APP" ] || { log "FAILED: $APP missing after build"; notify "Nuvio iPad build failed" "No Nuvio.app produced"; save_state failed; exit 1; }
+[ -d "$APP" ] || { log "FAILED: $APP missing after build"; notify "Nuvio iPad build failed" "No Nuvio.app produced"; save_state failed "no-app: xcodebuild succeeded but produced no Nuvio.app"; exit 1; }
 NEW_EXPIRY="$(security cms -D -i "$APP/embedded.mobileprovision" 2>/dev/null | plutil -extract ExpirationDate raw - 2>/dev/null)"
 log "built $TARGET; profile valid until ${NEW_EXPIRY:-?}"
 
@@ -213,7 +230,7 @@ log "built $TARGET; profile valid until ${NEW_EXPIRY:-?}"
 if ! xcrun devicectl device install app --device "$IPAD_UDID" "$APP" >>"$LOG" 2>&1; then
   log "FAILED: devicectl install"
   notify "Nuvio iPad install failed" "Build $TARGET is ready but devicectl could not install it; see $LOG"
-  save_state failed; exit 1
+  save_state failed "install: devicectl could not install the build; see the refresh log"; exit 1
 fi
 
 INSTALLED_TAG="$TARGET"; PROFILE_EXPIRY="${NEW_EXPIRY:-}"; LAST_SUCCESS="$(date -u +%Y-%m-%dT%H:%M:%SZ)"

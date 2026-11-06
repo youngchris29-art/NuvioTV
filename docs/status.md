@@ -13,6 +13,24 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
+## Detail page follow-ups 2026-11-06 (Christian's open-item answers; reviewed, gated, device-passed, LANDED `6b336bb3f`, NOT cut)
+
+Christian's answers (16:26Z): "1A, 2A, 3A, 4A, 5A, 6A, 7 fix all, 8A, 9A", plus "Cap at 20, Apple-style" (18:47Z). 18 commits on `3c2d9aa1b` in the side clone `NuvioMobile-detail-followups` (deleted). Record: `docs/detail-followups-batch-2026-11-06.md` (local); evidence `docs/research/apple-tv-detail-2026-11-04/followups/` (sim captures, `device/`, `device2/`, `device3/`).
+- Changes:
+  - Apple-style Menu in the episodes section → hero Play (Mark Watched when Play is disabled); a second Menu leaves the page.
+  - Cast & Crew, poster and trailer rows use `.focusRow`.
+  - Actors first, then creators, then directors/writers, then the rest of the crew. Kotlin `MetaPerson.creditCategory` marks the pseudo-cast entries `buildPeople` prepends; `meta.creators` feeds a Creator card.
+  - Apple-style only: 260 pt person cards, 260×390 posters 40 pt apart, 60 pt peek, first 20 actors.
+  - Rounded corners: Play matches the round buttons' height (measured).
+  - Credit row top-aligned; trailer captions drop a type repeating the title; dark fade behind the sticky logo; Apple-style episode text stays put while the still grows.
+  - New `DetailAppleSeasonTabsUITests` (5 legs; DEBUG probe tokens `meta=` and `play=`).
+- The More Like This slot hold is kept as is (2A).
+- Item 5 correction: the device "skip" was Test 2 without TMDB (non-focusable cast cards by design).
+- Codex `gpt-6.1-terra` on base `3c2d9aa1b`: 6 rounds to CLEAN. One decline: with no marked entries (legacy/add-on meta), an actor whose character is literally their own crew job is grouped with crew.
+- Gates on `6b336bb3f`: Kotlin jvm 2297/0, tvOS sim 2318/0, composeApp green; Debug + Release FA87; NuvioTVTests 3172/5 skipped/0; UI legs DetailFocusReturn 3/3, ChipRowScroll 7/7, SynopsisSheet 1/1, AppleSeasonTabs 5/5, test21 1/1.
+- Device (Test 2, TMDB override, no playback, no settings changed): all checks PASS on `23d8a4540`. The missing Creator card was fixed and re-checked on `6b336bb3f`: actor 20 → Dan Erickson · Creator → directors → writers.
+- Not done: the collection row (landscape cards; no poster size decided).
+
 ## Cached Sources Only + tracks (Tracks U+G), PR #2 landing 2026-11-06 (gated, LANDED `3c2d9aa1b`, NOT cut)
 
 NuvioMobile PR #2 (`claude/project-thread-dfytb9`, tip `13c0c5814`, gated + Codex CLEAN on base `1fab80872`) landed on Christian's "lets merge all the PRs that are ready to merge" (15:09Z). In the side clone `NuvioMobile-tracks-ug`, `75f2f336b` (PR #4 badges + PR #5 Play label) was merged in as `3c2d9aa1b`.

@@ -13,6 +13,16 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
+## Detail format badges (GitHub #22), PR #4 Mac round 2026-11-06 (reviewed, gated, device-passed, LANDED `5a5bf8ef0`, NOT cut)
+
+NuvioMobile PR #4 (`claude/project-thread-zrbg6t`): shared `TitleFormatProbe` (background probe of up to 3 stream add-ons, 1 s dwell, in-memory cache, live fold of the open picker) and `TitleFormatBadges` (4K, one of Dolby Vision / HDR10+ / HDR, Dolby Atmos, DTS:X), plus the Swift row under the hero meta line (Cinematic, Apple-style and Classic). New setting **Format Badges** (`detail_format_badges`, Settings > Detail Page > Layout, default **On**). Record: `docs/detail-format-badges-batch-2026-11-06.md` (local); evidence `docs/evidence/format-badges-2026-11-06/`. Side clone `NuvioMobile-format-badges` deleted at landing.
+- Kotlin (written in the cloud, never compiled) compiled first time; the probe tests needed `advanceTimeBy` + `runCurrent` in place of `advanceUntilIdle` (background-scope work). Swift half written on the Mac by delegated agents (Opus model, Sonnet row/wiring/tests, Haiku setting).
+- Codex `gpt-6.1-terra`, base `89a6a9a7c`: 15 rounds to CLEAN at `7b60baa18` (25 fixes, mostly cache freshness and picker-fold edge cases; 4 declines in the batch doc). Translations de/es/fr/it/vi added in `5a5bf8ef0`.
+- Gates on `7b60baa18`: Kotlin 2279/2300/438, Debug + Release FA87, NuvioTVTests 3135/5 skipped/0, Detail UI legs (FocusReturn 3, ChipRowScroll 7, SynopsisSheet 1, ActionSquare 4) green; `5a5bf8ef0` Debug build green.
+- Device pass in Test 2: first load (F1 2025 → 4K/DV/Atmos, 3 add-ons, ~3.7 s incl. the dwell), no-format titles, cache on reopen, cancel on pop, setting Off (no gap), series Play-target episode all PASS; picker step partial (`.onDisappear` does not fire under the picker cover; probe keeps running), VoiceOver not run (rig cannot toggle it); a 4K-but-SDR title not found.
+- Fast-forwarded `tvos-shared-extraction` 89a6a9a7c → 5a5bf8ef0 from the cloud (15:11Z) on Christian's "merge all the PRs that are ready to merge"; local submodule and graph updated, outer pointer bumped.
+- Open: resumed titles show Play as a tall unlabeled pill (also with badges Off; PR #5 targets it); the probe now calls the plugin repository's unlocked `initialize()` from a background thread (no duplicate-init lines seen).
+
 ## Apple-style Detail page, PR #3 Mac round 2026-11-06 (reviewed, gated, device-passed, LANDED `89a6a9a7c`, NOT cut)
 
 NuvioMobile PR #3 (Track A of the 2026-11-06 Apple TV detail plan: new `detail_layout = apple`, default stays Cinematic; new `detail_trailer_fullscreen_autoplay`, Apple-style only, default off) had been merged into `tvos-shared-extraction` as `29b433dbd` without ever being compiled. The Mac round ran on 2026-11-06 in the side clones `NuvioMobile-detail-apple` and `-detail-apple-fix` (both deleted at landing). Record: `docs/detail-apple-mac-batch-2026-11-06.md` (local); evidence `docs/research/apple-tv-detail-2026-11-04/mac-round/` (sim captures, `visual-pass.md`, device walks `device/`, `device2/`, `device3/`).

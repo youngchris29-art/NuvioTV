@@ -13,6 +13,13 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
+## Cached Sources Only + tracks (Tracks U+G), PR #2 landing 2026-11-06 (gated, LANDED `3c2d9aa1b`, NOT cut)
+
+NuvioMobile PR #2 (`claude/project-thread-dfytb9`, tip `13c0c5814`, gated + Codex CLEAN on base `1fab80872`) landed on Christian's "lets merge all the PRs that are ready to merge" (15:09Z). In the side clone `NuvioMobile-tracks-ug`, `75f2f336b` (PR #4 badges + PR #5 Play label) was merged in as `3c2d9aa1b`.
+- One conflict, in `StreamsViewModel.swift` `isListable`: PR #2 and PR #4 had each ported the same shared `StreamListability` rule (PR #2 inside `StreamModels.kt` with `debridEnabled`, PR #4 as `StreamListability.kt` with `debridCanResolve`; same logic). Kept PR #4's file, dropped the duplicate from `StreamModels.kt`, and pointed `DebridStreamPresentation`'s Cached Sources Only hidden count at `debridCanResolve`. The rest auto-merged (`StreamsRepository.kt`, `Localizable.xcstrings`). No Codex round: the resolution only removes a duplicate with identical logic. No device pass: picker behaviour is unchanged.
+- Gates on `3c2d9aa1b`: Kotlin jvm 2296/0, tvOS sim 2317/0, composeApp 443/0; Debug + Release FA87 BUILD SUCCEEDED; NuvioTVTests 3148/5 skipped/0.
+- `tvos-shared-extraction` fast-forwarded `75f2f336b` → `3c2d9aa1b` and pushed; branch and side clone deleted. `docs/comms-github-23.md` was already `state: sent`.
+
 ## Play keeps its label on titles with progress, PR #5 Mac round 2026-11-06 (reviewed, gated, device-passed, LANDED `75f2f336b`, NOT cut)
 
 NuvioMobile PR #5 (branch `claude/project-thread-pwwocv`): with Resume + Start Over in the hero, the 680 pt text-column cap also squeezed the action row, so Play collapsed into a tall unlabelled pill or a circle (seen in Test 2 on S.W.A.T. Exiles). The fix (`DetailCinematicHero.swift` `content`) caps the text block only and gives the action row `.fixedSize(horizontal: true, vertical: false)`; after the PR #4 rebase the badge row stays inside the capped block. Record: `docs/detail-play-pill-pr5-2026-11-06.md` (local); evidence `docs/research/apple-tv-detail-2026-11-04/play-pill/` (sim before/after, `device/`).

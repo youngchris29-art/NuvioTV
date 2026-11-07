@@ -118,3 +118,29 @@ Assets: androidApp-full-arm64-v8a-release.apk, androidApp-full-armeabi-v7a-relea
 > - [fix(player): resume a closed torrent stream at the stalled frame (#2479)](https://github.com/NuvioMedia/NuvioMobile/pull/2479) @halibiram  
 > - [feat(player): audio downmix and center mix on Android (#2456)](https://github.com/NuvioMedia/NuvioMobile/pull/2456) @kernexshadow  
 > 
+
+## 0.6.9-beta — 2026-11-06
+
+https://github.com/NuvioMedia/NuvioMobile/releases/tag/0.6.9-beta
+
+Assets: androidApp-full-arm64-v8a-release.apk, androidApp-full-armeabi-v7a-release.apk, androidApp-full-x86-release.apk, androidApp-full-x86_64-release.apk, nuvio-0.6.9-full-release.ipa
+
+> - ff522ec9 fix(i18n): add Tamil to iOS @tapframe  
+> - [fix(skip-intro): drop open-ended Anime-Skip segments and prefer AniSkip (#2539)](https://github.com/NuvioMedia/NuvioMobile/pull/2539) @skoruppa  
+> - [fix(player): leave edge swipes to the back gesture and lock tablets to landscape (#2542)](https://github.com/NuvioMedia/NuvioMobile/pull/2542) @skoruppa  
+> - 2f9f4ae6 feat(settings): add ratings source picker @tapframe  
+> - 9c26a7cf feat(details): add star ratings for titles and episodes @tapframe  
+> - 1255999d feat(mdblist): sync and save ratings @tapframe  
+> - 6982ec7d feat(simkl): save and read title ratings @tapframe  
+> - 32298713 feat(tracking): add rating source setting @tapframe  
+> - d816059e feat(streams): make chips see-through over backdrops @tapframe  
+> - 9877adfc feat(details): fade tablet artwork into the cinematic backdrop @tapframe  
+> - 5cf73ccc feat(details): show the cinematic backdrop behind the floating header @tapframe  
+> - f6ac2840 feat(details): make buttons and chips see-through over backdrops @tapframe  
+> - [i18n: add French strings for audio downmix, amplification and delay (#2532)](https://github.com/NuvioMedia/NuvioMobile/pull/2532) @SK-Gits  
+> - [fix(player): allow playback during calls with ExoPlayer (#2531)](https://github.com/NuvioMedia/NuvioMobile/pull/2531) @sap6  
+> - [i18n(vi): update translations for strings.xml and autosync_toast_strings.xml (#2530)](https://github.com/NuvioMedia/NuvioMobile/pull/2530) @blueocean2308  
+> - [fix(i18n): update Bengali (বাংলা) localization and sync missing strings (#2529)](https://github.com/NuvioMedia/NuvioMobile/pull/2529) @TanvirSdq  
+> - [feat(i18n): add Tamil language support and UI localization (#2528)](https://github.com/NuvioMedia/NuvioMobile/pull/2528) @vijay3695  
+> - [Fix Arabic page-title wrapping in shared screen header (#2063)](https://github.com/NuvioMedia/NuvioMobile/pull/2063) @i7xre  
+> 

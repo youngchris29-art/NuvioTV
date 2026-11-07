@@ -61,10 +61,12 @@ component kit; see its header comment for the full primitive list).
 
 **Follow-up (not part of this closure):** `SettingsRowButtonStyle`/`.settingsRow`,
 `settingsRowIsFocused`, and `rowTextColor()` (now in `DesignSystem/FlatControlStyles.swift`) are
-still load-bearing for five screens outside Settings that have not had their own native-List
-pass: `StreamPickerView`, `DetailView`, `CloudLibraryUI`, `AddonsView`, `TmdbFilterEditorView`.
+still load-bearing for four screens outside Settings that have not had their own native-List
+pass: `StreamPickerView`, `DetailView`, `CloudLibraryUI`, `TmdbFilterEditorView`.
 They remain a documented exemption to the Buttons row until each gets converted (beta.16
-candidate) — do not extend `.settingsRow` to new call sites in the meantime.
+candidate) — do not extend `.settingsRow` to new call sites in the meantime. `AddonsView` left
+the list with the Add-ons hub v2 (2026-11-07): its sidebar and every pane are native `List`s of
+kit rows, with no `.settingsRow` call site left.
 
 ## New card surfaces — birth checklist (BUG-32, added 2026-08-20)
 

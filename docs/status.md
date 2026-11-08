@@ -13,6 +13,39 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
+## Add-ons hub v2 Stage A 2026-11-07/08 (Direction A, native split view; reviewed, gated, device-passed, LANDED `82a39fecb`, NOT cut)
+
+Waves A0–A8 plus a VoiceOver fix, run on Christian's go per wave, then a standing go for A6 → A8. Landed on his "land" (2026-11-08 03:49Z) after the VoiceOver re-check: steps 1, 4 and 6 taken as passed. Side clone `NuvioMobile-hub-v2` (deleted). Plan and full run log: `docs/addons-hub-v2-plan-2026-11-07.md` §9 (local). Evidence: `docs/research/addons-hub-v2-2026-11-07/` (local, never staged).
+- What shipped:
+  - The Add-ons tab is a two-column page: a glass sidebar (Installed, Catalogs, Debrid, Plugins, Install add-on, Refresh all) and native-List panes.
+  - Each add-on has its own detail page, with the configure QR, Move, "Catalogs from this add-on" (a filtered Catalogs view), and Remove.
+  - Move mode works in Installed and Catalogs: hold → Move, then Up/Down, Select drops, Menu cancels.
+  - Install add-on is an inline pane with a status modal.
+  - "Updated … ago" persists per profile.
+  - VoiceOver: sidebar labels carry counts and the current section; Move start, drop and cancel are announced.
+  - The v1 hub and the `-debug.hubRailClearance` switch are deleted.
+  - Translations: de/es/fr/it/vi.
+- Shared changes:
+  - `AddonRepository`: refresh generations under a lock; URL-keyed atomic moves.
+  - `HomeCatalogSettingsRepository`: `moveUp`/`moveDown` step under the mutation lock and return whether they changed the order; new `restoreKeyAfter`.
+- Review: each wave CLEAN in its own loop, then the whole stage on base `6b336bb3f` (CLEAN r6), and the VoiceOver fix on base `51ec58158` (CLEAN r8).
+- Declined:
+  - A repository-level refresh-concurrency test (needs a fetch seam in shared code).
+- Logged as a follow-up:
+  - The pre-existing `AddonRepository` pull-vs-debounced-push race.
+- Gates on `82a39fecb`:
+  - Kotlin jvm/tvOS/composeApp green. Each test task needs its own `--rerun`; a single trailing one reruns only the last task.
+  - Debug + Release FA87.
+  - NuvioTVTests 3251/5 skipped/0.
+  - UI legs: AddonsHub 6/6, AddonsSplit 4/4, StreamPicker 4/4. Player/PostPlay legs skip without fixtures.
+- Device, Test 2 (Living Room, Rail): full Stage A pass PASS, including install by URL with a stub, the Couldn't-install modal, the Catalogs toggle on Home, OLED True Black (launch-only), the White theme (Test 2's own) and the stamp surviving a relaunch. Christian checked VoiceOver by hand.
+- Found on the box and fixed:
+  - A Menu pop landed on the sidebar.
+  - The rail return landed on Installed.
+  - German Refresh all didn't fit.
+  - Catalog move cancel lost focus.
+- Outer: HIG contract `a8f44be` (AddonsView leaves the `.settingsRow` exemption).
+
 ## Detail page follow-ups 2026-11-06 (Christian's open-item answers; reviewed, gated, device-passed, LANDED `6b336bb3f`, NOT cut)
 
 Christian's answers (16:26Z): "1A, 2A, 3A, 4A, 5A, 6A, 7 fix all, 8A, 9A", plus "Cap at 20, Apple-style" (18:47Z). 18 commits on `3c2d9aa1b` in the side clone `NuvioMobile-detail-followups` (deleted). Record: `docs/detail-followups-batch-2026-11-06.md` (local); evidence `docs/research/apple-tv-detail-2026-11-04/followups/` (sim captures, `device/`, `device2/`, `device3/`).

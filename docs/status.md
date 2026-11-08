@@ -13,6 +13,23 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
+## Stream picker #25 poster fit + 3-line descriptions 2026-11-08 (reviewed, gated, LANDED `06efc8870`, device re-check owed, NOT cut)
+
+The 80fb88109 device pass (Test 2) found that the Two-Pane poster never showed on a 1080p box. The pane is about 840 pt, under the 850 pt threshold. Christian's rulings: option (a), scale the poster to the pane; add-on descriptions rest at 3 lines. Built from `80fb88109` in the side clone `NuvioMobile-picker-poster-fit` (deleted).
+- Poster: takes the height left after the measured header, facts and progress lines and 4 × 24 pt of gaps. It stays 2:3, capped at 360 pt and at the pane's width, and is hidden only under 260 pt. The 1080p sim draws it at 329 × 493.5.
+- Add-on description at rest: 3 lines (was 4) in both layouts. The whole text still shows after the focus dwell.
+- DEBUG knob `-debug.exposePickerPoster YES` makes the poster visible to the UI legs (`stream_picker_poster`). The chip leg asserts its size and place.
+- Review: Codex gpt-6.1-terra on base `80fb88109`. Six findings fixed across r1–r5; CLEAN at r6 (`0e0fddaff`) and r7 (`06efc8870`).
+- Declined: a hosted unit test of the panel, and a UI case for episode facts that grow late. Reasons in the batch doc.
+- Gates:
+  - Kotlin: green (no Kotlin changed).
+  - Debug and Release builds on the tip.
+  - NuvioTVTests: 3286 run, 5 skipped, 0 failures.
+  - StreamPicker legs: Two-Pane 5/5 on the tip; Full Width 4/4 plus 1 skipped by design.
+- Owed:
+  - A device re-check of the poster in Test 2.
+  - Restoring Test 2's Source Layout, Badges Above Title and imported badge pack. Waits until Christian frees the box.
+
 ## Stream picker Full Width + Row Text 2026-11-08 (GitHub #25; reviewed, gated, LANDED `80fb88109`, device pass owed, NOT cut)
 
 Christian approved the plan on 2026-11-08 (two settings, a 360 pt poster, badge packs kept in every combination). Built from base `82a39fecb` in the side clone `NuvioMobile-stream-picker-full-width` (deleted). Plan: `docs/stream-picker-full-width-plan-2026-11-08.md`. Record: `docs/batch-stream-picker-full-width-2026-11-08.md` (both local).

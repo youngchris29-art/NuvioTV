@@ -13,6 +13,33 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
+## Stream picker Full Width + Row Text 2026-11-08 (GitHub #25; reviewed, gated, LANDED `80fb88109`, device pass owed, NOT cut)
+
+Christian approved the plan on 2026-11-08 (two settings, a 360 pt poster, badge packs kept in every combination). Built from base `82a39fecb` in the side clone `NuvioMobile-stream-picker-full-width` (deleted). Plan: `docs/stream-picker-full-width-plan-2026-11-08.md`. Record: `docs/batch-stream-picker-full-width-2026-11-08.md` (both local).
+- New settings under Settings › Sources › Source List, per profile and not synced:
+  - **Source Layout**: Two-Pane (default) or Full Width. Full Width shows a one-line header strip and no info pane. Rows fold onto two lines with the cached part pinned on the right, and the Best Pick card is capped at 1100 pt.
+  - **Row Text**: Nuvio (default) or Add-on's Own. Add-on's Own shows the stream's name lines and description in place of Nuvio's headline and fact lines. Wide rows put the name in a 300 pt column. The source label appears unless the first name line starts with it, and the cached glyph appears only from Nuvio's own debrid check. Parsing still drives tiers, Best Pick and filters.
+  - Badge packs keep Badge Placement in every combination.
+- Two-Pane poster: 260 → 360 pt. `posterMinimumHeight` is now 850.
+- Translations: de/es/fr/it/vi.
+- Launch knobs `-debug.sourceLayout FULL|TWO` and `-debug.rowText ADDON|NUVIO`. `TEST_RUNNER_PICKER_LAYOUT=FULL` runs the StreamPicker legs in Full Width.
+- Review: Codex gpt-6.1-terra on base `82a39fecb`, CLEAN at r7 (`0b9f8c3d5`) and r8 (`80fb88109`). 15 findings fixed across r1–r6.
+- Declined:
+  - Keeping the old poster size (Christian's decision).
+  - Letting compact Best Pick rows expand on focus (plan B3: fixed 64 pt rows).
+- Deviation from the plan: add-on rows always draw the size. The add-on's text can hold the size beyond the resting line limit, so deduplicating it could hide the size entirely.
+- Gates:
+  - Kotlin: jvm 2321, tvOS 2344, composeApp 443, 0 failures.
+  - Debug and Release builds on FA87.
+  - NuvioTVTests: 3279 run, 5 skipped, 0 failures.
+  - StreamPicker UI legs: Two-Pane 5/5. Full Width 4/4 plus the chip-overflow leg skipped by design (the row fits the wider panel).
+  - Runs that collided with the add-on hub session on FA87 were redone.
+- Owed:
+  - Device pass in Test 2: four combinations with a badge pack (Top and Bottom), rows per screen, the focus lift at the panel edge, a 150-source scroll in Full Width, VoiceOver on one row of each kind.
+  - The name column width and description line cap, settled on the box with an AIOStreams formatter.
+  - README screenshots of both layouts.
+- Comms (NOT SENT): `docs/comms-github-25-full-width-2026-11-08.md`, the #25 reply and release-note lines (deslop 5/5, cleansed).
+
 ## Add-ons hub v2 Stage A 2026-11-07/08 (Direction A, native split view; reviewed, gated, device-passed, LANDED `82a39fecb`, NOT cut)
 
 Waves A0–A8 plus a VoiceOver fix, run on Christian's go per wave, then a standing go for A6 → A8. Landed on his "land" (2026-11-08 03:49Z) after the VoiceOver re-check: steps 1, 4 and 6 taken as passed. Side clone `NuvioMobile-hub-v2` (deleted). Plan and full run log: `docs/addons-hub-v2-plan-2026-11-07.md` §9 (local). Evidence: `docs/research/addons-hub-v2-2026-11-07/` (local, never staged).

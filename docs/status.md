@@ -13,6 +13,15 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
+## Add-ons hub v2 Stage C 2026-11-08 (reviewed, gated, LANDED `33303a547`, device PASS, NOT cut)
+
+Manage from phone moves into the hub (Remote Setup leaves Settings; the Account & Profiles row opens the section). Each phone change is confirmed on the TV, line by line, with focus on Confirm. Add-ons get health checks (dot and response time per row, "Last checked" on the detail page, Check now). Plan and full run log: `docs/addons-hub-v2-plan-2026-11-07.md` §9 (local).
+- Waves C1–C5 in the side clone `NuvioMobile-hub-v2c` (deleted), base `82a39fecb`. Rebased onto `06efc8870` (stream picker #25) with no conflicts; the tree matched a clean merge. 66 commits fast-forwarded.
+- Review: Codex gpt-6.1-terra looped to CLEAN on C1–C4 and the C5 polish (r6). **The last rounds were reviewed by the Opus read-only stand-in because Codex was out of quota (until 2026-11-11):** the rebase delta (CLEAN) and the dialog height fix (one test-only finding fixed). Security review of the Stage C diff: no High or Medium findings.
+- Gates on the tip: Kotlin green; NuvioTVTests 3334/0; Debug and Release sim builds; device build; UI legs on FA87 32/32 (AddonsSplit, AddonsHub, NavigationRail).
+- Device, Test 2: C2/C3/C4 PASS on `32cac9069`. Christian's iPhone pass PASS (22:28Z). Re-check on the rebased build: Settings row focus, health dot on a focused row, Manage from phone, stream picker open all PASS. The one-change dialog height failed on `d893967a8` and passed after the fix (`756fe94a6`). Test 2 left as found (test changes rejected).
+- Follow-ups: an old refresh landing between removal and cleanup (put list changes under the refresh lock); badge pack sources matched ignoring case; a profile switch mid add-on install can land it in the new profile (reported failed); a removal and reinstall faster than one state update can be conflated; the reworded Remote Setup description needs a `Localizable.xcstrings` entry (old key stale).
+
 ## Stream picker #25 poster fit + 3-line descriptions 2026-11-08 (reviewed, gated, LANDED `06efc8870`, device PASS, NOT cut)
 
 The 80fb88109 device pass (Test 2) found that the Two-Pane poster never showed on a 1080p box. The pane is about 840 pt, under the 850 pt threshold. Christian's rulings: option (a), scale the poster to the pane; add-on descriptions rest at 3 lines. Built from `80fb88109` in the side clone `NuvioMobile-picker-poster-fit` (deleted).

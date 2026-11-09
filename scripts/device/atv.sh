@@ -19,6 +19,12 @@ CONF="${NUVIOTV_DEVICE_CONF:-$HOME/.config/nuviotv-device}"
 # shellcheck disable=SC1091
 source "$CONF/atv.env"
 CREDS="$(cat "$ATV_CREDENTIALS_FILE")"
+# 2026-11-09: refuse to drive the box while another project holds it (lock.sh). Read-only
+# commands (features, app, apps) pass; NUVIO_LOCK_BYPASS=1 is for Christian's own use.
+case "${1:-}" in
+  features|app|apps|"") ;;
+  *) "$HERE/lock.sh" check box || { echo "atv.sh: refusing '$1' while another project holds the box (scripts/device/lock.sh who)" >&2; exit 75; } ;;
+esac
 ATVREMOTE="$HERE/.venv/bin/atvremote"
 
 # 2026-10-30: the box drops its IPv4 path (ping 100% loss, ARP incomplete) while IPv6 can stay up

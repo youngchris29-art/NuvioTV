@@ -22,7 +22,14 @@
       "Bash(cd NuvioMobile && graphify path *)",
       "Bash(cd NuvioMobile && graphify affected *)",
       "Bash(cd NuvioMobile && graphify update *)",
-      "Bash(scripts/graph-impact.sh *)"
+      "Bash(scripts/graph-impact.sh *)",
+      "Bash(git push origin main)",
+      "Bash(cd NuvioMobile && git push origin tvos-shared-extraction)",
+      "Bash(git -C NuvioMobile push origin tvos-shared-extraction)",
+      "Bash(scripts/device/lock.sh *)",
+      "Bash(scripts/device/sim.sh *)",
+      "Bash(scripts/device/ready.sh *)",
+      "Bash(scripts/device/done.sh *)"
     ]
   },
   "hooks": {

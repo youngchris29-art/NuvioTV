@@ -15,6 +15,11 @@ source "$CONF/atv.env"
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 BUNDLE="${NUVIOTV_BUNDLE:-com.youngchris29.NuvioTV}"
 PIDFILE="$CONF/console.pid"
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# 2026-11-09: start relaunches the app and stop kills it, so both respect the box lock (lock.sh).
+case "${1:-}" in
+  start|stop) "$HERE/lock.sh" check box || { echo "console.sh: refusing '$1' while another project holds the box (scripts/device/lock.sh who)" >&2; exit 75; } ;;
+esac
 cmd="${1:-}"; shift || true
 case "$cmd" in
   start)

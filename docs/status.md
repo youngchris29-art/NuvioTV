@@ -13,7 +13,11 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
-## Add-ons hub v2 Stage C 2026-11-08 (reviewed, gated, LANDED `33303a547`, device PASS, NOT cut)
+## beta.22 CUT 2026-11-09 (public, build 148, `0b167a953` = `33303a547` + the bump, both repos Latest; comms NOT SENT)
+
+- **beta.22** — RELEASED 2026-11-09 ~18:20Z on Christian's go ("cut - go"; tag `tvos-v0.3.0-beta.22`, both repos, Latest, prerelease flag dropped by the script; outer `c457e02`). Carries everything landed since beta.21.5: Detail polish (Apple-style layout, Format Badges, Cached Sources Only fix for AIOStreams-style add-ons, GitHub #23), the Detail follow-ups, Stream picker #25 (Source Layout, Row Text, poster fit) and Add-ons hub v2 Stage A + C. Five new settings named with defaults in the notes: Detail Layout gains Apple-style (default Cinematic), Auto-Play Trailer on Detail off by default in Apple-style only, Format Badges (on), Source Layout (Two-Pane), Row Text (Nuvio); hub v2 adds none. Cut by `release-beta.sh --dry-run --tag tvos-v0.3.0-beta.22 --changelog docs/comms-beta22-highlights.md` (Release build 10 min, stamp `0b167a95`) then `--skip-build`; notes replaced on both repos with `gh release edit --notes-file` (highlights + compare link + install steps). ⚠️ The script publishes the `--changelog` file verbatim, so the Obsidian frontmatter and the `<!-- internal -->` block (SHAs, setting keys) were live for about two minutes before the edit; next time pass a stripped copy of the highlights, or teach `release-beta.sh` to drop frontmatter and everything after the marker (follow-up). README: four Feature bullets touched (`c457e02`), no new screenshots. `NuvioTV.ipa` 41,549,694 B vs 40,976,152 B (beta.21.5), +573 KB. Highlights deslop 5/5, Codex cleanse skipped (quota out until 2026-11-11). Pre-cut checks: submodule clean and synced, outer main pushed (`3b69401` process commit went with it), gh signed in, 63 GB free, box/sim/build locks free. Not run before the cut: a fresh device pass on the tip (each batch had its own in Test 2; VoiceOver on the picker and the Detail badge row was by hand only for the hub). **Comms NOT SENT**: Reddit block + comment `docs/comms-beta22-reddit.md` (deslop 5/5), GitHub #25 second reply `docs/comms-github-25-full-width-2026-11-08.md`, a one-line "beta 22 has it" owed on #23; all wait for Christian's go. Process: this cut ran under the new Long-running-work rules (box lock free, keep-awake 3 h, build lock on the Release build).
+
+## Add-ons hub v2 Stage C 2026-11-08 (reviewed, gated, LANDED `33303a547`, device PASS, cut in beta.22)
 
 Manage from phone moves into the hub (Remote Setup leaves Settings; the Account & Profiles row opens the section). Each phone change is confirmed on the TV, line by line, with focus on Confirm. Add-ons get health checks (dot and response time per row, "Last checked" on the detail page, Check now). Plan and full run log: `docs/addons-hub-v2-plan-2026-11-07.md` §9 (local).
 - Waves C1–C5 in the side clone `NuvioMobile-hub-v2c` (deleted), base `82a39fecb`. Rebased onto `06efc8870` (stream picker #25) with no conflicts; the tree matched a clean merge. 66 commits fast-forwarded.
@@ -22,7 +26,7 @@ Manage from phone moves into the hub (Remote Setup leaves Settings; the Account 
 - Device, Test 2: C2/C3/C4 PASS on `32cac9069`. Christian's iPhone pass PASS (22:28Z). Re-check on the rebased build: Settings row focus, health dot on a focused row, Manage from phone, stream picker open all PASS. The one-change dialog height failed on `d893967a8` and passed after the fix (`756fe94a6`). Test 2 left as found (test changes rejected).
 - Follow-ups: an old refresh landing between removal and cleanup (put list changes under the refresh lock); badge pack sources matched ignoring case; a profile switch mid add-on install can land it in the new profile (reported failed); a removal and reinstall faster than one state update can be conflated; the reworded Remote Setup description needs a `Localizable.xcstrings` entry (old key stale).
 
-## Stream picker #25 poster fit + 3-line descriptions 2026-11-08 (reviewed, gated, LANDED `06efc8870`, device PASS, NOT cut)
+## Stream picker #25 poster fit + 3-line descriptions 2026-11-08 (reviewed, gated, LANDED `06efc8870`, device PASS, cut in beta.22)
 
 The 80fb88109 device pass (Test 2) found that the Two-Pane poster never showed on a 1080p box. The pane is about 840 pt, under the 850 pt threshold. Christian's rulings: option (a), scale the poster to the pane; add-on descriptions rest at 3 lines. Built from `80fb88109` in the side clone `NuvioMobile-picker-poster-fit` (deleted).
 - Poster: takes the height left after the measured header, facts and progress lines and 4 × 24 pt of gaps. It stays 2:3, capped at 360 pt and at the pane's width, and is hidden only under 260 pt. The 1080p sim draws it at 329 × 493.5.
@@ -38,7 +42,7 @@ The 80fb88109 device pass (Test 2) found that the Two-Pane poster never showed o
 - Device re-check, Test 2, 2026-11-08 22:31–22:45Z on `06efc8870`: poster PASS (360 × 540 with a text title, progress line under it); 3-line description at rest PASS in both layouts. Test 2 restored: Two-Pane, Badges Above Title off, fixture pack deleted, fixture server stopped.
 - Owed: VoiceOver on one row of each kind, by Christian by hand.
 
-## Stream picker Full Width + Row Text 2026-11-08 (GitHub #25; reviewed, gated, LANDED `80fb88109`, device pass owed, NOT cut)
+## Stream picker Full Width + Row Text 2026-11-08 (GitHub #25; reviewed, gated, LANDED `80fb88109`, device pass owed, cut in beta.22)
 
 Christian approved the plan on 2026-11-08 (two settings, a 360 pt poster, badge packs kept in every combination). Built from base `82a39fecb` in the side clone `NuvioMobile-stream-picker-full-width` (deleted). Plan: `docs/stream-picker-full-width-plan-2026-11-08.md`. Record: `docs/batch-stream-picker-full-width-2026-11-08.md` (both local).
 - New settings under Settings › Sources › Source List, per profile and not synced:
@@ -65,7 +69,7 @@ Christian approved the plan on 2026-11-08 (two settings, a 360 pt poster, badge 
   - README screenshots of both layouts.
 - Comms (NOT SENT): `docs/comms-github-25-full-width-2026-11-08.md`, the #25 reply and release-note lines (deslop 5/5, cleansed).
 
-## Add-ons hub v2 Stage A 2026-11-07/08 (Direction A, native split view; reviewed, gated, device-passed, LANDED `82a39fecb`, NOT cut)
+## Add-ons hub v2 Stage A 2026-11-07/08 (Direction A, native split view; reviewed, gated, device-passed, LANDED `82a39fecb`, cut in beta.22)
 
 Waves A0–A8 plus a VoiceOver fix, run on Christian's go per wave, then a standing go for A6 → A8. Landed on his "land" (2026-11-08 03:49Z) after the VoiceOver re-check: steps 1, 4 and 6 taken as passed. Side clone `NuvioMobile-hub-v2` (deleted). Plan and full run log: `docs/addons-hub-v2-plan-2026-11-07.md` §9 (local). Evidence: `docs/research/addons-hub-v2-2026-11-07/` (local, never staged).
 - What shipped:
@@ -98,7 +102,7 @@ Waves A0–A8 plus a VoiceOver fix, run on Christian's go per wave, then a stand
   - Catalog move cancel lost focus.
 - Outer: HIG contract `a8f44be` (AddonsView leaves the `.settingsRow` exemption).
 
-## Detail page follow-ups 2026-11-06 (Christian's open-item answers; reviewed, gated, device-passed, LANDED `6b336bb3f`, NOT cut)
+## Detail page follow-ups 2026-11-06 (Christian's open-item answers; reviewed, gated, device-passed, LANDED `6b336bb3f`, cut in beta.22)
 
 Christian's answers (16:26Z): "1A, 2A, 3A, 4A, 5A, 6A, 7 fix all, 8A, 9A", plus "Cap at 20, Apple-style" (18:47Z). 18 commits on `3c2d9aa1b` in the side clone `NuvioMobile-detail-followups` (deleted). Record: `docs/detail-followups-batch-2026-11-06.md` (local); evidence `docs/research/apple-tv-detail-2026-11-04/followups/` (sim captures, `device/`, `device2/`, `device3/`).
 - Changes:

@@ -50,16 +50,40 @@ log() { printf '%s %s\n' "$(date '+%H:%M:%S')" "$*" | tee -a "$LOG"; }
 notify() {  # title, body
   osascript -e "display notification \"${2//\"/\\\"}\" with title \"${1//\"/\\\"}\"" >/dev/null 2>&1 || true
 }
-save_state() {  # result [cause]
-  cat > "$STATE" <<EOF
-INSTALLED_TAG=${INSTALLED_TAG:-}
-PROFILE_EXPIRY=${PROFILE_EXPIRY:-}
-LAST_RUN_DATE=$TODAY
-LAST_RESULT=$1
-LAST_CAUSE=${2:-}
-LAST_SUCCESS=${LAST_SUCCESS:-}
-EOF
+# --- state helpers (tested in isolation by scripts/ios/tests/state-env-test.sh) ---------------
+# state.env holds one KEY='value' per line, every value single-quoted (a ' inside becomes '\'').
+# Until 2026-11-08 values were written bare, so a LAST_CAUSE with ( or ' made `. state.env` a
+# syntax error: the run saw an empty state and skipped the once-a-day guard. load_state reads
+# the file line by line and takes both forms (quoted, or bare as written before), never eval.
+STATE_KEYS="INSTALLED_TAG PROFILE_EXPIRY LAST_RUN_DATE LAST_RESULT LAST_CAUSE LAST_SUCCESS"
+shell_quote() {  # value → 'value' safe for `.`
+  local s=$1
+  s=${s//\'/\'\\\'\'}
+  printf "'%s'" "$s"
 }
+save_state() {  # result [cause]; values are one line each (a newline becomes a space)
+  local k v
+  LAST_RUN_DATE=$TODAY; LAST_RESULT=$1; LAST_CAUSE=${2:-}
+  for k in $STATE_KEYS; do
+    v=${!k:-}; v=${v//$'\n'/ }
+    printf '%s=' "$k"; shell_quote "$v"; printf '\n'
+  done > "$STATE"
+}
+load_state() {  # file → sets the STATE_KEYS it names, other lines ignored
+  local line key val
+  [ -f "$1" ] || return 0
+  while IFS= read -r line || [ -n "$line" ]; do
+    case "$line" in *=*) ;; *) continue ;; esac
+    key=${line%%=*}; val=${line#*=}
+    case " $STATE_KEYS " in *" $key "*) ;; *) continue ;; esac
+    case "$val" in
+      \'*\') val=${val#\'}; val=${val%\'}; val=${val//\'\\\'\'/\'} ;;  # new quoted form
+      \"*\") val=${val#\"}; val=${val%\"} ;;                          # tolerated, never written
+    esac                                                          # else: bare pre-11-09 form
+    printf -v "$key" '%s' "$val"
+  done < "$1"
+}
+# --- end state helpers -------------------------------------------------------------------------
 # Name the failure so the scheduled task (and Christian) see the cause, not just "failed".
 classify_build_failure() {  # build log → one line
   if grep -q "No Accounts: Add a new account" "$1"; then
@@ -86,8 +110,8 @@ DERIVED="$CLONE/build/DerivedDataDevice"
 APP="$DERIVED/Build/Products/Release-iphoneos/Nuvio.app"
 [ -d "$CLONE/.git" ] || { echo "REFUSED: clone missing at $CLONE" >&2; exit 2; }
 
-INSTALLED_TAG=""; PROFILE_EXPIRY=""; LAST_RUN_DATE=""; LAST_RESULT=""; LAST_SUCCESS=""
-[ -f "$STATE" ] && . "$STATE"
+INSTALLED_TAG=""; PROFILE_EXPIRY=""; LAST_RUN_DATE=""; LAST_RESULT=""; LAST_CAUSE=""; LAST_SUCCESS=""
+load_state "$STATE"
 
 # One real attempt per day: a success, a "nothing to do" or a failure ends the day.
 if [ "$FORCE" = 0 ] && [ "$DRY" = 0 ] && [ "$LAST_RUN_DATE" = "$TODAY" ]; then

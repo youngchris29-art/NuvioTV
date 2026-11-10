@@ -141,6 +141,12 @@ Report bugs and request features in either place:
 
 Include the build number from **Settings → About**. NuvioTV is an unofficial fork, so please keep its bug reports out of r/Nuvio and the official Nuvio repositories.
 
+## Support
+
+NuvioTV is free, and every feature is in every build. If the app has earned a place on your Apple TV and you'd like to buy me a coffee, there's a tip jar on Ko-fi. Tips go to me for the work on this fork. They aren't connected to the Nuvio team or the upstream projects.
+
+[![Support me on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/youngchris2989)
+
 ## Development
 
 ```bash

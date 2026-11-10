@@ -13,6 +13,17 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
+## Ko-fi tip jar 2026-11-10 (GitHub #27; reviewed, gated, device-passed, LANDED `fa3ac28b1`, NOT cut; #27 reply SENT)
+
+- **What landed:** Settings › About has a **Support** row under Source showing `ko-fi.com/youngchris2989`. tvOS cannot open a link, so while the row is focused the pane's explainer swaps its symbol tile for a QR code of `https://ko-fi.com/youngchris2989`, generated on the device with Core Image. Row title and description translated (de, es, fr, it, vi; by Claude, not a native speaker). An info row, not a setting: nothing to name with a default. No prompts or reminders anywhere.
+- **Outer repo:** README "Support" section between Feedback and Development (copy lint 5/5, cleanse not run) and `.github/FUNDING.yml` (`ko_fi: youngchris2989`) for GitHub's Sponsor button; commit `5ec9338`, pointer `7eea1cb`, both pushed on Christian's go ("Land, no cut").
+- **#27 reply SENT 2026-11-10** on Christian's go (issuecomment-6773805512). The issue was opened by Arsalaan-Khan, not erdist. The reply says the page was set up the same day and promises the README and About link "in a later beta". Draft: `docs/comms-github-27-kofi-2026-11-10.md` (local).
+- **Review and gates on `fa3ac28b1`:** one Opus stand-in round, CLEAN (Codex quota out until 2026-11-11 15:35 local; no Codex round). Kotlin (three targets), Debug + Release simulator builds, the FA87 unit suite (3,347, 5 skipped) and `test40SettingsFocusGraph` on FA87 (new QR assertions) green. The project sim clone opened signed out, so the UI leg ran on FA87 under the sim lock.
+- **Device pass (Living Room, Test 2):** row and QR code correct; settings diff clean. Christian scanned the code off the TV with his phone: it opens the Ko-fi page with the tip button. The box is left on this dev build (0.3.0 (149), `fa3ac28b`).
+- **Declined P3s (logged):** QR quiet zone about 3.7 modules against the 4-module guideline (scans fine on the real TV); VoiceOver reads the raw address without a "QR code" role (needs one more translated string); the Support check sits in the shared pane scaffold rather than a lookup beside the footnotes.
+- **Ko-fi findings:** the API is a payments-only webhook that needs a hosted endpoint; not used. Ko-fi's brand page allows its logos, buttons and cups for promoting your own page, subject to its content guidelines (not read in full). Keep add-ons, debrid and sources out of the Ko-fi page text.
+- **Open:** the Reddit line for the pinned post and the release-notes mention, drafted with the beta that ships the row (check r/NuvioForks' rules on donation links first).
+
 ## Open bugs batch 2026-11-10 (Live TV reconnect + Trakt crash resume; LANDED `78ef4fdf4`, CUT as tester build beta.23-rc1, build 149, `832f69a5d`; #26 reply SENT)
 
 - **Cut 2026-11-10 16:44Z on Christian's go:** `tvos-v0.3.0-beta.23-rc1` (build 149), a tester build for erdist to try the Live TV fix, not a public release. IPA 41,560,545 B in `~/Downloads/NuvioTV-beta23-rc1.ipa`, litterbox link good until 2026-11-13 ~16:44Z. Outer pointer commit `48920ec` is local, not pushed. #26 reply with the build SENT 2026-11-10 (issuecomment-6773398556); waiting on erdist.

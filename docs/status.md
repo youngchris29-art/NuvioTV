@@ -13,6 +13,13 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
+## Stream picker title logo on every launch path 2026-11-10 (reviewed, gated, device-passed, LANDED `0394ce08e`, NOT cut)
+
+- Christian asked whether the picker shows the title logo in Full Width and Two-Pane. It did, but only when opened from Detail or an episode row; Continue Watching, Library resume and Top Shelf / resume links drew the title as text (the Hokum note in the 11-08 device pass).
+- Landed: Home and Library pass the Continue Watching entry's logo; with none passed the picker reads the details record (cache in `init`, else the fetch, which now also runs when no logo is known). The loading cover and the player keep the first frame's logo; only the header takes a late-fetched one.
+- Review: Codex quota out until 2026-11-11 15:34, Opus stand-in, CLEAN r2 (r1 P2 cover-logo swap fixed). Gates green on `0394ce08e` (Kotlin, NuvioTVTests 3350/0, three picker UI legs on FA87, Release + Debug). Device pass in Test 2: PASS, no setting changed.
+- Open: Full Width logo size (64 pt reads small on the box; 96 pt preview shown to Christian 11-10, his call), VoiceOver on the picker header by hand, a Codex round before a cut if wanted, the sim template opens on the sign-in screen (re-create it). Batch doc: `docs/batch-picker-title-logo-2026-11-10.md` (local).
+
 ## Ko-fi tip jar 2026-11-10 (GitHub #27; reviewed, gated, device-passed, LANDED `fa3ac28b1`, NOT cut; #27 reply SENT)
 
 - **What landed:** Settings › About has a **Support** row under Source showing `ko-fi.com/youngchris2989`. tvOS cannot open a link, so while the row is focused the pane's explainer swaps its symbol tile for a QR code of `https://ko-fi.com/youngchris2989`, generated on the device with Core Image. Row title and description translated (de, es, fr, it, vi; by Claude, not a native speaker). An info row, not a setting: nothing to name with a default. No prompts or reminders anywhere.

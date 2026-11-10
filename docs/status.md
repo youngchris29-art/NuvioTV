@@ -13,6 +13,14 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
+## Stream badges keep their pack colours on the highlighted row 2026-11-10 (GitHub #25; reviewed, gated, device-passed, LANDED `552878868`, NOT cut; #25 reply SENT)
+
+- Arsalaan-Khan reported on #25 that badges darken and go illegible on a highlighted source row. Two causes found: coloured text badges all turned the same pale grey, and tinted image badges washed out over the white highlight.
+- Landed (`StreamBadges.swift`, `Theme.swift`): focused chips keep the pack's colours, a translucent fill sits on a dark base, a near-white fill with no border gets a hairline edge. No new setting. Tests moved to `NuvioTVTests/StreamBadgeColorTests.swift`; the UI target file is now `TabChipContrastTests.swift`.
+- Review: Codex quota out until 2026-11-11 15:35, Opus stand-in CLEAN r2 (r1 P2 fixed). Rebased onto `0394ce08e` before landing (no shared files); gates green on `552878868` (Kotlin, Release + Debug, NuvioTVTests 3370/0, StreamPickerUITests + TabChipContrastTests 10/10 on FA87). Device pass in Test 2 on the pre-rebase tip: PASS in Two-Pane and Full Width, Test 2 restored; the box is left on that dev build.
+- Same batch: #28 (third poster row on a collection page) answered with the options and the reason for the header height, nothing built until he picks; #22, #11, #13, #14, #15, #16, #20 closed with a note each. Open issues now: #25, #26, #27, #28.
+- Open: Codex whole-batch round (`--base 0394ce08e`) before any cut, his own pack unconfirmed (asked), Add-on's Own / Badges Above Title not walked on the box. Batch doc: `docs/batch-github-issues-2026-11-10.md` (local).
+
 ## Stream picker title logo on every launch path 2026-11-10 (reviewed, gated, device-passed, LANDED `0394ce08e`, NOT cut)
 
 - Christian asked whether the picker shows the title logo in Full Width and Two-Pane. It did, but only when opened from Detail or an episode row; Continue Watching, Library resume and Top Shelf / resume links drew the title as text (the Hokum note in the 11-08 device pass).

@@ -13,6 +13,13 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
+## Stream picker Full Width logo at 96 pt 2026-11-10 (reviewed, gated, device-passed, LANDED `107f596d8`, NOT cut)
+
+- Christian picked 96 pt after the 64/96 previews ("Build 96 pt"), then "Land: go".
+- Landed (`StreamPickerInfoPanel.swift`): the Full Width header strip's logo slot is 96 pt (was 64), capped at 520 pt wide; a text title stops at two lines, so the strip is 96 pt for every title. No new setting. Cost in the 1080p pane: compact rows start 32 pt lower; three full add-on text rows still fit, the fourth row's peek is gone (the Full Width UI leg waits for three rows).
+- Review: Codex quota out until 2026-11-11 15:34, Opus stand-in CLEAN r2 (r1 P2 three-line text title fixed). Rebased onto `552878868` before landing (no shared files, no second review round); gates green on `107f596d8` (NuvioTVTests 3371/0, three picker UI legs on FA87, Release + Debug, Debug device build; Kotlin not rerun, no Kotlin change). Device pass in Test 2 on the pre-rebase commit: PASS (Top Gun: Maverick, Breaking Bad S1E2, a long text title), no setting changed.
+- Open: the title column is a fixed 520 pt, so the facts line starts well right of a narrow logo (Christian's call), VoiceOver on the picker header by hand, Larger Text not checked, a Codex round before a cut. Batch doc: `docs/batch-picker-title-logo-2026-11-10.md` (local).
+
 ## Stream badges keep their pack colours on the highlighted row 2026-11-10 (GitHub #25; reviewed, gated, device-passed, LANDED `552878868`, NOT cut; #25 reply SENT)
 
 - Arsalaan-Khan reported on #25 that badges darken and go illegible on a highlighted source row. Two causes found: coloured text badges all turned the same pale grey, and tinted image badges washed out over the white highlight.

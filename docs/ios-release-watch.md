@@ -187,3 +187,21 @@ Assets: androidApp-full-arm64-v8a-release.apk, androidApp-full-armeabi-v7a-relea
 > - [i18n: harmonize French wording with Nuvio TV (#2575)](https://github.com/NuvioMedia/NuvioMobile/pull/2575) @SK-Gits  
 > - [fix(autosync): search further when a restored subtitle does not fit (#2537)](https://github.com/NuvioMedia/NuvioMobile/pull/2537) @skoruppa  
 > 
+
+## 0.6.12-beta — 2026-11-12
+
+https://github.com/NuvioMedia/NuvioMobile/releases/tag/0.6.12-beta
+
+Assets: androidApp-full-arm64-v8a-release.apk, androidApp-full-armeabi-v7a-release.apk, androidApp-full-x86-release.apk, androidApp-full-x86_64-release.apk, nuvio-0.6.12-full-release.ipa
+
+> - [feat(player): chapters setting for every engine, chapters on iOS and a chapter title toggle (#2609)](https://github.com/NuvioMedia/NuvioMobile/pull/2609) @skoruppa  
+> - [fix(collections): respect "Show catalog type" in folders (#2608)](https://github.com/NuvioMedia/NuvioMobile/pull/2608) @skoruppa  
+> - [fix(player): show the real cause of playback errors, like NuvioTV (#2607)](https://github.com/NuvioMedia/NuvioMobile/pull/2607) @skoruppa  
+> - [fix(player): use the audio clock when mpv video time drops to 0 (#2605)](https://github.com/NuvioMedia/NuvioMobile/pull/2605) @skoruppa  
+> - [fix(player): add an SPS/PPS init segment to HLS streams that lack them (#2606)](https://github.com/NuvioMedia/NuvioMobile/pull/2606) @skoruppa  
+> - [fix(player): decode DASH MIME query hints before detection (#2600)](https://github.com/NuvioMedia/NuvioMobile/pull/2600) @retrocodes12  
+> - [i18n(vi): update latest Vietnamese strings (#2601)](https://github.com/NuvioMedia/NuvioMobile/pull/2601) @blueocean2308  
+> - [fix(streams): keep tokenized links for reuse and refresh expired saved links (#2598)](https://github.com/NuvioMedia/NuvioMobile/pull/2598) @skoruppa  
+> - [i18n: add French string for signed-out notice (#2593)](https://github.com/NuvioMedia/NuvioMobile/pull/2593) @SK-Gits  
+> - [Update Dutch (nl) strings and reorder Dutch in Settings (#2592)](https://github.com/NuvioMedia/NuvioMobile/pull/2592) @mronion212  
+> 

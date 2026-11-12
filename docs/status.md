@@ -13,6 +13,13 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
+## Open issues batch 2026-11-12 (Detail reachable rows, Trakt resume, trailer return, add-on fixes; gated, device-passed, LANDED `996a274c4`, NOT cut)
+
+- Landed 2026-11-12 on `tvos-shared-extraction` at `996a274c4` (base `107f596d8`, fast-forward, clone and branch deleted). Not cut.
+- Final gate on FA87 green: Kotlin 2384/2407/443, NuvioTVTests 3451/0 failed, UI legs green. Two failures known from before this batch: `DetailAppleSeasonTabsUITests` (profile-picker focus) and `testDimTrailerGlassHysteresisOnScroll` (dim 750 < 800).
+- Device pass: 8 PASS on `548e11123`, one step behind the tip.
+- Details: `docs/batch-open-issues-2026-11-11.md` (local).
+
 ## Stream picker Full Width logo at 96 pt 2026-11-10 (reviewed, gated, device-passed, LANDED `107f596d8`, NOT cut)
 
 - Christian picked 96 pt after the 64/96 previews ("Build 96 pt"), then "Land: go".

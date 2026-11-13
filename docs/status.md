@@ -13,6 +13,17 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
+## Home Watchlist row 2026-11-13 (reviewed, gated, device-passed, LANDED `9acd9407d`, NOT cut)
+
+- Landed 2026-11-13 on `tvos-shared-extraction` at `9acd9407d` on Christian's go ("land now"): fast-forward of 19 commits from base `4c684b45d` (beta.23), 30 files +3,808/−200, pushed; branch and clone deleted. Not cut.
+- In the batch: FEAT-92, the Watchlist row on Home between Continue Watching and Upcoming on Classic and Stage (Trakt watchlist + Simkl Plan to Watch merged, movies and series, newest added first, 18 max, no See All; hidden when neither is connected or both lists are empty). Two fixes found on the way: a Trakt library refresh or membership toggle now belongs to the profile that started it (in beta.23 a profile switch during a refresh could show and save the previous profile's lists), and Simkl's disk snapshot is loaded per profile (the row was about 1 s late on launch without it).
+- New setting: Watchlist (Settings › Home Screen › Home Rows, under Upcoming Episodes), default On, stored on the device, not synced.
+- Review: Codex `gpt-6.1-terra` first and whole-stage rounds, Opus delta rounds; closed under decisions X (presence hold is best-effort) and AC; declines D6–D25 are in the batch doc.
+- Gates on the tip: Kotlin 2415 / 2437 / 443 with 0 failures, Debug + Release sim builds, NuvioTVTests 3491 / 6 skipped / 0 failures. FA87 final gate: `HomeWatchlistRowUITests` 25 executed, 3 fixture skips, 0 failures; `HomeBodyCountUITests` 2/2; `BatchAHomeReturnUITests` 9/9; `NavigationRailUITests` 16/16; `StageStripUITests` 17 executed, 0 failures, `testS09_InRowMorphAfterRest` skipped itself twice (probe timing, not a regression; it passed on FA87 two commits earlier). Release `strings`: 0 hits for the DEBUG seed tokens.
+- Device (Living Room, Test 2, nothing played): PASS for the row, the toggle, Detail return, the rail and Classic Up into Continue Watching; the row is in the first paint on remembered and picker launches. The box rests on a Release build of `9acd9407d` (build 150). `home_watchlist_row_enabled` is stored explicitly True in Test 2 (same value as the default).
+- Not verified: a full 18-card row, merge order and the cap on real data, Top Shelf, the Trakt guard with two profiles on the box, Simkl's 15-minute gate in a capture, VoiceOver.
+- Cut recommendation: next beta once the by-hand list is cleared in one sitting (VoiceOver on the row, a look at the row in both layouts, two focus checks). Release-note draft NOT SENT: `docs/comms-release-notes-home-watchlist-2026-11-13.md`. Details: `docs/plan-home-watchlist-row-2026-11-12.md` (local).
+
 ## beta.23 RELEASED 2026-11-12 (public; build 150, `4c684b45` = `996a274c4` + bump, tag `tvos-v0.3.0-beta.23`, both repos Latest)
 
 - Public release of the open-issues batch plus the open-bugs, GitHub-issues and picker-logo batches: Collection Header setting (Standard default), Support row, badge colours on the highlighted row, title logo on every launch path, Live TV reconnect, Trakt crash resume, reachable Detail rows, add-on race fixes. One new setting.

@@ -18,6 +18,7 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - Public release of the open-issues batch plus the open-bugs, GitHub-issues and picker-logo batches: Collection Header setting (Standard default), Support row, badge colours on the highlighted row, title logo on every launch path, Live TV reconnect, Trakt crash resume, reachable Detail rows, add-on race fixes. One new setting.
 - Build 150, not 149: 149 was used by the tester build beta.23-rc1. Outer pointer `d6e0843`, README lines (badge packs, debrid optional) in `c5b9148`. IPA 41,647,659 B on both repos; notes edited to drop the generated commit list. Release URLs: https://github.com/youngchris29-art/NuvioMobile/releases/tag/tvos-v0.3.0-beta.23 and https://github.com/youngchris29-art/NuvioTV/releases/tag/tvos-v0.3.0-beta.23.
 - Reddit beta-thread update and tester messages (erdist on #26, GitHub replies): NOT SENT. README screenshots owed: streams.png replacement, Collection Header Compact, optional About Support row.
+- Reddit SENT 2026-11-13 00:48Z on Christian's go: beta thread 1wtmutc body block swapped to beta 23 (build 150), announcement comment `t1_19sjswj0qexdv`; verified by re-read. Tester messages and GitHub replies still NOT SENT.
 
 ## Open issues batch 2026-11-12 (Detail reachable rows, Trakt resume, trailer return, add-on fixes; gated, device-passed, LANDED `996a274c4`, NOT cut)
 

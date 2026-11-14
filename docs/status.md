@@ -13,6 +13,16 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
+## Comms owed batch 2026-11-13 (12 replies SENT 23:25–23:28Z on Christian's go; 5 issues and 1 Discussion closed)
+
+- Found: three first contacts had gone unanswered. u/marcomez18 on the beta thread (a Cast row focus question, now UX-22), u/Navadeep_Naidu7 in Reddit chat (Android TV, now CHAT-1), and masi0 on GitHub Discussion #24 (Polish, now FEAT-98). The last two were missed by the routines: the DM check keys on one watermark, and the sweeps never read Discussions.
+- Sent: the twelve replies, in three groups. GitHub: #26 (BUG-243), #28 (FEAT-93), #25 (BUG-245, FEAT-91), #27 (POL-4), #30 (UX-21, BUG-246), #32 (FEAT-97, acknowledgement only), #23 (BUG-242, one line), Discussion #24 (FEAT-98). Reddit chat: u/Navadeep_Naidu7 (CHAT-1). Beta thread: u/marcomez18 (UX-22) and u/Plus_Common_8478 (BUG-244, FEAT-92).
+- Closed: #25, #26, #27, #28, #30 (completed) and Discussion #18 (resolved, FEAT-96 loop-closed, his Dolby Vision Profile 7 question unanswered).
+- Still owed: Watchlist-row replies to u/Plus_Common_8478 and u/dclimaxb at the cut; a ping on #31 when a build carries the newer engine; a test build on #29; the README source-list screenshot (DOC-8); the Polish string export for masi0 once he picks a route.
+- Not verified: the Cast row "half hidden" state (computed, never seen); no TMDB-off walk on Cinematic or Classic; the Infuse statement in the 12 Nov #32 reply, which the code does not prove.
+- Routines fixed 2026-11-14 (five review rounds, closed best-effort on Christian's word at the review cap): `scripts/reddit/fetch-dms.sh` now prints an Awaiting reply section (rooms whose newest message is not ours, whatever the watermark says) and a Pending chat requests section, marks an incomplete read, reuses its browser page and exits explicitly; tests in `scripts/reddit/fetch-dms.test.mjs` (37). The procedure (`meta/procedure` v7) reads GitHub Discussions over plain REST with no login, saves owed rooms in `meta/sweep.dm_owed`, and advances `dm_last_checked` only on a complete read. The `nuviotv-reddit-dm-check` prompt was updated. Acknowledged as needing no reply (`meta/sweep.dm_acknowledged`): karthikchandra37, Physical-Lab-9203, and the 2023 requests from ExtremeBag3526 and Interesting_Toe_5859. Logged, not fixed: a stale reused tab can leak a page per run, non-message events past the watermark can false-flag the limit rule, the task prompt's duplicate check still names only Steven. Not verified live: a hung inbox, a stale tab, a real rate-limit response.
+- Pointers: plan artifact https://claude.ai/artifact/1iPE5ALbScktkuMGS5d78t; `docs/batch-comms-owed-2026-11-13.md` (local); tracker rows CHAT-1, FEAT-98, UX-22.
+
 ## Home Watchlist row 2026-11-13 (reviewed, gated, device-passed, LANDED `9acd9407d`, NOT cut)
 
 - Landed 2026-11-13 on `tvos-shared-extraction` at `9acd9407d` on Christian's go ("land now"): fast-forward of 19 commits from base `4c684b45d` (beta.23), 30 files +3,808/−200, pushed; branch and clone deleted. Not cut.
@@ -30,6 +40,7 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - Build 150, not 149: 149 was used by the tester build beta.23-rc1. Outer pointer `d6e0843`, README lines (badge packs, debrid optional) in `c5b9148`. IPA 41,647,659 B on both repos; notes edited to drop the generated commit list. Release URLs: https://github.com/youngchris29-art/NuvioMobile/releases/tag/tvos-v0.3.0-beta.23 and https://github.com/youngchris29-art/NuvioTV/releases/tag/tvos-v0.3.0-beta.23.
 - Reddit beta-thread update and tester messages (erdist on #26, GitHub replies): NOT SENT. README screenshots owed: streams.png replacement, Collection Header Compact, optional About Support row.
 - Reddit SENT 2026-11-13 00:48Z on Christian's go: beta thread 1wtmutc body block swapped to beta 23 (build 150), announcement comment `t1_19sjswj0qexdv`; verified by re-read. Tester messages and GitHub replies still NOT SENT.
+- Tester messages and GitHub replies SENT 2026-11-13 23:25–23:28Z (see the Comms owed batch above).
 
 ## Open issues batch 2026-11-12 (Detail reachable rows, Trakt resume, trailer return, add-on fixes; gated, device-passed, LANDED `996a274c4`, NOT cut)
 

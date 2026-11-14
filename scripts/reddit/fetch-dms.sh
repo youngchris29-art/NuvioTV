@@ -41,6 +41,7 @@ while [ $# -gt 0 ]; do
     *) echo "unknown option: $1" >&2; exit 2 ;;
   esac
 done
+if [ -n "$SINCE" ] && command -v node >/dev/null 2>&1 && ! node -e 'process.exit(Number.isNaN(Date.parse(process.argv[1])) ? 1 : 0)' -- "$SINCE" 2>/dev/null; then echo "--since is not a parseable timestamp: $SINCE (use ISO, e.g. 2026-11-13T09:00:00Z)" >&2; exit 2; fi
 if [ ! -x "$EGO" ]; then echo "ego-browser not found at $EGO (ego lite installed?)" >&2; exit 4; fi
 : > "$LOG" 2>/dev/null || LOG=""
 

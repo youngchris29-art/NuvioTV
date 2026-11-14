@@ -2,31 +2,34 @@
 
 Overwritten by the `nuvio-upstream-check` scheduled task on every run. The dated reports it also writes (`docs/upstream-port-plan-YYYY-MM-DD.md`, `docs/nuviotv-android-upstream-port-plan-YYYY-MM-DD.md`) stay local and are gitignored; this file is the only tracked record and carries the baselines the next run starts from.
 
-- **Run:** 2026-11-13
-- **NuvioMobile baseline** (`NuvioMedia/NuvioMobile` `cmp-rewrite`): `805b0de87` — dated report `docs/upstream-port-plan-2026-11-13.md`
-- **NuvioTV Android baseline** (`NuvioMedia/NuvioTV` `dev`): `9dfc70be4` — dated report `docs/nuviotv-android-upstream-port-plan-2026-11-13.md`
+- **Run:** 2026-11-14
+- **NuvioMobile baseline** (`NuvioMedia/NuvioMobile` `cmp-rewrite`): `ba149964c` — dated report `docs/upstream-port-plan-2026-11-14.md`
+- **NuvioTV Android baseline** (`NuvioMedia/NuvioTV` `dev`): `a3532b819` — dated report `docs/nuviotv-android-upstream-port-plan-2026-11-14.md`
 
-## NuvioMobile — 2026-11-13
+## NuvioMobile — 2026-11-14
 
-Upstream `NuvioMedia/NuvioMobile` (`cmp-rewrite`): `e9f136bc7` -> `805b0de87`. 5 non-merge commits, about 40 files. Fork tip checked: `4c684b45d`.
-**New baseline: `805b0de87`.**
-
-| # | Item (upstream commits) | tvOS verdict | Files in the fork | Effort |
-|---|---|---|---|---|
-| 1 | Continue Watching "On Select" setting (`37e8a5c0e`): `ContinueWatchingClickAction` (STREAM default, DETAILS, DETAILS_FOR_UPCOMING), `clickAction` persisted as `click_action`, `setClickAction`, upcoming-episode rule shared with the Upcoming row | PORT. The enum, preference field and repository setter are shared and the fork has the same `ContinueWatchingPreferencesRepository`. Add the tvOS Settings row and the Home CW select handler (cloud library items keep playing; Start from beginning and manual play still open the stream). Default stays "stream"; name the new setting and its default in the release notes. Check the upcoming rule helper is not Compose-only before moving it to `shared/`. | `shared/.../watchprogress/WatchProgressModels.kt`, `ContinueWatchingPreferencesRepository.kt`, Home CW select logic in `iosApp/NuvioTV`, tvOS Settings screen, new test | M |
-| 2 | Shared stream search sessions + fallback to next matching source (`8fba6c71e`): `StreamSearchSessions`, `PlayerSourceFallback`, settings (sources to try 1-10 default 3, start-up limit 5-45 s default 15 s), mutually exclusive with engine-switch-on-error | WATCH / DECIDE. The fork already has auto-play best-quality failover (`StreamAutoPlaySelector`, `PlayerScreen.swift`, `FirstPlayAutoPlay.swift`). The part worth taking is the shared search session so the picker and player source panel reuse one result set. It rewrites `StreamsRepository.kt` and `PlayerStreamsRepository.kt`, both hot files with one owning thread per batch: schedule it as its own wave, not a drive-by. Do not port the Android runtime effects. | `shared/.../streams/StreamsRepository.kt`, `player/PlayerStreamsRepository.kt`, new `StreamSearchSessions.kt`, `iosApp/NuvioTV/Screens/StreamPickerView.swift`, `PlayerScreen.swift` | L |
-| 3 | Debrid cache checked once per source search, debrid account in the search key (`4c414a5f4`) | PORT only with item 2 (depends on `StreamSearchSessions`). The 7-line `LocalDebridAvailabilityService` change is harmless alone. | `shared/.../debrid/LocalDebridAvailabilityService.kt` | S (with 2) |
-| 4 | Source list starts at the top when the addon filter changes (`fb026f75c`), scrolls to the playing stream (`7da9737cf`) | SKIP as code (Compose list state). Idea check: confirm the tvOS stream picker resets scroll on a filter change and the player source panel opens on the playing stream. | `iosApp/NuvioTV/Screens/StreamPickerView.swift` | S, optional |
-
-## NuvioTV Android — 2026-11-13
-
-Upstream `NuvioMedia/NuvioTV` (`dev`): `11689894f` -> `9dfc70be4`. 7 non-merge commits (the last is a version bump). Android TV app: ports are by idea, not by code.
-**New baseline: `9dfc70be4`.**
+Upstream `NuvioMedia/NuvioMobile` (`cmp-rewrite`): `805b0de87` -> `ba149964c`. 7 non-merge commits (3 code, keyboard x2, 2 i18n, 1 upload). Fork tip checked: `9acd9407d`.
+**New baseline: `ba149964c`.**
 
 | # | Item (upstream commits) | tvOS verdict | Files in the fork | Effort |
 |---|---|---|---|---|
-| 1 | Continue Watching "On Select" (`6b6e37edf`) | Same feature as NuvioMobile item 1 (NuvioMobile's commit says "same setting as NuvioTV"). Port once, from the NuvioMobile plan. | see NuvioMobile plan | M |
-| 2 | Fallback to next matching source on failure (`c3a27b5e2`) | See NuvioMobile item 2: WATCH / DECIDE, the fork already has auto-play failover. | see NuvioMobile plan | L |
-| 3 | Keep the series title when a CW card moves to the next episode (`fd0219950`) | CHECK. Verify the fork's next-up card keeps the series title in the tvOS Home row; fix only if a repro exists. | Home CW card model | S, optional |
-| 4 | Focus the playing stream when the source panel opens (`f4e4d64b3`) | CHECK the tvOS player source panel focus; fork-side focus code differs. | `iosApp/NuvioTV/Screens/PlayerScreen.swift` | S, optional |
-| 5 | Repaint letterbox bars above the libass overlay (`e30649bc0`), Indonesian strings (`a1c9229fd`) | SKIP. Android SurfaceView/libass layering; Android-only i18n. | none | n/a |
+| 1 | Dismiss a Next Up show by content id alone, old `id|season|episode` keys read as their show (`9da04b944`) | PORT. The fork's shared `nextUpDismissKey` still builds `id|season|episode`, so a dismissed show returns when the seed episode changes (anime remap, progress from another device). Change the key to the trimmed content id, add `normalizeDismissedNextUpKeys` (`substringBefore("|")`) on `setDismissed...`, load and `addDismissedNextUpKey`. Check `ContinueWatchingNextUp.kt` and `ContinueWatchingDismissedRestoreTest` / `NextUpEngineTest` for tests that assert the old key shape, and port upstream's new test. Needs no new setting. | `shared/.../watchprogress/WatchProgressModels.kt`, `ContinueWatchingPreferencesRepository.kt`, `ContinueWatchingNextUp.kt`, tests | S |
+| 2 | Hero only after its source catalogs load (`1c5b22f4a`) | SKIP / CHECK. The fork solved the same flash with the BUG-86 hero commit gate (`HeroCommitGate.kt`, `HomeRepository.kt`). Idea check only: confirm the gate also holds the hero when a hero-source catalog fails or is disabled (upstream resolves on attempted, not succeeded). | `shared/.../home/HeroCommitGate.kt`, `HomeRepository.kt` | S, optional |
+| 3 | Player keyboard support, up/down arrows change volume (`7620be62a`, `b4645191e`) | SKIP. Desktop/iOS keyboard handling in Compose; the tvOS remote has no volume keys in-app. | none | n/a |
+| 4 | French, Slovak strings, an uploaded file (`acd28c220`, `bfb19685a`, `9c68a2147`) | SKIP. Android/Compose resources; the tvOS app uses its own `Localizable.xcstrings`. Check the French chapter-title strings only if the fork ships that setting. | none | n/a |
+
+Carried over and still open from 2026-11-13: Continue Watching "On Select" (M, PORT), shared stream search sessions + source fallback (L, WATCH / DECIDE, hot files), debrid cache once per search (S, with the previous), source list scroll reset (S, optional).
+
+## NuvioTV Android — 2026-11-14
+
+Upstream `NuvioMedia/NuvioTV` (`dev`): `9dfc70be4` -> `a3532b819`. 8 non-merge commits, 2 of them strings. Android TV app: ports are by idea, not by code.
+**New baseline: `a3532b819`.**
+
+| # | Item (upstream commits) | tvOS verdict | Files in the fork | Effort |
+|---|---|---|---|---|
+| 1 | Keep the playback position when switching source (`520fb67cc`) | CHECK. Verify the tvOS player source panel resumes at the current position after a source switch on both engines; fix only if a repro exists. | `iosApp/NuvioTV/Screens/PlayerScreen.swift` | S, optional |
+| 2 | Styled subtitles drawn at the ExoPlayer size on mpv (`eea656fd1`) | SKIP. Android mpv SurfaceView sizing. | none | n/a |
+| 3 | Updater: install warning, system installer, stop re-asking after cancel (`64cfb8138`, `59313c18f`) | SKIP. Android APK updater. | none | n/a |
+| 4 | Hebrew, Slovak and missing-string updates (`a393c34a3`, `b0876102f`, `25043e714`, `dee243497`) | SKIP. Android i18n. | none | n/a |
+
+Earlier items (Continue Watching "On Select", source fallback, series title on CW card, focus on playing stream) are unchanged; see the 2026-11-13 Android report.

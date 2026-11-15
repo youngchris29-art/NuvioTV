@@ -2,34 +2,38 @@
 
 Overwritten by the `nuvio-upstream-check` scheduled task on every run. The dated reports it also writes (`docs/upstream-port-plan-YYYY-MM-DD.md`, `docs/nuviotv-android-upstream-port-plan-YYYY-MM-DD.md`) stay local and are gitignored; this file is the only tracked record and carries the baselines the next run starts from.
 
-- **Run:** 2026-11-14
-- **NuvioMobile baseline** (`NuvioMedia/NuvioMobile` `cmp-rewrite`): `ba149964c` — dated report `docs/upstream-port-plan-2026-11-14.md`
-- **NuvioTV Android baseline** (`NuvioMedia/NuvioTV` `dev`): `a3532b819` — dated report `docs/nuviotv-android-upstream-port-plan-2026-11-14.md`
+- **Run:** 2026-11-15
+- **NuvioMobile baseline** (`NuvioMedia/NuvioMobile` `cmp-rewrite`): `8ed9aa0af` — dated report `docs/upstream-port-plan-2026-11-15.md`
+- **NuvioTV Android baseline** (`NuvioMedia/NuvioTV` `dev`): `e0e830b60` — dated report `docs/nuviotv-android-upstream-port-plan-2026-11-15.md`
 
-## NuvioMobile — 2026-11-14
+## NuvioMobile — 2026-11-15
 
-Upstream `NuvioMedia/NuvioMobile` (`cmp-rewrite`): `805b0de87` -> `ba149964c`. 7 non-merge commits (3 code, keyboard x2, 2 i18n, 1 upload). Fork tip checked: `9acd9407d`.
-**New baseline: `ba149964c`.**
-
-| # | Item (upstream commits) | tvOS verdict | Files in the fork | Effort |
-|---|---|---|---|---|
-| 1 | Dismiss a Next Up show by content id alone, old `id|season|episode` keys read as their show (`9da04b944`) | PORT. The fork's shared `nextUpDismissKey` still builds `id|season|episode`, so a dismissed show returns when the seed episode changes (anime remap, progress from another device). Change the key to the trimmed content id, add `normalizeDismissedNextUpKeys` (`substringBefore("|")`) on `setDismissed...`, load and `addDismissedNextUpKey`. Check `ContinueWatchingNextUp.kt` and `ContinueWatchingDismissedRestoreTest` / `NextUpEngineTest` for tests that assert the old key shape, and port upstream's new test. Needs no new setting. | `shared/.../watchprogress/WatchProgressModels.kt`, `ContinueWatchingPreferencesRepository.kt`, `ContinueWatchingNextUp.kt`, tests | S |
-| 2 | Hero only after its source catalogs load (`1c5b22f4a`) | SKIP / CHECK. The fork solved the same flash with the BUG-86 hero commit gate (`HeroCommitGate.kt`, `HomeRepository.kt`). Idea check only: confirm the gate also holds the hero when a hero-source catalog fails or is disabled (upstream resolves on attempted, not succeeded). | `shared/.../home/HeroCommitGate.kt`, `HomeRepository.kt` | S, optional |
-| 3 | Player keyboard support, up/down arrows change volume (`7620be62a`, `b4645191e`) | SKIP. Desktop/iOS keyboard handling in Compose; the tvOS remote has no volume keys in-app. | none | n/a |
-| 4 | French, Slovak strings, an uploaded file (`acd28c220`, `bfb19685a`, `9c68a2147`) | SKIP. Android/Compose resources; the tvOS app uses its own `Localizable.xcstrings`. Check the French chapter-title strings only if the fork ships that setting. | none | n/a |
-
-Carried over and still open from 2026-11-13: Continue Watching "On Select" (M, PORT), shared stream search sessions + source fallback (L, WATCH / DECIDE, hot files), debrid cache once per search (S, with the previous), source list scroll reset (S, optional).
-
-## NuvioTV Android — 2026-11-14
-
-Upstream `NuvioMedia/NuvioTV` (`dev`): `9dfc70be4` -> `a3532b819`. 8 non-merge commits, 2 of them strings. Android TV app: ports are by idea, not by code.
-**New baseline: `a3532b819`.**
+Upstream `NuvioMedia/NuvioMobile` (`cmp-rewrite`): `ba149964c` -> `8ed9aa0af`. 14 non-merge commits (4 code, 8 Vietnamese/French strings, 2 version/store). Fork tip checked: `7ae128074`.
+**New baseline: `8ed9aa0af`.**
 
 | # | Item (upstream commits) | tvOS verdict | Files in the fork | Effort |
 |---|---|---|---|---|
-| 1 | Keep the playback position when switching source (`520fb67cc`) | CHECK. Verify the tvOS player source panel resumes at the current position after a source switch on both engines; fix only if a repro exists. | `iosApp/NuvioTV/Screens/PlayerScreen.swift` | S, optional |
-| 2 | Styled subtitles drawn at the ExoPlayer size on mpv (`eea656fd1`) | SKIP. Android mpv SurfaceView sizing. | none | n/a |
-| 3 | Updater: install warning, system installer, stop re-asking after cancel (`64cfb8138`, `59313c18f`) | SKIP. Android APK updater. | none | n/a |
-| 4 | Hebrew, Slovak and missing-string updates (`a393c34a3`, `b0876102f`, `25043e714`, `dee243497`) | SKIP. Android i18n. | none | n/a |
+| 1 | Player loading screen shows each start-up step (Building, Starting stream, Buffering) via a new `isOpening` flag on `PlayerPlaybackSnapshot` (`38f163e8c`) | SKIP. `PlayerLoadingStatus.kt` is composeApp-only and the fork has no counterpart in `shared/`; the tvOS player draws its own loading overlay. Idea only: the SwiftUI overlay could name the same three steps if testers ask. | none | n/a |
+| 2 | Startup perf: fewer Home recompositions, stability config, hero meta repository tweak (`951ae17a9`) | SKIP / CHECK. Compose recomposition work. Only `HomeHeroMetaRepository.kt` (21 lines) is a shared candidate; confirm with `graphify explain` whether the fork has that file before dismissing. | `composeApp/.../HomeHeroMetaRepository.kt` | S, optional |
+| 3 | Brand wordmark decoded off the main thread, benchmark build, baseline profile (`dc64e4aca`, `56abfaaae`) | SKIP. Android/Compose startup only. | none | n/a |
+| 4 | Vietnamese and French strings, version bump, store publish (`3804f6d4f`, `98b4efea1`, `7711a04d4`, `dfc3da00b`, `6237da0f7`, `ac589b682`, `71eb7d32e`, `8922254b2`, `6b7f15e40`, `8ed9aa0af`) | SKIP. Resource files; the tvOS app uses `Localizable.xcstrings`. | none | n/a |
 
-Earlier items (Continue Watching "On Select", source fallback, series title on CW card, focus on playing stream) are unchanged; see the 2026-11-13 Android report.
+Carried over and still open from 2026-11-14: Next Up dismiss by content id (S, PORT), Continue Watching "On Select" (M, PORT), shared stream search sessions + source fallback (L, WATCH / DECIDE, hot files), debrid cache once per search (S), source list scroll reset (S, optional), hero gate check (S, optional).
+
+## NuvioTV Android — 2026-11-15
+
+Upstream `NuvioMedia/NuvioTV` (`dev`): `a3532b819` -> `e0e830b60`. 26 non-merge commits (about 12 strings: Arabic, Vietnamese, French; 2 are a revert and its reapply). Android TV app: ports are by idea, not by code.
+**New baseline: `e0e830b60`.**
+
+| # | Item (upstream commits) | tvOS verdict | Files in the fork | Effort |
+|---|---|---|---|---|
+| 1 | Source fallback past an auto-selected source whose debrid result cannot be played (expired result) on the stream screen and for the next-episode auto-play; sources tried are handed to the player so the configured count covers both; switching episodes restarts the fallback (`d020e4af7`, `b10a11d70`) | WATCH / DECIDE. Same area as the open shared source-fallback item (hot files `StreamsRepository.kt`, `StreamModels.kt`). Idea: when auto-pick resolves to an expired debrid result, try the next matching stream instead of dropping to the source list; reset the tried-count per episode. Fold into that batch rather than porting alone. | `shared/.../streams/StreamsRepository.kt`, `iosApp/NuvioTV/Screens/PlayerScreen.swift`, stream screen | M |
+| 2 | Stremio player and library tracking addons: addons declaring the `player` or `library` resource get start/pause/stop and libraryAdd/Remove/watched events, fire-and-forget; install needs a consent checkbox (`868e6a4f0`, `9c86bb0e0`, `d1215e03e`) | DECIDE. New feature on the stremio-core protocol. A port needs a shared event dispatcher, hooks in watch progress and library, and a consent step in the Add-ons install flow. Ask Christian whether testers want it before planning. | `shared/.../addons`, watch progress and library repositories, Add-ons install UI | L |
+| 3 | Episode autoplay search shows the loading overlay (`ec3863cea`) | CHECK. Verify the tvOS next-episode auto-play shows a loading state while the stream search runs; fix only with a repro. | `iosApp/NuvioTV/Screens/PlayerScreen.swift` | S, optional |
+| 4 | Library empty-state wording keeps the type out and stays under the tracker buttons (`9981725ab`, `05addea18`) | SKIP. Android layout; glance at the tvOS Library empty-state copy only. | none | n/a |
+| 5 | Settings stream tests labelled by connection count (`9ad4f4f5b`) | SKIP. Android settings label. | none | n/a |
+| 6 | Media server subtitles kept when starting from the stream list (`c19a0e87a`) | SKIP. Media servers are not in the tvOS fork. | none | n/a |
+| 7 | Ambient mode hides the on-screen keyboard; focus restore after QR (`c91ecb4ff`, `8850a555d`, `7327eabf3`, `e0e830b60`) | SKIP. Android IME handling. | none | n/a |
+| 8 | Arabic, Vietnamese, French strings (`95232910c` and others) | SKIP. Android i18n. | none | n/a |
+
+Earlier items (Continue Watching "On Select", series title on CW card, focus on playing stream, keep position on source switch) are unchanged; see the 2026-11-14 Android report.

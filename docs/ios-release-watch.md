@@ -205,3 +205,22 @@ Assets: androidApp-full-arm64-v8a-release.apk, androidApp-full-armeabi-v7a-relea
 > - [i18n: add French string for signed-out notice (#2593)](https://github.com/NuvioMedia/NuvioMobile/pull/2593) @SK-Gits  
 > - [Update Dutch (nl) strings and reorder Dutch in Settings (#2592)](https://github.com/NuvioMedia/NuvioMobile/pull/2592) @mronion212  
 > 
+
+## 0.6.13-beta — 2026-11-15
+
+https://github.com/NuvioMedia/NuvioMobile/releases/tag/0.6.13-beta
+
+Assets: androidApp-full-arm64-v8a-release.apk, androidApp-full-armeabi-v7a-release.apk, androidApp-full-x86-release.apk, androidApp-full-x86_64-release.apk, nuvio-0.6.13-full-release.ipa
+
+> - [i18n: add French strings and align birth and death wording (#2664)](https://github.com/NuvioMedia/NuvioMobile/pull/2664) @SK-Gits  
+> - [i18n(vi): update latest Vietnamese strings (#2622)](https://github.com/NuvioMedia/NuvioMobile/pull/2622) @blueocean2308  
+> - [perf: smoother cold start and home on Android (#2652)](https://github.com/NuvioMedia/NuvioMobile/pull/2652) @skoruppa  
+> - [fix(home): show hero only after its source catalogs load (#2651)](https://github.com/NuvioMedia/NuvioMobile/pull/2651) @skoruppa  
+> - [feat(player): basic keyboard support (#2633)](https://github.com/NuvioMedia/NuvioMobile/pull/2633) @skoruppa  
+> - [fix(cw): dismiss a next up show by its content id, as on TV (#2632)](https://github.com/NuvioMedia/NuvioMobile/pull/2632) @skoruppa  
+> - [feat(cw): choose what selecting a Continue Watching item opens (#2630)](https://github.com/NuvioMedia/NuvioMobile/pull/2630) @skoruppa  
+> - [Translation improvements and adjustments for Slovak language (#2625)](https://github.com/NuvioMedia/NuvioMobile/pull/2625) @mmsw91  
+> - [i18n: add French strings for chapter title setting (#2621)](https://github.com/NuvioMedia/NuvioMobile/pull/2621) @SK-Gits  
+> - [feat(player): fall back to the next matching source on failure (#2612)](https://github.com/NuvioMedia/NuvioMobile/pull/2612) @skoruppa  
+> - [fix(player): show each start-up step on the loading screen, like NuvioTV (#2611)](https://github.com/NuvioMedia/NuvioMobile/pull/2611) @skoruppa  
+> 

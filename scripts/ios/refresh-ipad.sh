@@ -88,14 +88,14 @@ load_state() {  # file → sets the STATE_KEYS it names, other lines ignored
 classify_build_failure() {  # build log → one line
   if grep -q "No Accounts: Add a new account" "$1"; then
     echo "xcode-signed-out: Xcode has no Apple ID (an Xcode update signs it out). Fix: Xcode > Settings > Accounts, sign in, then rerun."
+  elif grep -q "Your team has no devices" "$1"; then
+    echo "no-device: the free team has no registered iPad; -allowProvisioningDeviceRegistration needs the iPad reachable."
   elif grep -q "No profiles for" "$1"; then
     echo "no-profile: Xcode could not mint a provisioning profile for the free team; check the Accounts tab and the 7-day limit."
   elif grep -qi "Nuvio Engine\|prepare-ios-dependencies\|checksum mismatch" "$1"; then
     echo "engine-fetch: the Nuvio Engine framework download or checksum failed for this tag."
   elif grep -q "What went wrong\|generateRuntimeConfigs\|local.properties" "$1"; then
     echo "gradle: $(grep -m1 -A2 'What went wrong' "$1" | tail -1 | cut -c1-140)"
-  elif grep -q "Your team has no devices" "$1"; then
-    echo "no-device: the free team has no registered iPad; -allowProvisioningDeviceRegistration needs the iPad reachable."
   else
     echo "unclassified: $(grep -m1 -E 'error:' "$1" | cut -c1-140)"
   fi
@@ -234,12 +234,15 @@ for dir in "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles" "$HOME
 done
 
 # 6. Build ---------------------------------------------------------------------------------
+# The concrete iPad destination, never generic/platform=iOS: when the free team's device list is
+# empty, -allowProvisioningDeviceRegistration can only register a device the build names, and the
+# generic destination fails with "Your team has no devices" (2026-11-12 to 11-16).
 log "building $TARGET (Release, iphoneos) ..."
 BUILD_LOG="$LOG_DIR/xcodebuild-$TODAY.log"
 export JAVA_HOME="${JAVA_HOME:-/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home}"
 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 if ! xcodebuild -project iosApp/iosApp.xcodeproj -scheme iosApp -configuration Release \
-      -destination 'generic/platform=iOS' -derivedDataPath "$DERIVED" \
+      -destination "platform=iOS,id=$IPAD_UDID" -derivedDataPath "$DERIVED" \
       -allowProvisioningUpdates -allowProvisioningDeviceRegistration build >"$BUILD_LOG" 2>&1; then
   cause="$(classify_build_failure "$BUILD_LOG")"
   log "FAILED: build ($cause)"

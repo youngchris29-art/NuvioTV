@@ -224,3 +224,44 @@ Assets: androidApp-full-arm64-v8a-release.apk, androidApp-full-armeabi-v7a-relea
 > - [feat(player): fall back to the next matching source on failure (#2612)](https://github.com/NuvioMedia/NuvioMobile/pull/2612) @skoruppa  
 > - [fix(player): show each start-up step on the loading screen, like NuvioTV (#2611)](https://github.com/NuvioMedia/NuvioMobile/pull/2611) @skoruppa  
 > 
+
+## 1.0.0 — 2026-11-15
+
+https://github.com/NuvioMedia/NuvioMobile/releases/tag/1.0.0
+
+Assets: androidApp-full-arm64-v8a-release.apk, androidApp-full-armeabi-v7a-release.apk, androidApp-full-x86-release.apk, androidApp-full-x86_64-release.apk, nuvio-1.0.0-full-release.ipa
+
+> # Nuvio 1.0.0
+> 
+> Thank you to everyone who has contributed to the project, tested the betas, and supported us along the way.
+> 
+> This is the first stable release. It has the same features and fixes as 0.6.13-beta.
+> 
+> > [!NOTE]
+> > On Android, choose **Stable** in **Settings → About → Update channel** for fewer updates and a more stable build. Choose **Beta** for frequent updates, with possible breaking changes. If you were already on a beta build, you stay on **Beta** until you switch.
+> 
+
+## 1.1.0-beta.1 — 2026-11-16
+
+https://github.com/NuvioMedia/NuvioMobile/releases/tag/1.1.0-beta.1
+
+Assets: androidApp-full-arm64-v8a-release.apk, androidApp-full-armeabi-v7a-release.apk, androidApp-full-x86-release.apk, androidApp-full-x86_64-release.apk, nuvio-1.1.0-beta.1-full-release.ipa
+
+> > [!IMPORTANT]
+> > **Beta builds are for testing purposes and may contain bugs, regressions, or unexpected issues.** If you prefer a reliable experience, we recommend staying on the **Stable** channel.
+> 
+> - [feat(library): remember list and type, add genre, year and watched filters (#2681)](https://github.com/NuvioMedia/NuvioMobile/pull/2681) @skoruppa  
+> - [fix(player): bottom controls pushed up on Android with gesture navigation (#2680)](https://github.com/NuvioMedia/NuvioMobile/pull/2680) @skoruppa  
+> - [fix(debrid): match TorBox alternative-hash cache answers (#2679)](https://github.com/NuvioMedia/NuvioMobile/pull/2679) @WhiteGiso  
+> - [i18n: use a regular space before the seconds unit (#2674)](https://github.com/NuvioMedia/NuvioMobile/pull/2674) @SK-Gits  
+> - [feat(subtitles): add outline width and match the styled overlay to native renderers (#2669)](https://github.com/NuvioMedia/NuvioMobile/pull/2669) @skoruppa  
+> - [i18n: add complete high-fidelity Brazilian Portuguese localization (#2668)](https://github.com/NuvioMedia/NuvioMobile/pull/2668) @jhojhocraazy  
+> - [feat(l10n): add Ukrainian localization (#2665)](https://github.com/NuvioMedia/NuvioMobile/pull/2665) @insabon  
+> - [feat(addons): support Stremio player and library tracking addons (#2660)](https://github.com/NuvioMedia/NuvioMobile/pull/2660) @skoruppa  
+> - [fix(player): fall back from the next episode's auto-selected source (#2653)](https://github.com/NuvioMedia/NuvioMobile/pull/2653) @skoruppa  
+> - [fix(ios): keep downloads out of iCloud and computer backups (#2650)](https://github.com/NuvioMedia/NuvioMobile/pull/2650) @vgyy4  
+> - [i18n(he): update latest Hebrew strings (#2631)](https://github.com/NuvioMedia/NuvioMobile/pull/2631) @haveAnIssue  
+> - [fix(ui): correct mixed RTL/LTR text in Search and Watch Party (#2563)](https://github.com/NuvioMedia/NuvioMobile/pull/2563) @i7xre  
+> - [Add Simplified Chinese (zh) localization (#2499)](https://github.com/NuvioMedia/NuvioMobile/pull/2499) @JadeDouble  
+> - [i18n(ur): translate new episode-shuffle resources (#2090)](https://github.com/NuvioMedia/NuvioMobile/pull/2090) @muzii9  
+> 

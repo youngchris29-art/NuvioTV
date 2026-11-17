@@ -294,3 +294,15 @@ From the Add-ons hub / Detail Polish / Stream Picker #25 retrospectives (two pro
 - **Settings snapshot** `scripts/device/settings-snapshot.sh take <label>|diff [a [b]]|list`: copies the app's prefs plist out of its data container over devicectl (works on the Living Room box) into `~/.config/nuviotv-device/snapshots/` (mode 600; never the repo: it holds debrid keys and Trakt tokens). `ready.sh --walk` takes a `pre` snapshot; `done.sh` diffs the box against it and prints every key that changed with its profile index (`_3` = Test 2); values of keys that look like secrets or payloads print as "changed".
 - **`ready.sh --walk` launches instead of refusing**: when the app is not running or the console stream is dead it runs `console.sh start` and waits up to 20 s for the pid, then preflight. `--no-launch` keeps the old refusal. If the profile picker shows after the launch, select Test 2 before the first step.
 - **`done.sh <project> [--keep-app]`**: settings diff, Home press (the box rests on the tvOS home screen), lock release. The console stream stays up (stopping it kills the app).
+
+## 2026-11-16: running a pass while the TV shows another HDMI input
+
+Christian asked whether he can watch another source during a pass. Expected to work, **not yet tested on this TV**: no pass has been recorded with the panel on a different input. The rig never reads the panel: presses go over the network (Companion), screenshots are the app's rendered frame over `devicectl`, the console comes over the same tunnel.
+
+- **Wake can steal the input.** `ready.sh` sends a Companion wake when the box is asleep, and an Apple TV that wakes normally tells the TV over HDMI-CEC to switch to it (and turns the TV on). With the box already awake no wake is sent; `ready.sh --no-wake` never sends one. Whether a launch or a press alone triggers the switch is unverified.
+- **Start with the box awake and past the user picker.** A box woken with the TV off shows the tvOS "who's watching" picker, which the Companion cannot clear, and the app launches behind it (10-21 "Wake prompt" above). Assume the same with the TV on another input: wake with the Siri Remote, clear the picker, then switch away.
+- **The TV may drop the HDMI link on an inactive input.** Most sets keep it up and the box renders as usual. If this one drops it, the box sees no display, and playback, HDCP and the HDR/DV output mode may differ from a real viewing session. Unknown for this TV.
+- **Legs that still need the Apple TV input**, per "What the rig can and cannot judge": the HDR/DV mode switch, Match Content, tone-map look, audio (language, sync, dropouts), scroll feel. Say so before the pass starts.
+- **Wi-Fi.** If the other source streams over the same Wi-Fi, expect more of the box's drops during 4K playback legs (the box is Wi-Fi only).
+
+First pass run this way: within the first minute confirm that a screenshot succeeds, the app is in front, a short play starts, and the TV stayed on the other input; replace "not yet tested" here with the result.

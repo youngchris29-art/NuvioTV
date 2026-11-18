@@ -228,6 +228,16 @@
     },
     {
       "id": "NuvioTVUITests/test82SettingsExplainerFollowsFocus"
+    },
+    {
+      "id": "AddonsSplitUITests/testSettingsRowOpensManageFromPhoneRail",
+      "tests": {
+        "testSettingsRowOpensManageFromPhoneRail": {
+          "status": "known-baseline-failure",
+          "reason": "focus can stay on the rail's Add-ons item after Settings > Manage from phone: the hub's focus claim races the rail's reveal (tracker BUG-256, fix deferred); failed 3 of 6 on 6db8c2498 without the Library work and reproduced on the box; this status also hides any other assertion failure in this test until the entry is removed",
+          "date": "2026-11-18"
+        }
+      }
     }
   ]
 }

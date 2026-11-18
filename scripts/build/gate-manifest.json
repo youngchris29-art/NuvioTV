@@ -1,0 +1,233 @@
+{
+  "_doc": [
+    "NuvioTV gate manifest, read by scripts/build/gate.sh (2026-11-17). JSON has no comments, so this",
+    "array is the header. Edit this file, not the script, when a leg, a fixture or a known case changes.",
+    "",
+    "HOW ENVIRONMENT REACHES A TEST. The UI and unit tests read ProcessInfo.processInfo.environment.",
+    "xcodebuild forwards a variable to the test runner only when it is set in xcodebuild's own",
+    "environment with the prefix TEST_RUNNER_, and strips the prefix: TEST_RUNNER_PLAYER_BAR_PROBE=1",
+    "arrives in the test as PLAYER_BAR_PROBE=1. That holds for `xcodebuild test` and for",
+    "`xcodebuild test-without-building` alike. Every key under an entry's \"env\" is written here WITHOUT",
+    "the prefix (the name the test reads); gate.sh adds TEST_RUNNER_ when it starts xcodebuild.",
+    "A variable that is missing does not fail the test: it SKIPS (XCTSkip \"... not set\"), which is how",
+    "PostPlayUITests and AetherRouteUITests went green with 0 tests run on 2026-11-17. gate.sh therefore",
+    "treats every skip that is not listed under \"expect_skip\" as unexpected and exits non-zero.",
+    "",
+    "FIXTURE SERVER. A value containing {server} needs the range server (scripts/device/range_server.py,",
+    "path relative to the outer repo). gate.sh starts ONE server for the UI phase when any selected entry",
+    "needs it, on \"port\" or the next free port, and stops it at the end. {server} expands to",
+    "http://127.0.0.1:<port>. The file named after {server}/ is looked up in \"search\" (first hit wins;",
+    "{repo} = the --repo path, {outer} = the outer repo, ~ = home) and symlinked into <out>/fixtures,",
+    "which is the directory served. A file listed under \"generated\" is written by gate.sh when no search",
+    "directory has it. A needed file that is in no directory stops the gate with exit 2 before anything",
+    "is started, naming the file and the directories searched. --fixtures <dir> is searched first.",
+    "",
+    "UI ENTRIES (\"ui\", run in this order).",
+    "  id          NuvioTVUITests class, or Class/test for one test; passed as",
+    "              -only-testing:NuvioTVUITests/<id>.",
+    "  env         variables the entry needs (see above). Omit when it needs none.",
+    "  timeout_s   wall limit for one xcodebuild run of the entry, counted from the moment the build",
+    "              lock is held (default \"default_timeout_s\").",
+    "  status      normal (default) | known-flaky | known-baseline-failure; the default for every test",
+    "              of the entry. Needs \"reason\" and \"date\" when it is not normal.",
+    "  tests       per-test overrides: {\"<test>\": {\"status\", \"reason\", \"date\"}}.",
+    "                known-flaky             a failure is rerun ONCE on its own; both runs are reported;",
+    "                                        the test passes if either run passed.",
+    "                known-baseline-failure  a failure is reported as \"baseline\" and does not fail the",
+    "                                        gate. A pass is reported too, so a stale line gets removed.",
+    "  expect_skip {\"<test>\": \"<reason, date>\"}: tests allowed to skip. A listed test that runs and",
+    "              passes is fine; one that fails still fails.",
+    "",
+    "\"unit\" carries the same expect_skip map for the NuvioTVTests scheme. \"kotlin\".expected_skipped is",
+    "the number of skipped Kotlin tests allowed per task (the XML reports are the source).",
+    "",
+    "KNOWN CASES seeded 2026-11-17 from the Stage B full gate (logs: NuvioMobile-upstream-ports-fix",
+    "iosApp/build/gate-logs/final-b4/, sum.txt, sum-x.txt, sum-p.txt) and the batch doc",
+    "docs/batch-upstream-ports-2026-11-16.md. Remove a line when its cause is fixed."
+  ],
+  "version": 1,
+  "default_timeout_s": 2700,
+  "fixture_server": {
+    "script": "scripts/device/range_server.py",
+    "port": 8766,
+    "search": [
+      "{repo}/iosApp/build/smoke",
+      "{outer}/NuvioMobile/iosApp/build/smoke",
+      "~/Claude/Projects/aether-spike-fixtures"
+    ],
+    "generated": {
+      "smoke-sync.srt": "sync-srt"
+    },
+    "notes": {
+      "test-long.mkv": "23 min HEVC smoke file, 1380.021 s by ffprobe (hence PLAYER_SMOKE_DURATION_SEC=1380)",
+      "chapters-named.mkv": "test-long.mkv with named chapters, kept in the submodule's iosApp/build/smoke",
+      "aether-long.mkv / aether-chapters.mkv / aether-subs.mkv / aether-sidecar.vtt": "Aether fixtures, kept in ~/Claude/Projects/aether-spike-fixtures",
+      "smoke-sync.srt": "generated: 300 cues, one every 2 s over the first 10 minutes (SyncLineUITests header)"
+    }
+  },
+  "kotlin": {
+    "tasks": [
+      {"task": ":shared:jvmTest", "reports": "shared/build/test-results/jvmTest"},
+      {"task": ":shared:tvosSimulatorArm64Test", "reports": "shared/build/test-results/tvosSimulatorArm64Test"},
+      {"task": ":composeApp:iosSimulatorArm64Test", "reports": "composeApp/build/test-results/iosSimulatorArm64Test"}
+    ],
+    "expected_skipped": 0
+  },
+  "unit": {
+    "scheme": "NuvioTVTests",
+    "timeout_s": 2700,
+    "expect_skip": {
+      "KeyframeThumbnailerTests/testCuelessFileStopsAtThePrimingCapAndRefusesNoIndex": "integration test: needs a fixture server on 127.0.0.1:8000 or THUMB_FIXTURE_URL; never part of the gate (2026-11-17)",
+      "KeyframeThumbnailerTests/testFrameAt120StampsTheKeyframeBefore": "integration test: needs a fixture server on 127.0.0.1:8000 or THUMB_FIXTURE_URL; never part of the gate (2026-11-17)",
+      "KeyframeThumbnailerTests/testFrameDecodesAfterThePrimingCapFired": "integration test: needs a fixture server on 127.0.0.1:8000 or THUMB_FIXTURE_URL; never part of the gate (2026-11-17)",
+      "KeyframeThumbnailerTests/testMissingFileIsHTTPRefused": "integration test: needs a fixture server on 127.0.0.1:8000 or THUMB_FIXTURE_URL; never part of the gate (2026-11-17)",
+      "KeyframeThumbnailerTests/testReopenWithKnownFactsDecodes": "integration test: needs a fixture server on 127.0.0.1:8000 or THUMB_FIXTURE_URL; never part of the gate (2026-11-17)",
+      "StreamBadgePackProbeTests/testPackBadgesRestVersusPlatter": "screenshot probe, opt-in with BADGE_PROBE_OUT (2026-11-17)"
+    }
+  },
+  "ui": [
+    {
+      "id": "StreamPickerUITests"
+    },
+    {
+      "id": "PostPlayUITests",
+      "env": {
+        "PLAYER_BAR_PROBE": "1",
+        "PLAYER_NATIVE_PROBE": "1",
+        "PLAYER_SMOKE_URL": "{server}/test-long.mkv",
+        "PLAYER_SMOKE_DURATION_SEC": "1380"
+      },
+      "tests": {
+        "testPostPlayPlayAgainUnchanged": {
+          "status": "known-baseline-failure",
+          "reason": "Play Again does not restart (pos stays 1380, commits=0); fails the same way on the landed base 704143149 and on Stage B 4fed98c9a (final-b4/sum-p.txt)",
+          "date": "2026-11-17"
+        }
+      }
+    },
+    {
+      "id": "PlayerTransportUITests",
+      "env": {
+        "PLAYER_BAR_PROBE": "1",
+        "PLAYER_SMOKE_URL": "{server}/test-long.mkv",
+        "PLAYER_SMOKE_CHAPTERS_NAMED_URL": "{server}/chapters-named.mkv"
+      },
+      "tests": {
+        "testDecodeScrubIntoUnwatched": {
+          "status": "known-baseline-failure",
+          "reason": "no decoded frame near the scrub target on the simulator; fails on every build since the Aether phase 1 batch (docs/aether-phase1-w3a-brief.md)",
+          "date": "2026-11-17"
+        },
+        "testExactStageCancelledByNewPress": {
+          "status": "known-flaky",
+          "reason": "the exact stage sometimes finishes before the second press lands (\"ke\" instead of \"k\"); failed try 1 and passed try 2 in final-b4",
+          "date": "2026-11-17"
+        }
+      },
+      "expect_skip": {
+        "testAspectStretchFillsOn43": "PLAYER_SMOKE_ASPECT_URL: no 4:3 fixture exists (2026-11-17)",
+        "testChaptersShelfSeeks": "PLAYER_SMOKE_CHAPTERS_URL: test-long-chapters.mkv has never existed; the baseline is SKIP (batch doc 2026-11-16)",
+        "testChapterTicksProbe": "PLAYER_SMOKE_CHAPTERS_URL: test-long-chapters.mkv has never existed; the baseline is SKIP (batch doc 2026-11-16)",
+        "testEdgeClickChapterMode": "PLAYER_SMOKE_CHAPTERS_URL: test-long-chapters.mkv has never existed; the baseline is SKIP (batch doc 2026-11-16)",
+        "testHarvestGrows": "device-only: screenshot-raw cannot run on the simulator's Metal driver (2026-11-17)",
+        "testMenuExitOverRootControlWithShieldOff": "opt-in with PLAYER_EXIT_CONTROL=1 (2026-11-17)"
+      }
+    },
+    {
+      "id": "PlayerChromeUITests",
+      "env": {
+        "PLAYER_BAR_PROBE": "1",
+        "PLAYER_SMOKE_URL": "{server}/test-long.mkv"
+      }
+    },
+    {
+      "id": "PlayerPanelCloseUITests",
+      "env": {
+        "PLAYER_BAR_PROBE": "1",
+        "PLAYER_SMOKE_URL": "{server}/test-long.mkv"
+      }
+    },
+    {
+      "id": "NuvioTVUITests/test02DetailAutoPlayAndPoster"
+    },
+    {
+      "id": "NuvioTVUITests/test04SettingsRows"
+    },
+    {
+      "id": "NuvioTVUITests/test40SettingsFocusGraph"
+    },
+    {
+      "id": "NuvioTVUITests/test72AutoPlayFirstPlayAndHoldPlay",
+      "expect_skip": {
+        "test72AutoPlayFirstPlayAndHoldPlay": "Play is disabled: no source can serve The 100 on the simulator fixture, so the fallback is not exercised (2026-11-17)"
+      }
+    },
+    {
+      "id": "NativePlayerParityUITests",
+      "env": {
+        "PLAYER_BAR_PROBE": "1",
+        "PLAYER_NATIVE_PROBE": "1",
+        "PLAYER_SMOKE_URL": "{server}/test-long.mkv"
+      },
+      "expect_skip": {
+        "testMpvLoadingOverlay": "needs test-long.ts beside the smoke file (recipe in NativePlayerParityUITests.mpvFixtureRecipe); never built (2026-11-17)",
+        "testNativeChaptersReachModel": "PLAYER_SMOKE_CHAPTERS_URL: test-long-chapters.mkv has never existed (2026-11-17)"
+      }
+    },
+    {
+      "id": "AetherRouteUITests",
+      "env": {
+        "AETHER_BAR_PROBE": "1",
+        "PLAYER_SMOKE_URL": "{server}/test-long.mkv"
+      }
+    },
+    {
+      "id": "AetherPlayerUITests",
+      "env": {
+        "AETHER_SMOKE_URL": "{server}/aether-long.mkv",
+        "AETHER_SMOKE_CHAPTERS_URL": "{server}/aether-chapters.mkv"
+      }
+    },
+    {
+      "id": "AetherSubtitleUITests",
+      "env": {
+        "AETHER_SMOKE_URL": "{server}/aether-long.mkv",
+        "AETHER_SMOKE_SUBS_URL": "{server}/aether-subs.mkv",
+        "AETHER_SMOKE_SIDECAR_URL": "{server}/aether-sidecar.vtt"
+      }
+    },
+    {
+      "id": "SyncLineUITests",
+      "env": {
+        "PLAYER_BAR_PROBE": "1",
+        "PLAYER_SMOKE_URL": "{server}/test-long.mkv",
+        "PLAYER_SMOKE_SUB_URL": "{server}/smoke-sync.srt"
+      }
+    },
+    {
+      "id": "BatchAHomeReturnUITests"
+    },
+    {
+      "id": "HomeWatchlistRowUITests",
+      "timeout_s": 3600,
+      "expect_skip": {
+        "testClassic_NoCWWatchlistIsTheTopRow": "the simulator fixture has stored watch progress; the no-Continue-Watching case needs a clean guest fixture (2026-11-17)",
+        "testClassic_NoCWWatchlistSeedsTheHeroPanel": "the simulator fixture has stored watch progress; the no-Continue-Watching case needs a clean guest fixture (2026-11-17)",
+        "testStage_LateWatchlistLandsDuringMenuGlide": "the simulator fixture has stored watch progress; the no-Continue-Watching case needs a clean guest fixture (2026-11-17)",
+        "testStage_NoCWWatchlistIsRowZeroAndSeedsTheStage": "the simulator fixture has stored watch progress; the no-Continue-Watching case needs a clean guest fixture (2026-11-17)"
+      }
+    },
+    {
+      "id": "HomeBodyCountUITests"
+    },
+    {
+      "id": "StageStripUITests"
+    },
+    {
+      "id": "NuvioTVUITests/test16SettingsNewRows"
+    },
+    {
+      "id": "NuvioTVUITests/test82SettingsExplainerFollowsFocus"
+    }
+  ]
+}

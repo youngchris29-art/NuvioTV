@@ -16,6 +16,12 @@ smoke file you pass with --media. No secrets, no real titles (idPrefixes ["zzupn
 
 Per episode (main instance): ep1, ep3 Direct. ep2: dead debrid a1..a4 then Direct. ep4: dead
 debrid b1, b2 then Direct. ep5: Direct then a dead torrent. ep6: dead debrid c1 only. Movie: Direct.
+Stage B additions (docs/batch-upstream-ports-spec-w4.md section 9): ep7: Dead direct then Direct;
+ep8: Stall direct then Direct; movies zzupnext-movie-dead (Dead direct, Direct), zzupnext-movie-stall
+(Stall direct, Direct), zzupnext-movie-stall-only (Stall direct). Dead direct = this server's
+/dead/<n>.mkv (404); Stall direct = /stall/<n>.mkv (200 + Matroska headers, then no body for 120 s).
+Both URLs use the Host header the request came in on and carry --salt, so a new salt gives new links
+(the app remembers failed links for 8 h).
 --late-only S answers only zzupnext:1:6 (one Direct "Late 720p" after sleeping S seconds); every
 other stream id gets {"streams": []} at once. Run it with its own --id/--name.
 Log: one line per request (method, path, what was served) on stderr, flushed. Ctrl-C / SIGTERM stops it.
@@ -89,7 +95,7 @@ SERIES_META = {
             "released": f"2020-01-0{n}T00:00:00.000Z",
             "runtime": "2 min",
         }
-        for n in range(1, 7)
+        for n in range(1, 9)
     ],
 }
 MOVIE_META = {
@@ -100,10 +106,16 @@ MOVIE_META = {
     "releaseInfo": "2020",
     "runtime": "2 min",
 }
+EXTRA_MOVIES = {
+    "zzupnext-movie-dead": "Up Next Fixture Dead Movie",
+    "zzupnext-movie-stall": "Up Next Fixture Stall Movie",
+    "zzupnext-movie-stall-only": "Up Next Fixture Stall Only Movie",
+}
 CATALOG = {"metas": [
     {"id": SERIES_ID, "type": "series", "name": SERIES_META["name"]},
     {"id": MOVIE_ID, "type": "movie", "name": MOVIE_META["name"]},
-]}
+] + [{"id": k, "type": "movie", "name": v} for k, v in EXTRA_MOVIES.items()]}
+HOST = {"value": f"127.0.0.1:{PORT}"}
 
 
 def direct(name="Fixture 720p", title="Direct 720p"):
@@ -128,9 +140,23 @@ def dead_torrent(n, k):
             "infoHash": hashlib.sha1(f"{SALT}-{n}-{k}".encode()).hexdigest()}
 
 
+def dead_direct(n):
+    return {"name": "Fixture 2160p", "title": "Dead direct 2160p", "url": f"http://{HOST['value']}/dead/{SALT}-{n}.mkv"}
+
+
+def stall_direct(n):
+    return {"name": "Fixture 2160p", "title": "Stall direct 2160p", "url": f"http://{HOST['value']}/stall/{SALT}-{n}.mkv"}
+
+
 def streams_for(vid):
     if vid == MOVIE_ID:
         return [direct()]
+    if vid == "zzupnext-movie-dead":
+        return [dead_direct("movie"), direct()]
+    if vid == "zzupnext-movie-stall":
+        return [stall_direct("movie"), direct()]
+    if vid == "zzupnext-movie-stall-only":
+        return [stall_direct("movie-only")]
     if not vid.startswith(SERIES_ID + ":1:"):
         return []
     n = vid.rsplit(":", 1)[1]
@@ -144,6 +170,10 @@ def streams_for(vid):
         return [direct(), dead_torrent(5, "e1")]
     if n == "6":
         return [dead_debrid(6, "c1")]
+    if n == "7":
+        return [dead_direct("e7"), direct()]
+    if n == "8":
+        return [stall_direct("e8"), direct()]
     return []
 
 
@@ -165,18 +195,56 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Headers", "*")
         self.end_headers()
 
-    def do_GET(self):  # noqa: N802
+    def _media(self, parts, head):
+        stamp = f"{datetime.now():%H:%M:%S.%f}"[:-3]
+        rng = self.headers.get("Range", "-")
+        if parts[0] == "dead":
+            self.send_response(404)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            sys.stderr.write(f"{stamp} [upnext-fallback] {self.command} {self.path} range={rng} -> 404 dead direct\n")
+            sys.stderr.flush()
+            return
+        self.send_response(200)
+        self.send_header("Content-Type", "video/x-matroska")
+        self.send_header("Accept-Ranges", "bytes")
+        self.send_header("Content-Length", "4000000000")
+        self.end_headers()
+        sys.stderr.write(f"{stamp} [upnext-fallback] {self.command} {self.path} range={rng} -> 200 stall headers sent, no body for 120s\n")
+        sys.stderr.flush()
+        if not head:
+            time.sleep(120)
+        sys.stderr.write(f"{datetime.now():%H:%M:%S} [upnext-fallback] {self.path} stall ended\n")
+        sys.stderr.flush()
+
+    def do_HEAD(self):  # noqa: N802
         parts = self.path.split("?", 1)[0].lstrip("/").split("/")
+        if len(parts) == 2 and parts[0] in ("dead", "stall"):
+            return self._media(parts, True)
+        self.send_response(404)
+        self.end_headers()
+
+    def do_GET(self):  # noqa: N802
+        if self.headers.get("Host"):
+            HOST["value"] = self.headers["Host"]
+        parts = self.path.split("?", 1)[0].lstrip("/").split("/")
+        if len(parts) == 2 and parts[0] in ("dead", "stall"):
+            try:
+                return self._media(parts, False)
+            except (BrokenPipeError, ConnectionResetError):
+                return
         if parts == ["manifest.json"]:
             return self._send(MANIFEST, "manifest")
         if len(parts) == 3 and parts[0] == "catalog":
-            return self._send(CATALOG, "catalog (2 items)")
+            return self._send(CATALOG, f"catalog ({len(CATALOG['metas'])} items)")
         if len(parts) == 3 and parts[0] == "meta" and parts[2].endswith(".json"):
             vid = parts[2][:-5].replace("%3A", ":")
             if vid == SERIES_ID:
                 return self._send({"meta": SERIES_META}, "meta series")
             if vid == MOVIE_ID:
                 return self._send({"meta": MOVIE_META}, "meta movie")
+            if vid in EXTRA_MOVIES:
+                return self._send({"meta": dict(MOVIE_META, id=vid, name=EXTRA_MOVIES[vid])}, f"meta {vid}")
             return self._send({"meta": None}, "meta unknown", 404)
         if len(parts) == 3 and parts[0] == "stream" and parts[2].endswith(".json"):
             vid = parts[2][:-5].replace("%3A", ":")

@@ -2,34 +2,35 @@
 
 Overwritten by the `nuvio-upstream-check` scheduled task on every run. The dated reports it also writes (`docs/upstream-port-plan-YYYY-MM-DD.md`, `docs/nuviotv-android-upstream-port-plan-YYYY-MM-DD.md`) stay local and are gitignored; this file is the only tracked record and carries the baselines the next run starts from.
 
-- **Run:** 2026-11-17
-- **NuvioMobile baseline** (`NuvioMedia/NuvioMobile` `cmp-rewrite`): `dd0e84704` — dated report `docs/upstream-port-plan-2026-11-17.md`
-- **NuvioTV Android baseline** (`NuvioMedia/NuvioTV` `dev`): `8675a97a0` — dated report `docs/nuviotv-android-upstream-port-plan-2026-11-17.md`
+- **Run:** 2026-11-18
+- **NuvioMobile baseline** (`NuvioMedia/NuvioMobile` `cmp-rewrite`): `b66f7725c` — dated report `docs/upstream-port-plan-2026-11-18.md`
+- **NuvioTV Android baseline** (`NuvioMedia/NuvioTV` `dev`): `f0df1830c` — dated report `docs/nuviotv-android-upstream-port-plan-2026-11-18.md`
 
-## NuvioMobile — 2026-11-17
+## NuvioMobile — 2026-11-18
 
-Upstream `NuvioMedia/NuvioMobile` (`cmp-rewrite`): `04cfe4af9` -> `dd0e84704`. 6 non-merge commits (Plex and Silo media servers, a mpv-android bump). Fork tip checked: `704143149`.
-**New baseline: `dd0e84704`.**
+Upstream `NuvioMedia/NuvioMobile` (`cmp-rewrite`): `dd0e84704` -> `b66f7725c`. 11 non-merge commits. Fork tip checked: `05214e042`.
+**New baseline: `b66f7725c`.**
 
 | # | Item (upstream commits) | tvOS verdict | Files in the fork | Effort |
 |---|---|---|---|---|
-| 1 | Plex Media Server provider: account client, mapper, artwork, provider, PIN sign-in flow, internet-address preference, tokens kept out of party sharing (`17579e7b5`, `943f38d91`) | DEFER. Needs the `features/servers` framework (provider interface, repository, token renewal, sign-in sheets), which the fork does not have (no `servers/` dir in `shared/`, no Jellyfin/Emby either). Port the framework first as its own batch if testers ask for media servers; the Plex files are Compose-free Kotlin plus Compose sign-in sheets (SwiftUI needed). | none (new `shared/.../features/servers/`), Swift sign-in UI | XL |
-| 2 | Silo provider on its own API, with report renewal like Silo's app (`5d928372d`, `29a26fbe8`) | DEFER. Same prerequisite as item 1. `SiloProvider.kt` is about 1000 lines plus tests. | as above | L after framework |
-| 3 | Shared sign-in screens and wording refactor (`b2fd38e58`) | SKIP. Compose UI (`ServerSignInParts.kt`, `ServerSignInSheet.kt`); only relevant with items 1-2. | n/a | n/a |
-| 4 | mpv-android-lib 0.1.12 -> 0.2.1 (`818934860`) | SKIP. Android player library; the fork's `gradle/libs.versions.toml` entry is only consumed by composeApp's Android target, and tvOS plays through MPVKit. | n/a | n/a |
+| 1 | External episode ratings matched to the addon's episode order: `EpisodeRatingsAlignment` + tests, `ImdbEpisodeRatingsRepository` rewired (`97fbfa905`) | PORT. Compose-free; check against the fork's MDBList episode remap so the two do not double-shift. | `shared/.../features/details/ImdbEpisodeRatingsRepository.kt`, new `EpisodeRatingsAlignment.kt` + test | S-M |
+| 2 | Trakt library refresh: automatic callers no longer queue behind a stalled refresh (`1e4157492`) | PORT. 19-line patch to `TraktLibraryRepository.kt` (refreshJob + mutex, `refreshOnce`). | `shared/.../features/trakt/TraktLibraryRepository.kt` | S |
+| 3 | Cast filmography hides talk-show guest appearances (`547972efd`) | PORT if the fork's person credits feed a filmography row (`genre_ids` not in the fork's credit model). | TMDB metadata service in `shared/`, test | S |
+| 4 | Downloads screen redesign, back handling, poster setting (`ffe769fa7`, `2dcfbb9f1`, `e00392db1`) | SKIP. Compose UI; no Downloads on tvOS. | n/a | n/a |
+| 5 | Release CI, sideload source, version bump, store publish 1.1.0-beta.2 (`66ca8379e`, `62fcd6b9b`, `81f836d40`, `b66f7725c`, `87a1a8b07`) | SKIP. Upstream release plumbing. | n/a | n/a |
 
-No new item for the tvOS release path. Carry-over from 2026-11-16 still open: TorBox alternative-hash fix, subtitle outline clamp, next-episode source fallback check, optional Stremio tracking addons, Library filters (deferred).
+Carry-over still open: TorBox alternative-hash fix, subtitle outline clamp, next-episode source fallback check, optional Stremio tracking addons. Plex/Silo media servers remain deferred (no servers framework).
 
-## NuvioTV Android — 2026-11-17
+## NuvioTV Android — 2026-11-18
 
-Upstream `NuvioMedia/NuvioTV` (`dev`): `60eb9602a` -> `8675a97a0`. 28 commits including merges (about 12 substantive). Android TV app; commit messages and file lists were read, individual Kotlin files were not diffed.
-**New baseline: `8675a97a0`.**
+Upstream `NuvioMedia/NuvioTV` (`dev`): `8675a97a0` -> `f0df1830c`. 14 non-merge commits. Commit messages read; Kotlin not diffed.
+**New baseline: `f0df1830c`.**
 
 | # | Item (upstream commits) | tvOS verdict | Effort |
 |---|---|---|---|
-| 1 | Plex and Silo media servers, shared sign-in steps, Plex probe/stop-report fixes, Silo report renewal (`9af02059a`, `4247d5cb1`, `bb7b85d36`, `f0f1ffc31`, `c7e7a4338`) | Same as NuvioMobile items 1-2: DEFER, fork has no servers framework. | XL |
-| 2 | External episode ratings matched to the addon's episode order, new `EpisodeRatingsAlignment.kt` with tests (`e2ecb1c5f`) | CHECK. Fixes ratings landing on the wrong episode when the addon's order differs from IMDb's. The fork landed an MDBList episode remap on 2026-11-05; confirm the tvOS episode-ratings path does not show the same off-by-order symptom on a series with split seasons, and port the alignment idea into `shared/` only if it does. No matching NuvioMobile commit yet. | S-M |
-| 3 | Home hero: longer description pause around auto-scroll, RTL gradient mirror (`87b344693`, `28b075d35`) | SKIP. Compose hero carousel; tvOS hero is SwiftUI. The auto-scroll dwell is an idea to compare against the tvOS hero description if it truncates. | n/a |
-| 4 | Sidebar keeps focus while Home loads (`520a0568f`) | IDEA ONLY. Android focus bug; check the tvOS rail does not lose focus during the first Home load (walk in the Test profile). | S, optional |
-| 5 | Ambient-mode settings included in profile settings sync (`96d42a4d7`) | SKIP. Android-only setting. | n/a |
-| 6 | Strings (Portuguese, Vietnamese, servers, party), version bump | SKIP. Resource files. | n/a |
+| 1 | Star ratings for titles and episodes, ratings source picker, MDBList/Simkl rating sync (`c4b07d284`, `62888d688`, `761d18801`, `6055873d4`, `6f9754b46`) | EVALUATE. Feature idea, not tester-requested; check write paths and the no-real-Trakt-writes rule first. | M-L |
+| 2 | Home: focused poster stays expanded while hero trailers play; hero details hidden during fullscreen trailer (`4aa25bbdb`, `7dd9fcbfe`) | CHECK on a device pass; no code to port. | S |
+| 3 | Continue Watching focus follows a card moved to the front after playback (`0042e28e7`) | CHECK; likely a repro worth running on tvOS Home. | S |
+| 4 | Perf: subtitle menu no longer resolves every language per build (`d1b9ba4ce`) | CHECK the fork's subtitle menu cost. | S |
+| 5 | Talk-show guest filter (`51ebccc1c`) | Same as NuvioMobile item 3. | S |
+| 6 | Season posters in tabs, Jellyfin/Emby per-profile sign-ins, French/tracking-consent strings (`0a35557e0`, `30b2aeadf`, `fd140199d`, `fed121f3b`) | SKIP (fork has season posters; no servers framework). | n/a |

@@ -265,3 +265,22 @@ Assets: androidApp-full-arm64-v8a-release.apk, androidApp-full-armeabi-v7a-relea
 > - [Add Simplified Chinese (zh) localization (#2499)](https://github.com/NuvioMedia/NuvioMobile/pull/2499) @JadeDouble  
 > - [i18n(ur): translate new episode-shuffle resources (#2090)](https://github.com/NuvioMedia/NuvioMobile/pull/2090) @muzii9  
 > 
+
+## 1.1.0-beta.2 — 2026-11-18
+
+https://github.com/NuvioMedia/NuvioMobile/releases/tag/1.1.0-beta.2
+
+Assets: androidApp-full-arm64-v8a-release.apk, androidApp-full-armeabi-v7a-release.apk, androidApp-full-x86-release.apk, androidApp-full-x86_64-release.apk, nuvio-1.1.0-beta.2-full-release.ipa
+
+> > [!IMPORTANT]
+> > **Beta builds are for testing purposes and may contain bugs, regressions, or unexpected issues.** If you prefer a reliable experience, we recommend staying on the **Stable** channel.
+> 
+> - e00392db feat(downloads): follow library custom poster setting @tapframe  
+> - 2dcfbb9f fix(downloads): handle system back on the show page @tapframe  
+> - ffe769fa feat(downloads): redesign downloads screen @tapframe  
+> - [fix(cast): hide talk show guest appearances from filmography (#2704)](https://github.com/NuvioMedia/NuvioMobile/pull/2704) @skoruppa  
+> - [fix(trakt): prevent unbounded library refresh queue (#2702)](https://github.com/NuvioMedia/NuvioMobile/pull/2702) @enricopro  
+> - [fix(ratings): match external episode ratings to the addon's episode order (#2688)](https://github.com/NuvioMedia/NuvioMobile/pull/2688) @skoruppa  
+> - [feat(servers): add Silo on its own API (#2659)](https://github.com/NuvioMedia/NuvioMobile/pull/2659) @ysosrs123  
+> - [feat(servers): add Plex Media Server (#2658)](https://github.com/NuvioMedia/NuvioMobile/pull/2658) @ysosrs123  
+> 

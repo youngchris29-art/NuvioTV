@@ -43,6 +43,13 @@
 #   --min-free-gb <n>    stop before a step when free disk is below n GB (default 6)
 #   --lock-wait <sec>    give up when one step waits longer than this for the build lock
 #                        (default 0 = wait for ever, like with-lock.sh)
+#   --hold-lock          take the build lock ONCE before the first UI step (ui-build, or the first
+#                        leg) and keep it until the last UI leg is done, instead of once per leg.
+#                        Opt-in: it removes the wait between legs (74 minutes of the 3.15 h gate of
+#                        2026-11-17) and keeps every other session off the build lock for the whole
+#                        UI phase (about 1.7 h for the full manifest). The Kotlin gate, the two builds
+#                        and NuvioTVTests still take and release the lock one step at a time. Under
+#                        --final the simulator lock is taken first, then the build lock.
 #   --keep-results       keep the .xcresult bundle of passing runs too (default: only failing runs)
 #   --leave-booted       do not shut the simulator down at the end even though this run booted it
 #   --dry-run            print the plan and the exact commands; start nothing, write nothing
@@ -62,7 +69,7 @@
 #
 # Safety
 #   Every process this script starts (xcodebuild and gradle under with-lock.sh, the fixture server,
-#   the simulator-lock holder) is its own process group, listed in <out>/gate.pids while alive, and
+#   the simulator-lock and build-lock holders) is its own process group, listed in <out>/gate.pids while alive, and
 #   those groups are the only things it ever signals, on exit, on a timeout and on Ctrl-C. It boots
 #   the simulator only when it is shut down and shuts it down only when it booted it; it never
 #   erases one and refuses the "NuvioTV template". It deletes nothing outside --out. TEST_RUNNER_
@@ -88,7 +95,7 @@
 GATE_HERE="$(cd "$(dirname "$0")" && pwd)"
 export GATE_HERE
 exec python3 - "$@" <<'PY'
-import argparse, datetime, glob, json, os, re, shlex, shutil, signal, socket, subprocess, sys, time
+import argparse, datetime, glob, json, os, re, select, shlex, shutil, signal, socket, subprocess, sys, time
 import urllib.request
 import xml.etree.ElementTree as ET
 
@@ -181,6 +188,7 @@ def parse_args():
     p.add_argument("--manifest", default=os.path.join(HERE, "gate-manifest.json"))
     p.add_argument("--min-free-gb", type=float, default=6.0)
     p.add_argument("--lock-wait", type=int, default=0)
+    p.add_argument("--hold-lock", action="store_true")
     p.add_argument("--keep-results", action="store_true")
     p.add_argument("--leave-booted", action="store_true")
     p.add_argument("--dry-run", action="store_true")
@@ -400,6 +408,8 @@ class Gate:
         self.order = []           # step ids in plan order
         self.server_url = None
         self.sim_holder = None
+        self.build_holder = None  # --hold-lock: the process that holds the build lock across the UI steps
+        self.hold_wait = 0.0      # seconds spent waiting for that one acquisition
         self.sim_ready = False
         self.sim_booted_by_us = False
         self.sim_name = None
@@ -409,6 +419,7 @@ class Gate:
         self.prepared = False     # True once --out exists and the run has really begun
         self.base_env = dict((k, v) for k, v in os.environ.items() if not k.startswith("TEST_RUNNER_"))
         self.dropped_env = sorted(k for k in os.environ if k.startswith("TEST_RUNNER_"))
+        self.dry_holding = False  # dry run: the build-lock holder line has been printed
 
     # ---- output
     def say(self, msg):
@@ -464,9 +475,9 @@ class Gate:
                     continue
         self.reap(proc)
 
-    def kill_all(self, keep=None):
+    def kill_all(self, keep=()):
         for proc, role, _ in list(reversed(self.live)):
-            if proc is keep:
+            if any(proc is k for k in keep):
                 continue
             if proc.poll() is None:
                 self.say("stopping %s (pid %d)" % (role, proc.pid))
@@ -474,9 +485,12 @@ class Gate:
 
     # ---- one locked, logged command
     def run_locked(self, step_id, argv, log_name, timeout_s, env_extra=None):
-        """Runs argv under with-lock.sh in the repo. -> (rc, wall_s, lock_wait_s, timed_out)."""
+        """Runs argv under with-lock.sh in the repo. -> (rc, wall_s, lock_wait_s, timed_out).
+        While --hold-lock holds the build lock for the UI steps the command runs bare: the lock is a
+        flock owned by the holder process, and a second with-lock.sh would wait on it for ever."""
         log_path = os.path.join(self.out, log_name)
-        full = [WITH_LOCK] + argv
+        held = self.build_holder is not None or (self.dry and self.dry_holding)
+        full = list(argv) if held else [WITH_LOCK] + argv
         if self.dry:
             print("  " + quote_cmd(full, env_extra, self.repo, log_path))
             return 0, 0.0, 0.0, False
@@ -581,6 +595,63 @@ class Gate:
         else:
             self.warn("simulator %s is already %s: not booted by this run, it will be left as it is" % (name, state))
         self.sim_ready = True
+
+    def build_holder_argv(self):
+        script = 'echo GATE_BUILD_LOCK_HELD; while kill -0 "$1" 2>/dev/null; do sleep 2; done'
+        return [WITH_LOCK, "/usr/bin/env", "GATE=gate.sh--hold-lock:" + os.path.basename(self.repo),
+                "/bin/sh", "-c", script, "gate-build-lock", str(os.getpid())]
+
+    def hold_build_lock(self, step_id):
+        """--hold-lock: one acquisition of the build lock for every UI step. The holder is a child that
+        sits inside with-lock.sh and exits by itself when this script's pid is gone."""
+        if self.build_holder is not None or self.dry_holding:
+            return
+        if self.a.final:
+            self.ensure_sim()                      # order rule: the simulator lock wraps the build lock
+        if self.dry:
+            print("  # build lock, held from here until the last UI leg (--hold-lock):")
+            print("  " + quote_cmd(self.build_holder_argv()))
+            self.dry_holding = True
+            return
+        self.check_disk(step_id)
+        errf = open(os.path.join(self.out, "build-lock.log"), "w", encoding="utf-8")
+        holder = self.spawn("build-lock-holder", self.build_holder_argv(), stdout=subprocess.PIPE, stderr=errf)
+        errf.close()
+        t0 = beat = time.time()
+        told = False
+        try:
+            while True:
+                ready, _, _ = select.select([holder.stdout], [], [], 1.0)
+                now = time.time()
+                if ready:
+                    line = holder.stdout.readline()
+                    if b"GATE_BUILD_LOCK_HELD" in line:
+                        break
+                    raise Stop(EXIT_FAIL, "could not take the build lock for --hold-lock (see build-lock.log)")
+                if holder.poll() is not None:
+                    raise Stop(EXIT_FAIL, "the build-lock holder exited before it had the lock (see build-lock.log)")
+                if not told and now - t0 >= 2:
+                    told = True
+                    self.say("--hold-lock: waiting for the build lock (%s)" % self.lock_holder())
+                if self.a.lock_wait and now - t0 > self.a.lock_wait:
+                    raise Stop(EXIT_LOCK, "BUILD LOCK BUSY: --hold-lock waited %s (--lock-wait %d); resume with --from %s"
+                               % (hms(now - t0), self.a.lock_wait, step_id))
+                if now - beat >= 300:
+                    beat = now
+                    self.say("--hold-lock: still waiting for the build lock (%s)" % hms(now - t0))
+        except BaseException:
+            self.kill(holder, grace=5)
+            raise
+        self.build_holder = holder
+        self.hold_wait = time.time() - t0
+        self.say("--hold-lock: build lock held for the UI steps%s (holder pid %d)"
+                 % (" after waiting " + hms(self.hold_wait) if self.hold_wait >= 2 else "", holder.pid))
+
+    def release_build_lock(self):
+        if self.build_holder is not None:
+            self.kill(self.build_holder, grace=5)
+            self.build_holder = None
+            self.say("--hold-lock: build lock released")
 
     def holder_argv(self):
         script = 'echo GATE_SIM_LOCK_HELD; while kill -0 "$1" 2>/dev/null; do sleep 2; done'
@@ -1007,6 +1078,8 @@ class Gate:
         L.append("- UI mode: %s; manifest `%s`" % (self.a.ui_mode, self.a.manifest))
         L.append("- Started %s, %s" % (datetime.datetime.fromtimestamp(self.started).strftime("%Y-%m-%d %H:%M:%S"),
                                       "took " + hms(time.time() - self.started) if final else "still running"))
+        if self.a.hold_lock:
+            L.append("- Build lock: held across the UI steps (--hold-lock), one wait of %s" % hms(self.hold_wait))
         L.append("- Logs: `%s`" % self.out)
         L += ["", "| step | result | run / failed / skipped | wall | note |", "|---|---|---|---|---|"]
         for i in self.order:
@@ -1023,7 +1096,7 @@ class Gate:
                     hms(row["wall_s"]), clean(row["note"])))
         rs = [self.results[i] for i in self.order if i in self.results]
         in_steps = sum((r["wall_s"] or 0) + sum(x["wall_s"] for x in r["rows"]) for r in rs if r["ran"])
-        in_wait = sum(r.get("lock_wait_s", 0) or 0 for r in rs if r["ran"])
+        in_wait = sum(r.get("lock_wait_s", 0) or 0 for r in rs if r["ran"]) + self.hold_wait
         L += ["", "run = tests executed, skipped ones included (the XCTest and Gradle totals). "
               "wall = time holding the build lock; time spent waiting for it is in the note.",
               "", "Time: %s in the steps, %s waiting for the build lock." % (hms(in_steps), hms(in_wait))]
@@ -1117,6 +1190,8 @@ class Gate:
                 continue
             if self.dry:
                 print("\n# step %s" % s["id"])
+            if a.hold_lock and s["kind"] in ("ui-build", "ui"):
+                self.hold_build_lock(s["id"])
             if s["kind"] == "ui" and not server_started:
                 server_started = True
                 self.start_fixtures(todo_ui)
@@ -1137,8 +1212,9 @@ class Gate:
             return code_override or 0
         for s in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
             signal.signal(s, signal.SIG_IGN)       # finish the cleanup without a second interruption
-        self.kill_all(keep=self.sim_holder)        # the lock holder goes last, after the simulator is down
+        self.kill_all(keep=(self.sim_holder, self.build_holder))   # the lock holders go last
         try:
+            self.release_build_lock()              # inner lock first, then the simulator and its lock
             self.release_sim()
         except Exception as e:                     # never let cleanup hide the result
             self.say("cleanup: %s" % e)

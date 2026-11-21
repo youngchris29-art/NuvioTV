@@ -13,6 +13,17 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
+## Aether engine 7.71.2 + playback disk cache 2026-11-21 (GitHub #31, #29; reviewed, gated with one exception, device-passed, LANDED `9290dd44c`; NOT cut)
+
+- Landed 2026-11-21 21:05Z on Christian's typed "Land it": `tvos-shared-extraction` fast-forwarded `3fde1ef41` → `9290dd44c` (14 commits: Aether pin 7.54.0 → 7.71.2 at `d99562b1e`, then the disk cache). Clones `NuvioMobile-aether-bump` and `NuvioMobile-disk-cache` deleted. No tag, no build bump, no release.
+- **One new setting: Settings › Player › Buffering › Disk Cache = Off** (Off / 5 GB / 10 GB / 20 GB / Maximum; shown only with the Aether engine On; this Apple TV only, not synced; key `player.diskCacheGB`).
+- Gate on `9290dd44c` (FA87, `docs/research/aether-bump-2026-11-21/gate-final/`): Kotlin 6113/0, Debug + Release sim builds, NuvioTVTests 3931/0 (6 expected skips), every UI entry PASS or known baseline. **Exception:** `PlayerTransportUITests/testExactStageCancelledByNewPress` (known flaky, mpv scrub timing) passed 1 of 8 runs on the tip and 0 of 8 on beta 25 `3fde1ef41` the same evening, same assertion; not caused by the batch. Owed: make that test independent of simulator speed.
+- Gate manifest: two new UI entries, `AetherDiskCachePlaybackUITests` (hard-limit leg is an expected skip on the simulator, box only) and `DiskCacheSettingsUITests`.
+- Device pass in Test 2 (2026-11-21, `docs/device-pass-aether-bump-2026-11-21.md` Parts A and C, `docs/device-pass-disk-cache-2026-11-21.md`): bump matrix passes; Heights On stalled on a Debug build and passes on Release (4 s starts, no stalls), so engine CPU on the box is judged on Release builds only; both owed HDR10 checks pass; all disk cache rows pass (10 GB, Maximum "Up to 25 GB", request path, kill-and-relaunch cleanup).
+- **Found, not fixed, older than this batch:** after leaving the app during playback and returning, Play spins on Aether and freezes on the Apple player route; mpv recovers. Own batch owed.
+- Not verified: heights and sync on a receiver, HDR10+, PGS, subtitle delay, display switching, a 60-minute play, Heights On with the disk cache, the fill-the-disk rows. By hand before a cut: the 2176-line HDR10 file on the TV, VoiceOver on the Disk Cache row.
+- Comms drafted, NOT SENT (local): release-note lines, #31 reply, #29 reply.
+
 ## beta.25 RELEASED 2026-11-21 (public; build 152, `3fde1ef41` = `65a2d84d9` + bump, tag `tvos-v0.3.0-beta.25`, both repos Latest)
 
 - Public release on Christian's typed words ("cut beta 25", then "Publish beta 25"): the seek preview batch below, nothing else. Published 2026-11-21 00:12Z (2026-11-20 19:12 ET) to `youngchris29-art/NuvioMobile` and `youngchris29-art/NuvioTV`, both marked Latest. IPA 42,133,552 B on both (beta.24: 42,113,107 B). Stamp read from the built app: tag `tvos-v0.3.0-beta.25`, commit `3fde1ef4`, build 152.

@@ -197,6 +197,18 @@
       }
     },
     {
+      "id": "AetherDiskCachePlaybackUITests",
+      "env": {
+        "AETHER_SMOKE_URL": "{server}/aether-long.mkv"
+      },
+      "expect_skip": {
+        "testSmallHardLimitFillsEvictsAndSeekBackKeepsPlaying": "simulator has no VideoToolbox hardware decode, so the engine takes the software route and there is no session cache; device leg (2026-11-21)"
+      }
+    },
+    {
+      "id": "DiskCacheSettingsUITests"
+    },
+    {
       "id": "SyncLineUITests",
       "env": {
         "PLAYER_BAR_PROBE": "1",

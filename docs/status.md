@@ -20,7 +20,7 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - Notes: hand-written highlights (5/5, Codex-cleansed) with Known limits and Not verified sections; the script's generated commit list carried internal wording, so both releases' notes were replaced within a minute by the list-free file (`docs/research/github-33-seek-preview-2026-11-19/beta25-notes-list-free.md`), as for beta 21.5.
 - Outer repo with the release: README feature line and pointer `5c1c8c8` (pushed before the dry run). No new screenshot.
 - Not verified before release, and said so in the notes: a physical Siri Remote, a remote with no touch surface, the machine-made de/es/fr/it/vi strings for the new row, a plain HDR10 file on Aether.
-- Comms: GitHub #33 and #34 replies SENT 2026-11-20 from the project side; the #33 "beta is out" follow-up is posted from there too. Reddit block and comment: NOT prepared, NOT SENT. No tester DM.
+- Comms: GitHub #33 and #34 replies SENT 2026-11-20 from the project side; the #33 "beta is out" follow-up is posted from there too. Reddit SENT 2026-11-21 01:21Z (2026-11-20 20:21 ET) on Christian's "post it": the Latest build block in the body of r/NuvioForks post `1wtmutc` swapped from beta 24 to beta 25 (rest of the body and the 4 images unchanged, read back exact) and the announcement comment `t1_19sy48av3ay6a` (https://www.reddit.com/r/NuvioForks/comments/1wtmutc/tvos_nuviotv_a_native_apple_tv_app_built_on/19sy48av3ay6a/), read back exact, not removed. No tester DM.
 
 ## Seek preview pictures on skips 2026-11-19/20 (GitHub #33; reviewed, gated, device-passed, LANDED `65a2d84d9`; RELEASED in beta.25)
 

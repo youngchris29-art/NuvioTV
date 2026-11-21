@@ -284,3 +284,15 @@ Assets: androidApp-full-arm64-v8a-release.apk, androidApp-full-armeabi-v7a-relea
 > - [feat(servers): add Silo on its own API (#2659)](https://github.com/NuvioMedia/NuvioMobile/pull/2659) @ysosrs123  
 > - [feat(servers): add Plex Media Server (#2658)](https://github.com/NuvioMedia/NuvioMobile/pull/2658) @ysosrs123  
 > 
+
+## 1.0.1 — 2026-11-21
+
+https://github.com/NuvioMedia/NuvioMobile/releases/tag/1.0.1
+
+Assets: androidApp-full-arm64-v8a-release.apk, androidApp-full-armeabi-v7a-release.apk, androidApp-full-x86-release.apk, androidApp-full-x86_64-release.apk, nuvio-1.0.1-full-release.ipa
+
+> - c31c30e1 fix(player): ignore gesture insets for bottom controls on android @skoruppa  
+> - 4baf886e fix(ios): keep downloads out of iCloud and computer backups @claude  
+> - f81edc65 fix(debrid): match TorBox alternative-hash cache answers @WhiteGiso  
+> - 103c5e07 fix(trakt): prevent unbounded library refresh queue @enricopro  
+> 

@@ -13,7 +13,16 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
-## Seek preview pictures on skips 2026-11-19/20 (GitHub #33; reviewed, gated, device-passed, LANDED `65a2d84d9`, NOT cut)
+## beta.25 RELEASED 2026-11-21 (public; build 152, `3fde1ef41` = `65a2d84d9` + bump, tag `tvos-v0.3.0-beta.25`, both repos Latest)
+
+- Public release on Christian's typed words ("cut beta 25", then "Publish beta 25"): the seek preview batch below, nothing else. Published 2026-11-21 00:12Z (2026-11-20 19:12 ET) to `youngchris29-art/NuvioMobile` and `youngchris29-art/NuvioTV`, both marked Latest. IPA 42,133,552 B on both (beta.24: 42,113,107 B). Stamp read from the built app: tag `tvos-v0.3.0-beta.25`, commit `3fde1ef4`, build 152.
+- **One new setting, named with its default in the notes: Settings › Player › Seek Preview Pictures = Watched Parts** (Off / Watched Parts / Whole Video).
+- Notes: hand-written highlights (5/5, Codex-cleansed) with Known limits and Not verified sections; the script's generated commit list carried internal wording, so both releases' notes were replaced within a minute by the list-free file (`docs/research/github-33-seek-preview-2026-11-19/beta25-notes-list-free.md`), as for beta 21.5.
+- Outer repo with the release: README feature line and pointer `5c1c8c8` (pushed before the dry run). No new screenshot.
+- Not verified before release, and said so in the notes: a physical Siri Remote, a remote with no touch surface, the machine-made de/es/fr/it/vi strings for the new row, a plain HDR10 file on Aether.
+- Comms: GitHub #33 and #34 replies SENT 2026-11-20 from the project side; the #33 "beta is out" follow-up is posted from there too. Reddit block and comment: NOT prepared, NOT SENT. No tester DM.
+
+## Seek preview pictures on skips 2026-11-19/20 (GitHub #33; reviewed, gated, device-passed, LANDED `65a2d84d9`; RELEASED in beta.25)
 
 - Landed 2026-11-20 16:25 ET on `tvos-shared-extraction` at `65a2d84d9` on Christian's word ("land it", then "Land now" with one known-flaky test red): fast-forward of 18 commits from `5df83303a` (40 files, +4,364 / -445), pushed; branch and side clone deleted. Record: `docs/batch-github-33-seek-preview-2026-11-19.md`, device pass `docs/device-pass-github-33-seek-preview-2026-11-20.md`.
 - What it does: a click or a hold on Left/Right now shows the seek preview picture, as a swipe already did, on mpv and Aether. A click's card stays at least 1.2 s (0.8 s after a slow landing, 4.8 s at most) and the title and pills hide while it is up. Scan (2x and up) shows no card. One pure decision (`SeekPreviewPlan`) and one owner (`SeekPreviewCoordinator`) replace nine scattered conditions.

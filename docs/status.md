@@ -13,6 +13,16 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
+## Return from background 2026-11-21/23 (all three players; reviewed, gated, device-passed, LANDED `9e831153a`; NOT cut)
+
+- **What:** Home and back no longer leaves a frozen or black picture. mpv parks (pause, video off) on leaving and returns on a fresh controller, paused at the held position; the native player's restart seeks are exact and checked (was 13.6 s early after Home during start-up); Aether return from the earlier waves. mpv bug was present on beta.25. No new settings, no new strings.
+- **Also changed:** an mpv start that fails from the cloud library now shows the existing "Couldn't play this source" alert ("Try with mpv" / "Close") instead of a dead player; mpv tracker stops are refused after an identity change, as on the other players.
+- **Review:** design 3 rounds; Codex code rounds 1-6 on W7 (3, 4, 4, 4, 5, 3 P2; 0 P1), all fixed; delta review P2 fixed; cap card answered A (2026-11-22). Logged limit: a Trakt stop already retrying past 20 s can end the new now-playing state.
+- **Gate:** final gate PASS on `9e831153a` 2026-11-23 04:30Z (`docs/research/background-return-2026-11-21/gate-final-w7b/`); the first run failed on a stalled FA87 (mpv never started from an old leg on; same code passes on a fresh boot and on the clone sim).
+- **Device (Test 2, Release):** PASS 2026-11-23 07:12Z: mpv 10 s / 2 min / 10 min 48 s away, double Home, track picks, gpu-next DV path, native start-up landing exact, Aether and native regression rows. mpv return spinner 2.0-3.4 s, median 2.4. `DEVICE_LOST` 713 and 37 before, 0 after.
+- **Owed before a cut:** Christian by ear and eye: sound on return, DV/HDR output, Match Frame Rate. Follow-ups: one Menu during the return spinner is swallowed; normal native start lands a segment early; seek previews lost on an mpv return; M10/M13 legs need fixtures. Release-notes draft needs the background line (NOT SENT).
+- **Docs (local):** `docs/plan-background-return-2026-11-21.md`, `docs/batch-background-return-2026-11-21.md`, `docs/spec-mpv-return-2026-11-22.md`, `docs/device-pass-background-return-2026-11-22.md`.
+
 ## Aether engine 7.71.2 + playback disk cache 2026-11-21 (GitHub #31, #29; reviewed, gated with one exception, device-passed, LANDED `9290dd44c`; NOT cut)
 
 - Landed 2026-11-21 21:05Z on Christian's typed "Land it": `tvos-shared-extraction` fast-forwarded `3fde1ef41` → `9290dd44c` (14 commits: Aether pin 7.54.0 → 7.71.2 at `d99562b1e`, then the disk cache). Clones `NuvioMobile-aether-bump` and `NuvioMobile-disk-cache` deleted. No tag, no build bump, no release.

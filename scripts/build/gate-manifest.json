@@ -110,17 +110,13 @@
       "env": {
         "PLAYER_BAR_PROBE": "1",
         "PLAYER_SMOKE_URL": "{server}/test-long.mkv",
-        "PLAYER_SMOKE_CHAPTERS_NAMED_URL": "{server}/chapters-named.mkv"
+        "PLAYER_SMOKE_CHAPTERS_NAMED_URL": "{server}/chapters-named.mkv",
+        "PLAYER_SMOKE_SUB_URL": "{server}/smoke-sync.srt"
       },
       "tests": {
         "testDecodeScrubIntoUnwatched": {
           "status": "known-baseline-failure",
           "reason": "no decoded frame near the scrub target on the simulator; fails on every build since the Aether phase 1 batch (docs/aether-phase1-w3a-brief.md)",
-          "date": "2026-11-17"
-        },
-        "testExactStageCancelledByNewPress": {
-          "status": "known-flaky",
-          "reason": "the exact stage sometimes finishes before the second press lands (\"ke\" instead of \"k\"); failed try 1 and passed try 2 in final-b4",
           "date": "2026-11-17"
         }
       },
@@ -130,7 +126,9 @@
         "testChapterTicksProbe": "PLAYER_SMOKE_CHAPTERS_URL: test-long-chapters.mkv has never existed; the baseline is SKIP (batch doc 2026-11-16)",
         "testEdgeClickChapterMode": "PLAYER_SMOKE_CHAPTERS_URL: test-long-chapters.mkv has never existed; the baseline is SKIP (batch doc 2026-11-16)",
         "testHarvestGrows": "device-only: screenshot-raw cannot run on the simulator's Metal driver (2026-11-17)",
-        "testMenuExitOverRootControlWithShieldOff": "opt-in with PLAYER_EXIT_CONTROL=1 (2026-11-17)"
+        "testMenuExitOverRootControlWithShieldOff": "opt-in with PLAYER_EXIT_CONTROL=1 (2026-11-17)",
+        "testMpvReturnKeepsAudioAndEmbeddedSubtitlePicks": "M10: no mpv fixture with two audio tracks and an embedded subtitle (2026-11-22)",
+        "testMpvLiveReturnPausedAndReconnectStaysPaused": "M13: LIVE_HLS_URL needs scripts/device/fixtures/live-hls-fixture.py served by hand; gate.sh does not start it (2026-11-22)"
       }
     },
     {
@@ -185,7 +183,8 @@
       "id": "AetherPlayerUITests",
       "env": {
         "AETHER_SMOKE_URL": "{server}/aether-long.mkv",
-        "AETHER_SMOKE_CHAPTERS_URL": "{server}/aether-chapters.mkv"
+        "AETHER_SMOKE_CHAPTERS_URL": "{server}/aether-chapters.mkv",
+        "AETHER_SMOKE_SUBS_URL": "{server}/aether-subs.mkv"
       }
     },
     {

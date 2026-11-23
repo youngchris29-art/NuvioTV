@@ -13,7 +13,14 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
-## Return from background 2026-11-21/23 (all three players; reviewed, gated, device-passed, LANDED `9e831153a`; NOT cut)
+## beta.26 RELEASED 2026-11-23 (public; build 153, `c5c51abd3` = `9e831153a` + bump, tag `tvos-v0.3.0-beta.26`, both repos Latest)
+
+- **Carries:** return from background fixed on all three players, Aether engine 7.71.2, playback disk cache. New setting: Player › Buffering › **Disk Cache**, default Off (shown while Aether is on). Outer `784f7f4` (README: Disk Cache line, text only).
+- **Notes:** published 14:26Z on `youngchris29-art/NuvioMobile` and `youngchris29-art/NuvioTV`; the generated commit list was replaced with the list-free notes (`docs/research/background-return-2026-11-21/cut-beta26/notes-list-free.md`). The background line was cut to what testers saw on earlier betas (Christian, 11-23).
+- **NOT SENT:** Reddit block and comment, GitHub #31 and #29 replies (`docs/comms-github-31-reply-2026-11-21.md`, `docs/comms-github-29-reply-2026-11-21.md`), tester DM.
+- **Not verified at cut:** sound, DV/HDR output and Match Frame Rate after an mpv return; HDR10+ and PGS on Aether; heights on a receiver; VoiceOver on the Disk Cache row.
+
+## Return from background 2026-11-21/23 (all three players; reviewed, gated, device-passed, LANDED `9e831153a`; RELEASED in beta.26)
 
 - **What:** Home and back no longer leaves a frozen or black picture. mpv parks (pause, video off) on leaving and returns on a fresh controller, paused at the held position; the native player's restart seeks are exact and checked (was 13.6 s early after Home during start-up); Aether return from the earlier waves. mpv bug was present on beta.25. No new settings, no new strings.
 - **Also changed:** an mpv start that fails from the cloud library now shows the existing "Couldn't play this source" alert ("Try with mpv" / "Close") instead of a dead player; mpv tracker stops are refused after an identity change, as on the other players.

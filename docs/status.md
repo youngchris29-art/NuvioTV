@@ -18,7 +18,8 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - **Carries:** return from background fixed on all three players, Aether engine 7.71.2, playback disk cache. New setting: Player › Buffering › **Disk Cache**, default Off (shown while Aether is on). Outer `784f7f4` (README: Disk Cache line, text only).
 - **Notes:** published 14:26Z on `youngchris29-art/NuvioMobile` and `youngchris29-art/NuvioTV`; the generated commit list was replaced with the list-free notes (`docs/research/background-return-2026-11-21/cut-beta26/notes-list-free.md`). The background line was cut to what testers saw on earlier betas (Christian, 11-23).
 - **SENT 11-23:** GitHub #31 and #29 replies (https://github.com/youngchris29-art/NuvioTV/issues/31#issuecomment-7104461138, https://github.com/youngchris29-art/NuvioTV/issues/29#issuecomment-7104461699). Notes line limited to mpv at 14:40Z on Christian's word.
-- **NOT SENT:** Reddit block and comment, tester DM.
+- **SENT 11-23 14:57Z:** Reddit block swap and comment t1_19t2p2xvm9pc3 (read back exact, 4 images kept; logged-out check blocked by Reddit).
+- **NOT SENT:** tester DM.
 - **Not verified at cut:** sound, DV/HDR output and Match Frame Rate after an mpv return; HDR10+ and PGS on Aether; heights on a receiver; VoiceOver on the Disk Cache row.
 
 ## Return from background 2026-11-21/23 (all three players; reviewed, gated, device-passed, LANDED `9e831153a`; RELEASED in beta.26)

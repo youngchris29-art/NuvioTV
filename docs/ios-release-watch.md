@@ -296,3 +296,39 @@ Assets: androidApp-full-arm64-v8a-release.apk, androidApp-full-armeabi-v7a-relea
 > - f81edc65 fix(debrid): match TorBox alternative-hash cache answers @WhiteGiso  
 > - 103c5e07 fix(trakt): prevent unbounded library refresh queue @enricopro  
 > 
+
+## 1.1.0-beta.3 — 2026-11-24
+
+https://github.com/NuvioMedia/NuvioMobile/releases/tag/1.1.0-beta.3
+
+Assets: androidApp-full-arm64-v8a-release.apk, androidApp-full-armeabi-v7a-release.apk, androidApp-full-x86-release.apk, androidApp-full-x86_64-release.apk, nuvio-1.1.0-beta.3-full-release.ipa
+
+> > [!IMPORTANT]
+> > **Beta builds are for testing purposes and may contain bugs, regressions, or unexpected issues.** If you prefer a reliable experience, we recommend staying on the **Stable** channel.
+> 
+> - 4f11b15f fix(i18n): add missing traditional chinese import @tapframe  
+> - [feat(player): show a format badge for styled subtitles instead of the codec (#2750)](https://github.com/NuvioMedia/NuvioMobile/pull/2750) @skoruppa  
+> - [Update Media3 common and extractor AARs with NuvioTV MKV, DTS, and AV M2TS fixes (#2747)](https://github.com/NuvioMedia/NuvioMobile/pull/2747) @halibiram  
+> - [i18n: use lowercase mpv in French strings (#2737)](https://github.com/NuvioMedia/NuvioMobile/pull/2737) @SK-Gits  
+> - [fix(ui): prevent Arabic title wrapping in the details hero (#2735)](https://github.com/NuvioMedia/NuvioMobile/pull/2735) @i7xre  
+> - c5a73772 fix(android): mark wifi as optional @tapframe  
+> - c31c30e1 fix(player): ignore gesture insets for bottom controls on android @skoruppa  
+> - 4baf886e fix(ios): keep downloads out of iCloud and computer backups @claude  
+> - f81edc65 fix(debrid): match TorBox alternative-hash cache answers @WhiteGiso  
+> - 103c5e07 fix(trakt): prevent unbounded library refresh queue @enricopro  
+> - [Update Hungarian translations- #2341 (#2689)](https://github.com/NuvioMedia/NuvioMobile/pull/2689) @emgeje  
+> - [i18n(he): add values-iw so the Hebrew translation loads on Android (#2720)](https://github.com/NuvioMedia/NuvioMobile/pull/2720) @Yosi-Brown  
+> - [i18n(vi): update translations for strings.xml and strings_servers.xml (#2683)](https://github.com/NuvioMedia/NuvioMobile/pull/2683) @blueocean2308  
+> - [feat(player): show addon's subtitle label in the subtitle list (#2714)](https://github.com/NuvioMedia/NuvioMobile/pull/2714) @skoruppa  
+> - [i18n: add missing French strings for downloads, servers and tracking (#2687)](https://github.com/NuvioMedia/NuvioMobile/pull/2687) @SK-Gits  
+> - [fix(android): raise subtitle font size maximum to 60sp (#2709)](https://github.com/NuvioMedia/NuvioMobile/pull/2709) @Joe00011  
+> - [Translation improvements and adjustments for Slovak language (#2707)](https://github.com/NuvioMedia/NuvioMobile/pull/2707) @mmsw91  
+> - [feat(i18n): sync Turkish localization with latest additions (#2706)](https://github.com/NuvioMedia/NuvioMobile/pull/2706) @stuntsnakee  
+> - [fix(servers): keep Jellyfin and Emby sign-ins separate per profile (#2705)](https://github.com/NuvioMedia/NuvioMobile/pull/2705) @skoruppa  
+> - [i18n(zh): Add chinese translation (#1973)](https://github.com/NuvioMedia/NuvioMobile/pull/1973) @raymondlo88  
+> - [Update strings to Title Case for consistency with Discovery Page (#2696)](https://github.com/NuvioMedia/NuvioMobile/pull/2696) @ZXXII  
+> - [fix(addons): cap android addon text responses (#2490)](https://github.com/NuvioMedia/NuvioMobile/pull/2490) @Hemanth-Yarlagadda  
+> - [fix: restore declared series type at JS plugin invocation (#2080)](https://github.com/NuvioMedia/NuvioMobile/pull/2080) @WhiteGiso  
+> - [i18n(es): fix mistranslated brand names and terminology, translate missing strings (#2033)](https://github.com/NuvioMedia/NuvioMobile/pull/2033) @Mangel-CC  
+> - [fix(addons): skip cloud sync for guest sessions (#1846)](https://github.com/NuvioMedia/NuvioMobile/pull/1846) @ofers  
+> 

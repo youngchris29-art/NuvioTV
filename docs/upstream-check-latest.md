@@ -2,40 +2,36 @@
 
 Overwritten by the `nuvio-upstream-check` scheduled task on every run. The dated reports it also writes (`docs/upstream-port-plan-YYYY-MM-DD.md`, `docs/nuviotv-android-upstream-port-plan-YYYY-MM-DD.md`) stay local and are gitignored; this file is the only tracked record and carries the baselines the next run starts from.
 
-- **Run:** 2026-11-24
-- **NuvioMobile baseline** (`NuvioMedia/NuvioMobile` `cmp-rewrite`): `bd9506cc8` — dated report `docs/upstream-port-plan-2026-11-24.md`
-- **NuvioTV Android baseline** (`NuvioMedia/NuvioTV` `dev`): `9e5af3d6c` — dated report `docs/nuviotv-android-upstream-port-plan-2026-11-24.md`
+- **Run:** 2026-11-25
+- **NuvioMobile baseline** (`NuvioMedia/NuvioMobile` `cmp-rewrite`): `0d20af832` — dated report `docs/upstream-port-plan-2026-11-25.md`
+- **NuvioTV Android baseline** (`NuvioMedia/NuvioTV` `dev`): `b48e9d8d3` — dated report `docs/nuviotv-android-upstream-port-plan-2026-11-25.md`
 
-## NuvioMobile — 2026-11-24
+## NuvioMobile — 2026-11-25
 
-Upstream `NuvioMedia/NuvioMobile` (`cmp-rewrite`): `642f6e031` -> `bd9506cc8` (fetched 2026-11-24). 22 non-merge commits, about half translations. Fork tip checked: `c5c51abd3`. **New baseline: `bd9506cc8`.**
+Upstream `NuvioMedia/NuvioMobile` (`cmp-rewrite`): `bd9506cc8` -> `0d20af832` (fetched 2026-11-25). 8 non-merge commits. Fork tip checked: `c5c51abd3`. **New baseline: `0d20af832`.**
 
 | # | Item (upstream commits) | Verdict | Files | Effort |
 |---|---|---|---|---|
-| 1 | Skip addon cloud push for guest (anonymous) sessions (`c72103eca`): `shouldPushAddonsToServer(authState)` checked before and after the 500 ms debounce | PORT. The fork's `pushToServer` only blocks unhydrated authenticated pushes (`shouldBlockUnhydratedAddonPush`); an anonymous session still pushes. Add the same guard, keep it a pure tested function. Touches the identity root: Codex design round first. | `shared/.../addons/AddonRepository.kt` (+ test) | S |
-| 2 | Format badge for subtitle tracks (ASS, PGS, VobSub, DVB) instead of the codec in the title (`6c7386681`, plus `SubtitleSelectionModel`, iOS bridge exposes track codec) | PORT (design call). `subtitleFormatBadgeForCodec(codec)` is pure and portable; the fork has no `SubtitleFormatBadge`. Needs a badge in the tvOS subtitle picker on mpv and Aether, and track titles without the codec. | `shared/.../player/SubtitleAudioModels.kt`, `iosApp/NuvioTV` subtitle picker, mpv/Aether bridge | M |
-| 3 | Series type restored for JS plugins only (`f14ff2b97`, `44835b62b`, `c5dc94c0a` final shape: `jsPluginMediaType`) | CHECK. Fork already has `shared/.../plugins/PluginMediaType.kt`; diff it against upstream's final version, and confirm custom Stremio media types survive in `AddonTransportUrls`/`StreamsRepository`. | `shared/.../plugins/PluginMediaType.kt`, `AddonTransportUrls.kt`, `StreamsRepository.kt` | S |
-| 4 | Cap Android addon text responses (`ba573755b`) | SKIP. Android `AddonPlatform.android.kt` only. Worth a look at the Apple `AddonPlatform` for an unbounded body read. | n/a | n/a |
-| 5 | Shrink long addon name in the synced chip (`a0da4691e`) | SKIP. Compose UI only. | n/a | n/a |
-| 6 | Subtitle font size max 60 on Android (`2e2154856`, `dec0f3286`) | SKIP. Android range only; iOS stays 6..40. | n/a | n/a |
-| 7 | Traditional Chinese, Vietnamese, French strings, AppLanguage (`37c2e1aa8`, `e0f49bb36`, `4d1453ce9`, `64db6aad6` and others) | SKIP for code. Translation source: zh-Hant could seed the fork's xcstrings if the fork adds that language. | n/a | n/a |
-| 8 | Media3 AAR update, version bump, store-beta.json (`3e63c3ab8`, `4ec93635a`, `bd9506cc8`) | SKIP. Android/store packaging. | n/a | n/a |
+| 1 | Debrid: match ampersand filename variants (`6f5a492df`): after the exact and basename passes, retry with `" & "` normalised to `" and "` (path, then basename), plus a test | PORT. The fork's `matchingFiles` in `shared/` (line 204) has only the exact and basename passes; no ampersand handling. Copy the two extra passes and the test. Low risk, pure. Same fix as NuvioTV Android `4b71d71ae`, so the earlier Android CHECK item is now a port. | `shared/.../debrid/DebridFileSelectors.kt`, `DebridFileSelectorTest.kt` | S |
+| 2 | Separate ASS/SSA subtitle style, default 100% with custom styling off, stored as one entry and synced (`769bf6e74`, `ecfd67d72`, `0e7f9a438`) | PORT (design call). The fork has a styled-subtitles toggle on Aether and a libass setting, but one shared size. A second style needs a new setting, a settings-sync field, and the tvOS style panel editing whichever style the shown track needs. New setting: name it and its default in the release notes. Touches settings sync (identity root): Codex design round first. | `shared/.../player/PlayerSettingsRepository.kt`, `SubtitleAppearance.kt`, `iosApp/NuvioTV` subtitle style panel, mpv/Aether bridge | M |
+| 3 | Auto-select the preferred add-on subtitle when add-ons answer after playback starts (`29567e386`: keep selection open while add-on subtitles load) | CHECK. The logic is in composeApp's `PlayerScreenRuntimeTrackActions`, which the fork does not use. Look at the tvOS equivalent (`PlayerScreen.swift` / `SubtitleFallbackGuard.swift`) for a one-shot auto-select that stops when the first scan finds nothing while add-on subtitles are still loading. | `iosApp/NuvioTV/Screens/PlayerScreen.swift`, `Player/SubtitleFallbackGuard.swift` | S |
+| 4 | Add-on subtitles not blocked when only the sync backend is unreachable (`5ff7a4e66`, now `NetworkCondition.NoInternet` instead of `isOfflineLike`); runtime state backed by `mutableStateOf` (`7c8b66b30`, test only) | SKIP. Compose runtime/state only; confirm tvOS offline gating does not treat a failed sync as offline. | n/a | n/a |
+| 5 | Test replacement (`d018be8e3`), Polish string (`769bf6e74`) | SKIP. | n/a | n/a |
 
-Recommended: items 1 and 2. Item 3 is a short check. The carry-over from 2026-11-21 stays open: Trakt library refresh queue fix (`103c5e07a`, M, Codex design round first).
+Recommended: item 1 (quick), item 2 (design call), item 3 is a short check. Carry-overs from 2026-11-24 stay open: guest add-on push guard (`c72103eca`, S, Codex design round), subtitle format badge (`6c7386681`, M), series type check (`PluginMediaType.kt`, S), Trakt library refresh queue fix (`103c5e07a`, M).
 
-## NuvioTV Android — 2026-11-24
+## NuvioTV Android — 2026-11-25
 
-Upstream `NuvioMedia/NuvioTV` (`dev`): `7097af17f` -> `9e5af3d6c`. 35 non-merge commits (shallow fetch). Commit messages read; no Kotlin diffed. **New baseline: `9e5af3d6c`.**
+Upstream `NuvioMedia/NuvioTV` (`dev`): `9e5af3d6c` -> `b48e9d8d3`. 22 non-merge commits (shallow fetch). Commit messages read; no Kotlin diffed. **New baseline: `b48e9d8d3`.**
 
 | # | Item (upstream commits) | tvOS verdict | Effort |
 |---|---|---|---|
-| 1 | Format badge for styled/image subtitles instead of the codec; track label as built-in subtitle title (`4db6cbabd`, `8efa5ca57`) | PORT with NuvioMobile item 1 of the same day (`6c7386681`): same feature, one change. | M |
-| 2 | Separate subtitle style for ASS/SSA; nuvio-libass v0.0.14; auto-sync fixes for legacy ASS codec IDs (`8ce69c2a1`, `1a1871023`, `2ed752298`, `80b1b33db`) | CHECK. The fork has a styled-subtitles setting on Aether; a separate ASS style is a new setting idea only. Auto-sync is Android-only. | S |
-| 3 | Usenet HUD rows and streaming-type line in the player HUD (`f57709996`, `742dfbe29`, `f867fae32`, `c3af0fed9`, `fd344881b`, `79c787796`) | SKIP. Needs the Usenet engine; no tvOS equivalent. | n/a |
-| 4 | Blu-ray: LPCM clips and DTS-HD tracks; audio-track key not opening over disc titles (`927e81575`, `928244de2`, `8b6ac91b1`) | SKIP. ExoPlayer Blu-ray work. | n/a |
-| 5 | Home covers: bound concurrent collection cover fetches, disk-cached covers bypass the network queue, reuse loaded covers for focus glow (`9f753b3b1`, `61e54f7d0`, `98264d32f`) | CHECK on a device pass: compare the fork's collection cover loading under many collections. | S |
-| 6 | Details: draw background once and only the visible hero gradient (`54c505452`); trailer on details opened from More like this (`558d65df7`) | CHECK. Compare with the fork's Detail trailer from a More like this entry. | S |
-| 7 | Debrid: match ampersand filename variants (`4b71d71ae`) | CHECK. Compare the fork's debrid filename matching for `&` vs `and`. | S |
-| 8 | Launcher Continue Watching channel sync; collection editor focus; Hungarian/Usenet translations (`02a9afc85`, `bf210ec51` and others) | SKIP. Android launcher, Android focus, resource strings. | n/a |
+| 1 | Usenet result rows: show what the release name says, size left to the size badge, at most two languages; anime catalog ids mapped by IMDb id, meta, then Simkl (`655bccb`, `65d8075`, `27cc9a1`, `170be2e`, `de06162`) | SKIP. Needs the Usenet engine; no tvOS equivalent. | n/a |
+| 2 | Details: draw the loading skeleton shimmer without recomposing; keep season tabs and episodes in view together; draw the background once (`08733d8`, `c488daf`, `54c5054`) | CHECK on a device pass: season tabs plus episodes in view together on the fork's Detail with many seasons. Compose perf items are SKIP. | S |
+| 3 | Debrid ampersand filename variants (`4b71d71`) | PORT with NuvioMobile item 1 of today (`6f5a492df`): same fix. | S |
+| 4 | Blu-ray LPCM clips, DTS-HD tracks; audio-track key not opening over disc titles (`927e815`, `928244d`) | SKIP. ExoPlayer Blu-ray work. | n/a |
+| 5 | libass v0.0.14 with Laskco's fork (`1a18710`); NuvioMobile ASS/SSA style work follows | CHECK with NuvioMobile item 2 (separate ASS style). The libass bump is Android-only. | n/a |
+| 6 | Modern sidebar blur fades with the collapse animation; rating stars shrink evenly in a narrow dialog; audio-sync lyrics filter (`5edbfbc`, `79f56fd`, `75e79d4`) | SKIP. Android Compose UI and an Android-only audio-sync feature. | n/a |
+| 7 | Hebrew, Latin American Spanish, French, Hungarian strings; version bumps to 1.1.1 (`16021a0`, `526c690`, `87d255c` and others) | SKIP for code. French and Spanish strings could seed the fork's xcstrings. | n/a |
 
-No ports from this repo on its own; item 1 rides with the NuvioMobile subtitle badge. Items 5-7 are checks only. The 2026-11-23 checks (season search retry, ASS sizing, Skip Intro fade, Details rows) and the 2026-11-21 checks stay open.
+Recommended: debrid ampersand port (shared with NuvioMobile item 1). The 2026-11-24 Android CHECK items (collection cover fetch bound, trailer from More like this) stay open.

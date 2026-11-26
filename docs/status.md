@@ -13,6 +13,23 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
+## Clear Cache LANDED 2026-11-26 (`tvos-shared-extraction` `f494a7014`, NOT cut; #34 reply SENT)
+
+- **What:** a Clear Cache button, the last row of Settings › About (FEAT-100, the clear-button part of GitHub #34). It empties the artwork disk cache (512 MB cap) and the animated-cover cache (128 MB cap) and the failed-URL memo. Account, profiles, settings, add-ons and watch progress are untouched. No new setting. Alert opens with focus on Cancel.
+- **Review and gates:** Codex CLEAN at round 4 on base `c5c51abd3` (three P2 findings, all on the UI leg; none on the feature). Full final gate PASS on FA87 2026-11-26 00:43 EST: Kotlin 6113 / 0, Debug and Release sim builds, NuvioTVTests 4233 / 0 / 6 expected skips, every UI entry green, the two known baseline failures only. `ClearCacheSettingsUITests` added to `scripts/build/gate-manifest.json`.
+- **Device pass (Test 2, build 153 dev, Release):** D1 to D6 PASS. `artwork_clear ms=5` on the box; artwork cache 233 MB / 1291 files to 144 KB after the clear, 23 MB after a re-browse; posters, hero backdrop and a collection tile drew after the clear. Note: `docs/device-pass-github-open-issues-2026-11-26.md` (local).
+- **Not verified:** the trailer-unavailable hero fallback after a clear; that the collection cover was refetched cold (it may have come from memory); VoiceOver on the row and alert; cancel after a clear and a second clear on the box (covered on the simulator).
+- **SENT 2026-11-26T05:53Z on Christian's "post the reply":** #34 update (https://github.com/youngchris29-art/NuvioTV/issues/34#issuecomment-7183903769), read back equal to the draft. It says Clear Cache will be in the next beta; saved rows wait, no date; no cache size setting. Release-notes line NOT SENT (`docs/comms-github-34-clear-cache-2026-11-26.md`, local).
+- **Same batch, not landed:** #32 (FEAT-97, Up Next after an external player) and the saved Home rows for #34 are parked behind the scope-identity batch on Christian's word 2026-11-25; #35 (BUG-270) fix is specified and held for the reporter's answer or 2026-12-02. Scope-identity plan drafted 2026-11-26, not approved.
+- **Clone and sim clone deleted.** Batch doc: `docs/batch-github-open-issues-2026-11-25.md` (local).
+
+## GitHub comms 2026-11-25 (four replies SENT; #29, #31, #33 closed)
+
+- **SENT 2026-11-25T13:16Z on Christian's "Post all four replies"**, each read back equal to its draft: #35 first reply (https://github.com/youngchris29-art/NuvioTV/issues/35#issuecomment-7163539252), #29 closing note (https://github.com/youngchris29-art/NuvioTV/issues/29#issuecomment-7163539669), #31 closing note (https://github.com/youngchris29-art/NuvioTV/issues/31#issuecomment-7163540080), #33 closing note (https://github.com/youngchris29-art/NuvioTV/issues/33#issuecomment-7163540430). Drafts: `docs/comms-github-*-2026-11-25.md` (local).
+- **Closed as completed 13:11Z** on his "close them": #29 (disk cache, Aether; an mpv version goes to a new issue), #31 (Aether 7.71.2; FEL curve folding goes to a separate issue), #33 (seek pictures on clicks and holds; provider thumbnail sheets are not possible from add-on streams). Open: #35, #34, #32.
+- **#35** stays open: swipes scrub and edge clicks move between the player buttons on both players (one shared `PlayerTransportInput`), by design; the reply asks the build, the remote and whether edge clicks work with Click and Touch, and promises no change. Bug or request is Christian's call.
+- **Reddit:** u/jfar94's Dolby Vision report needed no reply; Christian answered 11-24 17:37Z and the reporter confirmed 11-25 11:05Z that the native player plus Aether plays it correctly. Tracker item closed as not a bug.
+
 ## beta.26 RELEASED 2026-11-23 (public; build 153, `c5c51abd3` = `9e831153a` + bump, tag `tvos-v0.3.0-beta.26`, both repos Latest)
 
 - **Carries:** return from background fixed on all three players, Aether engine 7.71.2, playback disk cache. New setting: Player › Buffering › **Disk Cache**, default Off (shown while Aether is on). Outer `784f7f4` (README: Disk Cache line, text only).

@@ -208,6 +208,9 @@
       "id": "DiskCacheSettingsUITests"
     },
     {
+      "id": "ClearCacheSettingsUITests"
+    },
+    {
       "id": "SyncLineUITests",
       "env": {
         "PLAYER_BAR_PROBE": "1",

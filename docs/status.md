@@ -13,6 +13,15 @@ Later cuts not recorded in these notes: the submodule carries tags `tvos-v0.3.0-
 - The `docs/` mirror to `youngchris29-art/nuvio-notes` started 2026-11-02.
 - Device builds: the free team's device list was empty on 2026-10-29, so the concrete Living Room destination plus `-allowProvisioningDeviceRegistration` has been needed since.
 
+## Scope-identity wave 1 LANDED 2026-11-26 (`tvos-shared-extraction` `baa9ec1c9`, NOT cut)
+
+- **What:** the identity core, wave 1 of the scope-identity batch (plan approved by Christian 2026-11-26): a new fork-only package `shared/.../core/identity/` (account key, scope, epoch, tokens, the pure commit decisions, the barrier model and its driver, the job registry, the gate). 29 new files, +5,629 lines, no existing file changed, and nothing calls it yet; wave 2 wires the transitions through it. No user-visible change, no new setting.
+- **Review:** six Codex code review rounds on base `f494a7014` (5, 5, 3, 3 P2; 2 P3; 3 P2; never a P1). The review cap was reached at round 6; on Christian's "Fix, gate, land" the round-6 fixes landed without a clean verdict, and wave 2's review covers the core as it is called.
+- **Gates:** Kotlin 3,011 / 3,017 / 445 with 0 failures (180 identity cases per target; the reducer test walks 14,808 states). Full final gate on FA87 2026-11-26: Debug and Release sim builds, NuvioTVTests 4,233 / 0 / 6 expected skips, every UI entry green or a known baseline row, except one failure: `PlayerTransportUITests/testMpvPlayThenPauseDuringStartEndsPaused`.
+- **That failure is not from this wave:** the test allows 0.5 s around the held position and sits 0.05 s inside it; the landed base `f494a7014` failed it 3 of 5 when built in the same clone (0 of 5 built in the submodule). Christian: "Land now, log the test". It is `known-flaky` in `scripts/build/gate-manifest.json` until the test's margin is widened (owed, small, test-only).
+- **No device pass:** the code is not reachable from the app until wave 2.
+- **Open:** the clone `~/Claude/Projects/NuvioMobile-scope-identity` stays for wave 2 (`claude/scope-identity-w2`, stacked). Batch doc: `docs/batch-scope-identity-2026-11-26.md` (local), spec revision 13.
+
 ## Clear Cache LANDED 2026-11-26 (`tvos-shared-extraction` `f494a7014`, NOT cut; #34 reply SENT)
 
 - **What:** a Clear Cache button, the last row of Settings › About (FEAT-100, the clear-button part of GitHub #34). It empties the artwork disk cache (512 MB cap) and the animated-cover cache (128 MB cap) and the failed-URL memo. Account, profiles, settings, add-ons and watch progress are untouched. No new setting. Alert opens with focus on Cancel.

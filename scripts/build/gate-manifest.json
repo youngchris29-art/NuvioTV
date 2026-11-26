@@ -118,6 +118,11 @@
           "status": "known-baseline-failure",
           "reason": "no decoded frame near the scrub target on the simulator; fails on every build since the Aether phase 1 batch (docs/aether-phase1-w3a-brief.md)",
           "date": "2026-11-17"
+        },
+        "testMpvPlayThenPauseDuringStartEndsPaused": {
+          "status": "known-flaky",
+          "reason": "Play, 0.25 s, Pause must end within 0.5 s of held, and the position comes in 0.1 s steps: 8.7 s passes and 8.8 s fails against held 8.25 s (margin 0.05 s). Failed 3 of 5 on the landed base f494a7014 built in a clone and 0 of 5 built in the submodule, so it is timing on the simulator, not a change (docs/research/scope-identity-2026-11-26/ab-base-in-clone-*). Remove when the test's margin is widened",
+          "date": "2026-11-26"
         }
       },
       "expect_skip": {

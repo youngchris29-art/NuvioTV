@@ -249,6 +249,14 @@
       "id": "NuvioTVUITests/test82SettingsExplainerFollowsFocus"
     },
     {
+      "id": "ProfileSwitchBarrierUITests",
+      "timeout_s": 600
+    },
+    {
+      "id": "BatchARailProfileUITests",
+      "timeout_s": 600
+    },
+    {
       "id": "AddonsSplitUITests/testSettingsRowOpensManageFromPhoneRail",
       "tests": {
         "testSettingsRowOpensManageFromPhoneRail": {

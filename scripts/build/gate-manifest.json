@@ -257,6 +257,10 @@
       "timeout_s": 600
     },
     {
+      "id": "LibraryFilterBarUITests",
+      "timeout_s": 900
+    },
+    {
       "id": "AddonsSplitUITests/testSettingsRowOpensManageFromPhoneRail",
       "tests": {
         "testSettingsRowOpensManageFromPhoneRail": {
